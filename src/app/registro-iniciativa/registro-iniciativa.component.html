@@ -1,0 +1,246 @@
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-info">
+                <h4 class="card-title"><p align="left" style=color:#3F52B6>
+                    <strong> <i class="material-icons">library_add</i> Registro de Atención</strong></p></h4>
+                <p class="card-category">Completa los datos en blanco para crear una atención</p>
+            </div>
+            <div class="card-body">
+               
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2"> 
+                        <mat-label><strong>N° Iniciativa: </strong> </mat-label>
+                    </div>
+                    <div class="col-md-3"> 
+                        <mat-form-field hintLabel="Max 9 caracteres">
+                            <input matInput #inputAtencion maxlength="9" disabled >
+                        </mat-form-field> 
+                    </div>
+
+                    <div class="col-md-2">
+                        <mat-label><strong>Estado: </strong> </mat-label> 
+                    </div>
+                    <div class="col-md-3"> 
+                        
+                        <mat-form-field>
+                            <mat-select placeholder="Selecciona Estado">
+                              <mat-option value="option">Nuevo</mat-option>
+                              <mat-option value="option">Pendiente</mat-option>
+                              <mat-option value="option">Mantenimiento</mat-option>
+                              <mat-option value="option">En Proceso</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                 
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2"> 
+                        <mat-label><strong>Título: </strong> </mat-label>  
+                    </div>
+                    <div class="col-md-3"> 
+                        <mat-form-field hintLabel="Max 20 caracteres">
+                            <input matInput #inputTitulo maxlength="20" placeholder="Ingrese un Título">
+                            <mat-hint align="end">{{inputTitulo.value?.length || 0}}/20</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div class="col-md-2"> 
+                        <mat-label><strong>Jefe de Proyecto: </strong> </mat-label>  
+                    </div>
+                    <div class="col-md-3"> 
+                        <mat-form-field hintLabel="Max 10 caracteres">
+                            <input matInput #inputJefe maxlength="10" placeholder="Ingrese Jefe Proyecto">
+                            <mat-hint align="end">{{inputJefe.value?.length || 0}}/10</mat-hint>
+                        </mat-form-field> 
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2"> 
+                        <mat-label><strong>Sumilla: </strong> </mat-label> 
+                    </div>
+                    <div class="col-md-3"> 
+                        <mat-form-field hintLabel="Max 50 caracteres">
+                            <input matInput #inputSumilla maxlength="50" placeholder="Ingrese una Sumilla" id="sumilla">
+                            <mat-hint align="end">{{inputSumilla.value?.length || 0}}/50</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2"> 
+                        <mat-label><strong>Procesos: </strong> </mat-label> 
+                    </div>
+                    <div class="col-md-3"> 
+                        <mat-form-field hintLabel="Max 10 caracteres">
+                            <input matInput #inputProcesos maxlength="10" placeholder="Ingrese Usuario Procesos">
+                            <mat-hint align="end">{{inputProcesos.value?.length || 0}}/10</mat-hint>
+                        </mat-form-field> 
+                    </div>
+                </div>
+
+                <br> 
+
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2"> 
+                        <mat-label><strong>Objetivo Principal:  </strong> </mat-label> 
+                    </div>
+                    <div class="col-md-3"> 
+                        
+                        <mat-form-field >
+                            <mat-label>Objetivo Principal</mat-label>
+                            <textarea matInput
+                                      cdkTextareaAutosize
+                                      #autosize="cdkTextareaAutosize"
+                                      
+                                      cdkAutosizeMinRows="1"
+                                      cdkAutosizeMaxRows="5"></textarea>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="col-md-2"> 
+                        
+                        <mat-label><strong>Objetivo Secundario:  </strong> </mat-label> 
+                    </div>
+                    <div class="col-md-3"> 
+                        <mat-form-field >
+                            <mat-label>Objetivo Secundario</mat-label>
+                            <textarea matInput
+                                      cdkTextareaAutosize
+                                      #autosize2="cdkTextareaAutosize"
+                                      cdkAutosizeMinRows="1"
+                                      cdkAutosizeMaxRows="5"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <br>
+               
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <mat-label><strong>Fecha de Inicio: </strong> </mat-label> 
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker2" placeholder="Selecciona Fecha">
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                          </mat-form-field>
+                    </div>
+                    
+                    <div class="col-md-2"> 
+                        <mat-label><strong>Estimado(horas):</strong> </mat-label> 
+                        
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field hintLabel="Max 4 caracteres">
+                            <input matInput #inputHoras  placeholder="Estimado en Horas" type="number" >
+                        </mat-form-field> 
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2"> 
+                         
+                        <mat-label><strong>Fecha de Fin:</strong> </mat-label> 
+                    </div>
+
+                    <div class="col-md-3">
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" placeholder="Selecciona Fecha">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                    </div>
+                    
+                    <div class="col-md-2"> 
+                        <mat-label><strong>Prioridad: </strong> </mat-label>
+                    </div>
+
+                    <div class="col-md-3">
+                        <mat-form-field>
+                            <mat-label>Panel color</mat-label>
+                            <mat-select [formControl]="panelColor"
+                                        panelClass="example-panel-{{panelColor.value}}">
+                             
+                              <mat-option value="red">Alto</mat-option>
+                              <mat-option value="yell">Medio</mat-option>
+                              <mat-option value="blue">Bajo</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2"> 
+                        <mat-label><strong>Prioridad: </strong> </mat-label>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field>
+                            <mat-select placeholder="Selecciona Tipo">
+                              <mat-option value="option">Interna</mat-option>
+                              <mat-option value="option">Externa</mat-option>
+                              <mat-option value="option">Mixta</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div class="col-md-2"> 
+                        <mat-label><strong>Area: </strong> </mat-label>
+                    </div>
+                    <div class="col-md-3">
+                        <mat-form-field>
+                            <mat-select placeholder="Selecciona un Area">
+                              <mat-option value="option">Area</mat-option>
+                              <mat-option value="option">Gerencia General Adjunta</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <mat-label><strong>Categoría: </strong> </mat-label>
+                           
+                    </div>
+                    <div class="col-md-3"> 
+                        <mat-form-field>
+                            <mat-select placeholder="Selecciona Categoría">
+                              <mat-option value="option">Proyecto</mat-option>
+                              <mat-option value="option">Mantenimiento</mat-option>
+                              <mat-option value="option">Incidencia</mat-option>
+                              <mat-option value="option">Mejora</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-7"></div>
+                </div>
+                <br>
+                
+                <div class="row">
+                    
+                    <div class="col-md-5"></div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary active" (click)='saveParametro()'>Grabar</button>
+                   </div>
+                   <div class="col-md-2" align="left">
+                       <button type="button" class="btn btn-info" >Limpiar</button>
+                   </div> 
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
