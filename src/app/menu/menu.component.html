@@ -11,7 +11,7 @@
         <a mat-list-item [routerLink]="['listado_atencion']"> 
           <p style=color:#3F52B6>
             <strong> 
-              <i class="material-icons md-11" >assignment</i>
+              <i class="material-icons md-11" style="vertical-align: middle;" >assignment</i>
                Seguimiento
             </strong>
           </p>
@@ -20,7 +20,7 @@
         <a mat-list-item [routerLink]="['registrar_iniciativa']"> 
           <p style=color:#3F52B6>
             <strong> 
-              <i class="material-icons md-18">library_add</i>
+              <i class="material-icons md-18" style="vertical-align: middle;">library_add</i>
               Registra
             </strong>
           </p>
@@ -29,7 +29,7 @@
         <a mat-list-item [routerLink]="['registro_horas']"> 
           <p style=color:#3F52B6>
             <strong> 
-              <i class="material-icons md-18">schedule</i>
+              <i class="material-icons md-18" style="vertical-align: middle;">schedule</i>
                Planea
             </strong>
           </p>  
@@ -46,7 +46,21 @@
         <img src="assets\images\fondo8.png" class="img-fluid" style="width: 60%;  ">
         <img src="assets\images\fondo1.png" class="img-fluid" style="width: 20%;  ">  
         </div>
+
+        <div class="row" >
+          <div class="col-md-5"></div>
+          <div class="col-md-2">
+              <button type="button" class="btn btn-primary active" style="width: 200px;" (click)='saveParametro()'><img src="assets\images\fondo13.png" class="img-fluid" style="width: 20%;  "> Ingresar SISGESTI </button>
+         </div>
+         <div class="col-md-2" align="left">
+             <button type="button" class="btn btn-info" style="width: 200px;" ><img src="assets\images\fondo3.png" class="img-fluid" style="width: 20%;"> Ingresar Incidencia</button>
+         </div> 
+        </div>
     </mat-sidenav-content>
+
+  
+ 
+
   </mat-sidenav-container>
 </div>
 
