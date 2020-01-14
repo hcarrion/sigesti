@@ -5,6 +5,7 @@ import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import { FirestoreService } from '../services/firestore/firestore.service';
 import { ParametroFire } from '../shared/models/parametro-fire';
 import { FirebaseParametroService } from '../shared/services/firebase-parametro.service';
+import { ParametroDetalleFire } from '../shared/models/parametro-detalle-fire';
 
 @Component({
   selector: 'app-registro-iniciativa',
@@ -44,9 +45,37 @@ export class RegistroIniciativaComponent implements OnInit {
 
   saveParametro(){
     const paramObject = new ParametroFire();
-    paramObject.codigo = 1;
-    paramObject.descripcion= 'pruebaaa';
-
+    paramObject.nombre = "area";
+    const paramDetObjectList: Array<ParametroDetalleFire> = [];
+    const paramDetObject = new ParametroDetalleFire();
+    paramDetObject.codigo = 1;
+    paramDetObject.descripcion= 'Sistemas';
+    paramDetObjectList.push(paramDetObject);
+    const paramDetObject2 = new ParametroDetalleFire();
+    paramDetObject2.codigo = 2;
+    paramDetObject2.descripcion= 'Operaciones';
+    paramDetObjectList.push(paramDetObject2);
+    const paramDetObject3 = new ParametroDetalleFire();
+    paramDetObject3.codigo = 3;
+    paramDetObject3.descripcion= 'Procesos';
+    paramDetObjectList.push(paramDetObject3);
+    const paramDetObject4 = new ParametroDetalleFire();
+    paramDetObject4.codigo = 4;
+    paramDetObject4.descripcion= 'Negocios';
+    paramDetObjectList.push(paramDetObject4);
+    const paramDetObject5 = new ParametroDetalleFire();
+    paramDetObject5.codigo = 5;
+    paramDetObject5.descripcion= 'Recursos Humanos';
+    paramDetObjectList.push(paramDetObject5);
+    const paramDetObject6 = new ParametroDetalleFire();
+    paramDetObject6.codigo = 6;
+    paramDetObject6.descripcion= 'Contabilidad';
+    paramDetObjectList.push(paramDetObject6);
+    const paramDetObject7 = new ParametroDetalleFire();
+    paramDetObject7.codigo = 7;
+    paramDetObject7.descripcion= 'Finanzas';
+    paramDetObjectList.push(paramDetObject7);
+    paramObject.detalle = paramDetObjectList;
     this.firebaseParametros.parametrarFirebase(paramObject);
   }
   
