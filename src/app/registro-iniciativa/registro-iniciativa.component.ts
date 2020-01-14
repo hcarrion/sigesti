@@ -76,7 +76,7 @@ export class RegistroIniciativaComponent implements OnInit {
     paramDetObject7.descripcion= 'Finanzas';
     paramDetObjectList.push(paramDetObject7);
     paramObject.detalle = paramDetObjectList;
-    this.firebaseParametros.parametrarFirebase(paramObject);
+    /*this.firebaseParametros.parametrarFirebase(paramObject);*/
   }
   
 
