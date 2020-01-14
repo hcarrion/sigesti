@@ -11,8 +11,8 @@
         <a mat-list-item [routerLink]="['listado_atencion']"> 
           <p style=color:#3F52B6>
             <strong> 
-              <i class="material-icons md-18" >assignment</i>
-               Historial
+              <i class="material-icons md-11" >assignment</i>
+               Seguimiento
             </strong>
           </p>
         </a>
@@ -40,12 +40,17 @@
     <mat-sidenav-content>
       
       <router-outlet></router-outlet>
-    
+  
+      <div class="container text-center pb-5; " >
+        <img src="assets\images\fondo10.png" class="img-fluid" style="width: 20%;  ">  
+        <img src="assets\images\fondo8.png" class="img-fluid" style="width: 60%;  ">
+        <img src="assets\images\fondo1.png" class="img-fluid" style="width: 20%;  ">  
+        </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
 
-<div *ngIf="!shouldRun">Please open on Stackblitz to see result</div>
+<div *ngIf="!shouldRun">...</div>
 
 
 
