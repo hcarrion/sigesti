@@ -17,14 +17,34 @@ export class FirebaseParametroService {
     return ref;
   }
 
-  obtenerEstados(ref) {
-    let estados = new ParametroFire;
-    ref.orderByChild("nombre").equalTo('estado').on("value", function (snapshot) {
-      snapshot.forEach(childSnapshot => {
-        estados = childSnapshot.val();
-      });
-    });
-    return estados;
+  async obtenerEstados(ref): Promise<any> {
+    let parameter = (await ref.orderByChild("nombre").equalTo('estado').once('value'));
+    return parameter; 
+  }
+
+  async obtenerTipos(ref): Promise<any> {
+    let parameter = (await ref.orderByChild("nombre").equalTo('tipo').once('value'));
+    return parameter; 
+  }
+
+  async obtenerClasificaciones(ref): Promise<any> {
+    let parameter = (await ref.orderByChild("nombre").equalTo('clasificacion').once('value'));
+    return parameter; 
+  }
+
+  async obtenerCategorias(ref): Promise<any> {
+    let parameter = (await ref.orderByChild("nombre").equalTo('categoria').once('value'));
+    return parameter; 
+  }
+
+  async obtenerPrioridades(ref): Promise<any> {
+    let parameter = (await ref.orderByChild("nombre").equalTo('prioridad').once('value'));
+    return parameter; 
+  }
+
+  async obtenerAreas(ref): Promise<any> {
+    let parameter = (await ref.orderByChild("nombre").equalTo('area').once('value'));
+    return parameter; 
   }
 
   async parametrarFirebase(parametroFire: ParametroFire) {
