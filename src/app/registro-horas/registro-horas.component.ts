@@ -12,4 +12,10 @@ export class RegistroHorasComponent implements OnInit {
   ngOnInit() {
   }
 
+  InActiva() {
+
+   window.alert("ingrese aqui");
+  
+
+  }
 }
