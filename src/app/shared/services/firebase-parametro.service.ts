@@ -13,8 +13,18 @@ export class FirebaseParametroService {
   constructor(private angularFireDatabase: AngularFireDatabase) { }
 
   obtenerParametros() {
-    this.parametroListRef = this.angularFireDatabase.list('parametros');
-    return this.parametroListRef;
+    let ref = this.angularFireDatabase.database.ref('parametros');
+    return ref;
+  }
+
+  obtenerEstados(ref) {
+    let estados = new ParametroFire;
+    ref.orderByChild("nombre").equalTo('estado').on("value", function (snapshot) {
+      snapshot.forEach(childSnapshot => {
+        estados = childSnapshot.val();
+      });
+    });
+    return estados;
   }
 
   async parametrarFirebase(parametroFire: ParametroFire) {

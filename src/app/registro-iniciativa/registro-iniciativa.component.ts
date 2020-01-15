@@ -18,7 +18,7 @@ import { ParametroDetalleFire } from '../shared/models/parametro-detalle-fire';
 
 export class RegistroIniciativaComponent implements OnInit {
   
-  public cats = [];
+  public estado: ParametroFire;
   
   panelColor = new FormControl('red');
   constructor(private _ngZone: NgZone,private firestoreService: FirestoreService, private firebaseParametros: FirebaseParametroService) { }
@@ -32,15 +32,9 @@ export class RegistroIniciativaComponent implements OnInit {
 
   ngOnInit() 
   {
-    this.firestoreService.getCats().subscribe((catsSnapshot) => {
-      this.cats = [];
-      catsSnapshot.forEach((catData: any) => {
-        this.cats.push({
-          id: catData.payload.doc.id,
-          data: catData.payload.doc.data()
-        });
-      })
-    });
+    let parametrosRef = this.firebaseParametros.obtenerParametros();
+    this.estado = this.firebaseParametros.obtenerEstados(parametrosRef);
+    debugger;
   }
 
   saveParametro(){
