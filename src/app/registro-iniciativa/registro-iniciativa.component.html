@@ -165,13 +165,11 @@
 
                         <div class="col-md-3">
                             <mat-form-field>
-                                <mat-label>Panel color</mat-label>
-                                <mat-select [formControl]="panelColor"
-                                            panelClass="example-panel-{{panelColor.value}}">
                                 
-                                <mat-option value="red">Alto</mat-option>
-                                <mat-option value="yell">Medio</mat-option>
-                                <mat-option value="blue">Bajo</mat-option>
+                                <mat-select [formControl]="panelColor" placeholder="Selecciona prioridad" panelClass="example-panel-{{panelColor.value}}">
+                                    <mat-option *ngFor="let prioridadlet of prioridad.detalle" [value]="prioridadlet.codigo">
+                                        {{prioridadlet.descripcion}}
+                                    </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -180,14 +178,14 @@
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-2"> 
-                            <mat-label><strong>Prioridad: </strong> </mat-label>
+                            <mat-label><strong>Clasificación: </strong> </mat-label>
                         </div>
                         <div class="col-md-3">
                             <mat-form-field>
-                                <mat-select placeholder="Selecciona Tipo">
-                                <mat-option value="option">Interna</mat-option>
-                                <mat-option value="option">Externa</mat-option>
-                                <mat-option value="option">Mixta</mat-option>
+                                <mat-select formControlName="clasificacionSelect" placeholder="Selecciona clasificación">
+                                    <mat-option *ngFor="let clasificacionlet of clasificacion.detalle" [value]="clasificacionlet">
+                                        {{clasificacionlet.descripcion}}
+                                    </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -197,9 +195,10 @@
                         </div>
                         <div class="col-md-3">
                             <mat-form-field>
-                                <mat-select placeholder="Selecciona un Area">
-                                <mat-option value="option">Area</mat-option>
-                                <mat-option value="option">Gerencia General Adjunta</mat-option>
+                                <mat-select formControlName="areaSelect" placeholder="Selecciona área">
+                                    <mat-option *ngFor="let arealet of area.detalle" [value]="arealet">
+                                        {{arealet.descripcion}}
+                                    </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -213,15 +212,25 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select placeholder="Selecciona Categoría">
-                                <mat-option value="option">Proyecto</mat-option>
-                                <mat-option value="option">Mantenimiento</mat-option>
-                                <mat-option value="option">Incidencia</mat-option>
-                                <mat-option value="option">Mejora</mat-option>
+                                <mat-select formControlName="categoriaSelect" placeholder="Selecciona categoría">
+                                    <mat-option *ngFor="let categorialet of categoria.detalle" [value]="categorialet">
+                                        {{categorialet.descripcion}}
+                                    </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Tipo: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select formControlName="tipoSelect" placeholder="Selecciona tipo">
+                                    <mat-option *ngFor="let tipolet of tipo.detalle" [value]="tipolet">
+                                        {{tipolet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
                     <br>
                     

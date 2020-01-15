@@ -20,11 +20,21 @@ export class RegistroIniciativaComponent implements OnInit {
 
   regIniciativa: FormGroup;
   estado: ParametroFire = new ParametroFire();
+  tipo: ParametroFire = new ParametroFire();
+  clasificacion: ParametroFire = new ParametroFire();
+  categoria: ParametroFire = new ParametroFire();
+  prioridad: ParametroFire = new ParametroFire();
+  area: ParametroFire = new ParametroFire();
 
   panelColor = new FormControl('red');
   constructor(private _ngZone: NgZone, private firestoreService: FirestoreService, private firebaseParametros: FirebaseParametroService) {
     this.regIniciativa = new FormGroup({
-      estadoSelect: new FormControl()
+      estadoSelect: new FormControl(),
+      tipoSelect: new FormControl(),
+      clasificacionSelect: new FormControl(),
+      categoriaSelect: new FormControl(),
+      prioridadSelect: new FormControl(),
+      area: new FormControl()
     });
   }
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
@@ -47,7 +57,37 @@ export class RegistroIniciativaComponent implements OnInit {
           this.estado = element.val()
         });
       });
-    }
+    this.firebaseParametros.obtenerTipos(parametrosRef).then(
+      result => {
+          result.forEach(element => {
+          this.tipo = element.val()
+        });
+      });
+    this.firebaseParametros.obtenerClasificaciones(parametrosRef).then(
+      result => {
+          result.forEach(element => {
+          this.clasificacion = element.val()
+        });
+      });
+    this.firebaseParametros.obtenerCategorias(parametrosRef).then(
+      result => {
+          result.forEach(element => {
+          this.categoria = element.val()
+        });
+      });
+    this.firebaseParametros.obtenerPrioridades(parametrosRef).then(
+      result => {
+          result.forEach(element => {
+          this.prioridad = element.val()
+        });
+      });
+    this.firebaseParametros.obtenerAreas(parametrosRef).then(
+      result => {
+          result.forEach(element => {
+          this.area = element.val()
+        });
+      });
+  }
 
   saveParametro() {
     const paramObject = new ParametroFire();
@@ -87,6 +127,11 @@ export class RegistroIniciativaComponent implements OnInit {
 
   resetFields() {
     this.regIniciativa.controls.estadoSelect.reset();
+    this.regIniciativa.controls.tipoSelect.reset();
+    this.regIniciativa.controls.clasificacionSelect.reset();
+    this.regIniciativa.controls.categoriaSelect.reset();
+    this.regIniciativa.controls.prioridadSelect.reset();
+    this.regIniciativa.controls.areaSelect.reset();
   }
 }
 
