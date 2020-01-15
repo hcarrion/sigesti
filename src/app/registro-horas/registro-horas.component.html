@@ -16,11 +16,11 @@
                         </p>
                     </div>
                 </div>
-                <div class="table-responsive-md;" style="visibility: hidden;"  >
+                <div class="table-responsive-md;" *ngIf="habilitar">
                   <table id="tblproyectos" name="tblproyectos" class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
                       <thead > 
                           <tr>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Estado </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Codigo </th>
                               <th class="table-dark" width="200px" style="background-color: #4598D8; white-space: normal;"> Título </th>
                               <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Inicio </th>
                               <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Fin </th>
@@ -37,7 +37,7 @@
                       </thead>
                       <tbody>
                           <tr>
-                            <th width="7%" scope="row">En Proceso</th>
+                            <th width="7%" scope="row">RQ0001</th>
                             <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
                             <td width="8%" style="white-space: normal;">01/03/2019</td>
                             <td width="8%" style="white-space: normal;">31/10/2019</td>
@@ -67,7 +67,7 @@
                                 
                           </tr>
                           <tr>
-                            <th width="7%" scope="row">En Proceso</th>
+                            <th width="7%" scope="row">RQ0002</th>
                             <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
                             <td width="8%" style="white-space: normal;">01/03/2019</td>
                             <td width="8%" style="white-space: normal;">31/10/2019</td>
@@ -97,7 +97,37 @@
                                 
                           </tr>
                           <tr>
-                            <th width="7%" scope="row">En Proceso</th>
+                            <th width="7%" scope="row">RQ0003</th>
+                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
+                            <td width="8%" style="white-space: normal;">01/03/2019</td>
+                            <td width="8%" style="white-space: normal;">31/10/2019</td>
+                            <td width="7%" style="white-space: normal; text-align: center;">42%</td>
+                            <td width="7%" style="white-space: normal;">Bajo</td>
+                            <td width="7%" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                                
+                          </tr>
+                          <tr>
+                            <th width="7%" scope="row">RQ0004</th>
                             <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
                             <td width="8%" style="white-space: normal;">01/03/2019</td>
                             <td width="8%" style="white-space: normal;">31/10/2019</td>
@@ -127,37 +157,7 @@
                                 
                           </tr>
                           <tr>
-                            <th width="7%" scope="row">En Proceso</th>
-                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                            <td width="8%" style="white-space: normal;">01/03/2019</td>
-                            <td width="8%" style="white-space: normal;">31/10/2019</td>
-                            <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                            <td width="7%" style="white-space: normal;">Bajo</td>
-                            <td width="7%" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                                
-                          </tr>
-                          <tr>
-                            <th width="7%" scope="row">En Proceso</th>
+                            <th width="7%" scope="row">RQ0005</th>
                             <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
                             <td width="8%" style="white-space: normal;">01/03/2019</td>
                             <td width="8%" style="white-space: normal;">31/10/2019</td>
@@ -189,263 +189,187 @@
                       </tbody>
                   </table>
               </div>    
-                <br>
                 <div class="row">
-                    <div class="col-sm-12">
-                        <p align="left" style=color:#3F52B6>
-                            <strong> Mantenimientos</strong>
-                        </p>
-                    </div>
+                  <div class="col-sm-12">
+                      <p style="text-align: left; color:#AA004F">
+                          <strong><i class="material-icons" style="vertical-align: middle; " (click)="InActiva1()">library_add</i> Mantenimientos</strong>
+                      </p>
+                  </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <hr style="width:100%;">
-                    </div>
-                </div>
-
-                <div class="table-responsive-md">
-                    <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
-                        <thead > 
-                            <tr>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Estado </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Título </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Fecha Inicio </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Fecha Fin </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Avance </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Prioridad </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 01/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 02/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 03/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 04/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 05/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 06/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 07/01/2020 </th>                              
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                              <th scope="row">En Proceso</th>
-                              <td width="100px" style="white-space: normal;">Proyecto Pricing</td>
-                              <td width="100px" style="white-space: normal;">01/03/2019</td>
-                              <td width="100px" style="white-space: normal;">31/10/2019</td>
-                              <td width="100px" style="white-space: normal;">46%</td>
-                              <td width="100px" style="white-space: normal;">Alta</td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" > 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-                                  
-                            </tr>
-                            <tr>
-                              <th scope="row">En Proceso</th>
-                              <td>Gestor de Documentos</td>
-                              <td>01/06/2019</td>
-                              <td>30/11/2019</td>
-                              <td>15%</td>
-                              <td>Medio</td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" > 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-
-                            </tr>
-                            <tr>
-                              <th scope="row">En Proceso</th>
-                              
-                              <td>Pre Evaluador</td>
-                              <td>01/01/2017</td>
-                              <td>30/05/2017</td>
-                              <td>100%</td>
-                              <td>Alto</td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" > 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"disabled> 
-                              </td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>   
-                <br>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <p align="left" style=color:#3F52B6>
-                            <strong> Esfuerzo Continuo </strong>
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-12">
-                        <hr style="width:100%;">
-                    </div>
-                </div>
-
-                <div class="table-responsive-md">
-                    <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
-                        <thead > 
-                            <tr>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Estado </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Título </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Fecha Inicio </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Fecha Fin </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Avance </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Prioridad </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 01/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 02/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 03/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 04/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 05/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 06/01/2020 </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> 07/01/2020 </th>                              
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                              <th scope="row">En Proceso</th>
-                              <td width="100px" style="white-space: normal;">Proyecto Pricing</td>
-                              <td width="100px" style="white-space: normal;">01/03/2019</td>
-                              <td width="100px" style="white-space: normal;">31/10/2019</td>
-                              <td width="100px" style="white-space: normal;">46%</td>
-                              <td width="100px" style="white-space: normal;">Alta</td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" > 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-                                  
-                            </tr>
-                            <tr>
-                              <th scope="row">En Proceso</th>
-                              <td>Gestor de Documentos</td>
-                              <td>01/06/2019</td>
-                              <td>30/11/2019</td>
-                              <td>15%</td>
-                              <td>Medio</td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" > 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-
-                            </tr>
-                            <tr>
-                              <th scope="row">En Proceso</th>
-                              
-                              <td>Pre Evaluador</td>
-                              <td>01/01/2017</td>
-                              <td>30/05/2017</td>
-                              <td>100%</td>
-                              <td>Alto</td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" > 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;" disabled> 
-                              </td>
-                              <td width="100px" style="white-space: normal;">
-                                <input matInput #inputHoras type="number" style="width: 50px;"disabled> 
-                              </td>
-
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="table-responsive-md;" *ngIf="habilitar1">
+                  <table id="tblproyectos" name="tblproyectos" class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
+                      <thead > 
+                          <tr>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Codigo </th>
+                              <th class="table-dark" width="200px" style="background-color: #4598D8; white-space: normal;"> Título </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Inicio </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Fin </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Avance </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Prioridad </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 13.01.20 </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 14.01.20 </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 15.01.20 </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 16.01.20 </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 17.01.20 </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 18.01.20 </th>
+                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 19.01.20 </th>                              
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                            <th width="7%" scope="row">RQ0001</th>
+                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
+                            <td width="8%" style="white-space: normal;">01/03/2019</td>
+                            <td width="8%" style="white-space: normal;">31/10/2019</td>
+                            <td width="7%" style="white-space: normal; text-align: center;">46%</td>
+                            <td width="7%" style="white-space: normal;">Bajo</td>
+                            <td width="7%" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                                
+                          </tr>
+                          <tr>
+                            <th width="7%" scope="row">RQ0002</th>
+                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
+                            <td width="8%" style="white-space: normal;">01/03/2019</td>
+                            <td width="8%" style="white-space: normal;">31/10/2019</td>
+                            <td width="7%" style="white-space: normal; text-align: center;">46%</td>
+                            <td width="7%" style="white-space: normal;">Bajo</td>
+                            <td width="7%" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                                
+                          </tr>
+                          <tr>
+                            <th width="7%" scope="row">RQ0003</th>
+                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
+                            <td width="8%" style="white-space: normal;">01/03/2019</td>
+                            <td width="8%" style="white-space: normal;">31/10/2019</td>
+                            <td width="7%" style="white-space: normal; text-align: center;">42%</td>
+                            <td width="7%" style="white-space: normal;">Bajo</td>
+                            <td width="7%" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                                
+                          </tr>
+                          <tr>
+                            <th width="7%" scope="row">RQ0004</th>
+                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
+                            <td width="8%" style="white-space: normal;">01/03/2019</td>
+                            <td width="8%" style="white-space: normal;">31/10/2019</td>
+                            <td width="7%" style="white-space: normal; text-align: center;">46%</td>
+                            <td width="7%" style="white-space: normal;">Bajo</td>
+                            <td width="7%" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                                
+                          </tr>
+                          <tr>
+                            <th width="7%" scope="row">RQ0005</th>
+                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
+                            <td width="8%" style="white-space: normal;">01/03/2019</td>
+                            <td width="8%" style="white-space: normal;">31/10/2019</td>
+                            <td width="7%" style="white-space: normal; text-align: center;">46%</td>
+                            <td width="7%" style="white-space: normal;">Bajo</td>
+                            <td width="7%" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                            <td width="100px" style="white-space: normal;">
+                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
+                            </td>
+                                
+                          </tr>
+                      </tbody>
+                  </table>
+             
+                   
                 </div>   
 
             </div>
