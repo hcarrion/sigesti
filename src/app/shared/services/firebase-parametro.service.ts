@@ -17,14 +17,9 @@ export class FirebaseParametroService {
     return ref;
   }
 
-  obtenerEstados(ref) {
-    let estados = new ParametroFire;
-    ref.orderByChild("nombre").equalTo('estado').on("value", function (snapshot) {
-      snapshot.forEach(childSnapshot => {
-        estados = childSnapshot.val();
-      });
-    });
-    return estados;
+  async obtenerEstados(ref): Promise<any> {
+    let parameter = (await ref.orderByChild("nombre").equalTo('estado').once('value'));
+    return parameter; 
   }
 
   async parametrarFirebase(parametroFire: ParametroFire) {
