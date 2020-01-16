@@ -47,7 +47,7 @@ export class RegistroIniciativaComponent implements OnInit {
       numIniciativaInput: new FormControl(),
       tituloInput: new FormControl(),
       sumillaInput: new FormControl(),
-      procesosInput: new FormControl(),
+      usuarioProcesosSelect: new FormControl(),
       objPrincipalTextArea: new FormControl(),
       objSecundarioTextArea: new FormControl(),
       fechaInicioInput: new FormControl(),
@@ -147,13 +147,23 @@ export class RegistroIniciativaComponent implements OnInit {
   }
 
   resetFields() {
+    debugger;
+    this.regIniciativa.controls.numIniciativaInput.reset();
     this.regIniciativa.controls.estadoSelect.reset();
-    this.regIniciativa.controls.tipoSelect.reset();
+    this.regIniciativa.controls.tituloInput.reset();
+    this.regIniciativa.controls.jefeProyectoSelect.reset();
+    this.regIniciativa.controls.sumillaInput.reset();
+    this.regIniciativa.controls.usuarioProcesosSelect.reset();
+    this.regIniciativa.controls.objPrincipalTextArea.reset();
+    this.regIniciativa.controls.objSecundarioTextArea.reset();
+    this.regIniciativa.controls.horaEstimadaInput.reset();
+    this.regIniciativa.controls.fechaInicioInput.reset();
+    this.regIniciativa.controls.fechaFinInput.reset();
+    this.panelColor.reset();
     this.regIniciativa.controls.clasificacionSelect.reset();
-    this.regIniciativa.controls.categoriaSelect.reset();
-    this.regIniciativa.controls.prioridadSelect.reset();
     this.regIniciativa.controls.areaSelect.reset();
-    this.regIniciativa.controls.colaboradorSelect.reset();
+    this.regIniciativa.controls.categoriaSelect.reset();
+    this.regIniciativa.controls.tipoSelect.reset();
   }
 
   saveColaborador() {
@@ -197,7 +207,7 @@ export class RegistroIniciativaComponent implements OnInit {
     iniciativaObject.titulo = this.regIniciativa.value.tituloInput;
     iniciativaObject.jefeProyecto = this.regIniciativa.value.jefeProyectoSelect as ColaboradorDetalleFire;
     iniciativaObject.sumilla = this.regIniciativa.value.sumillaInput;
-    iniciativaObject.procesos = this.regIniciativa.value.procesosInput;
+    iniciativaObject.usuarioProcesos = this.regIniciativa.value.usuarioProcesosSelect as ColaboradorDetalleFire;
     iniciativaObject.objetivoPrincipal = this.regIniciativa.value.objPrincipalTextArea;
     iniciativaObject.objetivoSecundario = this.regIniciativa.value.objSecundarioTextArea;
     iniciativaObject.fechaInicio = this.regIniciativa.value.fechaInicio;
@@ -212,6 +222,7 @@ export class RegistroIniciativaComponent implements OnInit {
     this.firebaseIniciativas.createIniciativa(iniciativaObject).then(
       result => {
         Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+        this.resetFields();
       },error => {Swal.fire('Error!', 'Error al guardar la iniciativa.', 'error');});
   }
 }
