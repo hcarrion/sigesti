@@ -1,0 +1,501 @@
+/** LibrerÃ­a ConfiguraciÃ³n autocomplete V2 RaCo 
+// Autor: RaCo
+// LibrerÃ­a personalizada de autocomplete para tbj - foot - 
+// Se agregan cambios para que trabaje id+value y no sÃ³lo value como en v1.
+// Se agregan cambios al resultado de la sugerencia, estilos personalizados y amigables
+//
+// Interfaz se encarga de identificar el tipo de elemento donde se quiere utilizar autocomplete
+// Puede ser INPUT o SELECT LIST.
+// Si es input, podemos entregarle un datasource externo desde por ejemplo SOLR.
+// Si es select list, el datasource sÃ³lo puede ser local, sin llamadas ajax.
+*/
+
+
+//Settings contiene los parÃ¡metros por defectos con los que trabajarÃ¡ el autocomplete
+(function( $ ) {
+    $.fn.autocompleteTBJ = function(settings) {
+
+        
+        // variables de configuraciÃ³n de autocompletetbj
+        settings = jQuery.extend({
+            dataSource: '', // url a la que se le efectÃºa el request de datos con ajax SIN PARAMETROS. USAR CountryCode, Catalog y MaxResults
+            countryCode: 'CL', //CÃ³digo del paÃ­s sobre el que se harÃ¡n las bÃºsquedas en solr
+            catalog: '', //Documento solr sobre el cual se harÃ¡n las bÃºsquedas
+            foreignFieldId: '', //id para filtrar resultados. Por ejemplo, para obtener las ciudades de la region metropolitana, 
+                                //debemos entregar foreignFieldId correspondiente al id de la regiÃ³n metropolitana.
+            maxResults: 10, //nÃºmero mÃ¡ximo de resultados que traerÃ¡ solr
+            solrTimeout: 1000, //tiempo mÃ¡ximo en milisegundos permitido para que dure una consulta a solr
+            minStrokes: 3, //cantidad mÃ­nima de teclas a partir de la cual se comenzarÃ¡ a efectuar sugerencias
+            delay: 200, //tiempo en milisegundos que esperarÃ¡ la interfaz para capturar una nueva tecla o letra
+            queryMode: 'local', // local, remote, null. Local busca una lista de datos y los guarda en cachÃ© del cliente
+                                // Remote: consulta siempre a un servicio externo las posibles sugerencias
+            cacheTerms: true,  // cache de tÃ©rminos o palabras. Si true, no harÃ¡ nuevos requests para una palabra ya consultada
+            tooltip: true,   // mostrar o no un mensaje de ayuda
+            language: 'es', //lenguaje que utilizaremos por defecto para mostrar mensajes y alertas
+            debug: false, //para mostrar tiempos entre envio de consultas y respuestas desde el js
+            object: null //objecto sobre el cual estamos trabajando
+        },settings);
+        
+        var jQueryObj = this; //objeto jquery
+        var lang = _loadLanguage(settings); //cargamos los textos
+        settings.language = lang;
+
+        settings.object = jQueryObj;
+
+        type = _isValidType(jQueryObj,settings);
+        
+        //Si la consulta es local
+        if(_isSelectorActivated(jQueryObj) === true &&  type !== false && settings.queryMode == 'local'){
+            $.ajax({
+                type: 'GET',
+                data: { queryMode: settings.queryMode}, 
+                url: settings.dataSource,
+                cache: true
+            }).done(function( data ) {
+                settings.dataSource = data;
+                if(type == 'INPUT'){
+                    _completeText(settings, jQueryObj);
+                }else if(type == 'SELECT'){
+                    _completeList(settings, jQueryObj);
+                }
+            });
+            //si consultaremos datos remotos
+        }else if(_isSelectorActivated(jQueryObj) === true &&  type !== false && settings.queryMode == 'remote'){
+            if(type == 'INPUT'){
+                //Creamos la cadena de consulta al servidor SOLR
+                settings.dataSource = settings.dataSource+"/?catalog="+settings.catalog+"&countryCode="+settings.countryCode+"&maxResults="+settings.maxResults+"&solrTimeout="+settings.solrTimeout+"&foreignFieldId="+settings.foreignFieldId;
+                _completeText(settings, jQueryObj);
+            }else if(type == 'SELECT'){
+                //_completeList(settings, jQueryObj);
+                alert(settings.language.errorSelectRemoteDS);
+            }
+        }
+
+        //alert($.param(settings));     para imprimir un objecto json en formato de cadena
+        //this.attr("name")
+
+  
+        
+    }
+    
+    /*
+    //FunciÃ³n que muestra autocomplete en input fields.
+    */
+    function _completeText(settings, jQueryObj){
+
+        if(settings.tooltip === true){
+            var tooltips = $( "[title]" ).tooltip();
+        }
+
+        _doTermStyle(); 
+        var cache = {}; //iniciamos variable para guardar palabras o tÃ©rminos en cache
+
+        var sourceTMP;
+        if(settings.cacheTerms === true){
+
+            var sourceTMP = function( request, response ) {
+                var term = request.term;
+                if ( term in cache ) {
+                    response( cache[ term ] );
+                    return;
+                }
+
+
+                if(settings.debug === true){
+                    //con ajax vamos a buscar los datos
+                    $.ajax({
+                        dataType: "json",
+                        url: settings.dataSource,
+                        data: request,
+                        beforeSend: function ( xhr ) {
+                            initTime = $.now();
+                        }
+                    }
+                    ).done(
+                        function( data, status, xhr ) {
+                            cache[ term ] = data;
+                            response( data );
+                            //console.log(xhr);
+                            endTime = $.now();
+                            totalTime = endTime-initTime;
+
+                            $('body').append('<div id="timeAlert"/>');
+                            $("#timeAlert").text('El tiempo transcurrido para mostrar los datos fue: '+totalTime);                      
+                        }
+                    );
+
+                }else{
+                    $.getJSON( settings.dataSource, request, function( data, status, xhr ) {
+                        cache[ term ] = data;
+                        response( data );
+                        }
+                    );
+                }
+
+
+            };
+                    
+
+
+        }else if(settings.cacheTerms === false){
+            var sourceTMP = settings.dataSource
+        }
+
+
+
+
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+
+
+         $( jQueryObj )
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === $.ui.keyCode.TAB && $( this ).data( "ui-autocomplete" ).menu.active ) {
+                    event.preventDefault();
+                }
+            })
+            .autocomplete({
+                source: function( request, response ) {
+                    $.getJSON( settings.dataSource, {
+                        term: extractLast( encodeURI(request.term) )
+                        }, response );
+                    },
+                search: function() {
+                    // custom minLength
+                    var term = extractLast( this.value );
+                    if ( term.length < 1 ) {
+                        return false;
+                    }
+                },
+                focus: function() {
+                    // prevent value inserted on focus
+                    return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( "" );
+
+
+                    if(ui.item === null){
+                        var id = 0; // si no se seleccionÃ³ una sugerencia, entonces el valor de id es cero - RaCo
+                    }else{
+                        var id = ui.item.id; // id de la sugerencia elegida -RaCo
+                    }
+                     // cambia dato en el hidden input con el valor del Id de la sugerencia - RaCo
+                    var selectorName = jQueryObj.attr("name");
+                    $("#"+selectorName+"_value").val(id); 
+
+
+                    return false;
+                },
+                minLength: settings.minStrokes,
+                delay: settings.delay
+            });
+
+
+
+
+/*OLD WAY
+        $(jQueryObj).autocomplete({
+            source: sourceTMP,
+            minLength: settings.minStrokes,
+            delay: settings.delay,
+            change: function (event, ui) {  // Cada que se selecciona una sugerencia, retornamos su id - RaCo
+                if(ui.item === null){
+                    var id = 0; // si no se seleccionÃ³ una sugerencia, entonces el valor de id es cero - RaCo
+                }else{
+                    var id = ui.item.id; // id de la sugerencia elegida -RaCo
+                }
+                 // cambia dato en el hidden input con el valor del Id de la sugerencia - RaCo
+                var selectorName = jQueryObj.attr("name");
+                $("#"+selectorName+"_value").val(id); 
+    
+            },
+            // RaCo: customizamos mensaje de retorno de resultados (en esta caso no retornamos mensajes)
+            messages: {
+               noResults: null,
+               results: function() {
+               }
+            }
+
+        });
+OLD WAY */  
+
+
+
+        
+    }
+
+    
+    /*
+    // FunciÃ³n que revisa si efectivamente hay algÃºn elemento dentro del DOM que estÃ© esperando 
+    // activar el autocomplete
+    */
+    function _isSelectorActivated(selector) {
+
+        if($(selector).length == 0){
+            alert(settings.language.errrorNonActivatedElements);
+            return false;
+        }else{
+            return true;
+        }
+        
+        
+    }    
+    
+    /*
+    // FunciÃ³n que chequea si el tipo de elemento donde se quiere activar el autocomplete es vÃ¡lido
+    // (SÃ³lo INPUT FIELDS Y SELECT LIST)
+    */
+    function _isValidType(jQueryOb,settings) {
+        var elementType = $(jQueryOb).prop('tagName');
+        
+        if(elementType == "INPUT") {
+            _createIdHiddenField(jQueryOb,settings);
+            return "INPUT";
+        }else if(elementType == "SELECT"){
+            return "SELECT";
+        }else{
+            alert(settings.language.errorElementType+elementType);
+            return false;
+        }
+        
+        
+    }
+
+    /*
+    // FunciÃ³n que muestra un estilo particular para cada tÃ©rmino encontrado por autocomplete
+    */
+    function _doTermStyle() {
+
+        var oldFn = $.ui.autocomplete.prototype._renderItem;
+        $.ui.autocomplete.prototype._renderItem = function( ul, item) {
+            var re = new RegExp('(' + this.term + ')', 'ig') ;
+            var t = item.label.replace(re,"<span style='font-weight:bold;color:Blue;text-transform: uppercase; '>" + this.term + "</span>");
+            return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + t + "</a>" )
+                .appendTo( ul );
+        };
+    }
+
+    /*
+    // FunciÃ³n que agrega un Campo Oculto con el nombre del Input Field donde se activÃ³ el autocomplete
+    // El nombre del campo Oculto serÃ¡: "nombreInputField"+"_value".
+    // Posteriormente actualiza el nÃºmero ID del valor seleccionado dentro de las sugerencias.
+    */
+    function _createIdHiddenField(selector,settings) {
+        
+        if(selector.attr("name").length <= 0){
+            alert(settings.language.errorCreateHiddenField);
+            return false;
+        }else{
+            fieldName = selector.attr("name");
+        }
+        //creamos un hidden input on the fly para poder guardar el texto e id de la sugerencia - RaCo
+        //debido a la naturaleza de tbj, es natural ver muchos includes en una misma pÃ¡gina, por lo que se llama una o mÃ¡s veces al script de autocomplete
+        //para evitar creaciÃ³n mÃºltiple de input hidden se genera la condiciÃ³n sigte:
+        if(typeof($('#'+fieldName+'_value').attr('id')) === 'undefined'){
+            $('<input></input>').attr({
+                type: 'hidden',
+                id: fieldName+'_value',
+                name: fieldName+'_value',
+                value: ''
+            }).appendTo(selector.parent());
+			
+			/*//se cambia a lo que esta anteriormente a este comentario. por problemas de compatibilidad en IE8. 
+			$('<input>').attr({
+                type: 'hidden',
+                id: fieldName+'_value',
+                name: fieldName+'_value',
+                value: ''
+            }).appendTo(selector);
+			*/
+        }
+        //aÃ±ado atributo tittle a campo para mostrar tooltip
+        if(settings.tooltip === true){
+            $(selector).attr('title', settings.language.tooltipText);
+        }
+
+    }
+
+    /*
+    // carga los lenguajes disponibles para mostrar ciertos mensajes.
+    */
+    function _loadLanguage(settings){
+        var language;
+        language =  settings.language;
+
+        switch(language){
+            case 'es':
+                lang = {
+                        tooltipText: 'debe ingresar al menos ' + settings.minStrokes + ' letras para sugerirle un resultado',
+                        errorCreateHiddenField: 'el campo al que desea agregar la funcionalidad de autocompleteTBJ no tiene el atributo NAME',
+                        errorElementType: 'AutocompleteTBJ sÃ³lo funciona con tipos de campos INPUT o SELECT. Usted ha intentado activar un elemento del tipo: ',
+                        errrorNonActivatedElements: 'no se encontrÃ³ activado ningÃºn INPUT o SELECT con autocompleteTBJ',
+                        errorSelectRemoteDS: 'Los elementos SELECT LIST solamente funcionan con DS Locales.'
+                        };
+                return lang;
+
+        }
+
+    }
+
+
+    /*
+    // FunciÃ³n para mostrar autocomplete en select lists.
+    */
+    function _completeList(settings, jQueryObj) {
+
+        jQuery.widget( "ui.combobox", {
+            _create: function() {
+                var input,
+                    that = this,
+                    select = this.element.hide(),
+                    selected = select.children( ":selected" ),
+                    value = selected.val() ? selected.text() : "",
+                    wrapper = this.wrapper = jQuery( "<span>" )
+                        .addClass( "ui-combobox" )
+                        .insertAfter( select );
+ 
+                function removeIfInvalid(element) {
+                    var value = jQuery( element ).val(),
+                        matcher = new RegExp( "^" + jQuery.ui.autocomplete.escapeRegex( value ) + "jQuery", "i" ),
+                        valid = false;
+                    select.children( "option" ).each(function() {
+                        if ( jQuery( this ).text().match( matcher ) ) {
+                            this.selected = valid = true;
+                            return false;
+                        }
+                    });
+                    if ( !valid ) {
+                        jQuery( element )
+                            .val( "" )
+                            .attr( "title", "<b>" + value + "</b> no posee coincidencias..." )
+                            .tooltip( "open" );
+                        select.val( "" );
+                        setTimeout(function() {
+                            input.tooltip( "close" ).attr( "title", "" );
+                        }, 2500 );
+                        input.data( "autocomplete" ).term = "";
+                        return false;
+                    }
+                }
+ 
+                input = jQuery( "<input>" )
+                    .appendTo( wrapper )
+                    .val( value )
+                    .attr( "title", "" )
+                    .addClass( "ui-state-default ui-combobox-input" )
+                    .autocomplete({
+                        delay: 0,
+                        minLength: 0,
+                        source: function( request, response ) {
+                            var matcher = new RegExp( jQuery.ui.autocomplete.escapeRegex(request.term), "i" );
+                            response( select.children( "option" ).map(function() {
+                                var text = jQuery( this ).text();
+                                if ( this.value && ( !request.term || matcher.test(text) ) )
+                                    return {
+                                        label: text.replace(
+                                            new RegExp(
+                                                "(?![^&;]+;)(?!<[^<>]*)(" +
+                                                jQuery.ui.autocomplete.escapeRegex(request.term) +
+                                                ")(?![^<>]*>)(?![^&;]+;)", "gi"
+                                            ), "<strong>$1</strong>" ),
+                                        value: text,
+                                        option: this
+                                    };
+                            }) );
+                        },
+                        select: function( event, ui ) {
+                            ui.item.option.selected = true;
+                            that._trigger( "selected", event, {
+                                item: ui.item.option
+                            });
+                        },
+                        change: function( event, ui ) {
+                            if ( !ui.item )
+                                return removeIfInvalid( this );
+                        }
+                    })
+                    .addClass( "ui-widget ui-widget-content ui-corner-left" );
+ 
+                input.data( "autocomplete" )._renderItem = function( ul, item ) {
+                    return jQuery( "<li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+                };
+ 
+                jQuery( "<a>" )
+                    .attr( "tabIndex", -1 )
+                    .attr( "title", "Mostrar todos" )
+                    .tooltip()
+                    .appendTo( wrapper )
+                    .button({
+                        icons: {
+                            primary: "ui-icon-triangle-1-s"
+                        },
+                        text: false
+                    })
+                    .removeClass( "ui-corner-all" )
+                    .addClass( "ui-corner-right ui-combobox-toggle" )
+                    .click(function() {
+                        // cerramos si ya es visible
+                        if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
+                            input.autocomplete( "close" );
+                            removeIfInvalid( input );
+                            return;
+                        }
+ 
+                        // correcciÃ³n de bug
+                        jQuery( this ).blur();
+ 
+                        // pasamos cadena vacÃ­a como el valor que deseamos buscar para mostrar
+                        // todos los resultados
+                        input.autocomplete( "search", "" );
+                        input.focus();
+                    });
+ 
+                    input
+                        .tooltip({
+                            position: {
+                                of: this.button
+                            },
+                            tooltipClass: "ui-state-highlight"
+                        });
+            },
+ 
+            destroy: function() {
+                this.wrapper.remove();
+                this.element.show();
+                jQuery.Widget.prototype.destroy.call( this );
+            }
+        });
+
+ 
+        jQuery(function() {
+            jQuery( jQueryObj ).combobox();
+            //jQuery( "#toggle" ).click(function() {
+            //    jQuery( jQueryObj ).toggle();
+            //});
+        });
+
+
+
+    }
+
+
+
+})( jQuery );

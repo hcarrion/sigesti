@@ -1,113 +1,104 @@
 <br>
 <div class="row">
     <div class="col-md-12">
-        <div class="card">
+        <div class="card" >
             <div class="card-header card-header-primary">
                 <h4 class="card-title">
-                    <p align="left" style=color:#3F52B6>
+                    <p style="text-align: center; color:#3F52B6;">
                     <strong> <i class="material-icons">assignment</i> Historial de Atenciones </strong></p></h4>
-                    <p class="card-category">Lista de atenciones para mantenimiento.</p> 
             </div>
-            <div class="card-body">
+            <div class="card-body" [style.overflow]="'auto'" [style.height.px]="'300'">
                 <div class="table-responsive-md">
                     <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
                         <thead > 
                             <tr>
-                                <th class="table-dark" style="width:30px">#</th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> N° de Atención </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Título </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Fecha Inicio </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Fecha Fin </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Estado </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Prioridad </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Recursos </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Riesgos </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Seguimiento </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Modificar </th>
+                                <th class="table-dark" style="background-color: #4598D8; width:77px">Codigo</th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="150px" > Titulo de Aten.</th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Asignado </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="120px" > Fecha Inicio </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Fecha Fin </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Estado </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Prioridad </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Recursos </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Riesgos </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="110px" > Seguimiento </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Actualizar </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                              <th scope="row">1</th>
-                              <td width="100px" style="white-space: normal;">000000001</td>
+                              <th scope="row">RQ0001</th>
                               <td width="100px" style="white-space: normal;">Proyecto Pricing</td>
-                              <td width="100px" style="white-space: normal;">01/03/2019</td>
-                              <td width="100px" style="white-space: normal;">31/10/2019</td>
+                              <td width="100px" style="white-space: normal;">Jean P.</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">01/03/2019</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">31/10/2019</td>
                               <td width="100px" style="white-space: normal;">En Proceso</td>
-                              <td width="100px" style="white-space: normal;">Alta</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">Alta</td>
                               <td>
-                                
-                                <button mat-raised-button (click)="openDialog()" class="link">
-                                  <p align="left" style=color:#3F52B6>
-                                    <strong> &nbsp; &nbsp; <i class="material-icons">people</i></strong></p>
-                                  
-                                </button>
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog()">people</i></strong></p>
                               </td>
                               <td> 
-                                <p align="left" style=color:#3F52B6>
-                                    
-                                    <button mat-raised-button (click)="openDialog2()" class="link">
-                                      <p align="left" style=color:#3F52B6>
-                                        <strong> &nbsp; &nbsp; <i class="material-icons">notification_important</i></strong></p>
-                                      
-                                    </button>
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog2()">notification_important</i></strong></p> 
                               </td>
                               <td> 
-                                <p align="left" style=color:#3F52B6>
-                                <strong> &nbsp; &nbsp;<i class="material-icons">event_note</i></strong></p>
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog3()">event_note</i></strong></p>                        
                               </td>
                               <td> 
-                                <p align="left" style=color:#3F52B6>
-                                <strong> &nbsp; &nbsp;<i class="material-icons">edit</i></strong></p>
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog3()">edit</i></strong></p>
                               </td>
                             </tr>
                             <tr>
-                              <th  scope="row">2</th>
-                              <td>000000002</td>
-                              <td>Gestor de Documentos</td>
-                              <td>01/06/2019</td>
-                              <td>30/11/2019</td>
-                              <td>En Proceso</td>
-                              <td>Medio</td>
+                              <th scope="row">RQ0002</th>
+                              <td width="100px" style="white-space: normal;">Proyecto Pricing</td>
+                              <td width="100px" style="white-space: normal;">Jean P.</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">01/03/2019</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">31/10/2019</td>
+                              <td width="100px" style="white-space: normal;">En Proceso</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">Alta</td>
                               <td>
-                                <p align="left" style=color:#3F52B6>
-                                <strong> &nbsp; &nbsp;<i class="material-icons">people</i></strong></p>
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog()">people</i></strong></p>
                               </td>
                               <td> 
-                                <p align="left" style=color:#3F52B6>
-                                <strong> &nbsp; &nbsp;<i class="material-icons">notification_important</i></strong></p> </td>
-                              <td>
-                                <p align="left" style=color:#3F52B6>
-                                    <strong> &nbsp; &nbsp;<i class="material-icons">event_note</i></strong></p>
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog2()">notification_important</i></strong></p> 
                               </td>
                               <td> 
-                                <p align="left" style=color:#3F52B6>
-                                <strong> &nbsp; &nbsp;<i class="material-icons">edit</i></strong></p>
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog3()">event_note</i></strong></p>                        
+                              </td>
+                              <td> 
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog3()">edit</i></strong></p>
                               </td>
                             </tr>
                             <tr>
-                              <th scope="row">3</th>
-                              <td>000000003</td>
-                              <td>Pre Evaluador</td>
-                              <td>01/01/2017</td>
-                              <td>30/05/2017</td>
-                              <td>Terminado</td>
-                              <td>Alto</td>
+                              <th scope="row">RQ0003</th>
+                              <td width="100px" style="white-space: normal;">Proyecto Pricing</td>
+                              <td width="100px" style="white-space: normal;">Jean P.</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">01/03/2019</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">31/10/2019</td>
+                              <td width="100px" style="white-space: normal;">En Proceso</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">Alta</td>
                               <td>
-                                <p align="left" style=color:#3F52B6>
-                                    <strong>&nbsp; &nbsp; <i class="material-icons">people</i></strong></p>
-                              </td>
-                              <td>
-                                <p align="left" style=color:#3F52B6>
-                                    <strong>&nbsp; &nbsp; <i class="material-icons">notification_important</i></strong></p> 
-                              </td>
-                              <td>
-                                <p align="left" style=color:#3F52B6>
-                                    <strong>&nbsp; &nbsp; <i class="material-icons">event_note</i></strong></p>
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog()">people</i></strong></p>
                               </td>
                               <td> 
-                                <p align="left" style=color:#3F52B6>
-                                <strong> &nbsp; &nbsp;<i class="material-icons">edit</i></strong></p>
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog2()">notification_important</i></strong></p> 
+                              </td>
+                              <td> 
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog3()">event_note</i></strong></p>                        
+                              </td>
+                              <td> 
+                                <p style="text-align: center; color:#3F52B6">
+                                  <strong><i class="material-icons link" (click)="openDialog3()">edit</i></strong></p>
                               </td>
                             </tr>
                         </tbody>
