@@ -33,7 +33,14 @@ export class ListadoAtencionComponent implements OnInit
       }
       );
   }
-
+  openDialog3()
+  {
+    this.matDialog.open(DialogRiesgosComponent, /*dialogConfig,*/
+      { width: '1200px',
+        height: '600px'
+      }
+      );
+  }
   onCloseHandled()
   {
  
