@@ -168,8 +168,8 @@
 
                         <div class="col-md-3">
                             <mat-form-field>
-                                <mat-select [formControl]="panelColor" placeholder="Selecciona prioridad" panelClass="example-panel-{{panelColor.value}}">
-                                    <mat-option *ngFor="let prioridadlet of prioridad.detalle" [value]="prioridadlet.codigo">
+                                <mat-select [formControl]="panelColor" placeholder="Selecciona prioridad" panelClass="example-panel-{{panelColor.value.codigo}}">
+                                    <mat-option *ngFor="let prioridadlet of prioridad.detalle" [value]="prioridadlet">
                                         {{prioridadlet.descripcion}}
                                     </mat-option>
                                 </mat-select>

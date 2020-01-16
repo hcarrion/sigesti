@@ -11,7 +11,7 @@ import { ColaboradorFire } from '../shared/models/colaborador-fire';
 import { ColaboradorDetalleFire } from '../shared/models/colaborador-detalle-fire';
 import { IniciativaFire } from '../shared/models/iniciativa-fire';
 import { FirebaseIniciativaService } from '../shared/services/firebase-iniciativa.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro-iniciativa',
@@ -203,12 +203,16 @@ export class RegistroIniciativaComponent implements OnInit {
     iniciativaObject.fechaInicio = this.regIniciativa.value.fechaInicio;
     iniciativaObject.horaEstimada = this.regIniciativa.value.horaEstimadaInput;
     iniciativaObject.fechaFin = this.regIniciativa.value.fechaFinInput;
-    iniciativaObject.prioridad = this.regIniciativa.value.prioridadSelect as ParametroDetalleFire;
+    iniciativaObject.prioridad = this.panelColor.value as ParametroDetalleFire;
     iniciativaObject.clasificacion = this.regIniciativa.value.clasificacionSelect as ParametroDetalleFire;
     iniciativaObject.area = this.regIniciativa.value.areaSelect as ParametroDetalleFire;
     iniciativaObject.categoria = this.regIniciativa.value.categoriaSelect as ParametroDetalleFire;
     iniciativaObject.tipo = this.regIniciativa.value.tipoSelect as ParametroDetalleFire;
-    this.firebaseIniciativas.createIniciativa(iniciativaObject);
+    
+    this.firebaseIniciativas.createIniciativa(iniciativaObject).then(
+      result => {
+        Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+      },error => {Swal.fire('Error!', 'Error al guardar la iniciativa.', 'error');});
   }
 }
 
