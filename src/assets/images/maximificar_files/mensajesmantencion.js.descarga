@@ -1,0 +1,93 @@
+if (window.jQuery) {
+    $(document).ready(function () {
+    var barra = $('.navbar').css('height'),		
+    cuerpo= $('body').css('margin-top');	
+    parseInt(barra, 10);	
+    parseInt(cuerpo, 10);	
+
+
+    setTimeout(function(){
+        if($('#infoman').attr('class')){
+            var info = parseInt($('#infoman').css('height'), 10);
+            var padding_top = parseInt(barra, 10) + parseInt(info, 10);
+
+            $("#infoman").slideDown();
+
+            $('#infoman').prependTo('body').css({
+                'position':'fixed', 
+                'z-index' : '99',
+                'top' : '0'
+            });
+
+            $('.navbar, #top_bar').animate({top : '+' + info});
+
+            //Si el portal es tipo feria, el #top se moverá sólo la altura del #info aunque esté logueado
+            if(cfgTipo == 'ferias_virtuales'){
+                $('#top').animate({marginTop : '+' + info});			
+            } else {
+                /*Si existe menu logueado, el #top se moverá según la altura del #info + 64px del #top_bar
+                si no, sólo se moverá según la altura del info */			
+                if( $('#top_N7menu').length ){
+                    $('#top').animate({marginTop : '+' + (info + 64)});				
+                } else {
+                    $('#top').animate({marginTop : '+' + (info + 35)});
+                }
+            }
+
+            $('body').animate({marginTop : 0, paddingTop : padding_top});
+
+            //si el portal es mobile.trabajando.es
+            if(cfgUrl == 'mobile.trabajando.es'){
+                $('#mobileOpenBank').animate({top : '+' + info});
+            }
+        }
+    }, 1000);
+    
+
+    if(estado == 1){
+        $("#infoman").html("<div class='info_mensaje'><div class='icon'></div><div class='txt msg_alerta'>" + descripcion + "<a id='detalle' class='detalle'> Aquí más detalles.</a><a id='ocudetalle' class='ocudetalle'> ocultar detalles.</a><div class='mensaje'>" + mensaje + "</div></div><a id='close_info' title='cerrar'><div class='close_info_btn'></div></a></div>");
+        $('#infoman').removeClass();
+        $('#infoman').addClass('info_mensaje');
+    }
+
+    $('#infoman').on('click','#detalle',function(){
+        $("#infoman").slideDown();
+        $('#detalle').css('display','none');
+        $('#ocudetalle').css('display','block');
+        $('.mensaje').css('display','block');
+        $('#infoman').stop(true);
+        var barra = $('.navbar').css('height'),		
+        cuerpo= $('body').css('margin-top');	
+        parseInt(barra, 10);	
+        parseInt(cuerpo, 10);	
+        var info = parseInt($('#infoman').css('height'), 10);
+        var padding_top = parseInt(barra, 10) + parseInt(info, 10);
+        $('.navbar, #top_bar').animate({top : '+' + info});
+        $('#top').animate({marginTop : '+' + (info + 40)});
+        $('body').animate({marginTop : 0, paddingTop : padding_top});
+    });
+
+    $('#infoman').on('click','#ocudetalle',function(){
+        $(".mensaje").css('display','none');
+        $('#detalle').css('display','block');
+        $('#ocudetalle').css('display','none');
+        var barra = $('.navbar').css('height'),		
+        cuerpo= $('body').css('margin-top');	
+        parseInt(barra, 10);	
+        parseInt(cuerpo, 10);	
+        var info = parseInt($('#infoman').css('height'), 10);
+        var padding_top = parseInt(barra, 10) + parseInt(info, 10);
+        $('.navbar, #top_bar').animate({top : '+' + info});
+        $('#top').animate({marginTop : '+' + (info + 40)});
+        $('body').animate({marginTop : 0, paddingTop : padding_top});
+    
+    });
+    
+    $("#infoman").on('click','#close_info', function(){
+        $('#infoman').css('display','none');
+        $('.navbar, #top_bar').animate({top : 0});				
+        $('#top').animate({marginTop : 0});	
+        $('body').animate({marginTop : cuerpo, paddingTop : 0});	
+    });
+});
+}

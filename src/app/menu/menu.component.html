@@ -40,27 +40,29 @@
     <mat-sidenav-content>
       
       <router-outlet></router-outlet>
-  
-      <div class="container text-center pb-5; " >
-        <img src="assets\images\fondo10.png" class="img-fluid" style="width: 20%;  ">  
-        <img src="assets\images\fondo8.png" class="img-fluid" style="width: 60%;  ">
-        <img src="assets\images\fondo1.png" class="img-fluid" style="width: 20%;  ">  
+      <div class="container text-center pb-5; ">
+        <p style=color:#3F52B6>
+          <strong>         
+            El EQUIPO DE SISTEMAS "¡ Un equipo un objetivo... !"
+          </strong>
+        </p>  
+      </div>
+      <div class="container text-center pb-5; ">
+         
+        <img src="assets\images\fondo8.png" class="img-fluid">
+
         </div>
 
-        <div class="row" >
+        <div class="row container text-center pb-5;" >
           <div class="col-md-5"></div>
           <div class="col-md-2">
-              <button type="button" class="btn btn-primary active" style="width: 200px;" (click)='saveParametro()'><img src="assets\images\fondo13.png" class="img-fluid" style="width: 20%;  "> Ingresar SISGESTI </button>
+              <button type="button" class="btn btn-primary active" style="width: 200px;" [routerLink]="['registrar_iniciativa']"><img src="assets\images\fondo13.png" class="img-fluid" style="width: 20%;  "> Registrar </button>
          </div>
          <div class="col-md-2" align="left">
-             <button type="button" class="btn btn-info" style="width: 200px;" ><img src="assets\images\fondo3.png" class="img-fluid" style="width: 20%;"> Ingresar Incidencia</button>
+             <button type="button" class="btn btn-info" style="width: 200px;" [routerLink]="['registro_horas']"><img src="assets\images\fondo3.png" class="img-fluid" style="width: 20%;"> Planificar</button>
          </div> 
         </div>
     </mat-sidenav-content>
-
-  
- 
-
   </mat-sidenav-container>
 </div>
 
