@@ -190,6 +190,7 @@ export class RegistroIniciativaComponent implements OnInit {
   }
 
   saveIniciativa(){
+    /*Comentarioooooo*/
     let iniciativaObject = new IniciativaFire();
     iniciativaObject.numeroIniciativa = this.regIniciativa.value.numIniciativaInput;
     iniciativaObject.estado = this.regIniciativa.value.estadoSelect as ParametroDetalleFire;
