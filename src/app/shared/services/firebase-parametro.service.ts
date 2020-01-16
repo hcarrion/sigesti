@@ -72,4 +72,5 @@ export class FirebaseParametroService {
     this.parametrosListRef = this.firestore.collection<ParametroFire>('parametros');
     return this.parametrosListRef.add(param);
   }
+
 }
