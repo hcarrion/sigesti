@@ -25,8 +25,9 @@ export class RegistroIniciativaComponent implements OnInit {
   categoria: ParametroFire = new ParametroFire();
   prioridad: ParametroFire = new ParametroFire();
   area: ParametroFire = new ParametroFire();
+  parametrosFire: ParametroFire[];
 
-  panelColor = new FormControl('red');
+  panelColor = new FormControl('1');
   constructor(private _ngZone: NgZone, private firestoreService: FirestoreService, private firebaseParametros: FirebaseParametroService) {
     this.regIniciativa = new FormGroup({
       estadoSelect: new FormControl(),
@@ -34,7 +35,7 @@ export class RegistroIniciativaComponent implements OnInit {
       clasificacionSelect: new FormControl(),
       categoriaSelect: new FormControl(),
       prioridadSelect: new FormControl(),
-      area: new FormControl()
+      areaSelect: new FormControl()
     });
   }
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
@@ -50,8 +51,8 @@ export class RegistroIniciativaComponent implements OnInit {
   }
 
   async callParametros() {
-    let parametrosRef = this.firebaseParametros.obtenerParametros();
-    this.firebaseParametros.obtenerEstados(parametrosRef).then(
+    let parametrosRef = this.firebaseParametros.getParametros();
+    /*this.firebaseParametros.obtenerEstados(parametrosRef).then(
       result => {
           result.forEach(element => {
           this.estado = element.val()
@@ -86,43 +87,38 @@ export class RegistroIniciativaComponent implements OnInit {
           result.forEach(element => {
           this.area = element.val()
         });
+      });*/
+      parametrosRef.subscribe(data => {data.forEach(paramObj => {
+          let paramObject= paramObj.payload.doc.data() as ParametroFire;
+          if("estado" == paramObject.nombre) this.estado = paramObject;
+          if("tipo" == paramObject.nombre) this.tipo = paramObject;
+          if("clasificacion" == paramObject.nombre) this.clasificacion = paramObject;
+          if("categoria" == paramObject.nombre) this.categoria = paramObject;
+          if("prioridad" == paramObject.nombre) this.prioridad = paramObject;
+          if("area" == paramObject.nombre) this.area = paramObject;
+        });
       });
   }
 
   saveParametro() {
-    const paramObject = new ParametroFire();
-    paramObject.nombre = "area";
-    const paramDetObjectList: Array<ParametroDetalleFire> = [];
-    const paramDetObject = new ParametroDetalleFire();
+    let paramObject = new ParametroFire();
+    paramObject.nombre = "prioridad";
+    let paramDetObjectList: Array<ParametroDetalleFire> = [];
+    let paramDetObject = new ParametroDetalleFire();
     paramDetObject.codigo = 1;
-    paramDetObject.descripcion = 'Sistemas';
+    paramDetObject.descripcion = 'Alto';
     paramDetObjectList.push(paramDetObject);
-    const paramDetObject2 = new ParametroDetalleFire();
+    let paramDetObject2 = new ParametroDetalleFire();
     paramDetObject2.codigo = 2;
-    paramDetObject2.descripcion = 'Operaciones';
+    paramDetObject2.descripcion = 'Medio';
     paramDetObjectList.push(paramDetObject2);
-    const paramDetObject3 = new ParametroDetalleFire();
+    let paramDetObject3 = new ParametroDetalleFire();
     paramDetObject3.codigo = 3;
-    paramDetObject3.descripcion = 'Procesos';
+    paramDetObject3.descripcion = 'Bajo';
     paramDetObjectList.push(paramDetObject3);
-    const paramDetObject4 = new ParametroDetalleFire();
-    paramDetObject4.codigo = 4;
-    paramDetObject4.descripcion = 'Negocios';
-    paramDetObjectList.push(paramDetObject4);
-    const paramDetObject5 = new ParametroDetalleFire();
-    paramDetObject5.codigo = 5;
-    paramDetObject5.descripcion = 'Recursos Humanos';
-    paramDetObjectList.push(paramDetObject5);
-    const paramDetObject6 = new ParametroDetalleFire();
-    paramDetObject6.codigo = 6;
-    paramDetObject6.descripcion = 'Contabilidad';
-    paramDetObjectList.push(paramDetObject6);
-    const paramDetObject7 = new ParametroDetalleFire();
-    paramDetObject7.codigo = 7;
-    paramDetObject7.descripcion = 'Finanzas';
-    paramDetObjectList.push(paramDetObject7);
+    
     paramObject.detalle = paramDetObjectList;
-    /*this.firebaseParametros.parametrarFirebase(paramObject);*/
+    this.firebaseParametros.createParameter(paramObject);
   }
 
   resetFields() {
