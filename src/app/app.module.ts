@@ -25,8 +25,8 @@ import { MatFormFieldModule, MatNativeDateModule, MatInputModule,MatSelectModule
 //import { MbscModule } from '@mobiscroll/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 // Modulos Para Firebase
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFirestore } from 'angularfire2/firestore';

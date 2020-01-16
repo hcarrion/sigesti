@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ParametroFire } from '../models/parametro-fire';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
 
@@ -7,10 +8,11 @@ import { HttpRequest, HttpHeaders, HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class FirebaseParametroService {
-
+  
   parametroListRef: AngularFireList<any>;
   parametroObjectRef: AngularFireObject<any>;
-  constructor(private angularFireDatabase: AngularFireDatabase) { }
+  parametrosListRef: AngularFirestoreCollection<any>;
+  constructor(private firestore: AngularFirestore, private angularFireDatabase: AngularFireDatabase) { }
 
   obtenerParametros() {
     let ref = this.angularFireDatabase.database.ref('parametros');
@@ -60,4 +62,15 @@ export class FirebaseParametroService {
   private errorMgmt(error: any) {
     console.log(error);
   }
+
+  getParametros() {
+    return this.firestore.collection('parametros').snapshotChanges();
+  }
+
+  createParameter(parametroFire: ParametroFire){
+    const param = JSON.parse(JSON.stringify(parametroFire));
+    this.parametrosListRef = this.firestore.collection<ParametroFire>('parametros');
+    return this.parametrosListRef.add(param);
+  }
+
 }

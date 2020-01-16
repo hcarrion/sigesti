@@ -19,7 +19,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field hintLabel="Max 9 caracteres">
-                                <input matInput #inputAtencion maxlength="9" disabled >
+                                <input formControlName="numIniciativaInput" matInput #inputAtencion maxlength="9" disabled>
                             </mat-form-field> 
                         </div>
 
@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field hintLabel="Max 20 caracteres">
-                                <input matInput #inputTitulo maxlength="20" placeholder="Ingrese un Título">
+                                <input formControlName="tituloInput" matInput #inputTitulo maxlength="20" placeholder="Ingrese un Título">
                                 <mat-hint align="end">{{inputTitulo.value?.length || 0}}/20</mat-hint>
                             </mat-form-field>
                         </div>
@@ -54,10 +54,13 @@
                             <mat-label><strong>Jefe de Proyecto: </strong> </mat-label>  
                         </div>
                         <div class="col-md-3"> 
-                            <mat-form-field hintLabel="Max 10 caracteres">
-                                <input matInput #inputJefe maxlength="10" placeholder="Ingrese Jefe Proyecto">
-                                <mat-hint align="end">{{inputJefe.value?.length || 0}}/10</mat-hint>
-                            </mat-form-field> 
+                            <mat-form-field>
+                                <mat-select formControlName="jefeProyectoSelect" placeholder="Selecciona jefe de proyecto">
+                                    <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores" [value]="colaboradorlet">
+                                        {{colaboradorlet.nombres}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                     </div>
                     <br>
@@ -68,7 +71,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field hintLabel="Max 50 caracteres">
-                                <input matInput #inputSumilla maxlength="50" placeholder="Ingrese una Sumilla" id="sumilla">
+                                <input formControlName="sumillaInput" matInput #inputSumilla maxlength="50" placeholder="Ingrese una Sumilla" id="sumilla">
                                 <mat-hint align="end">{{inputSumilla.value?.length || 0}}/50</mat-hint>
                             </mat-form-field>
                         </div>
@@ -77,7 +80,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field hintLabel="Max 10 caracteres">
-                                <input matInput #inputProcesos maxlength="10" placeholder="Ingrese Usuario Procesos">
+                                <input formControlName="procesosInput" matInput #inputProcesos maxlength="10" placeholder="Ingrese Usuario Procesos">
                                 <mat-hint align="end">{{inputProcesos.value?.length || 0}}/10</mat-hint>
                             </mat-form-field> 
                         </div>
@@ -94,7 +97,7 @@
                             
                             <mat-form-field >
                                 <mat-label>Objetivo Principal</mat-label>
-                                <textarea matInput
+                                <textarea formControlName="objPrincipalTextArea" matInput
                                         cdkTextareaAutosize
                                         #autosize="cdkTextareaAutosize"
                                         
@@ -111,7 +114,7 @@
                         <div class="col-md-3"> 
                             <mat-form-field >
                                 <mat-label>Objetivo Secundario</mat-label>
-                                <textarea matInput
+                                <textarea formControlName="objSecundarioTextArea" matInput
                                         cdkTextareaAutosize
                                         #autosize2="cdkTextareaAutosize"
                                         cdkAutosizeMinRows="1"
@@ -129,7 +132,7 @@
                         </div>
                         <div class="col-md-3">
                             <mat-form-field>
-                                <input matInput [matDatepicker]="picker2" placeholder="Selecciona Fecha">
+                                <input formControlName="fechaInicioInput" matInput [matDatepicker]="picker2" placeholder="Selecciona Fecha">
                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                 <mat-datepicker #picker2></mat-datepicker>
                             </mat-form-field>
@@ -141,7 +144,7 @@
                         </div>
                         <div class="col-md-3">
                             <mat-form-field hintLabel="Max 4 caracteres">
-                                <input matInput #inputHoras  placeholder="Estimado en Horas" type="number" >
+                                <input formControlName="horaEstimadaInput" matInput #inputHoras  placeholder="Estimado en Horas" type="number" >
                             </mat-form-field> 
                         </div>
                     </div>
@@ -155,7 +158,7 @@
 
                         <div class="col-md-3">
                             <mat-form-field>
-                                <input matInput [matDatepicker]="picker" placeholder="Selecciona Fecha">
+                                <input formControlName="fechaFinInput" matInput [matDatepicker]="picker" placeholder="Selecciona Fecha">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
@@ -167,7 +170,6 @@
 
                         <div class="col-md-3">
                             <mat-form-field>
-                                
                                 <mat-select [formControl]="panelColor" placeholder="Selecciona prioridad" panelClass="example-panel-{{panelColor.value}}">
                                     <mat-option *ngFor="let prioridadlet of prioridad.detalle" [value]="prioridadlet.codigo">
                                         {{prioridadlet.descripcion}}
@@ -240,7 +242,7 @@
                         
                         <div class="col-md-5"></div>
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-primary active" (click)='saveParametro()'>Grabar</button>
+                            <button type="button" class="btn btn-primary active" (click)='saveIniciativa()'>Grabar</button>
                     </div>
                     <div class="col-md-2" align="left">
                         <button type="button" class="btn btn-info" (click) = "resetFields()"><mat-icon style="margin-right:16px">trending_flat</mat-icon>Limpiar</button>
