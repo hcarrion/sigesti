@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone, ViewChild, ViewEncapsulation, Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { FirestoreService } from '../services/firestore/firestore.service';
@@ -35,7 +35,10 @@ export class RegistroIniciativaComponent implements OnInit {
   iniciativas: IniciativaFire = new IniciativaFire();
 
   panelColor = new FormControl('1');
-  constructor(private _ngZone: NgZone, private firestoreService: FirestoreService, private firebaseParametros: FirebaseParametroService, private firebaseColaboradores: FirebaseColaboradorService, private firebaseIniciativas: FirebaseIniciativaService) {
+  constructor(private _ngZone: NgZone, private firestoreService: FirestoreService, 
+    private firebaseParametros: FirebaseParametroService, 
+    private firebaseColaboradores: FirebaseColaboradorService, 
+    private firebaseIniciativas: FirebaseIniciativaService, private formBuilder: FormBuilder) {
     this.regIniciativa = new FormGroup({
       estadoSelect: new FormControl(),
       tipoSelect: new FormControl(),
@@ -66,6 +69,7 @@ export class RegistroIniciativaComponent implements OnInit {
   ngOnInit() {
     this.callParametros();
     this.regIniciativa.controls.numIniciativaInput.setValue('0000001');
+    
   }
 
   async callParametros() {
@@ -146,8 +150,14 @@ export class RegistroIniciativaComponent implements OnInit {
     this.firebaseParametros.createParameter(paramObject);
   }
 
+  initForms() {
+    this.regIniciativa = this.formBuilder.group({
+      horaEstimadaInput: [, Validators.required],
+      fechaFinInput: [, Validators.required]
+    });
+  }
+
   resetFields() {
-    debugger;
     this.regIniciativa.controls.numIniciativaInput.reset();
     this.regIniciativa.controls.estadoSelect.reset();
     this.regIniciativa.controls.tituloInput.reset();
@@ -158,8 +168,7 @@ export class RegistroIniciativaComponent implements OnInit {
     this.regIniciativa.controls.objSecundarioTextArea.reset();
     this.regIniciativa.controls.horaEstimadaInput.reset();
     this.regIniciativa.controls.fechaInicioInput.reset();
-    this.regIniciativa.controls.fechaFinInput.reset();
-    this.panelColor.reset();
+    this.regIniciativa.controls.fechaFinInput.reset();  
     this.regIniciativa.controls.clasificacionSelect.reset();
     this.regIniciativa.controls.areaSelect.reset();
     this.regIniciativa.controls.categoriaSelect.reset();
@@ -200,7 +209,6 @@ export class RegistroIniciativaComponent implements OnInit {
   }
 
   saveIniciativa(){
-    /*Comentarioooooo*/
     let iniciativaObject = new IniciativaFire();
     iniciativaObject.numeroIniciativa = this.regIniciativa.value.numIniciativaInput;
     iniciativaObject.estado = this.regIniciativa.value.estadoSelect as ParametroDetalleFire;
