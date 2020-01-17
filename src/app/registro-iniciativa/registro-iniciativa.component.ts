@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone, ViewChild, ViewEncapsulation, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { FirestoreService } from '../services/firestore/firestore.service';
@@ -38,7 +38,7 @@ export class RegistroIniciativaComponent implements OnInit {
   constructor(private _ngZone: NgZone, private firestoreService: FirestoreService, 
     private firebaseParametros: FirebaseParametroService, 
     private firebaseColaboradores: FirebaseColaboradorService, 
-    private firebaseIniciativas: FirebaseIniciativaService, private formBuilder: FormBuilder) {
+    private firebaseIniciativas: FirebaseIniciativaService) {
     this.regIniciativa = new FormGroup({
       estadoSelect: new FormControl(),
       tipoSelect: new FormControl(),
@@ -150,15 +150,24 @@ export class RegistroIniciativaComponent implements OnInit {
     this.firebaseParametros.createParameter(paramObject);
   }
 
-  initForms() {
-    this.regIniciativa = this.formBuilder.group({
-      horaEstimadaInput: [, Validators.required],
-      fechaFinInput: [, Validators.required]
-    });
+  validarField(fieldValue) {
+    let result;
+    if(undefined == fieldValue || null == fieldValue || 0 == fieldValue.toString().length){
+      result = true;
+    }
+    return result;
+  }
+
+  validarField2(fieldValue) {
+    let result;
+    if(undefined == fieldValue || null == fieldValue || 0 == fieldValue.toString().length || '1' == fieldValue){
+      result = true;
+    }
+    return result;
   }
 
   resetFields() {
-    this.regIniciativa.controls.numIniciativaInput.reset();
+    /*this.regIniciativa.controls.numIniciativaInput.reset();*/
     this.regIniciativa.controls.estadoSelect.reset();
     this.regIniciativa.controls.tituloInput.reset();
     this.regIniciativa.controls.jefeProyectoSelect.reset();
@@ -168,7 +177,8 @@ export class RegistroIniciativaComponent implements OnInit {
     this.regIniciativa.controls.objSecundarioTextArea.reset();
     this.regIniciativa.controls.horaEstimadaInput.reset();
     this.regIniciativa.controls.fechaInicioInput.reset();
-    this.regIniciativa.controls.fechaFinInput.reset();  
+    this.regIniciativa.controls.fechaFinInput.reset();
+    /*this.panelColor.reset();*/
     this.regIniciativa.controls.clasificacionSelect.reset();
     this.regIniciativa.controls.areaSelect.reset();
     this.regIniciativa.controls.categoriaSelect.reset();
@@ -209,29 +219,50 @@ export class RegistroIniciativaComponent implements OnInit {
   }
 
   saveIniciativa(){
+    let resultValidate = false;
     let iniciativaObject = new IniciativaFire();
     iniciativaObject.numeroIniciativa = this.regIniciativa.value.numIniciativaInput;
+    if(this.validarField(iniciativaObject.numeroIniciativa)) resultValidate = true;
     iniciativaObject.estado = this.regIniciativa.value.estadoSelect as ParametroDetalleFire;
+    if(this.validarField(iniciativaObject.estado)) resultValidate = true;
     iniciativaObject.titulo = this.regIniciativa.value.tituloInput;
+    if(this.validarField(iniciativaObject.titulo)) resultValidate = true;
     iniciativaObject.jefeProyecto = this.regIniciativa.value.jefeProyectoSelect as ColaboradorDetalleFire;
+    if(this.validarField(iniciativaObject.jefeProyecto)) resultValidate = true;
     iniciativaObject.sumilla = this.regIniciativa.value.sumillaInput;
+    if(this.validarField(iniciativaObject.sumilla)) resultValidate = true;
     iniciativaObject.usuarioProcesos = this.regIniciativa.value.usuarioProcesosSelect as ColaboradorDetalleFire;
+    if(this.validarField(iniciativaObject.usuarioProcesos)) resultValidate = true;
     iniciativaObject.objetivoPrincipal = this.regIniciativa.value.objPrincipalTextArea;
+    if(this.validarField(iniciativaObject.objetivoPrincipal)) resultValidate = true;
     iniciativaObject.objetivoSecundario = this.regIniciativa.value.objSecundarioTextArea;
-    iniciativaObject.fechaInicio = this.regIniciativa.value.fechaInicio;
+    if(this.validarField(iniciativaObject.objetivoSecundario)) resultValidate = true;
+    iniciativaObject.fechaInicio = this.regIniciativa.value.fechaInicioInput;
+    if(this.validarField(iniciativaObject.fechaInicio)) resultValidate = true;
     iniciativaObject.horaEstimada = this.regIniciativa.value.horaEstimadaInput;
+    if(this.validarField(iniciativaObject.horaEstimada)) resultValidate = true;
     iniciativaObject.fechaFin = this.regIniciativa.value.fechaFinInput;
+    if(this.validarField(iniciativaObject.fechaFin)) resultValidate = true;
     iniciativaObject.prioridad = this.panelColor.value as ParametroDetalleFire;
+    if(this.validarField2(iniciativaObject.prioridad)) resultValidate = true;
     iniciativaObject.clasificacion = this.regIniciativa.value.clasificacionSelect as ParametroDetalleFire;
+    if(this.validarField(iniciativaObject.clasificacion)) resultValidate = true;
     iniciativaObject.area = this.regIniciativa.value.areaSelect as ParametroDetalleFire;
+    if(this.validarField(iniciativaObject.area)) resultValidate = true;
     iniciativaObject.categoria = this.regIniciativa.value.categoriaSelect as ParametroDetalleFire;
+    if(this.validarField(iniciativaObject.categoria)) resultValidate = true;
     iniciativaObject.tipo = this.regIniciativa.value.tipoSelect as ParametroDetalleFire;
+    if(this.validarField(iniciativaObject.tipo)) resultValidate = true;
     
-    this.firebaseIniciativas.createIniciativa(iniciativaObject).then(
-      result => {
-        Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
-        this.resetFields();
-      },error => {Swal.fire('Error!', 'Error al guardar la iniciativa.', 'error');});
+    if(resultValidate){
+      Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
+    }else{
+      this.firebaseIniciativas.createIniciativa(iniciativaObject).then(
+        result => {
+          Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+          this.resetFields();
+        },error => {Swal.fire('Error!', 'Error al guardar la iniciativa.', 'error');});
+    }
   }
 }
 
