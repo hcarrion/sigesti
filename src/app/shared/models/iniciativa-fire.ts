@@ -7,7 +7,7 @@ export class IniciativaFire {
     titulo: string;
     jefeProyecto: ColaboradorDetalleFire;
     sumilla: string;
-    procesos: string;
+    usuarioProcesos: ColaboradorDetalleFire;
     objetivoPrincipal: string;
     objetivoSecundario: string;
     horaEstimada: number;
