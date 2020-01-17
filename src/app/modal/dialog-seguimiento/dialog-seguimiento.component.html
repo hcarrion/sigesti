@@ -1,1 +1,63 @@
-<p>dialog-seguimiento works!</p>
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title"><p align="left" style=color:#3F52B6>
+            <strong> <i class="material-icons">notification_important </i> Sucesos </strong></p></h4>
+        
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            
+            <div class="col-md-2"> N° Atención: </div>
+            <div class="col-md-3"> 
+                <input class="form-control form-control-sm" type="text" ng-disabled="true" maxlength="9" disabled>  
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-2"> Detalle el Suceso: </div>
+            <div class="col-md-3">
+                <input class="form-control form-control-sm" type="text" disabled> 
+            </div>
+        </div>
+
+        <br>
+        
+        <div class="row">
+            
+           <div class="col-md-2" align="left">
+               <button type="button" class="btn btn-primary bnt-sm" (click)="openMantenedor()">
+                    Adicionar
+               </button>
+           </div> 
+           
+        </div>
+        <br>
+        <div class="row">
+            <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
+                <thead> 
+                    <tr>
+                        <th class="table-dark" style="width:30px">#</th>
+                        <th class="table-dark" width="100px" style="white-space: normal;"> Código de Suceso </th>
+                        <th class="table-dark" width="100px" style="white-space: normal;"> Detalle del Suceso </th>             
+                        <th class="table-dark" width="100px" style="white-space: normal;"> Fecha de Registro </th>
+                        <th class="table-dark" width="100px" style="white-space: normal;"> Eliminar </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td width="100px" style="white-space: normal;"> 00000001 </td>
+                      <td width="100px" style="white-space: normal;"> Maquinas Malogradas</td>                      
+                      <td width="100px" style="white-space: normal;"> 02/01/2020 </td>
+                      <td width="100px" style="white-space: normal;"> X </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    
+</div>
+<br>
+<mat-dialog-actions>
+    <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button>
+</mat-dialog-actions>

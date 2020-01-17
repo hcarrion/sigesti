@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { DialogRecursosComponent } from '../modal/dialog-recursos/dialog-recursos.component';
 import { DialogRiesgosComponent } from '../modal/dialog-riesgos/dialog-riesgos.component';
+import { DialogSeguimientoComponent} from "../modal/dialog-seguimiento/dialog-seguimiento.component";
 
 @Component({
   selector: 'app-listado-atencion',
@@ -35,7 +36,8 @@ export class ListadoAtencionComponent implements OnInit
   }
   openDialog3()
   {
-    this.matDialog.open(DialogRiesgosComponent, /*dialogConfig,*/
+    this.matDialog.open(DialogSeguimientoComponent, /*dialogConfig,*/
+    
       { width: '1200px',
         height: '600px'
       }
