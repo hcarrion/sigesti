@@ -169,7 +169,7 @@ export class RegistroIniciativaComponent implements OnInit {
     this.regIniciativa.controls.horaEstimadaInput.reset();
     this.regIniciativa.controls.fechaInicioInput.reset();
     this.regIniciativa.controls.fechaFinInput.reset();
-    /*this.panelColor.reset(); */
+    /*this.panelColor.reset();*/
     this.regIniciativa.controls.clasificacionSelect.reset();
     this.regIniciativa.controls.areaSelect.reset();
     this.regIniciativa.controls.categoriaSelect.reset();
