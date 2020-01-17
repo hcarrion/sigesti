@@ -68,7 +68,7 @@ export class RegistroIniciativaComponent implements OnInit {
 
   ngOnInit() {
     this.callParametros();
-    this.regIniciativa.controls.numIniciativaInput.setValue('0000001');
+    /*this.regIniciativa.controls.numIniciativaInput.setValue('0000001');*/
     
   }
 
@@ -167,7 +167,7 @@ export class RegistroIniciativaComponent implements OnInit {
   }
 
   resetFields() {
-    /*this.regIniciativa.controls.numIniciativaInput.reset();*/
+    this.regIniciativa.controls.numIniciativaInput.reset();
     this.regIniciativa.controls.estadoSelect.reset();
     this.regIniciativa.controls.tituloInput.reset();
     this.regIniciativa.controls.jefeProyectoSelect.reset();

@@ -25,65 +25,15 @@
                                 <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Actualizar </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngFor="let iniciativa of iniciativas">
                             <tr>
-                              <th scope="row">RQ0001</th>
-                              <td width="100px" style="white-space: normal;">Proyecto Pricing</td>
-                              <td width="100px" style="white-space: normal;">Jean P.</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">01/03/2019</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">31/10/2019</td>
-                              <td width="100px" style="white-space: normal;">En Proceso</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">Alta</td>
-                              <td>
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog()">people</i></strong></p>
-                              </td>
-                              <td> 
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog2()">notification_important</i></strong></p> 
-                              </td>
-                              <td> 
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog3()">event_note</i></strong></p>                        
-                              </td>
-                              <td> 
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog3()">edit</i></strong></p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th scope="row">RQ0002</th>
-                              <td width="100px" style="white-space: normal;">Proyecto Pricing</td>
-                              <td width="100px" style="white-space: normal;">Jean P.</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">01/03/2019</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">31/10/2019</td>
-                              <td width="100px" style="white-space: normal;">En Proceso</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">Alta</td>
-                              <td>
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog()">people</i></strong></p>
-                              </td>
-                              <td> 
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog2()">notification_important</i></strong></p> 
-                              </td>
-                              <td> 
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog3()">event_note</i></strong></p>                        
-                              </td>
-                              <td> 
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog3()">edit</i></strong></p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th scope="row">RQ0003</th>
-                              <td width="100px" style="white-space: normal;">Proyecto Pricing</td>
-                              <td width="100px" style="white-space: normal;">Jean P.</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">01/03/2019</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">31/10/2019</td>
-                              <td width="100px" style="white-space: normal;">En Proceso</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">Alta</td>
+                              <th scope="row">{{iniciativa.numeroIniciativa}}</th>
+                              <td width="100px" style="white-space: normal;">{{iniciativa.titulo}}</td>
+                              <td width="100px" style="white-space: normal;">{{iniciativa.jefeProyecto.nombres}}</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">{{iniciativa.fechaInicio}}</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">{{iniciativa.fechaFin}}</td>
+                              <td width="100px" style="white-space: normal;">{{iniciativa.estado.descripcion}}</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">{{iniciativa.prioridad.descripcion}}</td>
                               <td>
                                 <p style="text-align: center; color:#3F52B6">
                                   <strong><i class="material-icons link" (click)="openDialog()">people</i></strong></p>

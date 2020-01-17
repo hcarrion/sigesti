@@ -3,6 +3,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angu
 import { DialogRecursosComponent } from '../modal/dialog-recursos/dialog-recursos.component';
 import { DialogRiesgosComponent } from '../modal/dialog-riesgos/dialog-riesgos.component';
 import { DialogSeguimientoComponent} from "../modal/dialog-seguimiento/dialog-seguimiento.component";
+import { FirebaseIniciativaService } from '../shared/services/firebase-iniciativa.service';
+import { IniciativaFire } from '../shared/models/iniciativa-fire';
 
 @Component({
   selector: 'app-listado-atencion',
@@ -13,8 +15,8 @@ export class ListadoAtencionComponent implements OnInit
 {
 
   title = "Example Angular 8 Material Dialog";
-
-  constructor(private matDialog: MatDialog) {}
+  iniciativas: IniciativaFire[] = [];
+  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
   openDialog() 
   {
@@ -49,10 +51,18 @@ export class ListadoAtencionComponent implements OnInit
   }
 
   ngOnInit() {
-   
-    
+    this.callIniciativas();
   }
 
-  
+  async callIniciativas() {
+    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    iniciativasRef.subscribe(data => {
+      this.iniciativas = []
+      data.forEach(iniciativaObj => {
+        let iniciativaObject= iniciativaObj.payload.doc.data() as IniciativaFire;
+        this.iniciativas.push(iniciativaObject);
+      });
+    });
+  }
 
 }
