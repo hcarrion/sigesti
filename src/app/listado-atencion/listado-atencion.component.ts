@@ -5,6 +5,7 @@ import { DialogRiesgosComponent } from '../modal/dialog-riesgos/dialog-riesgos.c
 import { DialogSeguimientoComponent} from "../modal/dialog-seguimiento/dialog-seguimiento.component";
 import { FirebaseIniciativaService } from '../shared/services/firebase-iniciativa.service';
 import { IniciativaFire } from '../shared/models/iniciativa-fire';
+import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
 
 @Component({
   selector: 'app-listado-atencion',
@@ -45,6 +46,16 @@ export class ListadoAtencionComponent implements OnInit
       }
       );
   }
+  openDialog4()
+  {
+    this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
+    
+      { width: '1200px',
+        height: '600px'
+      }
+      );
+  }
+
   onCloseHandled()
   {
  

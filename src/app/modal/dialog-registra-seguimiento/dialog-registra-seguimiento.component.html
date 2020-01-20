@@ -1,0 +1,263 @@
+<div [formGroup]="regIniciativa">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h4 class="card-title"><p style="color:#3F52B6; text-align: left;">
+                        <strong> <i class="material-icons">library_add</i> Registro de Atención</strong></p></h4>
+                    <p class="card-category">Completa los datos en blanco para crear una atención</p>
+                </div>  
+                <div style="align-content: center; vertical-align: middle;">    
+            </div>
+                <div class="card-body">
+                
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>N° Iniciativa: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 9 caracteres">
+                                <input formControlName="numIniciativaInput" matInput #inputAtencion maxlength="9">
+                            </mat-form-field> 
+                        </div>
+
+                        <div class="col-md-2">
+                            <mat-label><strong>Estado: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field>
+                                <mat-select formControlName="estadoSelect" placeholder="Selecciona estado">
+                                    <mat-option *ngFor="let estadolet of estado.detalle" [value]="estadolet">
+                                        {{estadolet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Título: </strong> </mat-label>  
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 20 caracteres">
+                                <input formControlName="tituloInput" matInput #inputTitulo maxlength="20" placeholder="Ingrese un Título">
+                                <mat-hint align="end">{{inputTitulo.value?.length || 0}}/20</mat-hint>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Jefe de proyecto: </strong> </mat-label>  
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field>
+                                <mat-select formControlName="jefeProyectoSelect" placeholder="Selecciona jefe de proyecto">
+                                    <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores" [value]="colaboradorlet">
+                                        {{colaboradorlet.nombres}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Sumilla: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 50 caracteres">
+                                <input formControlName="sumillaInput" matInput #inputSumilla maxlength="50" placeholder="Ingrese una Sumilla" id="sumilla">
+                                <mat-hint align="end">{{inputSumilla.value?.length || 0}}/50</mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Usuario de procesos: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field>
+                                <mat-select formControlName="usuarioProcesosSelect" placeholder="Selecciona usuario de procesos">
+                                    <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores" [value]="colaboradorlet">
+                                        {{colaboradorlet.nombres}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> 
+                        </div>
+                    </div>
+
+                    <br> 
+
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Objetivo principal:  </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            
+                            <mat-form-field >
+                                <mat-label>Objetivo principal</mat-label>
+                                <textarea formControlName="objPrincipalTextArea" matInput
+                                        cdkTextareaAutosize
+                                        #autosize="cdkTextareaAutosize"
+                                        
+                                        cdkAutosizeMinRows="1"
+                                        cdkAutosizeMaxRows="5"></textarea>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div class="col-md-2"> 
+                            
+                            <mat-label><strong>Objetivo secundario:  </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field >
+                                <mat-label>Objetivo secundario</mat-label>
+                                <textarea formControlName="objSecundarioTextArea" matInput
+                                        cdkTextareaAutosize
+                                        #autosize2="cdkTextareaAutosize"
+                                        cdkAutosizeMinRows="1"
+                                        cdkAutosizeMaxRows="5"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <br>
+                
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2">
+                            <mat-label><strong>Fecha de inicio: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <input formControlName="fechaInicioInput" matInput [matDatepicker]="picker2" placeholder="Selecciona fecha">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Estimado(horas):</strong> </mat-label> 
+                            
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field hintLabel="Max 4 caracteres">
+                                <input formControlName="horaEstimadaInput" matInput #inputHoras  placeholder="Estimado en horas" type="number" >
+                            </mat-form-field> 
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            
+                            <mat-label><strong>Fecha de fin:</strong> </mat-label> 
+                        </div>
+
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <input formControlName="fechaFinInput" matInput [matDatepicker]="picker" placeholder="Selecciona fecha">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Prioridad: </strong> </mat-label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select [formControl]="panelColor" placeholder="Selecciona prioridad" panelClass="example-panel-{{panelColor.value.codigo}}">
+                                    <mat-option *ngFor="let prioridadlet of prioridad.detalle" [value]="prioridadlet">
+                                        {{prioridadlet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Clasificación: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select formControlName="clasificacionSelect" placeholder="Selecciona clasificación">
+                                    <mat-option *ngFor="let clasificacionlet of clasificacion.detalle" [value]="clasificacionlet">
+                                        {{clasificacionlet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Area: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select formControlName="areaSelect" placeholder="Selecciona área">
+                                    <mat-option *ngFor="let arealet of area.detalle" [value]="arealet">
+                                        {{arealet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2">
+                            <mat-label><strong>Categoría: </strong> </mat-label>
+                            
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field>
+                                <mat-select formControlName="categoriaSelect" placeholder="Selecciona categoría">
+                                    <mat-option *ngFor="let categorialet of categoria.detalle" [value]="categorialet">
+                                        {{categorialet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Tipo: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <mat-select formControlName="tipoSelect" placeholder="Selecciona tipo">
+                                    <mat-option *ngFor="let tipolet of tipo.detalle" [value]="tipolet">
+                                        {{tipolet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <br>
+                    
+                    <div class="row">
+                        
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary active" (click)='saveIniciativa()'>Grabar</button>
+                    </div>
+                    <div class="col-md-2" align="left">
+                        <button type="button" class="btn btn-info" (click) = "resetFields()">Limpiar</button>
+                    </div>
+                    <div class="col-md-1" >
+                        <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
+                    </div> 
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
