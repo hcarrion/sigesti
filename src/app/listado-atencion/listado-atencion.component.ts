@@ -17,6 +17,7 @@ export class ListadoAtencionComponent implements OnInit
 
   title = "Example Angular 8 Material Dialog";
   iniciativas: IniciativaFire[] = [];
+  loading: boolean;
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
   openDialog(iniciativa: IniciativaFire) {
@@ -66,6 +67,7 @@ export class ListadoAtencionComponent implements OnInit
   }
 
   async callIniciativas() {
+    this.loading = true;
     let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       this.iniciativas = []
