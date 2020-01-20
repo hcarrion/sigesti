@@ -7,6 +7,12 @@
                     <p style="text-align: center; color:#3F52B6;">
                     <strong> <i class="material-icons">assignment</i> Historial de Atenciones </strong></p></h4>
             </div>
+            <br>
+            <div class="row">                
+                <div class="col-md-12" style="text-align: right; padding-right: 4%">
+                    <button type="button" class="btn btn-primary active" (click)="openDialog4()">Nuevo</button>
+                </div>
+            </div>
             <div class="card-body" [style.overflow]="'auto'" [style.height.px]="'300'">
                 <div class="table-responsive-md">
                     <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
@@ -47,11 +53,4 @@
     </div>
 </div> 
 <br>
-<div class="row">
-                        
-    <div class="col-md-5"></div>
-    <div class="col-md-2">
-        <button type="button" class="btn btn-primary active" (click)="openDialog4()">Nuevo</button>
-</div>
 
-</div>
