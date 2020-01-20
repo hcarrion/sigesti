@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
+import { IniciativaFire } from 'src/app/shared/models/iniciativa-fire';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-dialog-recursos',
@@ -7,8 +9,14 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angu
   styleUrls: ['./dialog-recursos.component.css']
 })
 export class DialogRecursosComponent implements OnInit {
-
-  constructor(public dialogRef: MatDialogRef<DialogRecursosComponent>) {
+  regRecursos: FormGroup;
+  iniciativa: IniciativaFire = new IniciativaFire();
+  constructor(public dialogRef: MatDialogRef<DialogRecursosComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.iniciativa = data;
+      this.regRecursos = new FormGroup({
+        tituloInputDialog: new FormControl()
+      });
 
   }
 
@@ -17,8 +25,8 @@ export class DialogRecursosComponent implements OnInit {
   }
  
 
-  ngOnInit() 
-  {
+  ngOnInit() {
+    this.regRecursos.controls.tituloInputDialog.setValue(this.iniciativa.titulo);
   }
 
 }
