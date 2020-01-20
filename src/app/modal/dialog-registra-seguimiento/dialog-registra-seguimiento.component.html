@@ -4,8 +4,7 @@
             <div class="card">
                 <div class="card-header card-header-info">
                     <h4 class="card-title"><p style="color:#3F52B6; text-align: left;">
-                        <strong> <i class="material-icons">library_add</i> Registro de Atención</strong></p></h4>
-                    <p class="card-category">Completa los datos en blanco para crear una atención</p>
+                        <strong> <i class="material-icons">library_add</i> Registro de Atención</strong></p></h4>                    
                 </div>  
                 <div style="align-content: center; vertical-align: middle;">    
             </div>
@@ -13,21 +12,21 @@
                 
                     <div class="row">
                         <div class="col-md-1"></div>
-                        <div class="col-md-2"> 
-                            <mat-label><strong>N° Iniciativa: </strong> </mat-label>
+                        <div class="col-md-2" > 
+                            <mat-label style="font-size: small;"><strong>N° Iniciativa: </strong> </mat-label>
                         </div>
                         <div class="col-md-3"> 
-                            <mat-form-field hintLabel="Max 9 caracteres">
+                            <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
                                 <input formControlName="numIniciativaInput" matInput #inputAtencion maxlength="9">
                             </mat-form-field> 
                         </div>
 
                         <div class="col-md-2">
-                            <mat-label><strong>Estado: </strong> </mat-label> 
+                            <mat-label><strong style="font-size: small;">Estado: </strong> </mat-label> 
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="estadoSelect" placeholder="Selecciona estado">
+                                <mat-select formControlName="estadoSelect" placeholder="Selecciona estado" style="font-size: small;">
                                     <mat-option *ngFor="let estadolet of estado.detalle" [value]="estadolet">
                                         {{estadolet.descripcion}}
                                     </mat-option>
@@ -40,21 +39,21 @@
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-2"> 
-                            <mat-label><strong>Título: </strong> </mat-label>  
+                            <mat-label style="font-size: small;"><strong>Título: </strong> </mat-label>  
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field hintLabel="Max 20 caracteres">
-                                <input formControlName="tituloInput" matInput #inputTitulo maxlength="20" placeholder="Ingrese un Título">
+                                <input formControlName="tituloInput" matInput #inputTitulo maxlength="20" placeholder="Ingrese un Título" style="font-size: small;">
                                 <mat-hint align="end">{{inputTitulo.value?.length || 0}}/20</mat-hint>
                             </mat-form-field>
                         </div>
                         
                         <div class="col-md-2"> 
-                            <mat-label><strong>Jefe de proyecto: </strong> </mat-label>  
+                            <mat-label style="font-size: small;"><strong>Jefe de proyecto: </strong> </mat-label>  
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="jefeProyectoSelect" placeholder="Selecciona jefe de proyecto">
+                                <mat-select formControlName="jefeProyectoSelect" placeholder="Selecciona jefe de proyecto" style="font-size: small;">
                                     <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores" [value]="colaboradorlet">
                                         {{colaboradorlet.nombres}}
                                     </mat-option>
