@@ -31,6 +31,8 @@ import { environment } from '../environments/environment';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseParametroService } from './shared/services/firebase-parametro.service';
+import { DialogRegistraSeguimientoComponent } from './modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
+
 
 @NgModule({
   declarations: 
@@ -44,7 +46,8 @@ import { FirebaseParametroService } from './shared/services/firebase-parametro.s
     DialogRecursosComponent,
     DialogRiesgosComponent,
     DialogSeguimientoComponent,
-    DialogRiesgosMantenedorComponent
+    DialogRiesgosMantenedorComponent,
+    DialogRegistraSeguimientoComponent
   ],
   imports: 
   [
@@ -71,7 +74,7 @@ import { FirebaseParametroService } from './shared/services/firebase-parametro.s
   ],
   providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
-  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent],
+  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

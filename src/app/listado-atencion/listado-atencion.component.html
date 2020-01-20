@@ -1,4 +1,3 @@
-<br>
 <div class="row">
     <div class="col-md-12">
         <div class="card" >
@@ -19,42 +18,40 @@
                                 <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Fecha Fin </th>
                                 <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Estado </th>
                                 <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Prioridad </th>
-                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Recursos </th>
-                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Riesgos </th>
-                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="110px" > Sucesos  </th>
-                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Actualizar </th>
-                            </tr>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal; text-align: center;" width="100px" > Acciones </th>                            </tr>
                         </thead>
                         <tbody *ngFor="let iniciativa of iniciativas">
                             <tr>
                               <th scope="row">{{iniciativa.numeroIniciativa}}</th>
                               <td width="100px" style="white-space: normal;">{{iniciativa.titulo}}</td>
                               <td width="100px" style="white-space: normal;">{{iniciativa.jefeProyecto.nombres}}</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">{{iniciativa.fechaInicio}}</td>
-                              <td width="100px" style="white-space: normal; text-align: center;">{{iniciativa.fechaFin}}</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">{{iniciativa.fechaInicio | date: 'dd/MM/yyyy'}}</td>
+                              <td width="100px" style="white-space: normal; text-align: center;">{{iniciativa.fechaFin | date: 'dd/MM/yyyy'}}</td>
                               <td width="100px" style="white-space: normal;">{{iniciativa.estado.descripcion}}</td>
                               <td width="100px" style="white-space: normal; text-align: center;">{{iniciativa.prioridad.descripcion}}</td>
-                              <td>
+                              <td width="200px" >
                                 <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog(iniciativa)">people</i></strong></p>
-                              </td>
-                              <td> 
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog2()">notification_important</i></strong></p> 
-                              </td>
-                              <td> 
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog3()">event_note</i></strong></p>                        
-                              </td>
-                              <td> 
-                                <p style="text-align: center; color:#3F52B6">
-                                  <strong><i class="material-icons link" (click)="openDialog3()">edit</i></strong></p>
+                                    <strong><i class="material-icons link" (click)="openDialog(iniciativa)">people</i>                            
+                                  <i class="material-icons link" (click)="openDialog2()">notification_important</i>                         
+                                  <i class="material-icons link" (click)="openDialog3()">event_note</i>                        
+                                  <i class="material-icons link" (click)="openDialog4()">edit</i></strong></p>
                               </td>
                             </tr>
                         </tbody>
                     </table>
+                    
                 </div>
             </div>
         </div>
     </div>
 </div> 
+<div class="row">
+                        
+    <div class="col-md-5"></div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-primary active" (click)="openDialog4()">Nuevo</button>
+</div>
+<div class="col-md-2" style="text-align: left;">
+    <button type="button" class="btn btn-info" (click) = "Refresca()">Actualizar</button>
+</div> 
+</div>
