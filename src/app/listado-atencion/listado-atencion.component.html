@@ -13,12 +13,12 @@
                             <tr>
                                 <th class="table-dark" style="background-color: #4598D8; width:77px">Codigo</th>
                                 <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="150px" > Titulo de Aten.</th>
-                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Asignado </th>
-                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="120px" > Fecha Inicio </th>
-                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Fecha Fin </th>
-                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Estado </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="200px" > Asignado </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="90px" > Fecha Inicio </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="90px" > Fecha Fin </th>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="90px" > Estado </th>
                                 <th class="table-dark" style="background-color: #4598D8; white-space: normal;" width="100px" > Prioridad </th>
-                                <th class="table-dark" style="background-color: #4598D8; white-space: normal; text-align: center;" width="100px" > Acciones </th>                            </tr>
+                                <th class="table-dark" style="background-color: #4598D8; white-space: normal; text-align: center;" width="120px" > Acciones </th>                            </tr>
                         </thead>
                         <tbody *ngFor="let iniciativa of iniciativas">
                             <tr>
@@ -45,13 +45,12 @@
         </div>
     </div>
 </div> 
+<br>
 <div class="row">
                         
     <div class="col-md-5"></div>
     <div class="col-md-2">
         <button type="button" class="btn btn-primary active" (click)="openDialog4()">Nuevo</button>
 </div>
-<div class="col-md-2" style="text-align: left;">
-    <button type="button" class="btn btn-info" (click) = "Refresca()">Actualizar</button>
-</div> 
+
 </div>
