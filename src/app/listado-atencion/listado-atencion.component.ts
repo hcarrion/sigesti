@@ -19,14 +19,14 @@ export class ListadoAtencionComponent implements OnInit
   iniciativas: IniciativaFire[] = [];
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
-  openDialog() 
-  {
+  openDialog(iniciativa: IniciativaFire) {
     const dialogConfig = new MatDialogConfig();
     this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
       { width: '1200px',
-        height: '600px'
+        height: '600px',
+        data: iniciativa
       }
-      );
+    );
   }
 
   openDialog2()

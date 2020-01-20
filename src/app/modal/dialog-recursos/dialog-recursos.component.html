@@ -1,93 +1,93 @@
-        <div class="card">
-            <div class="card-header card-header-primary">
-                <h4 class="card-title"><p align="left" style=color:#3F52B6>
-                    <strong> <i class="material-icons">people</i> Recursos </strong></p></h4>
+<div [formGroup]="regRecursos">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title"><p align="left" style=color:#3F52B6>
+                <strong> <i class="material-icons">people</i> Recursos </strong></p></h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2"> N° Atención: </div>
+                <div class="col-md-3"> 
+                    <input class="form-control form-control-sm" type="text" ng-disabled="true" maxlength="9" disabled>  
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">Título: </div>
+                <div class="col-md-4">
+                    <input formControlName="tituloInputDialog" class="form-control form-control-sm" type="text" disabled> 
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-md-12"> <p align="left" style=color:#3F52B6><strong>Ingresar Recurso: </strong> </p> </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr style="width:100%;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"> Código: </div>
+                <div class="col-md-3"> 
+                    <input class="form-control form-control-sm" type="text" placeholder="Ingrese un Código"> 
+                </div>
+
+                <div class="col-md-1"></div>
+                <div class="col-md-2">Nombre: </div>
+                <div class="col-md-4">
+                    <input class="form-control form-control-sm" type="text" placeholder="Ingrese un Nombre"> 
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-9" >
+                    
+                </div>
+
+                <div class="col-md-3" >
+                    <button type="button" class="btn btn-info bnt-sm" >
+                        Buscar
+                    </button>
+                    &nbsp; 
+                    <button type="button" class="btn btn-primary bnt-sm" >
+                        Agregar
+                    </button>
+                </div> 
                 
             </div>
-            <div class="card-body">
-
-                <div class="row">
-                    <div class="col-md-2"> N° Atención: </div>
-                    <div class="col-md-3"> 
-                        <input class="form-control form-control-sm" type="text" ng-disabled="true" maxlength="9" disabled>  
-                    </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-2">Título: </div>
-                    <div class="col-md-4">
-                        <input class="form-control form-control-sm" type="text" disabled> 
-                    </div>
-                </div>
-
-                <br>
-                <div class="row">
-                    <div class="col-md-12"> <p align="left" style=color:#3F52B6><strong>Ingresar Recurso: </strong> </p> </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <hr style="width:100%;">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2"> Código: </div>
-                    <div class="col-md-3"> 
-                        <input class="form-control form-control-sm" type="text" placeholder="Ingrese un Código"> 
-                    </div>
-
-                    <div class="col-md-1"></div>
-                    <div class="col-md-2">Nombre: </div>
-                    <div class="col-md-4">
-                        <input class="form-control form-control-sm" type="text" placeholder="Ingrese un Nombre"> 
-                    </div>
-
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-9" >
-                        
-                    </div>
-
-                   <div class="col-md-3" >
-                       <button type="button" class="btn btn-info bnt-sm" >
-                            Buscar
-                       </button>
-                       &nbsp; 
-                       <button type="button" class="btn btn-primary bnt-sm" >
-                            Agregar
-                       </button>
-                   </div> 
-                   
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-12" >
-                        <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
-                            <thead> 
-                                <tr>
-                                    <th class="table-dark" style="width:30px">#</th>
-                                    <th class="table-dark" width="100px" style="white-space: normal;"> Código de Empleado </th>
-                                    <th class="table-dark" width="100px" style="white-space: normal;"> Nombre </th>
-                                    <th class="table-dark" width="100px" style="white-space: normal;"> Quitar </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                  <th scope="row">1</th>
-                                  <td width="100px" style="white-space: normal;">000000001</td>
-                                  <td width="100px" style="white-space: normal;">Angel LLanco</td>
-                                  <td width="100px" style="white-space: normal;"> X </td>
-                                </tr>
-                            </tbody>    
-                        </table>
-                    </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12" >
+                    <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
+                        <thead> 
+                            <tr>
+                                <th class="table-dark" style="width:30px">#</th>
+                                <th class="table-dark" width="100px" style="white-space: normal;"> Código de Empleado </th>
+                                <th class="table-dark" width="100px" style="white-space: normal;"> Nombre </th>
+                                <th class="table-dark" width="100px" style="white-space: normal;"> Quitar </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td width="100px" style="white-space: normal;">000000001</td>
+                                <td width="100px" style="white-space: normal;">Angel LLanco</td>
+                                <td width="100px" style="white-space: normal;"> X </td>
+                            </tr>
+                        </tbody>    
+                    </table>
                 </div>
             </div>
         </div>
-        <br>
-        <div class="row">
-            <div class="col-md-11" >
-                
-            </div>
-            <div class="col-md-1" >
-                <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
-            </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-11" >
+            
         </div>
+        <div class="col-md-1" >
+            <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
+        </div>
+    </div>
+</div>
