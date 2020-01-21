@@ -75,6 +75,7 @@ export class ListadoAtencionComponent implements OnInit
         let iniciativaObject= iniciativaObj.payload.doc.data() as IniciativaFire;
         this.iniciativas.push(iniciativaObject);
       });
+      this.loading = false;
     });
   }
 

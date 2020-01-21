@@ -1,7 +1,11 @@
-
-<div class="row">
-    
-    <div  class="col-md-12">
+<div *ngIf="loading" class="content-load">
+    <br>
+    <mat-spinner class="child-load"></mat-spinner>
+    <br>
+    <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+</div>
+<div class="row" *ngIf="!loading">
+    <div class="col-md-12">
         <div class="card" >
             <div class="card-header card-header-primary">
                 <h4 class="card-title">
@@ -40,9 +44,9 @@
                               <td width="200px" >
                                 <p style="text-align: center; color:#3F52B6">
                                     <strong><i class="material-icons link" (click)="openDialog(iniciativa)">people</i>                            
-                                  <i class="material-icons link" (click)="openDialog2()" style="text-align: center; color:rgb(182, 63, 63)">notification_important</i>                         
-                                  <i class="material-icons link" (click)="openDialog3()" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
-                                  <i class="material-icons link" (click)="openDialog4()" style="text-align: center; color:rgb(236, 150, 22)">edit</i></strong></p>
+                                  <i class="material-icons link" (click)="openDialog2()">notification_important</i>                         
+                                  <i class="material-icons link" (click)="openDialog3()">event_note</i>                        
+                                  <i class="material-icons link" (click)="openDialog4()">edit</i></strong></p>
                               </td>
                             </tr>
                         </tbody>
@@ -53,5 +57,3 @@
         </div>
     </div>
 </div> 
-<br>
-

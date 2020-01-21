@@ -32,7 +32,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseParametroService } from './shared/services/firebase-parametro.service';
 import { DialogRegistraSeguimientoComponent } from './modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: 
@@ -70,7 +70,8 @@ import { DialogRegistraSeguimientoComponent } from './modal/dialog-registra-segu
     MatSelectModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    MatProgressSpinnerModule
   ],
   providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
