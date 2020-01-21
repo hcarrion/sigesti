@@ -9,8 +9,6 @@ import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seg
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
 
-
-
 @Component({
   selector: 'app-listado-atencion',
   templateUrl: './listado-atencion.component.html',
@@ -28,7 +26,6 @@ export class ListadoAtencionComponent implements OnInit
   display: boolean = false;
   columnasTabla: string[] = ['numeroIniciativa', 'titulo','asignado','fechainicio','fechafin','estado','accion'];
   title = "Example Angular 8 Material Dialog";
-<<<<<<< HEAD
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
   selectedRowIndex: number = -1;
@@ -41,10 +38,6 @@ export class ListadoAtencionComponent implements OnInit
   public tipoDocumentoSeleccionado: IniciativaFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
-=======
-  iniciativas: IniciativaFire[] = [];
-  loading: boolean;
->>>>>>> 606a50dcd535c7dbe90273436fa542fff5d7c59b
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
   openDialog(iniciativa: IniciativaFire) {
@@ -97,7 +90,7 @@ export class ListadoAtencionComponent implements OnInit
   }
 
   async callIniciativas() {
-    this.loading = true;
+    //this.loading = true;
     let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       var lista = [];
@@ -105,7 +98,6 @@ export class ListadoAtencionComponent implements OnInit
       /*data.forEach(iniciativaObj => {
         let iniciativaObject= iniciativaObj.payload.doc.data() as IniciativaFire;
         this.iniciativas.push(iniciativaObject);
-<<<<<<< HEAD
       });*/
       for(var i = 0; i < data.length; i++){
         lista.push(data[i].payload.doc.data() as IniciativaFire);
@@ -114,10 +106,6 @@ export class ListadoAtencionComponent implements OnInit
       this.iniciativas =  new MatTableDataSource(lista);
       this.iniciativas.paginator = this.paginator;
       this.iniciativas.sort = this.sort;
-=======
-      });
-      this.loading = false;
->>>>>>> 606a50dcd535c7dbe90273436fa542fff5d7c59b
     });
   }
   buscarDatos(filterValue: string) {
