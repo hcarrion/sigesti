@@ -32,6 +32,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseParametroService } from './shared/services/firebase-parametro.service';
 import { DialogRegistraSeguimientoComponent } from './modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
+import { MaterialModule } from './material-module';
 
 
 @NgModule({
@@ -56,18 +57,8 @@ import { DialogRegistraSeguimientoComponent } from './modal/dialog-registra-segu
     AppRoutingModule,
     MatSliderModule,
     BrowserAnimationsModule,
-    MatDialogModule,
     LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatNativeDateModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatInputModule,
-    MatSelectModule,
+    MaterialModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule
