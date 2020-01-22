@@ -15,7 +15,8 @@ export class DialogRecursosComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.iniciativa = data;
       this.regRecursos = new FormGroup({
-        tituloInputDialog: new FormControl()
+        tituloInputDialog: new FormControl(),
+        nIniciativaInputDialog: new FormControl()
       });
 
   }
@@ -27,6 +28,7 @@ export class DialogRecursosComponent implements OnInit {
 
   ngOnInit() {
     this.regRecursos.controls.tituloInputDialog.setValue(this.iniciativa.titulo);
+    this.regRecursos.controls.nIniciativaInputDialog.setValue(this.iniciativa.numeroIniciativa);
   }
 
 }
