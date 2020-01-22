@@ -1,5 +1,10 @@
-
-<div class="pipeline white lined-primary">
+<div *ngIf="loading" class="content-load">
+  <br>
+  <mat-spinner class="child-load"></mat-spinner>
+  <br>
+  <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+</div>
+<div *ngIf="!loading" class="pipeline white lined-primary">
     <div class="pipeline-header">
         <h5 class="pipeline-name">
             Lista de iniciativas

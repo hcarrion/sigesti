@@ -38,6 +38,7 @@ export class ListadoAtencionComponent implements OnInit
   public tipoDocumentoSeleccionado: IniciativaFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
+  loading: boolean;
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
   openDialog(iniciativa: IniciativaFire) {
@@ -90,7 +91,7 @@ export class ListadoAtencionComponent implements OnInit
   }
 
   async callIniciativas() {
-    //this.loading = true;
+    this.loading = true;
     let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       var lista = [];
@@ -106,6 +107,7 @@ export class ListadoAtencionComponent implements OnInit
       this.iniciativas =  new MatTableDataSource(lista);
       this.iniciativas.paginator = this.paginator;
       this.iniciativas.sort = this.sort;
+      this.loading = false;
     });
   }
   buscarDatos(filterValue: string) {
