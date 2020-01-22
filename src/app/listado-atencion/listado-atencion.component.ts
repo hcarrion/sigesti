@@ -24,7 +24,7 @@ export class ListadoAtencionComponent implements OnInit
   tabla: any;
   mensajeAccion: string;
   display: boolean = false;
-  columnasTabla: string[] = ['numeroIniciativa', 'titulo','asignado','fechainicio','fechafin','estado','accion'];
+  columnasTabla: string[] = ['numeroIniciativa', 'titulo','nombres','fechainicio','fechafin','estado','accion'];
   title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
@@ -38,7 +38,9 @@ export class ListadoAtencionComponent implements OnInit
   public tipoDocumentoSeleccionado: IniciativaFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
+  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {
+
+  }
 
   openDialog(iniciativa: IniciativaFire) {
     const dialogConfig = new MatDialogConfig();
@@ -106,10 +108,22 @@ export class ListadoAtencionComponent implements OnInit
       this.iniciativas =  new MatTableDataSource(lista);
       this.iniciativas.paginator = this.paginator;
       this.iniciativas.sort = this.sort;
+      this.InicializaDatosBusqueda();
     });
   }
+
+  InicializaDatosBusqueda(){
+     // Inicializa los datos de busqueda
+     this.iniciativas.filterPredicate = (data, filter) => {
+      const dataStr = data.numeroIniciativa + data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
+      return dataStr.toLowerCase().indexOf(filter) != -1; 
+    }
+  }
+
   buscarDatos(filterValue: string) {
-    this.iniciativas.filter = filterValue.trim();
+    this.iniciativas.filter = filterValue.trim().toLowerCase();
+    
+
   }
 
   buscarDatosHelp(filterValue: string) {
