@@ -102,9 +102,13 @@ export class ListadoAtencionComponent implements OnInit
         lista.push(data[i].payload.doc.data() as IniciativaFire);
       }
       this.iniciativas =  new MatTableDataSource(lista);
-      
+      this.iniciativas.paginator = this.paginator;
+      this.iniciativas.sort = this.sort;
+
       this.InicializaDatosBusqueda();
       this.loading = false;
+     
+      
     });
   }
 
@@ -112,9 +116,7 @@ export class ListadoAtencionComponent implements OnInit
      // Inicializa los datos de busqueda
      this.iniciativas.filterPredicate = (data, filter) => {
       const dataStr = data.numeroIniciativa + data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
-      return dataStr.toLowerCase().indexOf(filter) != -1; 
-      this.iniciativas.paginator = this.paginator;
-      this.iniciativas.sort = this.sort;
+      return dataStr.toLowerCase().indexOf(filter) != -1;       
     }
   }
 
