@@ -24,7 +24,7 @@ export class ListadoAtencionComponent implements OnInit
   tabla: any;
   mensajeAccion: string;
   display: boolean = false;
-  columnasTabla: string[] = ['numeroIniciativa', 'titulo','nombres','fechainicio','fechafin','estado','accion'];
+  columnasTabla: string[] = ['numeroIniciativa', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
   title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
@@ -91,6 +91,7 @@ export class ListadoAtencionComponent implements OnInit
 
   async callIniciativas() {
     this.loading = true;
+    
     let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       var lista = [];
@@ -102,12 +103,11 @@ export class ListadoAtencionComponent implements OnInit
       for(var i = 0; i < data.length; i++){
         lista.push(data[i].payload.doc.data() as IniciativaFire);
       }
-      console.log(lista);
       this.iniciativas =  new MatTableDataSource(lista);
       this.iniciativas.paginator = this.paginator;
       this.iniciativas.sort = this.sort;
-      this.loading = false;
       this.InicializaDatosBusqueda();
+      this.loading = false;
     });
   }
 
@@ -121,8 +121,6 @@ export class ListadoAtencionComponent implements OnInit
 
   buscarDatos(filterValue: string) {
     this.iniciativas.filter = filterValue.trim().toLowerCase();
-    
-
   }
 
   buscarDatosHelp(filterValue: string) {
@@ -132,6 +130,7 @@ export class ListadoAtencionComponent implements OnInit
   highlight(row){
     this.selectedRowIndex = row.numeroIniciativa;
   }
+
   selectedDocumento(todo: IniciativaFire) {
     this.InReset();
     this.habilitar = true;
@@ -141,6 +140,7 @@ export class ListadoAtencionComponent implements OnInit
     this.edit = false;
     this.tipoDocumentoSeleccionado = todo;
   }
+
   InReset() {
     this.habilitar = false;
     this.nuevo = false;
@@ -149,12 +149,11 @@ export class ListadoAtencionComponent implements OnInit
     this.selected = false;
     this.display = false;
   }
+  
   selectedTipoDocumentoHelp(tipo: Listadoatencionhelp){
-
     this.TipoDocumenetHelpSeleccionado = tipo;
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
-
   }
 
   
