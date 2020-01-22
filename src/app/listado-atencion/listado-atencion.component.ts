@@ -93,21 +93,18 @@ export class ListadoAtencionComponent implements OnInit
     let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       var lista = [];
-      //this.iniciativas = []
-      /*data.forEach(iniciativaObj => {
-        let iniciativaObject= iniciativaObj.payload.doc.data() as IniciativaFire;
-        this.iniciativas.push(iniciativaObject);
-      });*/
       for(var i = 0; i < data.length; i++){
+        //lista.push(data[i].payload.doc.data() as IniciativaFire);
+
         let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
-        let id = data[i].payload.doc.id;
-        iniciativaObject.id = id;
+        let idIniciativa = data[i].payload.doc.id;
+        iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
+
       }
       this.iniciativas =  new MatTableDataSource(lista);
       this.iniciativas.paginator = this.paginator;
       this.iniciativas.sort = this.sort;
-
       this.InicializaDatosBusqueda();
       this.loading = false;
      
