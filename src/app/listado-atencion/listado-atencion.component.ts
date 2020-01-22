@@ -24,7 +24,7 @@ export class ListadoAtencionComponent implements OnInit
   tabla: any;
   mensajeAccion: string;
   display: boolean = false;
-  columnasTabla: string[] = ['numeroIniciativa', 'titulo','nombres','fechainicio','fechafin','estado','accion'];
+  columnasTabla: string[] = ['numeroIniciativa', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
   title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
@@ -85,12 +85,11 @@ export class ListadoAtencionComponent implements OnInit
 
   ngOnInit() {
     this.callIniciativas();
-    this.tipoDocumentoData.sort = this.sort;
-
   }
 
   async callIniciativas() {
     this.loading = true;
+    
     let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       var lista = [];
@@ -105,12 +104,10 @@ export class ListadoAtencionComponent implements OnInit
         iniciativaObject.id = id;
         lista.push(iniciativaObject);
       }
-      console.log(lista);
       this.iniciativas =  new MatTableDataSource(lista);
-      this.iniciativas.paginator = this.paginator;
-      this.iniciativas.sort = this.sort;
-      this.loading = false;
+      
       this.InicializaDatosBusqueda();
+      this.loading = false;
     });
   }
 
@@ -119,13 +116,13 @@ export class ListadoAtencionComponent implements OnInit
      this.iniciativas.filterPredicate = (data, filter) => {
       const dataStr = data.numeroIniciativa + data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
       return dataStr.toLowerCase().indexOf(filter) != -1; 
+      this.iniciativas.paginator = this.paginator;
+      this.iniciativas.sort = this.sort;
     }
   }
 
   buscarDatos(filterValue: string) {
     this.iniciativas.filter = filterValue.trim().toLowerCase();
-    
-
   }
 
   buscarDatosHelp(filterValue: string) {
@@ -135,6 +132,7 @@ export class ListadoAtencionComponent implements OnInit
   highlight(row){
     this.selectedRowIndex = row.numeroIniciativa;
   }
+
   selectedDocumento(todo: IniciativaFire) {
     this.InReset();
     this.habilitar = true;
@@ -144,6 +142,7 @@ export class ListadoAtencionComponent implements OnInit
     this.edit = false;
     this.tipoDocumentoSeleccionado = todo;
   }
+
   InReset() {
     this.habilitar = false;
     this.nuevo = false;
@@ -152,12 +151,11 @@ export class ListadoAtencionComponent implements OnInit
     this.selected = false;
     this.display = false;
   }
-  selectedTipoDocumentoHelp(tipo: Listadoatencionhelp){
 
+  selectedTipoDocumentoHelp(tipo: Listadoatencionhelp){
     this.TipoDocumenetHelpSeleccionado = tipo;
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
-
   }
 
   
