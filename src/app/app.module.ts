@@ -64,7 +64,7 @@ import { MaterialModule } from './material-module';
     AngularFireDatabaseModule,
     MatProgressSpinnerModule
   ],
-  providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService],
+  providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService, DialogRecursosComponent],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
   DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent],
   bootstrap: [AppComponent]

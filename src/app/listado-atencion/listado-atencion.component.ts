@@ -42,7 +42,6 @@ export class ListadoAtencionComponent implements OnInit
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
   openDialog(iniciativa: IniciativaFire) {
-    const dialogConfig = new MatDialogConfig();
     this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
       { width: '1200px',
         height: '600px',
