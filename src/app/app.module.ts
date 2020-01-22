@@ -21,7 +21,7 @@ import { DialogRiesgosComponent } from './modal/dialog-riesgos/dialog-riesgos.co
 import { DialogSeguimientoComponent } from './modal/dialog-seguimiento/dialog-seguimiento.component';
 import { DialogRiesgosMantenedorComponent } from './modal/dialog-riesgos/dialog-riesgos-mantenedor/dialog-riesgos-mantenedor.component';
 import { MatDatepickerModule} from '@angular/material/datepicker';
-import { MatFormFieldModule, MatNativeDateModule, MatInputModule,MatSelectModule} from '@angular/material';
+import { MatFormFieldModule, MatNativeDateModule, MatInputModule,MatSelectModule, MatProgressSpinnerModule} from '@angular/material';
 //import { MbscModule } from '@mobiscroll/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 // Modulos Para Firebase
@@ -32,7 +32,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseParametroService } from './shared/services/firebase-parametro.service';
 import { DialogRegistraSeguimientoComponent } from './modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MaterialModule } from './material-module';
+
 
 @NgModule({
   declarations: 
@@ -56,18 +57,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     AppRoutingModule,
     MatSliderModule,
     BrowserAnimationsModule,
-    MatDialogModule,
     LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatNativeDateModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatInputModule,
-    MatSelectModule,
+    MaterialModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
