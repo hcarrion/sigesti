@@ -85,8 +85,6 @@ export class ListadoAtencionComponent implements OnInit
 
   ngOnInit() {
     this.callIniciativas();
-    this.tipoDocumentoData.sort = this.sort;
-
   }
 
   async callIniciativas() {
@@ -104,8 +102,7 @@ export class ListadoAtencionComponent implements OnInit
         lista.push(data[i].payload.doc.data() as IniciativaFire);
       }
       this.iniciativas =  new MatTableDataSource(lista);
-      this.iniciativas.paginator = this.paginator;
-      this.iniciativas.sort = this.sort;
+      
       this.InicializaDatosBusqueda();
       this.loading = false;
     });
@@ -116,6 +113,8 @@ export class ListadoAtencionComponent implements OnInit
      this.iniciativas.filterPredicate = (data, filter) => {
       const dataStr = data.numeroIniciativa + data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
       return dataStr.toLowerCase().indexOf(filter) != -1; 
+      this.iniciativas.paginator = this.paginator;
+      this.iniciativas.sort = this.sort;
     }
   }
 
@@ -149,7 +148,7 @@ export class ListadoAtencionComponent implements OnInit
     this.selected = false;
     this.display = false;
   }
-  
+
   selectedTipoDocumentoHelp(tipo: Listadoatencionhelp){
     this.TipoDocumenetHelpSeleccionado = tipo;
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
