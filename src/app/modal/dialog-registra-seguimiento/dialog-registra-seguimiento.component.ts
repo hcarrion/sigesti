@@ -220,8 +220,8 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   saveIniciativa(){
     let resultValidate = false;
     let iniciativaObject = new IniciativaFire();
-    iniciativaObject.numeroIniciativa = this.regIniciativa.value.numIniciativaInput;
-    if(this.validarField(iniciativaObject.numeroIniciativa)) resultValidate = true;
+    /*iniciativaObject.numeroIniciativa = this.regIniciativa.value.numIniciativaInput;
+    if(this.validarField(iniciativaObject.numeroIniciativa)) resultValidate = true;*/
     iniciativaObject.estado = this.regIniciativa.value.estadoSelect as ParametroDetalleFire;
     if(this.validarField(iniciativaObject.estado)) resultValidate = true;
     iniciativaObject.titulo = this.regIniciativa.value.tituloInput;

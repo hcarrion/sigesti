@@ -22,6 +22,7 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "angular-input-masks": "^4.4.1",
     "angular-notifier": "^6.0.1",
     "angularfire2": "^5.3.0",
     "bootstrap": "^4.4.1",
