@@ -1,6 +1,6 @@
 export class Listadoatencionhelp {
 
-    public  numeroIniciativa :string;
+    public  numeroIniciativa :number;
     public  titulo :string;
     public  asignado :string;
     public  fechainicio :string;
