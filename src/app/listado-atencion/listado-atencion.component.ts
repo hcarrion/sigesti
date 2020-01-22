@@ -99,7 +99,10 @@ export class ListadoAtencionComponent implements OnInit
         this.iniciativas.push(iniciativaObject);
       });*/
       for(var i = 0; i < data.length; i++){
-        lista.push(data[i].payload.doc.data() as IniciativaFire);
+        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+        let id = data[i].payload.doc.id;
+        iniciativaObject.id = id;
+        lista.push(iniciativaObject);
       }
       this.iniciativas =  new MatTableDataSource(lista);
       this.iniciativas.paginator = this.paginator;

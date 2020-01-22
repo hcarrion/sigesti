@@ -15,27 +15,12 @@ import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 export class DialogRecursosComponent implements OnInit {
   regRecursos: FormGroup;
   iniciativa: IniciativaFire = new IniciativaFire();
-  constructor(public dialogRef: MatDialogRef<DialogRecursosComponent>, private _ngZone: NgZone, private firestoreService: FirestoreService, 
-    private firebaseParametros: FirebaseParametroService, 
-    private firebaseColaboradores: FirebaseColaboradorService, 
-    private firebaseIniciativas: FirebaseIniciativaService) {
-    this.regRecursos = new FormGroup({
-      estadoSelect: new FormControl(),
-      tipoSelect: new FormControl(),
-      clasificacionSelect: new FormControl(),
-      categoriaSelect: new FormControl(),
-      prioridadSelect: new FormControl(),
-      areaSelect: new FormControl(),
-      jefeProyectoSelect: new FormControl(),
-      numIniciativaInput: new FormControl(),
-      tituloInput: new FormControl(),
-      sumillaInput: new FormControl(),
-      usuarioProcesosSelect: new FormControl(),
-      objPrincipalTextArea: new FormControl(),
-      objSecundarioTextArea: new FormControl(),
-      fechaInicioInput: new FormControl(),
-      horaEstimadaInput: new FormControl(),
-      fechaFinInput: new FormControl()
+  constructor(public dialogRef: MatDialogRef<DialogRecursosComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.iniciativa = data;
+      this.regRecursos = new FormGroup({
+        tituloInputDialog: new FormControl(),
+        nIniciativaInputDialog: new FormControl()
       });
 
   }
@@ -46,7 +31,8 @@ export class DialogRecursosComponent implements OnInit {
  
 
   ngOnInit() {
-    
+    this.regRecursos.controls.tituloInputDialog.setValue(this.iniciativa.titulo);
+    this.regRecursos.controls.nIniciativaInputDialog.setValue(this.iniciativa.numeroIniciativa);
   }
 
 }

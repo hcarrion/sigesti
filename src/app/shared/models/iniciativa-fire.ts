@@ -2,6 +2,7 @@ import { ParametroDetalleFire } from './parametro-detalle-fire';
 import { ColaboradorDetalleFire } from './colaborador-detalle-fire';
 
 export class IniciativaFire {
+    id: string;
     numeroIniciativa: number;
     estado: ParametroDetalleFire;
     titulo: string;
