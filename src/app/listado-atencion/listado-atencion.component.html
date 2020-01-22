@@ -46,9 +46,9 @@
                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
                   </ng-container>
 
-                  <ng-container matColumnDef="asignado">
+                  <ng-container matColumnDef="nombres">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ASIGNADO </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.jefeProyecto.nombres}} </td>
+                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo.jefeProyecto)"> {{tipo.jefeProyecto.nombres}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="fechainicio">
