@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone, ViewChild, ViewEncapsulation, Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder  } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { FirestoreService } from '../../services/firestore/firestore.service';
@@ -13,6 +13,7 @@ import { IniciativaFire } from '../../shared/models/iniciativa-fire';
 import { FirebaseIniciativaService } from '../../shared/services/firebase-iniciativa.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import {MAT_DATE_LOCALE} from '@angular/material';
 
 @Component({
   selector: 'app-dialog-registra-seguimiento',
@@ -24,6 +25,7 @@ import Swal from 'sweetalert2';
 export class DialogRegistraSeguimientoComponent implements OnInit {
 
   regIniciativa: FormGroup;
+  submitted = false;
   estado: ParametroFire = new ParametroFire();
   tipo: ParametroFire = new ParametroFire();
   clasificacion: ParametroFire = new ParametroFire();
@@ -35,6 +37,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
 
   panelColor = new FormControl('1');
   constructor(public dialogRef: MatDialogRef<DialogRegistraSeguimientoComponent>, private _ngZone: NgZone, private firestoreService: FirestoreService, 
+    private formBuilder: FormBuilder, 
     private firebaseParametros: FirebaseParametroService, 
     private firebaseColaboradores: FirebaseColaboradorService, 
     private firebaseIniciativas: FirebaseIniciativaService) {
@@ -67,49 +70,12 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
 
   ngOnInit() {
     this.callParametros();
-    /*this.regIniciativa.controls.numIniciativaInput.setValue('0000001');*/
-    
   }
 
   async callParametros() {
     let parametrosRef = this.firebaseParametros.getParametros();
     let colaboradoresRef = this.firebaseColaboradores.getColaboradores();
-    /*this.firebaseParametros.obtenerEstados(parametrosRef).then(
-      result => {
-          result.forEach(element => {
-          this.estado = element.val()
-        });
-      });
-    this.firebaseParametros.obtenerTipos(parametrosRef).then(
-      result => {
-          result.forEach(element => {
-          this.tipo = element.val()
-        });
-      });
-    this.firebaseParametros.obtenerClasificaciones(parametrosRef).then(
-      result => {
-          result.forEach(element => {
-          this.clasificacion = element.val()
-        });
-      });
-    this.firebaseParametros.obtenerCategorias(parametrosRef).then(
-      result => {
-          result.forEach(element => {
-          this.categoria = element.val()
-        });
-      });
-    this.firebaseParametros.obtenerPrioridades(parametrosRef).then(
-      result => {
-          result.forEach(element => {
-          this.prioridad = element.val()
-        });
-      });
-    this.firebaseParametros.obtenerAreas(parametrosRef).then(
-      result => {
-          result.forEach(element => {
-          this.area = element.val()
-        });
-      });*/
+
       parametrosRef.subscribe(data => {data.forEach(paramObj => {
           let paramObject= paramObj.payload.doc.data() as ParametroFire;
           if("estado" == paramObject.nombre) this.estado = paramObject;
@@ -166,22 +132,8 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   }
 
   resetFields() {
-    this.regIniciativa.controls.numIniciativaInput.reset();
-    this.regIniciativa.controls.estadoSelect.reset();
-    this.regIniciativa.controls.tituloInput.reset();
-    this.regIniciativa.controls.jefeProyectoSelect.reset();
-    this.regIniciativa.controls.sumillaInput.reset();
-    this.regIniciativa.controls.usuarioProcesosSelect.reset();
-    this.regIniciativa.controls.objPrincipalTextArea.reset();
-    this.regIniciativa.controls.objSecundarioTextArea.reset();
-    this.regIniciativa.controls.horaEstimadaInput.reset();
-    this.regIniciativa.controls.fechaInicioInput.reset();
-    this.regIniciativa.controls.fechaFinInput.reset();
-    /*this.panelColor.reset();*/
-    this.regIniciativa.controls.clasificacionSelect.reset();
-    this.regIniciativa.controls.areaSelect.reset();
-    this.regIniciativa.controls.categoriaSelect.reset();
-    this.regIniciativa.controls.tipoSelect.reset();
+    this.submitted = false;
+    this.regIniciativa.reset();
   }
 
   saveColaborador() {
@@ -220,38 +172,58 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   saveIniciativa(){
     let resultValidate = false;
     let iniciativaObject = new IniciativaFire();
-    /*iniciativaObject.numeroIniciativa = this.regIniciativa.value.numIniciativaInput;
-    if(this.validarField(iniciativaObject.numeroIniciativa)) resultValidate = true;*/
+
+    iniciativaObject.numeroIniciativa = this.regIniciativa.value.numIniciativaInput;
     iniciativaObject.estado = this.regIniciativa.value.estadoSelect as ParametroDetalleFire;
-    if(this.validarField(iniciativaObject.estado)) resultValidate = true;
     iniciativaObject.titulo = this.regIniciativa.value.tituloInput;
-    if(this.validarField(iniciativaObject.titulo)) resultValidate = true;
     iniciativaObject.jefeProyecto = this.regIniciativa.value.jefeProyectoSelect as ColaboradorDetalleFire;
-    if(this.validarField(iniciativaObject.jefeProyecto)) resultValidate = true;
     iniciativaObject.sumilla = this.regIniciativa.value.sumillaInput;
-    if(this.validarField(iniciativaObject.sumilla)) resultValidate = true;
     iniciativaObject.usuarioProcesos = this.regIniciativa.value.usuarioProcesosSelect as ColaboradorDetalleFire;
-    if(this.validarField(iniciativaObject.usuarioProcesos)) resultValidate = true;
+    
     iniciativaObject.objetivoPrincipal = this.regIniciativa.value.objPrincipalTextArea;
-    if(this.validarField(iniciativaObject.objetivoPrincipal)) resultValidate = true;
+    
     iniciativaObject.objetivoSecundario = this.regIniciativa.value.objSecundarioTextArea;
-    if(this.validarField(iniciativaObject.objetivoSecundario)) resultValidate = true;
+    
     iniciativaObject.fechaInicio = this.regIniciativa.value.fechaInicioInput;
-    if(this.validarField(iniciativaObject.fechaInicio)) resultValidate = true;
+    
     iniciativaObject.horaEstimada = this.regIniciativa.value.horaEstimadaInput;
-    if(this.validarField(iniciativaObject.horaEstimada)) resultValidate = true;
+    
     iniciativaObject.fechaFin = this.regIniciativa.value.fechaFinInput;
-    if(this.validarField(iniciativaObject.fechaFin)) resultValidate = true;
+   
     iniciativaObject.prioridad = this.panelColor.value as ParametroDetalleFire;
-    if(this.validarField2(iniciativaObject.prioridad)) resultValidate = true;
+    
     iniciativaObject.clasificacion = this.regIniciativa.value.clasificacionSelect as ParametroDetalleFire;
-    if(this.validarField(iniciativaObject.clasificacion)) resultValidate = true;
+   
     iniciativaObject.area = this.regIniciativa.value.areaSelect as ParametroDetalleFire;
-    if(this.validarField(iniciativaObject.area)) resultValidate = true;
+   
     iniciativaObject.categoria = this.regIniciativa.value.categoriaSelect as ParametroDetalleFire;
-    if(this.validarField(iniciativaObject.categoria)) resultValidate = true;
+    
     iniciativaObject.tipo = this.regIniciativa.value.tipoSelect as ParametroDetalleFire;
-    if(this.validarField(iniciativaObject.tipo)) resultValidate = true;
+    
+    this.regIniciativa = this.formBuilder.group({
+      tituloInput: [iniciativaObject.titulo, Validators.required],
+      estadoSelect: [iniciativaObject.estado, Validators.required],
+      jefeProyectoSelect: [iniciativaObject.jefeProyecto, Validators.required],
+      sumillaInput: [iniciativaObject.sumilla, Validators.required],
+      usuarioProcesosSelect: [iniciativaObject.usuarioProcesos, Validators.required],
+      objPrincipalTextArea: [iniciativaObject.objetivoPrincipal, Validators.required],
+      objSecundarioTextArea: [iniciativaObject.objetivoSecundario, Validators.required],
+      fechaInicioInput: [iniciativaObject.fechaInicio, Validators.required],
+      horaEstimadaInput: [iniciativaObject.horaEstimada, Validators.required],
+      fechaFinInput: [iniciativaObject.fechaFin, Validators.required],
+      clasificacionSelect: [iniciativaObject.clasificacion, Validators.required],
+      areaSelect: [iniciativaObject.area, Validators.required],
+      categoriaSelect: [iniciativaObject.categoria , Validators.required],
+      tipoSelect: [iniciativaObject.tipo, Validators.required],
+    });
+
+    if (this.regIniciativa.invalid) 
+    {
+      this.submitted = true;
+      resultValidate = true;
+    }
+
+
     
     if(resultValidate){
       Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
