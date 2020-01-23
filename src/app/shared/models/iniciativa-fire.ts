@@ -1,5 +1,6 @@
 import { ParametroDetalleFire } from './parametro-detalle-fire';
 import { ColaboradorDetalleFire } from './colaborador-detalle-fire';
+import { ContactoDetalleFire } from './contacto-detalle-fire';
 
 export class IniciativaFire {
     idIniciativa: string;
@@ -19,4 +20,12 @@ export class IniciativaFire {
     area: ParametroDetalleFire;
     categoria: ParametroDetalleFire;
     tipo: ParametroDetalleFire;
+    // Agregado por Harry Carrion 
+    codigoSVT: string;
+    fechaPaseProd: Date;
+    gradoSatisfacccion: ParametroDetalleFire;
+    Contacto: ContactoDetalleFire;
+    fechaIngresoRQ: Date;
+    fechaFinComp: Date;
+    fechaIngresoBroker: Date;
 }

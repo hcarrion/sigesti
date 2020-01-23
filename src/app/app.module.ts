@@ -34,6 +34,7 @@ import { FirebaseParametroService } from './shared/services/firebase-parametro.s
 import { DialogRegistraSeguimientoComponent } from './modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
 import { MaterialModule } from './material-module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     DialogRiesgosComponent,
     DialogSeguimientoComponent,
     DialogRiesgosMantenedorComponent,
-    DialogRegistraSeguimientoComponent
+    DialogRegistraSeguimientoComponent,
+    RegistroContactoComponent
   ],
   imports: 
   [
@@ -69,7 +71,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
   providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService, 
     DialogRecursosComponent,],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
-  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent],
+  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { 
