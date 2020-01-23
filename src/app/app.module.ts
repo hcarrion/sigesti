@@ -33,6 +33,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { FirebaseParametroService } from './shared/services/firebase-parametro.service';
 import { DialogRegistraSeguimientoComponent } from './modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
 import { MaterialModule } from './material-module';
+import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { MaterialModule } from './material-module';
     DialogRiesgosComponent,
     DialogSeguimientoComponent,
     DialogRiesgosMantenedorComponent,
-    DialogRegistraSeguimientoComponent
+    DialogRegistraSeguimientoComponent,
+    RegistroContactoComponent
   ],
   imports: 
   [
@@ -67,7 +69,7 @@ import { MaterialModule } from './material-module';
   providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService, 
     DialogRecursosComponent,],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
-  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent],
+  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

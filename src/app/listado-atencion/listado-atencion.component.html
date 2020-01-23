@@ -17,16 +17,17 @@
        
         <div class="pipeline-settings os-dropdown-trigger">
             <div class="dropdown">
-                <button class="btn" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
+                <button mat-button [matMenuTriggerFor]="menu">
                     Opciones <i class="fas fa-bars"></i>
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <a class="dropdown-item" (click)="InNuevo()">Nuevo</a>
-                    <a class="dropdown-item" ng-click="imprimir()">Imprimir</a>
-                </div>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="openDialog4()">Nuevo</button>
+                    <button mat-menu-item>Imprimir</button>
+                </mat-menu>        
             </div>
         </div>
+
+        
     </div>
     
     <div class="pipeline-body">
@@ -79,6 +80,7 @@
                     <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
                     <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
                     </table>
+
                     <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>       
     </div>
 </div>
