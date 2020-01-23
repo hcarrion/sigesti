@@ -95,9 +95,7 @@
                             </mat-form-field> 
                         </div>
                     </div>
-
                     <br> 
-
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-2"> 
@@ -132,9 +130,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-
                     <br>
-                
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-2">
@@ -247,7 +243,52 @@
                         </div>
                     </div>
                     <br>
-                    
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2">
+                            <mat-label><strong>Comtacto: </strong> </mat-label>
+                            
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field>
+                                <mat-select formControlName="categoriaSelect" placeholder="Selecciona categoría">
+                                    <mat-option *ngFor="let categorialet of categoria.detalle" [value]="categorialet">
+                                        {{categorialet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Telefono: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field hintLabel="Max 11 caracteres">
+                                <input formControlName="telefonoInput" matInput #inputHoras  placeholder="Telefono celualr/fijo" type="number" >
+                            </mat-form-field> 
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2">
+                            <mat-label><strong>correo: </strong> </mat-label>
+                            
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field hintLabel="Max 150 caracteres">
+                                <input formControlName="correoInput" matInput #inputHoras  placeholder="Correo nombre@confianza.pe" type="email" >
+                            </mat-form-field> 
+                        </div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Anexo: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field hintLabel="Max 4 caracteres">
+                                <input formControlName="anexoInput" matInput #inputHoras  placeholder="Anexo de llamada" type="number" >
+                            </mat-form-field> 
+                        </div>
+                    </div>
+                    <br>
                     <div class="row">
                         
                         <div class="col-md-5"></div>
