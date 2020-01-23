@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { IniciativaFire } from '../models/iniciativa-fire';
 import { CorrelativoFire } from '../models/correlativo-fire';
+import 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'

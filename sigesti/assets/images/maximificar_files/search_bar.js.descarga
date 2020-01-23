@@ -1,0 +1,125 @@
+var beta = 0;
+
+$(document).ready(function () {
+  var adv_search_box = $('#adv_search').height();
+
+  $(window).resize(function () {
+    adv_search_box = $('#adv_search').height();
+  });
+
+  var scroll_speed = 0;
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 150) {
+      scroll_speed = 300;
+    } else {
+      scroll_speed = 0;
+    }
+  });
+
+  $("#btn_adv_search, #flechitas_search").click(function () {
+    if (beta < 1) {
+      $("#adv_search").css('height', '0');
+      $("#adv_search").css('display', 'block');
+      $("#adv_search").animate({
+        height: adv_search_box
+      }, 300, function () {
+        $('#adv_search').height('auto');
+      });
+      $(".adv_search").addClass('adv_search_selected');
+      $("#top_search").fadeOut("fast");
+      $("#region").val('');
+      $("#palabra").val('');
+      beta = "1";
+      alpha = "1";
+    } else {
+      $(".adv_search").removeClass('adv_search_selected');
+      $('html, body').animate({
+        scrollTop: 0
+      }, scroll_speed, function () {
+        $("#adv_search").animate({
+          height: "0px"
+        }, 300, function () {
+          $("#adv_search").css('display', 'none');
+          $('#adv_search').height('auto');
+          $("#top_search").fadeIn("fast");
+        });
+      });
+      $("#region2").val('');
+      $("#palabra2").val('');
+      beta = "0";
+      alpha = "0";
+    };
+  });
+
+
+
+  $("#btn_adv_search").mouseover(function () {
+    if (beta != "1") {
+      $(".adv_search").addClass('adv_search_selected');
+    };
+  });
+
+  $("#btn_adv_search").mouseout(function () {
+    if (beta != "1") {
+      $(".adv_search").removeClass('adv_search_selected');
+      $(".adv_search").addClass('adv_search');
+    };
+  });
+
+  /*$('#btn_adv_search').click(function () {
+    try {
+        $('#region2,#ciudad2').attr("disabled", "disabled");
+    } catch (e) {
+      // console.log(e);
+    }
+  });*/
+
+  $('#flechitas_search').click(function () {
+    try {
+      $('#pais2,#region2,#ciudad2').val('');
+    } catch (e) {
+      // console.log(e);
+    }
+  });
+
+  $('#pais2').focus(function () {
+    try {
+      countryRegionBehaviorByCountry(this);
+    } catch (e) {
+      // console.log(e);
+    }
+  });
+
+  $('#pais2').change(function () {
+    try {
+      countryRegionBehaviorByCountry(this);
+    } catch (e) {
+      // console.log(e);
+    }
+  });
+
+});
+
+function countryRegionBehaviorByCountry(inputCountry) {
+  $(function () {
+    try {
+      var _this = inputCountry;
+      var valCountry = $(_this).val();
+      var selectedCountry = [];
+      var countryIdOfDomain = paisId;
+
+      if (valCountry == "") {
+        $('#region2,#ciudad2').removeAttr("disabled");
+      } else {
+        selectedCountry = valCountry.split(":");
+        if (selectedCountry[0] == countryIdOfDomain) {
+          $('#region2,#ciudad2').removeAttr("disabled");
+        } else {
+          $('#region2,#ciudad2').attr("disabled", "disabled").val('');
+        }
+      }
+    } catch (e) {
+      // console.log(e);
+    }
+  });
+}
