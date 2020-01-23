@@ -13,7 +13,7 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-2">Título: </div>
                 <div class="col-md-4">
-                    <input class="form-control form-control-sm"  type="text" placeholder="Titulo de la iniciativa" ng-disabled="true" disabled> 
+                    <input formControlName="tituloInputDialog" class="form-control form-control-sm"  type="text" ng-disabled="true" disabled> 
                 </div>
             </div>
 
@@ -27,34 +27,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-2"> Código: </div>
-                <div class="col-md-3"> 
-                    <input class="form-control form-control-sm" type="text" placeholder="Ingrese un Código"> 
+                <div class="col-md-12">
+                    <mat-form-field style="display:block;">
+                        <mat-select [formControl]="colaboradorCtrl" placeholder="Seleccionar recurso" #singleSelect>
+                            <mat-option>
+                                <ngx-mat-select-search [formControl]="colaboradorFilterCtrl" 
+                                placeholderLabel = "Buscar recurso..." 
+                                noEntriesFoundLabel = "'No se encontraron recursos coincidentes'"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let colaborador of filteredColaboradores | async" [value]="colaborador">
+                                {{colaborador.nombres}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
-
-                <div class="col-md-1"></div>
-                <div class="col-md-2">Nombre: </div>
-                <div class="col-md-4">
-                    <input class="form-control form-control-sm" type="text" placeholder="Ingrese un Nombre"> 
-                </div>
-
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-9" >
-                    
-                </div>
-
-                <div class="col-md-3" >
-                    <button type="button" class="btn btn-info bnt-sm" >
-                        Buscar
-                    </button>
-                    &nbsp; 
-                    <button type="button" class="btn btn-primary bnt-sm" >
-                        Agregar
-                    </button>
-                </div> 
-                
             </div>
             <br>
             <div class="row">
@@ -62,18 +48,19 @@
                     <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
                         <thead> 
                             <tr>
-                                <th class="table-dark" style="width:30px">#</th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Código de Empleado </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Nombre </th>
-                                <th class="table-dark" width="100px" style="white-space: normal;"> Quitar </th>
+                                <th class="encabezado" width="20%" style="white-space: normal;">Código</th>
+                                <th class="encabezado" width="50%" style="white-space: normal;">Nombres</th>
+                                <th class="encabezado" width="20%" style="white-space: normal;">Acción</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody *ngFor="let colabDetFire of colaboradorDetFireList">
                             <tr>
-                                <th scope="row">1</th>
-                                <td width="100px" style="white-space: normal;">000000001</td>
-                                <td width="100px" style="white-space: normal;">Angel LLanco</td>
-                                <td width="100px" style="white-space: normal;"> X </td>
+                                <td width="20%" style="white-space: normal;">{{colabDetFire.codigoUsuario}}</td>
+                                <td width="50%" style="white-space: normal;">{{colabDetFire.nombres}}</td>
+                                <td width="20%" style="white-space: normal;">
+                                    <p style="text-align: center; color:#3F52B6">
+                                    <strong><i class="material-icons link" (click)="eliminarRecursoTabla(colabDetFire)">delete</i></strong></p>
+                                </td>
                             </tr>
                         </tbody>    
                     </table>
@@ -83,11 +70,13 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-md-11" >
-            
+        <div class="col-md-9">
+        </div>
+        <div class="col-md-2 align-right">
+            <button type="button" class="btn btn-primary btn-sm" >Guardar</button>
         </div>
         <div class="col-md-1" >
-            <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
+            <button type="button" class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
         </div>
     </div>
 </div>

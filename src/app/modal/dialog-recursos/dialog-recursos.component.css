@@ -1,0 +1,9 @@
+.align-right {
+    text-align: right;
+}
+
+.encabezado{
+    background-color: #eff4fa;
+    font-size: 0.85rem;
+    color: blue;
+}
