@@ -11,6 +11,7 @@ import { ColaboradorDetalleFire } from 'src/app/shared/models/colaborador-detall
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { MatSelect } from '@angular/material/select';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dialog-recursos',
@@ -29,15 +30,16 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
   protected _onDestroy = new Subject<void>();
 
   colaboradorDetFireList: ColaboradorDetalleFire[] = [];
+  loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRecursosComponent>, 
     private firebaseColaboradores: FirebaseColaboradorService,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private firebaseIniciativas: FirebaseIniciativaService) {
       this.iniciativa = data;
       this.regRecursos = new FormGroup({
         tituloInputDialog: new FormControl(),
         nIniciativaInputDialog: new FormControl()
-      });
-
+      })
   }
 
   close(): void {
@@ -51,6 +53,7 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
   }
 
   callColaboradores() {
+    this.loading = true;
     let colaboradoresRef = this.firebaseColaboradores.getColaboradores();
 
     colaboradoresRef.subscribe(data => {data.forEach(colabObj => {
@@ -58,6 +61,7 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
         this.colaboradores =  colabObject;
         this.loadData();
         this.activeSelect(this.colaboradores.colaboradores);
+        this.loading = false;
       });
     });
   }
@@ -65,6 +69,7 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
   loadData(){
     this.regRecursos.controls.tituloInputDialog.setValue(this.iniciativa.titulo);
     this.regRecursos.controls.nIniciativaInputDialog.setValue(this.iniciativa.numeroIniciativa);
+    this.colaboradorDetFireList = this.iniciativa.recursos;
   }
 
   activeSelect(colaboradorDetList: ColaboradorDetalleFire[]){
@@ -101,13 +106,58 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
 
   agregarTablaRecursos(colaboradorDetFire: ColaboradorDetalleFire){
     let isExists = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario == colaboradorDetFire.codigoUsuario).length > 0;
-    debugger;
     if(!isExists){
       this.colaboradorDetFireList.push(colaboradorDetFire);
-    }
+    }   
   }
 
   eliminarRecursoTabla(colaboradorDetFire: ColaboradorDetalleFire){
+    this.colaboradorDetFireList = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario !== colaboradorDetFire.codigoUsuario); 
+  }
 
+  guardarRecursos(colabDetFireList: ColaboradorDetalleFire[]){
+    this.loading = true;
+    let resultValidate = false;
+    resultValidate = this.validarPorcentajes(colabDetFireList);
+    
+    if(!resultValidate){
+      this.loading = false;
+      Swal.fire('Advertencia!', 'Los porcentajes asignados deben sumar 100%.', 'warning');
+    }else{
+      this.iniciativa.recursos = colabDetFireList;
+      this.firebaseIniciativas.updateIniciativa(this.iniciativa).then(
+        result => {
+          this.loading = false;
+          Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+          this.close();
+        },error => {Swal.fire('Error!', 'Error al guardar los recursos.', 'error');});
+    }
+  }
+
+  focusOut(event: any, colaboradorDetFire: ColaboradorDetalleFire){
+    var trObject = (document.getElementById(String(colaboradorDetFire.codigo))) as HTMLTableRowElement;
+    let inputObject = trObject.cells[2].children[0] as HTMLInputElement;
+    let valuePorcen = inputObject.value;
+    colaboradorDetFire.porcentaje = Number(valuePorcen);
+    this.updateColaboradorDetList(colaboradorDetFire);
+  }
+
+  updateColaboradorDetList(colaboDetFire: ColaboradorDetalleFire){
+    let itemIndex = this.colaboradorDetFireList.findIndex(item => item.codigoUsuario == colaboDetFire.codigoUsuario);
+    this.colaboradorDetFireList[itemIndex] = colaboDetFire;
+  }
+
+  validarPorcentajes(colabDetFireList: ColaboradorDetalleFire[]){
+    let isValid = false;
+    let sumatotal: number = 0;
+    colabDetFireList.forEach(element => {
+      let valuePorcentaje = element.porcentaje;
+      sumatotal = sumatotal+valuePorcentaje;
+    });
+
+    if(100 >= sumatotal){
+      isValid = true;
+    }
+    return isValid;
   }
 }

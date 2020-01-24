@@ -4,4 +4,5 @@ export class ColaboradorDetalleFire {
     nombres: string;
     cargo: string;
     isJefe: boolean;
+    porcentaje: number;
 }

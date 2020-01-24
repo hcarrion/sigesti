@@ -23,7 +23,7 @@ import { DialogRiesgosMantenedorComponent } from './modal/dialog-riesgos/dialog-
 import { MatDatepickerModule} from '@angular/material/datepicker';
 import { MatFormFieldModule, MatNativeDateModule, MatInputModule,MatSelectModule, MatProgressSpinnerModule} from '@angular/material';
 //import { MbscModule } from '@mobiscroll/angular';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 // Modulos Para Firebase
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';

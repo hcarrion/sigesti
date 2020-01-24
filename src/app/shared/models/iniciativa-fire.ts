@@ -28,4 +28,6 @@ export class IniciativaFire {
     fechaIngresoRQ: Date;
     fechaFinComp: Date;
     fechaIngresoBroker: Date;
+    // Add Recursos
+    recursos: ColaboradorDetalleFire[];
 }

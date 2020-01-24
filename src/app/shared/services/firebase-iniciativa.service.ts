@@ -62,4 +62,9 @@ export class FirebaseIniciativaService {
       }
     });
   }
+
+  updateIniciativa(iniciativaFire: IniciativaFire){
+    const iniciativa = JSON.parse(JSON.stringify(iniciativaFire));
+    return this.firestore.doc('iniciativas/'+iniciativaFire.idIniciativa).update(iniciativa);
+  }
 }
