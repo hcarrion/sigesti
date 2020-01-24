@@ -1,7 +1,7 @@
 <div class="example-container"  *ngIf="shouldRun">
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <a class="navbar-brand" href="#"><img class="logo" src="../../assets/images/logo-blanco.png" alt="" width="270"></a>
+    <a class="navbar-brand" href="#"><img class="logo" src="assets/images/logo-blanco.png" alt="" width="270"></a>
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container">
@@ -20,7 +20,7 @@
         <a mat-list-item [routerLink]="['registro_contacto']"> 
           <p style=color:#3F52B6>
             <strong> 
-              <i class="material-icons md-18" style="vertical-align: middle;">contact</i>
+              <i class="material-icons md-18" style="vertical-align: middle;">record_voice_overy</i>
               Registra Contacto
             </strong>
           </p>
@@ -47,7 +47,7 @@
           </strong>
         </p>  
       </div>
-      <div class="container text-center pb-5; ">
+      <div class="container text-center pb-5;" disabled>
          
         <img src="assets\images\fondo8.png" class="img-fluid">
 

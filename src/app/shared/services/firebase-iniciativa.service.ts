@@ -13,7 +13,7 @@ export class FirebaseIniciativaService {
   correlativoListRef: AngularFirestoreCollection<any>;
   private correlativoRef: DocumentReference;
   isUpdateCorrelativo: boolean;
-
+  
   constructor(private firestore: AngularFirestore) { }
 
   async createIniciativa(iniciativaFire: IniciativaFire){

@@ -35,6 +35,17 @@ import { DialogRegistraSeguimientoComponent } from './modal/dialog-registra-segu
 import { MaterialModule } from './material-module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { FusionChartsModule } from 'angular-fusioncharts';
+
+// Load FusionCharts
+import * as FusionCharts from 'fusioncharts';
+// Load Charts module
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+// Load fusion theme
+import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
+// Add dependencies to FusionChartsModule
+FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
 
 
 @NgModule({
@@ -51,12 +62,14 @@ import { RegistroContactoComponent } from './registro-contacto/registro-contacto
     DialogSeguimientoComponent,
     DialogRiesgosMantenedorComponent,
     DialogRegistraSeguimientoComponent,
-    RegistroContactoComponent
+    RegistroContactoComponent,
+    DashboardComponent
   ],
   imports: 
   [
     BrowserModule,
     //MbscModule,
+    FusionChartsModule,
     AppRoutingModule,
     MatSliderModule,
     BrowserAnimationsModule,
