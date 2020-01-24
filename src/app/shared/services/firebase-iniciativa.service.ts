@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { IniciativaFire } from '../models/iniciativa-fire';
 import { CorrelativoFire } from '../models/correlativo-fire';
+import 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class FirebaseIniciativaService {
   correlativoListRef: AngularFirestoreCollection<any>;
   private correlativoRef: DocumentReference;
   isUpdateCorrelativo: boolean;
-
+  
   constructor(private firestore: AngularFirestore) { }
 
   async createIniciativa(iniciativaFire: IniciativaFire){
