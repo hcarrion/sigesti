@@ -95,7 +95,7 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
     DialogRecursosComponent,],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
   DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent,
-  DialogRegistraEventoComponent, DialogListaEventoComponent],
+  DialogRegistraEventoComponent, DialogListaEventoComponent, DialogRegistraRecursoEventoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { 
