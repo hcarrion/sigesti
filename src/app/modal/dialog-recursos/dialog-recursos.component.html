@@ -57,14 +57,22 @@
                                 <th class="encabezado" width="20%" style="white-space: normal;">Código</th>
                                 <th class="encabezado" width="50%" style="white-space: normal;">Nombres</th>
                                 <th class="encabezado cell-cabecera-center" width="10%" style="white-space: normal;">%</th>
+                                <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">Activ. Asig.</th>
+                                <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">Horas  Asig.</th>
                                 <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">Acción</th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let colabDetFire of colaboradorDetFireList" class="tablaRecurso"> 
                             <tr style="vertical-align:center !important;" id="{{colabDetFire.codigo}}">
-                                <td class="tabla-center cell-td" width="20%" >{{colabDetFire.codigoUsuario}}</td>
+                                <td class="tabla-center cell-td" width="20%"  >{{colabDetFire.codigoUsuario}}</td>
                                 <td class="tabla-center cell-td" width="50%" >{{colabDetFire.nombres}}</td>
-                                <td class="tabla-center cell-td" width="10%" ><input class="widthMax porcentaje" type="number" min="1" step="1" (focusout)="focusOut($event, colabDetFire)" ng-model="colabDetFire.porcentaje" value="{{colabDetFire.porcentaje}}"></td>
+                                <td class="tabla-center cell-td" width="10%" ><input class="widthMax porcentaje" type="number" min="1" step="1" (focusout)="focusOut($event, colabDetFire)" ng-model="colabDetFire.porcentaje" style="text-align:center;" value="{{colabDetFire.porcentaje}}"></td>
+                                <td class="tabla-center cell-td disabled" width="10%">
+                                    <div class="container yellow" layout="row" layout-align="center center" flex="30">
+                                    <mat-checkbox class="align:center;">
+                                        </mat-checkbox>
+                                    </div></td>
+                                <td class="tabla-center cell-td disabled" width="10%"><input class="widthMax porcentaje" type="number" min="1" step="1" (focusout)="focusOut($event, colabDetFire)" ng-model="colabDetFire.porcentaje" style="text-align:center;" value="0"></td>
                                 <td class="tabla-center" width="20%" >
                                     <p style="text-align: center; color:rgb(182, 63, 63)">
                                     <strong><i class="material-icons link" (click)="eliminarRecursoTabla(colabDetFire)">delete</i></strong></p>

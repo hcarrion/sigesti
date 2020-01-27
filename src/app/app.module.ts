@@ -45,6 +45,8 @@ import * as Charts from 'fusioncharts/fusioncharts.charts';
 // Load fusion theme
 import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import { DialogRegistraContactoComponent } from './modal/dialog-registra-contacto/dialog-registra-contacto.component';
+import { DialogRegistraEventoComponent } from './modal/dialog-registra-evento/dialog-registra-evento.component';
+import { DialogListaEventoComponent } from './modal/dialog-lista-evento/dialog-lista-evento.component';
 // Add dependencies to FusionChartsModule
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
 
@@ -65,7 +67,9 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
     DialogRegistraSeguimientoComponent,
     RegistroContactoComponent,
     DashboardComponent,
-    DialogRegistraContactoComponent
+    DialogRegistraContactoComponent,
+    DialogRegistraEventoComponent,
+    DialogListaEventoComponent
   ],
   imports: 
   [
@@ -86,7 +90,8 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
   providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService, 
     DialogRecursosComponent,],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
-  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent],
+  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent,
+  DialogRegistraEventoComponent, DialogListaEventoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

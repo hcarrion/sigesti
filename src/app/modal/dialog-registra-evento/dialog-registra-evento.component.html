@@ -1,0 +1,107 @@
+<div [formGroup]="regContacto">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h4 class="card-title"><p style="color:#3F52B6; text-align: left;">
+                        <strong> <i class="material-icons">library_add</i> Registra Actividad</strong></p></h4>                    
+                </div>  
+                <div style="align-content: center; vertical-align: middle;">    
+            </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2" > 
+                            <mat-label style="font-size: small;"><strong>Codigo: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
+                                <input formControlName="codigoSVT" matInput #inputAtencion>
+                            </mat-form-field> 
+                        </div>                      
+                        <div class="col-md-2">
+                            <mat-label><strong style="font-size: small;">Estado: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field>
+                                <mat-select formControlName="estadoSelect" placeholder="Selecciona estado" style="font-size: small;">
+                                    <mat-option *ngFor="let estadolet of estado.detalle" [value]="estadolet">
+                                        {{estadolet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label style="font-size: small;"><strong>Tipo Actividad: </strong> </mat-label>  
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field>
+                                <mat-select formControlName="tipoactividadSelect" placeholder="Selecciona tipo actividad" style="font-size: small;">
+                                    <mat-option *ngFor="let estadolet of estado.detalle" [value]="tipoactividadlet">
+                                        {{estadolet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="col-md-2"> 
+                            <mat-label style="font-size: small;"><strong>Actividad: </strong> </mat-label>  
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 200 caracteres">
+                                <input formControlName="actividadInput" matInput #inputTitulo maxlength="200" placeholder="Ingrese un Actividad" style="font-size: small;">
+                                <mat-hint align="end">{{inputTitulo.value?.length || 0}}/200</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Fecha Inicio: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <input formControlName="fechaInicioInput" matInput [matDatepicker]="picker2" placeholder="Selecciona fecha">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Horas Asignadas: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 3 numeros">
+                                <input formControlName="horasInput" matInput #inputHoras maxlength="3" placeholder="Ingrese Horas asignadas" id="horas">
+                                <mat-hint align="end">{{inputHoras.value?.length || 0}}/3</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>                                                            
+                    <br>
+                    <div class="row">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary active" (click)='saveIniciativa()'>Guardar</button>
+                    </div>
+                    <div class="col-md-2" align="left">
+                        <button type="button" class="btn btn-info" (click) = "resetFields()">Limpiar</button>
+                    </div>
+                    <div class="col-md-1" >
+                        <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
+                    </div> 
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
