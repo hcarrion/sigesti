@@ -47,7 +47,6 @@ import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import { DialogRegistraContactoComponent } from './modal/dialog-registra-contacto/dialog-registra-contacto.component';
 import { DialogRegistraEventoComponent } from './modal/dialog-registra-evento/dialog-registra-evento.component';
 import { DialogListaEventoComponent } from './modal/dialog-lista-evento/dialog-lista-evento.component';
-import { DialogRegistraContactoEventoComponent } from './modal/dialog-registra-contacto-evento/dialog-registra-contacto-evento.component';
 import { DialogRegistraRecursoEventoComponent } from './modal/dialog-registra-recurso-evento/dialog-registra-recurso-evento.component';
 // Add dependencies to FusionChartsModule
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
@@ -72,8 +71,8 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
     DialogRegistraContactoComponent,
     DialogRegistraEventoComponent,
     DialogListaEventoComponent,
-    DialogRegistraContactoEventoComponent,
-    DialogRegistraRecursoEventoComponent
+    DialogRegistraRecursoEventoComponent,
+    DialogRegistraEventoComponent
   ],
   imports: 
   [
@@ -95,10 +94,8 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
     DialogRecursosComponent,],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
   DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent,
-  DialogRegistraEventoComponent, DialogListaEventoComponent, DialogRegistraRecursoEventoComponent],
+  DialogListaEventoComponent, DialogRegistraRecursoEventoComponent, DialogRegistraEventoComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
-
-  
+export class AppModule {   
 }

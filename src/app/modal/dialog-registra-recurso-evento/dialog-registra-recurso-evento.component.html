@@ -8,7 +8,7 @@
       <div class="card">
           <div class="card-header card-header-primary">
               <h4 class="card-title"><p align="left" style=color:#3F52B6>
-                  <strong> <i class="material-icons">people</i> Recursos </strong></p></h4>
+                  <strong> <i class="material-icons">people</i> Asignar Actividades a los Recursos </strong></p></h4>
           </div>
           <div class="card-body">
               <div class="row">
@@ -21,34 +21,13 @@
                   <div class="col-md-4">
                       <input formControlName="tituloInputDialog" class="form-control form-control-sm"  type="text" ng-disabled="true" disabled> 
                   </div>
-              </div>
-  
-              <br>
-              <div class="row">
-                  <div class="col-md-12"> <p align="left" style=color:#3F52B6><strong>Ingresar Recurso: </strong> </p> </div>
-              </div>
+              </div>      
               <div class="row">
                   <div class="col-md-12">
                       <hr style="width:100%;">
                   </div>
               </div>
-              <div class="row">
-                  <div class="col-md-12">
-                      <mat-form-field style="display:block;">
-                          <mat-select [formControl]="colaboradorCtrl" placeholder="Seleccionar recurso" #singleSelect>
-                              <mat-option>
-                                  <ngx-mat-select-search [formControl]="colaboradorFilterCtrl" 
-                                  placeholderLabel = "Buscar recurso..." 
-                                  noEntriesFoundLabel = "'No se encontraron recursos coincidentes'"></ngx-mat-select-search>
-                              </mat-option>
-                              <mat-option *ngFor="let colaborador of filteredColaboradores | async" [value]="colaborador" (click)="agregarTablaRecursos(colaborador)">
-                                  {{colaborador.nombres}}
-                              </mat-option>
-                          </mat-select>
-                      </mat-form-field>
-                  </div>
-              </div>
-              <br>
+             
               <div class="row">
                   <div class="col-md-12" >
                       <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
@@ -59,24 +38,16 @@
                                   <th class="encabezado cell-cabecera-center" width="10%" style="white-space: normal;">%</th>
                                   <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">Activ. Asig.</th>
                                   <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">Horas  Asig.</th>
-                                  <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">Acción</th>
+                                 
                               </tr>
                           </thead>
                           <tbody *ngFor="let colabDetFire of colaboradorDetFireList" class="tablaRecurso"> 
                               <tr style="vertical-align:center !important;" id="{{colabDetFire.codigo}}">
-                                  <td class="tabla-center cell-td" width="20%"  >{{colabDetFire.codigoUsuario}}</td>
-                                  <td class="tabla-center cell-td" width="50%" >{{colabDetFire.nombres}}</td>
-                                  <td class="tabla-center cell-td" width="10%" ><input class="widthMax porcentaje" type="number" min="1" step="1" (focusout)="focusOut($event, colabDetFire)" ng-model="colabDetFire.porcentaje" style="text-align:center;" value="{{colabDetFire.porcentaje}}"></td>
-                                  <td class="tabla-center cell-td disabled" width="10%">
-                                      <div class="container yellow" layout="row" layout-align="center center" flex="30">
-                                      <mat-checkbox class="align:center;">
-                                          </mat-checkbox>
-                                      </div></td>
-                                  <td class="tabla-center cell-td disabled" width="10%"><input class="widthMax porcentaje" type="number" min="1" step="1" (focusout)="focusOut($event, colabDetFire)" ng-model="colabDetFire.porcentaje" style="text-align:center;" value="0"></td>
-                                  <td class="tabla-center" width="20%" >
-                                      <p style="text-align: center; color:rgb(182, 63, 63)">
-                                      <strong><i class="material-icons link" (click)="eliminarRecursoTabla(colabDetFire)">delete</i></strong></p>
-                                  </td>
+                                  <td class="tabla-center cell-td" width="20%">{{colabDetFire.codigoUsuario}}</td>
+                                  <td class="tabla-center cell-td" width="50%">{{colabDetFire.nombres}}</td>
+                                  <td class="tabla-center cell-td" width="10%" align="center" >{{colabDetFire.porcentaje}}</td>
+                                  <td class="tabla-center cell-td" width="10%" align="center" ><mat-checkbox class="align:center;"></mat-checkbox></td>
+                                  <td class="tabla-center cell-td" width="10%" align="center" ><input width="20px" type="number" min="1" step="1" (focusout)="focusOut($event, colabDetFire)" ng-model="colabDetFire.horasasig" style="text-align:center;width:50px;" value={{colabDetFire.horasasig}}></td>                                  
                               </tr>
                           </tbody>    
                       </table>
@@ -105,3 +76,5 @@
           </div>
       </div>
   </div>
+
+

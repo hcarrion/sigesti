@@ -7,7 +7,8 @@ import { FirebaseIniciativaService } from '../../shared/services/firebase-inicia
 import { IniciativaFire } from '../../shared/models/iniciativa-fire';
 import { DialogRegistraSeguimientoComponent } from '../../modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
-import { DialogRegistraEventoComponent } from '../../modal/dialog-registra-evento/dialog-registra-evento.component';
+import { DialogRegistraEventoComponent } from '../dialog-registra-evento/dialog-registra-evento.component';
+import { DialogRegistraRecursoEventoComponent } from '../dialog-registra-recurso-evento/dialog-registra-recurso-evento.component';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
   openDialog(iniciativa: IniciativaFire) {
-    this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
+    this.matDialog.open(DialogRegistraRecursoEventoComponent, /*dialogConfig,*/
       { width: '1200px',
         height: '600px',
         data: iniciativa
@@ -48,24 +49,6 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
     );
   }
 
-
-  openDialog2()
-  {
-    this.matDialog.open(DialogRiesgosComponent, /*dialogConfig,*/
-      { width: '1200px',
-        height: '600px'
-      }
-      );
-  }
-  openDialog3()
-  {
-    this.matDialog.open(DialogSeguimientoComponent, /*dialogConfig,*/
-    
-      { width: '1200px',
-        height: '600px'
-      }
-      );
-  }
   openDialog4()
   {
     this.matDialog.open(DialogRegistraEventoComponent, /*dialogConfig,*/

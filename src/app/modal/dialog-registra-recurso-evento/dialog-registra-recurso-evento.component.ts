@@ -21,7 +21,7 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
   regRecursos: FormGroup;
   iniciativa: IniciativaFire = new IniciativaFire();
   colaboradores: ColaboradorFire = new ColaboradorFire();
-
+  columnasTabla: string[] = ['id', 'usuario','nombres','procentaje','horasasig','asignado'];
   public colaboradorCtrl: FormControl = new FormControl();
   public colaboradorFilterCtrl: FormControl = new FormControl();
   public filteredColaboradores: ReplaySubject<ColaboradorDetalleFire[]> = new ReplaySubject<ColaboradorDetalleFire[]>(1);
