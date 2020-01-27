@@ -62,6 +62,7 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
         this.colaboradores =  colabObject;
         this.loadData();
         this.activeSelect(this.colaboradores.colaboradores);
+        this.updatePorcentajePorAsignar();
         this.loading = false;
       });
     });
@@ -106,38 +107,46 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
   }
 
   agregarTablaRecursos(colaboradorDetFire: ColaboradorDetalleFire){
-    debugger;
     if(undefined == this.colaboradorDetFireList){
       this.colaboradorDetFireList = [];
       this.colaboradorDetFireList.push(colaboradorDetFire);
+      this.updatePorcentajePorAsignar();
     }else{
       let isExists = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario == colaboradorDetFire.codigoUsuario).length > 0;
       if(!isExists){
         this.colaboradorDetFireList.push(colaboradorDetFire);
+        this.updatePorcentajePorAsignar();
       }   
     }
   }
 
   eliminarRecursoTabla(colaboradorDetFire: ColaboradorDetalleFire){
     this.colaboradorDetFireList = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario !== colaboradorDetFire.codigoUsuario); 
+    this.updatePorcentajePorAsignar();
   }
 
   guardarRecursos(colabDetFireList: ColaboradorDetalleFire[]){
+    debugger;
     this.loading = true;
     let resultValidate = false;
-    resultValidate = this.validarPorcentajes(colabDetFireList);
-    
-    if(!resultValidate){
-      this.loading = false;
-      Swal.fire('Advertencia!', 'Los porcentajes asignados deben sumar 100%.', 'warning');
+    if(undefined != colabDetFireList && 0 != colabDetFireList.length){
+      resultValidate = this.validarPorcentajes(colabDetFireList);
+      
+      if(!resultValidate){
+        this.loading = false;
+        Swal.fire('Advertencia!', 'Los porcentajes asignados deben sumar 100%.', 'warning');
+      }else{
+        this.iniciativa.recursos = colabDetFireList;
+        this.firebaseIniciativas.updateIniciativa(this.iniciativa).then(
+          result => {
+            this.loading = false;
+            Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+            this.close();
+          },error => {Swal.fire('Error!', 'Error al guardar los recursos.', 'error');});
+      }
     }else{
-      this.iniciativa.recursos = colabDetFireList;
-      this.firebaseIniciativas.updateIniciativa(this.iniciativa).then(
-        result => {
-          this.loading = false;
-          Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
-          this.close();
-        },error => {Swal.fire('Error!', 'Error al guardar los recursos.', 'error');});
+      this.loading = false;
+      Swal.fire('Advertencia!', 'Debe seleccionar recurso.', 'warning');
     }
   }
 
@@ -147,10 +156,8 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
     let valuePorcen = inputObject.value;
     colaboradorDetFire.porcentaje = Number(valuePorcen);
     this.updateColaboradorDetList(colaboradorDetFire);
-
-    let diferencia = 100 - this.sumaTotalPorcentaje(this.colaboradorDetFireList);
-    let textoDiferencia = diferencia+ " hora(s).";
-    this.regRecursos.controls.porAsignarLabel.setValue(textoDiferencia);
+    this.updatePorcentajePorAsignar();
+    
   }
 
   updateColaboradorDetList(colaboDetFire: ColaboradorDetalleFire){
@@ -170,11 +177,29 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
 
   sumaTotalPorcentaje(colabDetFireList: ColaboradorDetalleFire[]){
     let sumatotal: number = 0;
-    colabDetFireList.forEach(element => {
-      let valuePorcentaje = element.porcentaje;
-      sumatotal = sumatotal+valuePorcentaje;
-    });
+    if(undefined != colabDetFireList && 0 != colabDetFireList.length){
+      colabDetFireList.forEach(element => {
+        let valuePorcentaje = element.porcentaje;
+        if(undefined != valuePorcentaje){
+          sumatotal = sumatotal+valuePorcentaje;
+        }
+      });
+    }else{
+      sumatotal = -1;
+    }
 
     return sumatotal;
   }
+
+  updatePorcentajePorAsignar(){
+    debugger;
+    if(-1 == this.sumaTotalPorcentaje(this.colaboradorDetFireList)){
+      this.regRecursos.controls.porAsignarLabel.setValue("");
+    }else{
+      let diferencia = 100 - this.sumaTotalPorcentaje(this.colaboradorDetFireList);
+      let textoDiferencia = diferencia;
+      this.regRecursos.controls.porAsignarLabel.setValue(textoDiferencia);
+    }
+  }
+
 }
