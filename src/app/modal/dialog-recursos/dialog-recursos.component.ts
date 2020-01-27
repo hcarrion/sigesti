@@ -38,7 +38,8 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
       this.iniciativa = data;
       this.regRecursos = new FormGroup({
         tituloInputDialog: new FormControl(),
-        nIniciativaInputDialog: new FormControl()
+        nIniciativaInputDialog: new FormControl(),
+        porAsignarLabel: new FormControl()
       })
   }
 
@@ -105,10 +106,16 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
   }
 
   agregarTablaRecursos(colaboradorDetFire: ColaboradorDetalleFire){
-    let isExists = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario == colaboradorDetFire.codigoUsuario).length > 0;
-    if(!isExists){
+    debugger;
+    if(undefined == this.colaboradorDetFireList){
+      this.colaboradorDetFireList = [];
       this.colaboradorDetFireList.push(colaboradorDetFire);
-    }   
+    }else{
+      let isExists = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario == colaboradorDetFire.codigoUsuario).length > 0;
+      if(!isExists){
+        this.colaboradorDetFireList.push(colaboradorDetFire);
+      }   
+    }
   }
 
   eliminarRecursoTabla(colaboradorDetFire: ColaboradorDetalleFire){
@@ -140,6 +147,10 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
     let valuePorcen = inputObject.value;
     colaboradorDetFire.porcentaje = Number(valuePorcen);
     this.updateColaboradorDetList(colaboradorDetFire);
+
+    let diferencia = 100 - this.sumaTotalPorcentaje(this.colaboradorDetFireList);
+    let textoDiferencia = diferencia+ " hora(s).";
+    this.regRecursos.controls.porAsignarLabel.setValue(textoDiferencia);
   }
 
   updateColaboradorDetList(colaboDetFire: ColaboradorDetalleFire){
@@ -149,15 +160,21 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
 
   validarPorcentajes(colabDetFireList: ColaboradorDetalleFire[]){
     let isValid = false;
+    let sumatotal = this.sumaTotalPorcentaje(colabDetFireList);
+    
+    if(100 >= sumatotal){
+      isValid = true;
+    }
+    return isValid;
+  }
+
+  sumaTotalPorcentaje(colabDetFireList: ColaboradorDetalleFire[]){
     let sumatotal: number = 0;
     colabDetFireList.forEach(element => {
       let valuePorcentaje = element.porcentaje;
       sumatotal = sumatotal+valuePorcentaje;
     });
 
-    if(100 >= sumatotal){
-      isValid = true;
-    }
-    return isValid;
+    return sumatotal;
   }
 }
