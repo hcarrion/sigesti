@@ -1,0 +1,102 @@
+<div [formGroup]="regContacto">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h4 class="card-title"><p style="color:#3F52B6; text-align: left;">
+                        <strong> <i class="material-icons">library_add</i> Registra Contacto</strong></p></h4>                    
+                </div>  
+                <div style="align-content: center; vertical-align: middle;">    
+            </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2" > 
+                            <mat-label style="font-size: small;"><strong>Codigo: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
+                                <input formControlName="codigoSVT" matInput #inputAtencion>
+                            </mat-form-field> 
+                        </div>                      
+                        <div class="col-md-2">
+                            <mat-label><strong style="font-size: small;">Estado: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field>
+                                <mat-select formControlName="estadoSelect" placeholder="Selecciona estado" style="font-size: small;">
+                                    <mat-option *ngFor="let estadolet of estado.detalle" [value]="estadolet">
+                                        {{estadolet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label style="font-size: small;"><strong>Nombres: </strong> </mat-label>  
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 20 caracteres">
+                                <input formControlName="tituloInput" matInput #inputTitulo maxlength="20" placeholder="Ingrese un Título" style="font-size: small;">
+                                <mat-hint align="end">{{inputTitulo.value?.length || 0}}/20</mat-hint>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div class="col-md-2"> 
+                            <mat-label style="font-size: small;"><strong>Cargo: </strong> </mat-label>  
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 50 caracteres">
+                                <input formControlName="tituloInput" matInput #inputTitulo maxlength="50" placeholder="Ingrese un Cargo" style="font-size: small;">
+                                <mat-hint align="end">{{inputTitulo.value?.length || 0}}/50</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Telefono: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 11 numeros">
+                                <input formControlName="sumillaInput" matInput #inputSumilla maxlength="11" placeholder="Ingrese telefono" id="telefono">
+                                <mat-hint align="end">{{inputSumilla.value?.length || 0}}/11</mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-2"> 
+                            <mat-label><strong>Correo: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3"> 
+                            <mat-form-field hintLabel="Max 200 numeros">
+                                <input formControlName="sumillaInput" matInput #inputSumilla maxlength="200" placeholder="Ingrese correo" id="correo">
+                                <mat-hint align="end">{{inputSumilla.value?.length || 0}}/200</mat-hint>
+                            </mat-form-field>
+                        </div>
+                    </div>                                                            
+                    <br>
+                    <div class="row">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-primary active" (click)='saveIniciativa()'>Guardar</button>
+                    </div>
+                    <div class="col-md-2" align="left">
+                        <button type="button" class="btn btn-info" (click) = "resetFields()">Limpiar</button>
+                    </div>
+                    <div class="col-md-1" >
+                        <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
+                    </div> 
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

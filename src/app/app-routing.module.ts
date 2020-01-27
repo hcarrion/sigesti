@@ -8,6 +8,7 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
 import { DialogRecursosComponent} from './modal/dialog-recursos/dialog-recursos.component';
 import { DialogRiesgosComponent} from './modal/dialog-riesgos/dialog-riesgos.component';
 import { DialogRiesgosMantenedorComponent} from './modal/dialog-riesgos/dialog-riesgos-mantenedor/dialog-riesgos-mantenedor.component';
+import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
 
 const routes: Routes = 
 [
@@ -16,6 +17,7 @@ const routes: Routes =
   { path: 'registro_horas', component: RegistroHorasComponent},
   { path: 'listado_atencion', component: ListadoAtencionComponent},
   { path: 'configuracion', component: ConfiguracionComponent},
+  { path: 'registro_contacto', component: RegistroContactoComponent},
   
   { path: '**', redirectTo: '/', pathMatch: 'full'},
 ];
