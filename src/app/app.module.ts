@@ -36,20 +36,12 @@ import { MaterialModule } from './material-module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { FusionChartsModule } from 'angular-fusioncharts';
 
-// Load FusionCharts
-import * as FusionCharts from 'fusioncharts';
-// Load Charts module
-import * as Charts from 'fusioncharts/fusioncharts.charts';
-// Load fusion theme
 import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import { DialogRegistraContactoComponent } from './modal/dialog-registra-contacto/dialog-registra-contacto.component';
 import { DialogRegistraEventoComponent } from './modal/dialog-registra-evento/dialog-registra-evento.component';
 import { DialogListaEventoComponent } from './modal/dialog-lista-evento/dialog-lista-evento.component';
 import { DialogRegistraRecursoEventoComponent } from './modal/dialog-registra-recurso-evento/dialog-registra-recurso-evento.component';
-// Add dependencies to FusionChartsModule
-FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
 
 
 @NgModule({
@@ -78,7 +70,6 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
   [
     BrowserModule,
     //MbscModule,
-    FusionChartsModule,
     AppRoutingModule,
     MatSliderModule,
     BrowserAnimationsModule,
