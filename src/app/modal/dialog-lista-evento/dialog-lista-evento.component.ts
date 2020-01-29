@@ -1,23 +1,22 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
-import { DialogRecursosComponent } from '../modal/dialog-recursos/dialog-recursos.component';
-import { DialogRiesgosComponent } from '../modal/dialog-riesgos/dialog-riesgos.component';
-import { DialogSeguimientoComponent} from "../modal/dialog-seguimiento/dialog-seguimiento.component";
-import { FirebaseIniciativaService } from '../shared/services/firebase-iniciativa.service';
-import { IniciativaFire } from '../shared/models/iniciativa-fire';
-import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
+import { DialogRecursosComponent } from '../../modal/dialog-recursos/dialog-recursos.component';
+import { DialogRiesgosComponent } from '../../modal/dialog-riesgos/dialog-riesgos.component';
+import { DialogSeguimientoComponent} from "../../modal/dialog-seguimiento/dialog-seguimiento.component";
+import { FirebaseIniciativaService } from '../../shared/services/firebase-iniciativa.service';
+import { IniciativaFire } from '../../shared/models/iniciativa-fire';
+import { DialogRegistraSeguimientoComponent } from '../../modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
-import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
-import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-lista-evento.component';
+import { DialogRegistraEventoComponent } from '../dialog-registra-evento/dialog-registra-evento.component';
+import { DialogRegistraRecursoEventoComponent } from '../dialog-registra-recurso-evento/dialog-registra-recurso-evento.component';
+
 
 @Component({
-  selector: 'app-listado-atencion',
-  templateUrl: './listado-atencion.component.html',
-  styleUrls: ['./listado-atencion.component.css']
+  selector: 'app-dialog-lista-evento',
+  templateUrl: './dialog-lista-evento.component.html',
+  styleUrls: ['./dialog-lista-evento.component.css']
 })
-export class ListadoAtencionComponent implements OnInit 
-{
-  habilitar: boolean;
+export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
   selected: boolean;
   nuevo: boolean;
   edit: boolean;
@@ -37,13 +36,12 @@ export class ListadoAtencionComponent implements OnInit
   
   public tipoDocumento: IniciativaFire[];
   public tipoDocumentoSeleccionado: IniciativaFire;
-  public TipoDocumenetHelp: Listadoatencionhelp[];
-  public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
+
   loading: boolean;
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
   openDialog(iniciativa: IniciativaFire) {
-    this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
+    this.matDialog.open(DialogRegistraRecursoEventoComponent, /*dialogConfig,*/
       { width: '1200px',
         height: '600px',
         data: iniciativa
@@ -51,37 +49,9 @@ export class ListadoAtencionComponent implements OnInit
     );
   }
 
-
-  openDialog2()
-  {
-    this.matDialog.open(DialogRiesgosComponent, /*dialogConfig,*/
-      { width: '1200px',
-        height: '600px'
-      }
-      );
-  }
-  openDialog3()
-  {
-    this.matDialog.open(DialogSeguimientoComponent, /*dialogConfig,*/
-    
-      { width: '1200px',
-        height: '600px'
-      }
-      );
-  }
   openDialog4()
   {
-    this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
-    
-      { width: '2000px',
-        height: '600px'
-      }
-      );
-  }
-
-  openDialog5()
-  {
-    this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
+    this.matDialog.open(DialogRegistraEventoComponent, /*dialogConfig,*/
     
       { width: '2000px',
         height: '600px'
@@ -162,11 +132,5 @@ export class ListadoAtencionComponent implements OnInit
     this.display = false;
   }
 
-  selectedTipoDocumentoHelp(tipo: Listadoatencionhelp){
-    this.TipoDocumenetHelpSeleccionado = tipo;
-    this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
-    /*$("#modalTipoDocumento").modal('hide');*/
-  }
-
-  
+ 
 }

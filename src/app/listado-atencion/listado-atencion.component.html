@@ -70,11 +70,13 @@
                     <ng-container matColumnDef="accion">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> ACCION </th>
                             <td mat-cell *matCellDef="let tipo">
-                                <p style="text-align: center; color:#3F52B6">
-                                    <strong><i class="material-icons link" (click)="openDialog(tipo)">people</i>                            
-                                <i class="material-icons link" (click)="openDialog2()" style="text-align: center; color:rgb(182, 63, 63)">notification_important</i>                         
-                                <i class="material-icons link" (click)="openDialog3()" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
-                                <i class="material-icons link" (click)="openDialog4()" style="text-align: center; color:rgb(236, 150, 22)">edit</i></strong></p>
+                                <p><strong> 
+                                    <i class="material-icons link" (click)="openDialog5(tipo)" style="text-align: center; color:rgb(43, 41, 160)">art_track</i>   
+                                    <i class="material-icons link" (click)="openDialog(tipo)">people</i>                            
+                                    <i class="material-icons link" (click)="openDialog2()" style="text-align: center; color:rgb(182, 63, 63)">notification_important</i>                         
+                                    <i class="material-icons link" (click)="openDialog3()" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
+                                    <i class="material-icons link" (click)="openDialog4()" style="text-align: center; color:rgb(236, 150, 22)">edit</i>
+                                 </strong></p>
                             </td>
                     </ng-container>
                     <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>

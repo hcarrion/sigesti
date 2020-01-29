@@ -36,17 +36,12 @@ import { MaterialModule } from './material-module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { FusionChartsModule } from 'angular-fusioncharts';
 
-// Load FusionCharts
-import * as FusionCharts from 'fusioncharts';
-// Load Charts module
-import * as Charts from 'fusioncharts/fusioncharts.charts';
-// Load fusion theme
 import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import { DialogRegistraContactoComponent } from './modal/dialog-registra-contacto/dialog-registra-contacto.component';
-// Add dependencies to FusionChartsModule
-FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
+import { DialogRegistraEventoComponent } from './modal/dialog-registra-evento/dialog-registra-evento.component';
+import { DialogListaEventoComponent } from './modal/dialog-lista-evento/dialog-lista-evento.component';
+import { DialogRegistraRecursoEventoComponent } from './modal/dialog-registra-recurso-evento/dialog-registra-recurso-evento.component';
 
 
 @NgModule({
@@ -65,13 +60,16 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
     DialogRegistraSeguimientoComponent,
     RegistroContactoComponent,
     DashboardComponent,
-    DialogRegistraContactoComponent
+    DialogRegistraContactoComponent,
+    DialogRegistraEventoComponent,
+    DialogListaEventoComponent,
+    DialogRegistraRecursoEventoComponent,
+    DialogRegistraEventoComponent
   ],
   imports: 
   [
     BrowserModule,
     //MbscModule,
-    FusionChartsModule,
     AppRoutingModule,
     MatSliderModule,
     BrowserAnimationsModule,
@@ -86,11 +84,9 @@ FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme)
   providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService, 
     DialogRecursosComponent,],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
-  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent],
+  DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent,
+  DialogListaEventoComponent, DialogRegistraRecursoEventoComponent, DialogRegistraEventoComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
-
-  
+export class AppModule {   
 }
-

@@ -5,4 +5,6 @@ export class ColaboradorDetalleFire {
     cargo: string;
     isJefe: boolean;
     porcentaje: number;
+    horasasig: number;
+    asignado: number;
 }
