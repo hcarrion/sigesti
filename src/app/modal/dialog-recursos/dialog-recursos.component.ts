@@ -126,7 +126,6 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
   }
 
   guardarRecursos(colabDetFireList: ColaboradorDetalleFire[]){
-    debugger;
     this.loading = true;
     let resultValidate = false;
     if(undefined != colabDetFireList && 0 != colabDetFireList.length){

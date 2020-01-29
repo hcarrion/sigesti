@@ -1,6 +1,6 @@
 import { ParametroDetalleFire } from './parametro-detalle-fire';
 import { ColaboradorDetalleFire } from './colaborador-detalle-fire';
-import { ContactoDetalleFire } from './contacto-detalle-fire';
+import { ContactoFire } from './contacto-fire';
 
 export class IniciativaFire {
     idIniciativa: string;
@@ -24,7 +24,7 @@ export class IniciativaFire {
     codigoSVT: string;
     fechaPaseProd: Date;
     gradoSatisfacccion: ParametroDetalleFire;
-    Contacto: ContactoDetalleFire;
+    contacto: ContactoFire;
     fechaIngresoRQ: Date;
     fechaFinComp: Date;
     fechaIngresoBroker: Date;

@@ -3,11 +3,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angu
 import { DialogRecursosComponent } from '../modal/dialog-recursos/dialog-recursos.component';
 import { DialogRiesgosComponent } from '../modal/dialog-riesgos/dialog-riesgos.component';
 import { DialogSeguimientoComponent} from "../modal/dialog-seguimiento/dialog-seguimiento.component";
-import { FirebaseIniciativaService } from '../shared/services/firebase-iniciativa.service';
-import { IniciativaFire } from '../shared/models/iniciativa-fire';
 import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { DialogRegistraContactoComponent } from '../modal/dialog-registra-contacto/dialog-registra-contacto.component';
+import { FirebaseContactoService } from '../shared/services/firebase-contacto.service';
+import { ContactoFire } from '../shared/models/contacto-fire';
 
 
 @Component({
@@ -23,38 +23,34 @@ export class RegistroContactoComponent implements OnInit {habilitar: boolean;
   tabla: any;
   mensajeAccion: string;
   display: boolean = false;
-  columnasTabla: string[] = ['numeroIniciativa', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
-  title = "Example Angular 8 Material Dialog";
-  iniciativas= new MatTableDataSource<IniciativaFire>([]);
+  columnasTabla: string[] = ['codigo', 'nombres','cargo','telefono','correo','estado','accion'];
+  contactos= new MatTableDataSource<ContactoFire>([]);
   selectedRowIndex: number = -1;
-  tipoDocumentoData = new MatTableDataSource<IniciativaFire>([]);
-  tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaFire>([]);
+  tipoDocumentoData = new MatTableDataSource<ContactoFire>([]);
+  tipoDocumentoDataBuscar = new MatTableDataSource<ContactoFire>([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   
-  public tipoDocumento: IniciativaFire[];
-  public tipoDocumentoSeleccionado: IniciativaFire;
+  public tipoDocumento: ContactoFire[];
+  public tipoDocumentoSeleccionado: ContactoFire;
   
   loading: boolean;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
+  constructor(private matDialog: MatDialog, private firebaseContactos: FirebaseContactoService) {}
 
-  openDialog(iniciativa: IniciativaFire) {
-    this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
+  openDialogEdit(contacto: ContactoFire) {
+    this.matDialog.open(DialogRegistraContactoComponent, /*dialogConfig,*/
       { width: '1200px',
-        height: '600px',
-        data: iniciativa
+        data: contacto
       }
     );
   }
 
-  openDialog4()
-  {
+  openDialogNew(){
     this.matDialog.open(DialogRegistraContactoComponent, /*dialogConfig,*/
-    
       { width: '2000px',
-        height: '600px'
+        data: new ContactoFire()
       }
-      );
+    );
   }
 
   onCloseHandled()
@@ -63,55 +59,50 @@ export class RegistroContactoComponent implements OnInit {habilitar: boolean;
   }
 
   ngOnInit() {
-    this.callIniciativas();
+    this.callContactos();
   }
 
-  async callIniciativas() {
+  async callContactos() {
     this.loading = true;
-    
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
-    iniciativasRef.subscribe(data => {
+    let contactosRef = this.firebaseContactos.getContactos();
+    contactosRef.subscribe(data => {
       var lista = [];
       for(var i = 0; i < data.length; i++){
-        //lista.push(data[i].payload.doc.data() as IniciativaFire);
-
-        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
-        let idIniciativa = data[i].payload.doc.id;
-        iniciativaObject.idIniciativa = idIniciativa;
-        lista.push(iniciativaObject);
-
+        let contactoObject= data[i].payload.doc.data() as ContactoFire;
+        let idContacto = data[i].payload.doc.id;
+        contactoObject.idContacto = idContacto;
+        lista.push(contactoObject);
       }
-      this.iniciativas =  new MatTableDataSource(lista);
-      this.iniciativas.paginator = this.paginator;
-      this.iniciativas.sort = this.sort;
+      this.contactos =  new MatTableDataSource(lista);
+      this.contactos.paginator = this.paginator;
+      this.contactos.sort = this.sort;
       this.InicializaDatosBusqueda();
       this.loading = false;
-     
-      
     });
   }
 
   InicializaDatosBusqueda(){
      // Inicializa los datos de busqueda
-     this.iniciativas.filterPredicate = (data, filter) => {
-      const dataStr = data.numeroIniciativa + data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
+     this.contactos.filterPredicate = (data, filter) => {
+      const dataStr = data.codigo + data.nombres + data.cargo.descripcion + data.telefono  + data.correo + data.estado.descripcion;
       return dataStr.toLowerCase().indexOf(filter) != -1;       
     }
   }
 
   buscarDatos(filterValue: string) {
-    this.iniciativas.filter = filterValue.trim().toLowerCase();
+    debugger;
+    this.contactos.filter = filterValue.trim().toLowerCase();
   }
 
   buscarDatosHelp(filterValue: string) {
-    this.iniciativas.filter = filterValue.trim();
+    this.contactos.filter = filterValue.trim();
   }
 
   highlight(row){
     this.selectedRowIndex = row.numeroIniciativa;
   }
 
-  selectedDocumento(todo: IniciativaFire) {
+  selectedDocumento(todo: ContactoFire) {
     this.InReset();
     this.habilitar = true;
     this.selected = true;
