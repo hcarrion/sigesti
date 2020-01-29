@@ -8,6 +8,15 @@
     <mat-sidenav #snav>
       <mat-nav-list>
         <br>
+        <a mat-list-item [routerLink]="['dashboard']"> 
+          <p style=color:#3F52B6>
+            <strong> 
+              <i class="material-icons md-11" style="vertical-align: middle;" >assignment</i>
+               Dashboard
+            </strong>
+          </p>
+        </a>
+        <br>
         <a mat-list-item [routerLink]="['listado_atencion']"> 
           <p style=color:#3F52B6>
             <strong> 
@@ -49,7 +58,7 @@
       </div>
       <div class="container text-center pb-5;" disabled>
          
-        <img src="assets\images\fondo8.png" class="img-fluid">
+     <!---   <img src="assets\images\fondo8.png" class="img-fluid">-->
 
         </div>
       

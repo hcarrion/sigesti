@@ -9,6 +9,7 @@ import { DialogRecursosComponent} from './modal/dialog-recursos/dialog-recursos.
 import { DialogRiesgosComponent} from './modal/dialog-riesgos/dialog-riesgos.component';
 import { DialogRiesgosMantenedorComponent} from './modal/dialog-riesgos/dialog-riesgos-mantenedor/dialog-riesgos-mantenedor.component';
 import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = 
 [
@@ -18,7 +19,7 @@ const routes: Routes =
   { path: 'listado_atencion', component: ListadoAtencionComponent},
   { path: 'configuracion', component: ConfiguracionComponent},
   { path: 'registro_contacto', component: RegistroContactoComponent},
-  
+  { path: 'dashboard', component: DashboardComponent},
   { path: '**', redirectTo: '/', pathMatch: 'full'},
 ];
 

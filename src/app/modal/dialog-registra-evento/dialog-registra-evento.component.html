@@ -1,4 +1,4 @@
-<div [formGroup]="regContacto">
+<div [formGroup]="regEvento">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -42,7 +42,7 @@
                         <div class="col-md-3"> 
                             <mat-form-field>
                                 <mat-select formControlName="tipoactividadSelect" placeholder="Selecciona tipo actividad" style="font-size: small;">
-                                    <mat-option *ngFor="let estadolet of estado.detalle" [value]="tipoactividadlet">
+                                    <mat-option *ngFor="let estadolet of estado.detalle" ><!--[value]="tipoactividadlet">-->
                                         {{estadolet.descripcion}}
                                     </mat-option>
                                 </mat-select>
