@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { ContactoFire } from '../models/contacto-fire';
 import { Observable, throwError } from 'rxjs';
 
@@ -8,6 +8,7 @@ import { Observable, throwError } from 'rxjs';
 })
 export class FirebaseContactoService {
   contactoListRef: AngularFirestoreCollection<any>;
+  contactoDoc: AngularFirestoreDocument<any>;
   constructor(private firestore: AngularFirestore) { }
 
   async createContacto(contactoFire: ContactoFire){
@@ -28,12 +29,39 @@ export class FirebaseContactoService {
   }
 
   async updateContacto(contactoFire: ContactoFire){
+    let isCodigoContact: boolean = false;
+    this.contactoDoc = this.firestore.doc('contactos/'+contactoFire.idContacto);
+    await this.contactoDoc.get().toPromise().then(doc => {
+      debugger;
+      let contactCodigo = doc.data().codigo;
+      if(contactoFire.codigo != contactCodigo){
+        isCodigoContact = true;
+      }
+      if (isCodigoContact) {
+        throw new Error("repetido");
+      }else{
+        debugger;
+        const contacto = JSON.parse(JSON.stringify(contactoFire));
+        return this.firestore.doc('contactos/'+contactoFire.idContacto).update(contacto);
+      }
+    }).catch((err) => {throw new Error(err.message);});
+  }
+
+  async updateContacto2(contactoFire: ContactoFire){
+    let isCodigoContact: boolean = false;
     this.contactoListRef = this.firestore.collection('contactos', ref => ref.where('codigo', '==', contactoFire.codigo));
     await this.contactoListRef.get().toPromise().then(doc => {
       debugger;
-      if (1 <= doc.size) {
+      doc.forEach(contactoObj => {
+        let contactCodigo = contactoObj.data().codigo;
+        if(contactoFire.codigo != contactCodigo){
+          isCodigoContact = true;
+        }
+      });
+      if (1 <= doc.size && isCodigoContact) {
         throw new Error("repetido");
       }else{
+        debugger;
         const contacto = JSON.parse(JSON.stringify(contactoFire));
         return this.firestore.doc('contactos/'+contactoFire.idContacto).update(contacto);
       }

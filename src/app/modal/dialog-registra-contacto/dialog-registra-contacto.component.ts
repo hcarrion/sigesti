@@ -364,7 +364,6 @@ export class DialogRegistraContactoComponent implements OnInit {
   }
 
  saveContacto(contacto: ContactoFire){
-    debugger;
     this.loading = true;
     let resultValidate = false;
     let contactoObject = new ContactoFire();
@@ -413,6 +412,7 @@ export class DialogRegistraContactoComponent implements OnInit {
           }
         );
       }else{
+        contactoObject.idContacto = contacto.idContacto;
         this.firebaseContactos.updateContacto(contactoObject).then(
           result => {
             this.loading = false;
