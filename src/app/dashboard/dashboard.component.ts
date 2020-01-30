@@ -57,8 +57,24 @@ export class DashboardComponent implements OnInit
   }
 
   chartClicked(e:any) {
-    alert(e);
-    this.iniciativas.filter = e.trim().toLowerCase();
+    
+    if(e.active.length > 0){
+      var points = [];
+      var pointSelected = e.active[0]._chart.tooltip._model.caretY;
+      var legends = e.active[0]._chart.legend.legendItems;
+      alert(e.active.length);
+      for (var i = 0; i < e.active.length; ++i) {
+        points.push(e.active[i]._model.y);
+      }
+    
+      let position = points.indexOf(pointSelected);
+      alert(pointSelected);
+      let label = legends[position].text;
+      
+    
+      console.log("Point: "+label);
+      alert("Point: "+label);
+    }
   }
 
   onCloseHandled()

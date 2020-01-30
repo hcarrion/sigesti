@@ -118,6 +118,94 @@ export class DialogRegistraContactoComponent implements OnInit {
     this.regContacto.reset();
   }
 
+  
+
+ saveContacto(contacto: ContactoFire){
+    this.loading = true;
+    let resultValidate = false;
+    let contactoObject = new ContactoFire();
+
+    contactoObject.codigo = this.regContacto.value.codigoContactoInput;
+    contactoObject.estado = this.regContacto.value.estadoGenSelect as ParametroDetalleFire;
+    contactoObject.nombres = this.regContacto.value.nombresInput;
+    contactoObject.cargo = this.regContacto.value.cargoSelect as ParametroDetalleFire;
+    contactoObject.telefono = this.regContacto.value.telefonoInput;
+    contactoObject.correo = this.regContacto.value.correoInput;
+    
+    this.regContacto = this.formBuilder.group({
+      codigoContactoInput: [contactoObject.codigo, Validators.required],
+      estadoGenSelect: [contactoObject.estado, Validators.required],
+      nombresInput: [contactoObject.nombres, Validators.required],
+      cargoSelect: [contactoObject.cargo, Validators.required],
+      telefonoInput: [contactoObject.telefono, Validators.required],
+      correoInput: [contactoObject.correo, Validators.required],
+    });
+
+    if (this.regContacto.invalid){
+      this.submitted = true;
+      resultValidate = true;
+    }
+   
+    if(resultValidate){
+      this.loading = false;
+      Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
+    }else{
+      if(undefined == contacto.idContacto){
+        this.firebaseContactos.createContacto(contactoObject).then(
+          result => {
+            this.loading = false;
+            Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+            /*this.resetFields();*/
+            this.close();
+          },
+          error => {
+            debugger;
+            this.loading = false;
+            if("repetido" == error.message){
+              Swal.fire('Advertencia!', 'Contacto ya existe.', 'warning');
+            }else{
+              Swal.fire('Error!', 'Error al guardar el contacto.', 'error');
+            }
+          }
+        );
+      }else{
+        contactoObject.idContacto = contacto.idContacto;
+        this.firebaseContactos.updateContacto(contactoObject).then(
+          result => {
+            this.loading = false;
+            Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+            /*this.resetFields();*/
+            this.close();
+          },
+          error => {
+            this.loading = false;
+            if("repetido" == error.message){
+              Swal.fire('Advertencia!', 'Contacto ya existe.', 'warning');
+            }else{
+              Swal.fire('Error!', 'Error al guardar el contacto.', 'error');
+            }
+          }
+        );
+      }
+    }
+  }
+  close(): void {
+    this.dialogRef.close();
+  }
+
+  compareItems(obj1, obj2) {
+    return obj1 && obj2 && obj1.codigo===obj2.codigo;
+  }
+
+
+
+
+
+  
+
+
+
+  /* Add Cargo */
   saveCargo() {
     let paramObject = new ParametroFire();
     paramObject.nombre = "cargo";
@@ -362,83 +450,5 @@ export class DialogRegistraContactoComponent implements OnInit {
     
     paramObject.detalle = paramDetObjectList;
     this.firebaseParametros.createParameter(paramObject);
-  }
-
- saveContacto(contacto: ContactoFire){
-    this.loading = true;
-    let resultValidate = false;
-    let contactoObject = new ContactoFire();
-
-    contactoObject.codigo = this.regContacto.value.codigoContactoInput;
-    contactoObject.estado = this.regContacto.value.estadoGenSelect as ParametroDetalleFire;
-    contactoObject.nombres = this.regContacto.value.nombresInput;
-    contactoObject.cargo = this.regContacto.value.cargoSelect as ParametroDetalleFire;
-    contactoObject.telefono = this.regContacto.value.telefonoInput;
-    contactoObject.correo = this.regContacto.value.correoInput;
-    
-    this.regContacto = this.formBuilder.group({
-      codigoContactoInput: [contactoObject.codigo, Validators.required],
-      estadoGenSelect: [contactoObject.estado, Validators.required],
-      nombresInput: [contactoObject.nombres, Validators.required],
-      cargoSelect: [contactoObject.cargo, Validators.required],
-      telefonoInput: [contactoObject.telefono, Validators.required],
-      correoInput: [contactoObject.correo, Validators.required],
-    });
-
-    if (this.regContacto.invalid){
-      this.submitted = true;
-      resultValidate = true;
-    }
-   
-    if(resultValidate){
-      this.loading = false;
-      Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
-    }else{
-      if(undefined == contacto.idContacto){
-        this.firebaseContactos.createContacto(contactoObject).then(
-          result => {
-            this.loading = false;
-            Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
-            /*this.resetFields();*/
-            this.close();
-          },
-          error => {
-            debugger;
-            this.loading = false;
-            if("repetido" == error.message){
-              Swal.fire('Advertencia!', 'Contacto ya existe.', 'warning');
-            }else{
-              Swal.fire('Error!', 'Error al guardar el contacto.', 'error');
-            }
-          }
-        );
-      }else{
-        contactoObject.idContacto = contacto.idContacto;
-        this.firebaseContactos.updateContacto(contactoObject).then(
-          result => {
-            this.loading = false;
-            Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
-            /*this.resetFields();*/
-            this.close();
-          },
-          error => {
-            debugger;
-            this.loading = false;
-            if("repetido" == error.message){
-              Swal.fire('Advertencia!', 'Contacto ya existe.', 'warning');
-            }else{
-              Swal.fire('Error!', 'Error al guardar el contacto.', 'error');
-            }
-          }
-        );
-      }
-    }
-  }
-  close(): void {
-    this.dialogRef.close();
-  }
-
-  compareItems(obj1, obj2) {
-    return obj1 && obj2 && obj1.codigo===obj2.codigo;
   }
 }

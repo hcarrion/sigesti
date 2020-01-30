@@ -42,7 +42,7 @@ export class ListadoAtencionComponent implements OnInit
   loading: boolean;
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
-  openDialog(iniciativa: IniciativaFire) {
+  openDialogRecursos(iniciativa: IniciativaFire) {
     this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
       { width: '1200px',
         height: '600px',
@@ -69,14 +69,22 @@ export class ListadoAtencionComponent implements OnInit
       }
       );
   }
-  openDialog4()
-  {
+  openDialogNew(){
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
-    
       { width: '2000px',
-        height: '600px'
+        height: '600px',
+        data: new IniciativaFire()
       }
-      );
+    );
+  }
+
+  openDialogEdit(iniciativa: IniciativaFire){
+    this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
+      { width: '2000px',
+        height: '600px',
+        data: iniciativa
+      }
+    );
   }
 
   openDialog5()
