@@ -1,6 +1,10 @@
+<div *ngIf="loading" class="content-load">
+    <br>
+    <mat-spinner class="child-load"></mat-spinner>
+    <br>
+    <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+</div>
 <div [formGroup]="regIniciativa">
-    <div class="row">
-        <div class="col-md-12">
             <div class="card">
                 <div class="card-header card-header-info">
                     <h4 class="card-title"><p style="color:#3F52B6; text-align: left;">
@@ -27,7 +31,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
-                                <input formControlName="codigoSVT" matInput #inputAtencion>
+                                <input formControlName="codigoSvtInput" matInput #inputAtencion>
                             </mat-form-field> 
                         </div>                      
                         <div class="col-md-2">
@@ -246,14 +250,14 @@
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-2">
-                            <mat-label><strong>Comtacto: </strong> </mat-label>
+                            <mat-label><strong>Contacto: </strong> </mat-label>
                             
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="categoriaSelect" placeholder="Selecciona categoría">
-                                    <mat-option *ngFor="let categorialet of categoria.detalle" [value]="categorialet">
-                                        {{categorialet.descripcion}}
+                                <mat-select formControlName="contactoSelect" placeholder="Selecciona contacto">
+                                    <mat-option *ngFor="let contactolet of contactos" [value]="contactolet">
+                                        {{contactolet.nombres}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -289,24 +293,20 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row">
-                        
-                        <div class="col-md-5"></div>
-                        <div class="col-md-2">
-                            <button type="button" class="btn btn-primary active" (click)='saveIniciativa()'>Guardar</button>
-                    </div>
-                    <div class="col-md-2" align="left">
-                        <button type="button" class="btn btn-info" (click) = "resetFields()">Limpiar</button>
-                    </div>
-                    <div class="col-md-1" >
-                        <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
-                    </div> 
-                    </div>
-
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="row">
+                <div class="col-md-9"></div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-primary btn-sm active" (click)='saveIniciativa()'>Guardar</button>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-info btn-sm" (click) = "resetFields()">Limpiar</button>
+                </div>
+                <div class="col-md-1" >
+                    <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
+                </div> 
+            </div>
 </div>
 
 
