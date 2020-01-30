@@ -77,6 +77,7 @@ export class DialogRegistraContactoComponent implements OnInit {
     this.regContacto.controls.nombresInput.setValue(this.contacto.nombres);
     this.regContacto.controls.telefonoInput.setValue(this.contacto.telefono);
     this.regContacto.controls.correoInput.setValue(this.contacto.correo);
+    /*this.regContacto.controls.estado.setValue(this.contacto.estado);*/
   }
 
   saveParametro() {
@@ -435,5 +436,9 @@ export class DialogRegistraContactoComponent implements OnInit {
   }
   close(): void {
     this.dialogRef.close();
+  }
+
+  compareItems(obj1, obj2) {
+    return obj1 && obj2 && obj1.codigo===obj2.codigo;
   }
 }
