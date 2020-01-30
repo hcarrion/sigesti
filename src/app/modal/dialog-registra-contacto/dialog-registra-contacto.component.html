@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="estadoGenSelect" placeholder="Selecciona estado" style="font-size: small;">
+                                <mat-select formControlName="estadoGenSelect" placeholder="Selecciona estado" style="font-size: small;" [compareWith]="compareItems" [(ngModel)]="contacto.estado"> 
                                     <mat-option *ngFor="let estadolet of estadoGen.detalle" [value]="estadolet">
                                         {{estadolet.descripcion}}
                                     </mat-option>
@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="cargoSelect" placeholder="Selecciona cargo" style="font-size: small;">
+                                <mat-select formControlName="cargoSelect" placeholder="Selecciona cargo" style="font-size: small;" [compareWith]="compareItems" [(ngModel)]="contacto.cargo">
                                     <mat-option *ngFor="let cargolet of cargo.detalle" [value]="cargolet">
                                         {{cargolet.descripcion}}
                                     </mat-option>
