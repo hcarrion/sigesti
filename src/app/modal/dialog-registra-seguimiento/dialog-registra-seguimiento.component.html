@@ -31,7 +31,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
-                                <input formControlName="codigoSvtInput" matInput #inputAtencion>
+                                <input formControlName="codigoSVTInput" matInput #inputAtencion>
                             </mat-form-field> 
                         </div>                      
                         <div class="col-md-2">
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="estadoSelect" placeholder="Selecciona estado" style="font-size: small;">
+                                <mat-select formControlName="estadoSelect" placeholder="Selecciona estado" style="font-size: small;" [compareWith]="compareItems" [(ngModel)]="iniciativa.estado">
                                     <mat-option *ngFor="let estadolet of estado.detalle" [value]="estadolet">
                                         {{estadolet.descripcion}}
                                     </mat-option>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="jefeProyectoSelect" placeholder="Selecciona jefe de proyecto" style="font-size: small;">
+                                <mat-select formControlName="jefeProyectoSelect" placeholder="Selecciona jefe de proyecto" style="font-size: small;" [compareWith]="compareItems" [(ngModel)]="iniciativa.jefeProyecto">
                                     <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores" [value]="colaboradorlet">
                                         {{colaboradorlet.nombres}}
                                     </mat-option>
@@ -91,7 +91,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="usuarioProcesosSelect" placeholder="Selecciona usuario de procesos">
+                                <mat-select formControlName="usuarioProcesosSelect" placeholder="Selecciona usuario de procesos" [compareWith]="compareItems" [(ngModel)]="iniciativa.usuarioProcesos">
                                     <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores" [value]="colaboradorlet">
                                         {{colaboradorlet.nombres}}
                                     </mat-option>
@@ -180,7 +180,7 @@
 
                         <div class="col-md-3">
                             <mat-form-field>
-                                <mat-select [formControl]="panelColor" placeholder="Selecciona prioridad" panelClass="example-panel-{{panelColor.value.codigo}}">
+                                <mat-select formControlName="prioridadSelect" placeholder="Selecciona prioridad" [compareWith]="compareItems" [(ngModel)]="iniciativa.prioridad">
                                     <mat-option *ngFor="let prioridadlet of prioridad.detalle" [value]="prioridadlet">
                                         {{prioridadlet.descripcion}}
                                     </mat-option>
@@ -196,7 +196,7 @@
                         </div>
                         <div class="col-md-3">
                             <mat-form-field>
-                                <mat-select formControlName="clasificacionSelect" placeholder="Selecciona clasificación">
+                                <mat-select formControlName="clasificacionSelect" placeholder="Selecciona clasificación" [compareWith]="compareItems" [(ngModel)]="iniciativa.clasificacion">
                                     <mat-option *ngFor="let clasificacionlet of clasificacion.detalle" [value]="clasificacionlet">
                                         {{clasificacionlet.descripcion}}
                                     </mat-option>
@@ -209,7 +209,7 @@
                         </div>
                         <div class="col-md-3">
                             <mat-form-field>
-                                <mat-select formControlName="areaSelect" placeholder="Selecciona área">
+                                <mat-select formControlName="areaSelect" placeholder="Selecciona área" [compareWith]="compareItems" [(ngModel)]="iniciativa.area"> 
                                     <mat-option *ngFor="let arealet of area.detalle" [value]="arealet">
                                         {{arealet.descripcion}}
                                     </mat-option>
@@ -226,7 +226,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="categoriaSelect" placeholder="Selecciona categoría">
+                                <mat-select formControlName="categoriaSelect" placeholder="Selecciona categoría" [compareWith]="compareItems" [(ngModel)]="iniciativa.categoria">
                                     <mat-option *ngFor="let categorialet of categoria.detalle" [value]="categorialet">
                                         {{categorialet.descripcion}}
                                     </mat-option>
@@ -238,7 +238,7 @@
                         </div>
                         <div class="col-md-3">
                             <mat-form-field>
-                                <mat-select formControlName="tipoSelect" placeholder="Selecciona tipo">
+                                <mat-select formControlName="tipoSelect" placeholder="Selecciona tipo" [compareWith]="compareItems" [(ngModel)]="iniciativa.tipo">
                                     <mat-option *ngFor="let tipolet of tipo.detalle" [value]="tipolet">
                                         {{tipolet.descripcion}}
                                     </mat-option>
@@ -255,7 +255,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-                                <mat-select formControlName="contactoSelect" placeholder="Selecciona contacto">
+                                <mat-select formControlName="contactoSelect" placeholder="Selecciona contacto" [compareWith]="compareItems" [(ngModel)]="iniciativa.contacto">
                                     <mat-option *ngFor="let contactolet of contactos" [value]="contactolet">
                                         {{contactolet.nombres}}
                                     </mat-option>
@@ -267,7 +267,7 @@
                         </div>
                         <div class="col-md-3">
                             <mat-form-field hintLabel="Max 11 caracteres">
-                                <input formControlName="telefonoInput" matInput #inputHoras  placeholder="Telefono celualr/fijo" type="number" >
+                                <input formControlName="telefonoContactoInput" matInput #inputHoras  placeholder="Telefono celualr/fijo" type="number" >
                             </mat-form-field> 
                         </div>
                     </div>
@@ -280,7 +280,7 @@
                         </div>
                         <div class="col-md-3">
                             <mat-form-field hintLabel="Max 150 caracteres">
-                                <input formControlName="correoInput" matInput #inputHoras  placeholder="Correo nombre@confianza.pe" type="email" >
+                                <input formControlName="correoContactoInput" matInput #inputHoras  placeholder="Correo nombre@confianza.pe" type="email" >
                             </mat-form-field> 
                         </div>
                         <div class="col-md-2"> 
@@ -288,7 +288,7 @@
                         </div>
                         <div class="col-md-3">
                             <mat-form-field hintLabel="Max 4 caracteres">
-                                <input formControlName="anexoInput" matInput #inputHoras  placeholder="Anexo de llamada" type="number" >
+                                <input formControlName="anexoContactoInput" matInput #inputHoras  placeholder="Anexo de llamada" type="number" >
                             </mat-form-field> 
                         </div>
                     </div>
@@ -298,7 +298,7 @@
             <div class="row">
                 <div class="col-md-9"></div>
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-primary btn-sm active" (click)='saveIniciativa()'>Guardar</button>
+                    <button type="button" class="btn btn-primary btn-sm active" (click)='saveIniciativa(iniciativa)'>Guardar</button>
                 </div>
                 <div class="col-md-1">
                     <button type="button" class="btn btn-info btn-sm" (click) = "resetFields()">Limpiar</button>

@@ -7,5 +7,6 @@ export class ContactoFire {
     nombres: string;
     cargo: ParametroDetalleFire;
     telefono: number;
+    anexo: number;
     correo: string;
 }
