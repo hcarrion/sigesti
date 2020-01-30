@@ -14,6 +14,8 @@ import { FirebaseIniciativaService } from '../../shared/services/firebase-inicia
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import {MAT_DATE_LOCALE} from '@angular/material';
+import { ContactoFire } from 'src/app/shared/models/contacto-fire';
+import { FirebaseContactoService } from 'src/app/shared/services/firebase-contacto.service';
 
 @Component({
   selector: 'app-dialog-registra-seguimiento',
@@ -33,14 +35,17 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   prioridad: ParametroFire = new ParametroFire();
   area: ParametroFire = new ParametroFire();
   colaboradores: ColaboradorFire = new ColaboradorFire();
+  contactos: ContactoFire[] = [];
   iniciativas: IniciativaFire = new IniciativaFire();
 
   panelColor = new FormControl('1');
+  loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRegistraSeguimientoComponent>, private _ngZone: NgZone, private firestoreService: FirestoreService, 
     private formBuilder: FormBuilder, 
     private firebaseParametros: FirebaseParametroService, 
     private firebaseColaboradores: FirebaseColaboradorService, 
-    private firebaseIniciativas: FirebaseIniciativaService) {
+    private firebaseIniciativas: FirebaseIniciativaService,
+    private firebaseContactos: FirebaseContactoService) {
     this.regIniciativa = new FormGroup({
       estadoSelect: new FormControl(),
       tipoSelect: new FormControl(),
@@ -57,7 +62,9 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       objSecundarioTextArea: new FormControl(),
       fechaInicioInput: new FormControl(),
       horaEstimadaInput: new FormControl(),
-      fechaFinInput: new FormControl()
+      fechaFinInput: new FormControl(),
+      codigoSvtInput: new FormControl(),
+      contactoSelect: new FormControl()
     });
   }
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
@@ -73,8 +80,10 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   }
 
   async callParametros() {
+    this.loading = true;
     let parametrosRef = this.firebaseParametros.getParametros();
     let colaboradoresRef = this.firebaseColaboradores.getColaboradores();
+    let contactosRef = this.firebaseContactos.getContactos();
 
       parametrosRef.subscribe(data => {data.forEach(paramObj => {
           let paramObject= paramObj.payload.doc.data() as ParametroFire;
@@ -90,6 +99,13 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       colaboradoresRef.subscribe(data => {data.forEach(colabObj => {
         let colabObject= colabObj.payload.doc.data() as ColaboradorFire;
         this.colaboradores = colabObject;
+      });
+    });
+
+      contactosRef.subscribe(data => {data.forEach(contactObj => {
+        let contactObject= contactObj.payload.doc.data() as ContactoFire;
+        this.contactos.push(contactObject);
+        this.loading = false;
       });
     });
   }
@@ -170,36 +186,29 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   }
 
   saveIniciativa(){
+    this.loading = true;
     let resultValidate = false;
     let iniciativaObject = new IniciativaFire();
 
     iniciativaObject.numeroIniciativa = this.regIniciativa.value.numIniciativaInput;
+    iniciativaObject.codigoSVT = this.regIniciativa.value.codigoSvtInput;
     iniciativaObject.estado = this.regIniciativa.value.estadoSelect as ParametroDetalleFire;
     iniciativaObject.titulo = this.regIniciativa.value.tituloInput;
     iniciativaObject.jefeProyecto = this.regIniciativa.value.jefeProyectoSelect as ColaboradorDetalleFire;
     iniciativaObject.sumilla = this.regIniciativa.value.sumillaInput;
     iniciativaObject.usuarioProcesos = this.regIniciativa.value.usuarioProcesosSelect as ColaboradorDetalleFire;
-    
     iniciativaObject.objetivoPrincipal = this.regIniciativa.value.objPrincipalTextArea;
-    
     iniciativaObject.objetivoSecundario = this.regIniciativa.value.objSecundarioTextArea;
-    
     iniciativaObject.fechaInicio = this.regIniciativa.value.fechaInicioInput;
-    
     iniciativaObject.horaEstimada = this.regIniciativa.value.horaEstimadaInput;
-    
     iniciativaObject.fechaFin = this.regIniciativa.value.fechaFinInput;
-   
     iniciativaObject.prioridad = this.panelColor.value as ParametroDetalleFire;
-    
     iniciativaObject.clasificacion = this.regIniciativa.value.clasificacionSelect as ParametroDetalleFire;
-   
     iniciativaObject.area = this.regIniciativa.value.areaSelect as ParametroDetalleFire;
-   
     iniciativaObject.categoria = this.regIniciativa.value.categoriaSelect as ParametroDetalleFire;
-    
     iniciativaObject.tipo = this.regIniciativa.value.tipoSelect as ParametroDetalleFire;
-    
+    iniciativaObject.contacto = this.regIniciativa.value.contactoSelect as ContactoFire;
+
     this.regIniciativa = this.formBuilder.group({
       tituloInput: [iniciativaObject.titulo, Validators.required],
       estadoSelect: [iniciativaObject.estado, Validators.required],
@@ -215,6 +224,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       areaSelect: [iniciativaObject.area, Validators.required],
       categoriaSelect: [iniciativaObject.categoria , Validators.required],
       tipoSelect: [iniciativaObject.tipo, Validators.required],
+      contactoSelect: [iniciativaObject.contacto, Validators.required],
     });
 
     if (this.regIniciativa.invalid) 
@@ -222,8 +232,6 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       this.submitted = true;
       resultValidate = true;
     }
-
-
     
     if(resultValidate){
       Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');

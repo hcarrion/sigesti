@@ -37,11 +37,11 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
-import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import { DialogRegistraContactoComponent } from './modal/dialog-registra-contacto/dialog-registra-contacto.component';
 import { DialogRegistraEventoComponent } from './modal/dialog-registra-evento/dialog-registra-evento.component';
 import { DialogListaEventoComponent } from './modal/dialog-lista-evento/dialog-lista-evento.component';
 import { DialogRegistraRecursoEventoComponent } from './modal/dialog-registra-recurso-evento/dialog-registra-recurso-evento.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -68,8 +68,8 @@ import { DialogRegistraRecursoEventoComponent } from './modal/dialog-registra-re
   ],
   imports: 
   [
-    BrowserModule,
-    //MbscModule,
+    BrowserModule,    
+    ChartsModule,
     AppRoutingModule,
     MatSliderModule,
     BrowserAnimationsModule,

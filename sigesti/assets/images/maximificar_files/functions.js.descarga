@@ -1,0 +1,944 @@
+/**
+ * [strongPassword Determina la fortaleza de la contraseña de un usuario mostrando un indicador de fortaleza.
+ *  La vista del retorno de la funcion está condicionada por los estilos asociados a esta.]
+ * @param  {[object]} data        [objeto ]
+ * @param  {[string]} nameContent [Nombre del contenedor donde se creara el flotante con indicador de fortaleza]
+ * @param  {[int]} 	  id          [id del contendor(nameContent_id) permite crear un div unico para un input]
+ * @param  {[string]} text1       [Titulo del div sobre indicador de contraseña]
+ * @param  {[string]} text2       [Informacion sobre el usuario]
+ * @return {[html]}               [Div con estructura para indicador de fortaleza]
+ */
+ function strongPassword(data,nameContent,id,text1,text2){
+ 	try{
+	 	$('.'+nameContent+id).html('<div class="pswd_info" id="pswd_info_'+id+'"><h4>'+text1+':</h4><div class="meter" id="passwdBar_'+id+'"><span class="strength-bar" id="strength-bar_'+id+'"></span></div> <p>'+text2+'</p></div>');
+
+	 	$('#pswd_info_'+id).css("display","block");
+
+	 	$(data).focus(function() {
+	 		$('#pswd_info_'+id).css("display","block");
+	 		$('#strength-bar_'+id).removeClass();
+	 		$('#strength-bar_'+id).addClass('strength-bar');
+	 	}).blur(function() {
+	 		$('#pswd_info_'+id).hide();
+	 	});
+
+	 	var pswd = data.value;
+	 	var count =0;
+		//Largo de la contraseña
+		if ( pswd.length > 5 ) {
+			count=count+100;
+		} 
+		//Validar letras en la contraseña
+		if ( pswd.match(/[A-z]/) ) {
+			count=count+30;
+		} 
+		//Validar letras en mayúsculas en la contraseña
+		if ( pswd.match(/[A-Z]/) ) {
+			count=count+60;
+		}
+		//Validar numeros en la contraseña
+		if ( pswd.match(/\d/) ) {
+			count=count+20;
+		}
+
+		//Se determina el tipo de color y ancho del indicador de fortaleza
+		if(count<=110){
+			$('#strength-bar_'+id).removeClass().addClass('short');
+			$('#strength-bar_'+id).addClass('strength-bar');
+		}
+		if(count>110 && count<210){
+			$('#strength-bar_'+id).removeClass().addClass('good');
+			$('#strength-bar_'+id).addClass('strength-bar');
+		}
+		if(count>=210){
+			$('#strength-bar_'+id).removeClass().addClass('strong');
+			$('#strength-bar_'+id).addClass('strength-bar');
+		}
+	}
+	catch(err){
+		// console.log(err.message);
+	}	
+}
+
+
+/**
+ * [minCharactersPass Valida la cantidad de caracteres en un input de tipo password. Necesita de validationEngine.js para funcionar]
+ * @param  {[type]} field   [Propiedades del input. Permite obtener la cantidad de caracteres del input.]
+ * @param  {[type]} rules   [Reglas aplicadas el input.]
+ * @param  {[type]} i       [contador]
+ * @param  {[type]} options [Objeto con las opciones asociadas a validate]
+ * @return {[string]}       [Texto asociado a las reglas de validate (validationEngine) que indica el minimo de caracteres para un input tipo password]
+ */
+function minCharactersPass(field, rules, i, options){
+	try{
+		if (field.val().length<field.context.min && field.val().length!=0) {
+			return options.allrules.passMinCharacters.alertText.replace("#number#",field.context.min);
+		}
+	}
+	catch(err){
+		// console.log(err.message);
+	}
+}
+
+/**
+ * [cambiarTipoDeVista Cambia la vista de las ofertas ocultando elementos deacuerdo al tipo de vista que se desea mostrar]
+ * @param  {[string]} contenedorItem         [Se refiere al nombre del contenedor padre de la oferta]
+ * @param  {[string]} contenedorOferta       [Se refiere al nombre del contenedor de la oferta]
+ * @param  {[int]} 	  tipoDeVista            [Se refiere al tipo de vista simple = 1 o normal != 1]
+ * @param  {[string]} contenedorAEsconder    [Se refiere al contenedor que contiene los elementos a esconder]
+ * @param  {[int]}    contenedorOfertaAltura [Altura del contenedor de la oferta]
+ * @param  {[int]}    contenedorItemAltura   [Altura del contenedor padre de la oferta]
+ * @param  {[string]} idVistaNormal          [id del boton que permite la vista simple]
+ * @param  {[string]} idVistaSimple          [id del contenedor que permite la vista normal]
+ * @param  {[int]} 	  diff                   [Valor que se espera restar al contenedor de la oferta en vista simple]
+ * @param  {[string]} socialContenedor       [Id o clase del contenedor de botones compartir]
+ * @return {[void]}                          [Se esconden o muestran los elementos]
+ */
+function cambiarTipoDeVista(contenedorItem,contenedorOferta,tipoDeVista,contenedorAEsconder,contenedorOfertaAltura,contenedorItemAltura,idVistaNormal,idVistaSimple,diff,socialContenedor){
+	try{
+		var heightOffer = contenedorOfertaAltura;
+		var heightItem = contenedorItemAltura;
+		var heightDiff = diff;
+		
+		if (tipoDeVista == 1) {
+			$(contenedorOferta).css("height","auto");
+			$(contenedorItem).css("height","auto");
+			$(contenedorAEsconder).css("display","none");
+			$(idVistaNormal).css("display","none");
+			$(idVistaSimple).css("display","block");
+			$(socialContenedor).css("display","none");
+		}else{
+			$(contenedorOferta).height(heightOffer);
+			$(contenedorItem).height(heightItem);
+			$(contenedorAEsconder).css("display","block");
+			$(idVistaNormal).css("display","block");
+			$(idVistaSimple).css("display","none");
+			$(socialContenedor).css("display","block");
+
+		}
+	}
+	catch(err){
+		// console.log(err.message);
+	}
+
+}
+
+/**
+ * [createCss Crea un link css en el head del documento html]
+ * @param  {[string]} css_file [Se refiere al path de la hoja de estilo css]
+ * @return {[void]}            [Crea un link con referencia a una hoja .css]
+ */
+function createCss (css_file) {        
+    var fileref=document.createElement("link");
+    fileref.setAttribute("rel", "stylesheet");
+    fileref.setAttribute("type", "text/css");
+    fileref.setAttribute("href", css_file);
+    document.getElementsByTagName("head")[0].appendChild(fileref);
+}
+
+
+/**
+ * [formatoDocumentoIdentidad: Retorna mensaje restricción de caracteres. Necesita de validationEngine.js para funcionar]
+ * @param  {[type]} field
+ * @param  {[type]} rules
+ * @param  {[type]} i
+ * @param  {[type]} options
+ * @return {[string]}
+ * En esta función se tiene encuenta los cambios #161843 (mostrar mensaje de mínimo de caracteres) y #161864 (mostrar mensaje de máximo de caracteres)
+ */
+function formatoDocumentoIdentidad(field, rules, i, options){
+	try{
+	tipoDocId = $(".tipoDocumentoIdentidad").val();
+	paisDocId = $(".paisDocumentoIdentidad").val();
+	pais = paisDocId.split(':')[1];
+	switch(pais){
+		case 'CO':
+			switch(tipoDocId){
+				case '11':  	/* En las bases de paises menos en Chile, para el pais Colombia el 11 corresponde a "Documento de identidad" */
+				case '4': 	/* En las base de Chile, para el pais Colombia el 4 corresponde a "Documento de identidad" */
+					if (field.val().length>11 && field.val().length!=0) {
+						return options.allrules.docIdentidadMaxCaracteres.alertText;
+					} else if (field.val().length<5 && field.val().length!=0){
+						return options.allrules.docIdentidadMinCaracteres.alertText;
+					}
+					break;
+				default:
+					if (field.val().length<5 && field.val().length!=0){
+						return options.allrules.docIdentidadMinCaracteres.alertText;
+					}
+					break;
+			}
+			break;
+		/* aca agregar nuevos casos dependiendo el pais */
+		/*case '':			
+			switch(tipoDocId){
+				case '':
+					// ACA LA VALIDACION
+					break;
+			}
+			break;
+		case '':
+			break;
+		case '':
+			break;*/
+		default:
+			if (field.val().length<5 && field.val().length!=0){
+				return options.allrules.docIdentidadMinCaracteres.alertText;
+			}
+			break;
+	}
+	}
+	catch(err){
+		// console.log(err.message);
+	}
+}
+function emailValidate(field, rules, i, options){
+	
+	var expreg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\..{2,4}$/g;
+	if(field.val().length > 0 && !expreg.test(field.val())) 
+		return options.allrules.email.alertText;
+}
+function regCellPhone(field, rules, i, options){
+	var expreg = /^\([0-9]{2}\) [0-9]{5}-[0-9]{4}$/;
+	if(!expreg.test(field.val())) 
+		return options.allrules.formatPhone.alertText;
+}
+
+function regPhoneFijo(field, rules, i, options){
+	var expreg = /^\([0-9]{2}\) [0-9]{4}-[0-9]{4}$/;
+
+	if($.inArray("required", rules) != -1 && field.val() == "")
+		return options.allrules.required.alertText;
+
+	if(!expreg.test(field.val())) 
+		return options.allrules.formatPhone.alertText;
+}
+
+function validateZipCode(field, rules, i, options){
+	var expreg = /^[0-9]{5}-[0-9]{3}$/;
+	if(!expreg.test(field.val())) 
+		return options.allrules.formatZipCode.alertText;
+}
+
+
+
+/**
+ * [requestAjax Permite realizar una peticion( request ) al backend por medio de Ajax]
+ * @param  {[type]} method      [Tipo de metodo de request a realizar ej: POST, GET]
+ * @param  {[type]} urlRequest  [Url con la redireccion hacia donde se realizara el request]
+ * @param  {[type]} data        [Datos a enviar en el request]
+ * @param  {[type]} reloadUrl   [url de redireccion cuando se detecta un error]
+ * @param  {[type]} dataType   	[Tipo de dato que se espera de respuesta]
+ * @param  {[type]} errorNumber [numero de error a desplegar. Agregar errores en info.php]
+ * @param  {[type]} validate    [Determina el tipo de validacion a realizar para la respuesta desde el backend]
+ * @param  {[type]} async    	[Determina si la llamada es asincrona o sincrona. Por defecto es asincrona]
+ * @return {[void]}             [Si detecta una excepcion en tiempo de ejecucion realizara una redireccion o accion predefinida]
+ */
+
+function requestAjax(method, urlRequest, data, reloadUrl, dataType, errorNumber, validate, async){
+	try{
+		var _errorNumber =  (typeof(errorNumber)!= "undefined")?errorNumber:'83';
+		var _reloadUrl = (typeof(reloadUrl)!= "undefined")?reloadUrl:location.protocol+'//'+location.host+'/contacto';
+
+		/*Requeridos*/
+
+		var _method = (typeof(method)!= "undefined")?method:location.assign(reloadUrl+'/'+_errorNumber);
+		var _urlRequest = (typeof(urlRequest)!= "undefined")?urlRequest:location.assign(reloadUrl+'/'+_errorNumber);
+		var _data = (typeof(data)!= "undefined")?data:location.assign(reloadUrl+'/'+_errorNumber);
+
+		/*Opcionales*/		
+		var _validate = (typeof(validate)!= "undefined")?validate:"";
+		var _dataType = (typeof(dataType)!= "undefined")?dataType:"";
+		var _async = (typeof(async)!= "undefined")?async:true;
+
+		/*Otras Variables*/
+		var testData = "";
+		var debug = false;//cambiar a true para activar modo debug
+
+	 	return $.ajax({
+	        url: _urlRequest,
+	        type: _method,
+	        data: _data,
+	        async: _async,
+	        dataType: _dataType,
+	        beforeSend: function() {
+	        	if (debug==true) {
+	         		console.log("Relizando request... " +_urlRequest);
+	         	}
+	      	},
+	        success: function(data, textStatus, xhr) {
+	        	try{
+	        		if (debug==true) {
+	        			console.log("Type : "+typeof(data));
+	        			console.log("Status : "+textStatus);
+	        			console.log("Data: ");
+	        			console.log(data);
+	        		}
+
+	        		if (_validate!="") {
+		        		switch(_validate){
+		        			case "parseJSON":
+		        				testData = JSON.parse(data);
+		        			break;
+		        		}
+	        		}
+	          		
+	        	}catch(e){
+	        		
+	        		if (debug==true) {
+	        			console.log(e);
+	        		}else{
+	        			if(_reloadUrl!="noReload"){
+	        				location.assign(_reloadUrl+'/'+_errorNumber);
+	        			}
+	        		}
+	        	}
+
+	        },
+	        error: function(xhr, textStatus, errorThrown) {
+	        		if (debug==true) {
+	        			console.log("Status : "+textStatus);
+	        			console.log("errorThrown : "+errorThrown);
+	        			console.log(xhr);
+	        		}else{
+	        			if(_reloadUrl!="noReload"){
+	        				location.assign(_reloadUrl+'/'+_errorNumber);
+	        			}
+	        		}
+	        },
+	        complete: function(xhr, textStatus) {
+	        	if (debug==true) {
+	          		console.log("Request terminado.");
+	      		}
+	        }
+		});
+
+	}catch(e){
+		if (debug==true) {
+			console.log(e);
+		}else{
+			if(_reloadUrl!="noReload"){
+	        	location.assign(_reloadUrl+'/'+_errorNumber);
+	        }
+		}
+	}
+}
+
+function abrirModalTituloFaltante(ruta){
+	$.fancybox({
+		type	:'iframe',
+		maxWidth	: 700,
+		maxHeight	: 400,
+		width	: 658,
+		height : 388,
+		fitToView	: true,
+		autoSize	: true,
+		transitionIn: 'fade',
+		transitionOut: 'fade',
+		closeBtn : true,
+		overlayShow: true,
+		afterLoad : function() {
+			setTimeout(function() { $(".fancybox-overlay").unbind(); }, 400);
+		},
+		href: ruta
+	});
+}
+
+function abrirEnviarCV(){
+	$.fancybox({
+		type	:'iframe',
+		width	: 658,
+		height : 500,
+		fitToView	: true,
+		autoSize	: false,
+		transitionIn: 'fade',
+		transitionOut: 'fade',
+		closeBtn : true,
+		afterLoad : function() {
+			setTimeout(function() { $(".fancybox-overlay").unbind(); }, 400);
+		},
+		href: '/pages/responsivo/enviarEmailCV.php'
+	});
+}
+
+function abrirModalSendJob(data){
+	var getUrl = window.location;
+	var ruta = getUrl.protocol + "//" + getUrl.host + "/sendjob";
+	$.fancybox({
+		maxWidth  : 670,
+		maxHeight : 500,
+		width: 670,
+		height: 500,
+		fitToView : false,
+		autoSize  : false,
+		closeClick  : false,
+		openEffect  : 'none',
+		closeEffect : 'none',
+		type: "ajax",
+		ajax: {
+			data: {data: data},
+			type: "post"
+		},
+		href    : ruta,
+		beforeShow: function(){
+			$("body").css({
+				"overflow-y": "hidden",
+				"position": "fixed"
+			});
+		},
+		afterClose: function(){
+			$("body").removeAttr("style");
+		}
+	});
+}
+
+
+/**
+ * [validarCPF Valida el tipo de documento CPF de brasil]
+ * @param  {[string]} cpf [numero de documento a validar]
+ * @return {[bool]}       [retorna verdadero si el doc es valido. Falso en caso contrario]
+ */
+function validarCPF(cpf) { 
+	try{ 
+	    cpf = cpf.replace(/[^\d]+/g,'');    
+	    if(cpf == '') return false; 
+	    // Elimina CPFs invalidos    
+	    if (cpf.length != 11 || 
+	        cpf == "00000000000" || 
+	        cpf == "11111111111" || 
+	        cpf == "22222222222" || 
+	        cpf == "33333333333" || 
+	        cpf == "44444444444" || 
+	        cpf == "55555555555" || 
+	        cpf == "66666666666" || 
+	        cpf == "77777777777" || 
+	        cpf == "88888888888" || 
+	        cpf == "99999999999")
+	            return false;       
+	    // Valida 1er digito 
+	    add = 0;    
+	    for (i=0; i < 9; i ++)       
+	        add += parseInt(cpf.charAt(i)) * (10 - i);  
+	        rev = 11 - (add % 11);  
+	        if (rev == 10 || rev == 11)     
+	            rev = 0;    
+	        if (rev != parseInt(cpf.charAt(9)))     
+	            return false;       
+	    // Valida 2do digito 
+	    add = 0;    
+	    for (i = 0; i < 10; i ++)        
+	        add += parseInt(cpf.charAt(i)) * (11 - i);  
+	    rev = 11 - (add % 11);  
+	    if (rev == 10 || rev == 11) 
+	        rev = 0;    
+	    if (rev != parseInt(cpf.charAt(10)))
+	        return false;       
+	    return true;
+    }catch(err){
+		// console.log(err.message);
+	}
+}
+
+
+/**
+ * [formatCpf Formatea le tipo de documento CPF de brasil]
+ * @param  {[string]} cpf [numero de identificacion]
+ * @return {[string]}     [numero de identificacion con formato]
+ */
+function formatCpf(cpf) {
+	try{
+		cpf = cpf.replace( /\D/g , ""); //Remueve las letras
+	    cpf = cpf.replace( /(\d{3})(\d)/ , "$1.$2"); //Coloca un punto entre el tercer y cuarto digito
+	    cpf = cpf.replace( /(\d{3})(\d)/ , "$1.$2"); //Coloca un punto entre el tercer y cuarto digito
+	    //de nuevo (para el segundo bloque de numeros)
+	    cpf = cpf.replace( /(\d{3})(\d{1,2})$/ , "$1-$2"); //coloca el guion final
+	    return cpf;
+	}catch(err){
+		// console.log(err.message);
+	}
+}
+
+/* [getWithBrowserScreen retorna el ancho de la resolucion del browser]
+ * @return {int} [ancho de la resolucion del browser]
+ */
+function getWithBrowserScreen(){
+	try{
+		var winW = 850;
+		if (document.body && document.body.offsetWidth) {
+			winW = document.body.offsetWidth;
+		} else if (document.compatMode=='CSS1Compat' && document.documentElement && document.documentElement.offsetWidth ) {
+		 	winW = document.documentElement.offsetWidth;
+		} else if (window.innerWidth) {
+		 	winW = window.innerWidth;
+		}
+		return winW;
+	}
+	catch(e){
+		//console.log(e);
+		return 850;
+	}
+}
+
+
+/* [widerThanSizeBrowser Determina si un valor es menos ancho que el tamano del navegador ]
+ * @param  {int} widerThan [Valor a evaluar]
+ * @return {boolean}       [True si el ancho del browser es mayor, false en caso contrario]
+ */
+function widerThanSizeBrowser(width){
+	try{
+		return getWithBrowserScreen()>width ? true : false;
+	}
+	catch(e){
+		//console.log(e);
+	}
+}
+
+
+ /* [msjDeleteCvData Despliega un alert con el nombre de la seccion del cv a eliminar]
+ * @param  {object} objetcDelete [Objeto desde el cual se requiere desplegar el alert (EJ: boton de eliminar). Si es null no hace la busqueda del nombre del elemento a eliminar]
+ * @param  {array} arrayIdElements  [Arreglo con el id de los elementos desde donde se obtendra el nobre de las seccion a eliminar. EJ: #career_name_eduSup = 'Ing. en Informatica' . Los elementos se buscaran en orden y desplegará el primero que tenga algun valor]
+ * @param  {String} text   [Texto a desplegar en el alert]
+ * @return {boolean}        [Retornara true si el usuario acepta eliminar, false en caso contrario]
+ */
+function msjDeleteCvData(objetcDelete,arrayIdElements,text){
+	var _thisobjectDelete = objetcDelete;
+	var _thisarrayIdElements = arrayIdElements;
+	var _thistext = text;
+	var alertResp;
+	var response = {};
+	var textElement;
+	var textAlert;
+	var debug = false;
+	try{
+		if(debug==true){console.log("-------------------------------------");}
+		if(debug==true){console.log("Iniciando revision de elementos...");}
+		if(debug==true){console.log("Tipo de objeto: "+typeof(_thisobjectDelete));}
+		if(typeof(_thisobjectDelete)=='object' && _thisobjectDelete!=null){
+			$.each(_thisarrayIdElements, function (index, value) {
+				
+					if(debug==true){console.log("Elmento a obtener el texto: "+value);}
+					textElement = _thisobjectDelete.parents('.des_btns').children('.edit_cv').find(value).val();
+					if(debug==true){console.log("Texto obtenido: "+textElement);}
+					if (textElement.length > 0) {
+						textAlert = _thistext.replace("#text_replace#",textElement);
+						alertResp = confirm(textAlert);
+						if(debug==true){console.log("Respuesta del alert: "+alertResp);}
+						return false;
+					}
+			});
+			response = {
+				"textElementToDelete": textElement,
+				"userResp": alertResp
+			}
+		}else{
+			alertResp = confirm(_thistext);
+			response = {
+				"userResp": alertResp
+			}
+		}
+		
+
+		if(debug==true){console.log("Retorno de la funcion: "+JSON.stringify(response));}
+		return response;
+		
+	}catch(e){
+		if(debug==true){console.log(e);}
+
+	}
+}
+
+
+/*[notifyCvAction Muestra un mensaje flotante de exito, error,etc al realizar acciones en el cv]
+ * @param  {int} typeMsj [id del tipo de mensaje a mostrar]
+ * @param  {String} text    [Texto del mensaje]
+ * @return {void}         [despliega el mensaje flotante]
+ */
+function notifyCvAction(typeMsj,text,text_replace){
+	try{
+		if(typeof(text_replace)=="string" && (text_replace!="" && text_replace!=null)){
+			text = text.replace("#text_replace#",text_replace);
+		}
+		switch(typeMsj){
+			case 1:
+				$.pnotify({text:text,styling:'bootstrap', type: 'success', closer_hover: false, sticker: false, history: false}, "success");
+			break;
+			case 2:
+				$.pnotify({text:text,styling:'bootstrap', type: 'error', closer_hover: false, sticker: false, history: false}, "success");
+			break;
+		}
+	}
+	catch(e){
+		// console.log(e);
+	}
+}
+
+/**
+ * [encrypt encripta datos necesita de aes.js y pbkdf2.js]
+ * @param  {String} data [Datos a encriptar]
+ * @return {Object}      [Retorna un objeto con el elemento encriptado y la llaves de encriptacion]
+ */
+function encrypt(data){
+	try{
+		var salt = CryptoJS.lib.WordArray.random(128/8); 
+		var key256Bits500Iterations = CryptoJS.PBKDF2("SecretPassphrase", salt, { keySize: 256/32, iterations: 500 });
+		var iv  = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f'); // just chosen for an example, usually random as well
+		var encrypted = CryptoJS.AES.encrypt(data, key256Bits500Iterations, { iv: iv });  
+		var data_base64 = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+		var iv_base64   = encrypted.iv.toString(CryptoJS.enc.Base64);
+		var key_base64  = encrypted.key.toString(CryptoJS.enc.Base64);
+		var encryptKey = {
+			'data_base64' : data_base64,
+			'iv_base64' : iv_base64,
+			'key_base64' : key_base64
+		}
+		return encryptKey;
+	}
+	catch(e){
+		console.log(e);
+		return false;
+	}
+}
+
+/**
+ * [passwordRulesValidation Valida si la password cumple con las reglas establecidas para el dominio]
+ * @param  {String}  password     [password a evaluar]
+ * @param  {String}  redirect [path al cual se redireccionara en caso de error]
+ * @param  {Boolean} async    [determina si el request debe ser asincrono o sincrono]
+ * @return {boolean}           [retornara un true si la password cumple con las reglas. False en caso contrario]
+ */
+function passwordRulesValidation(password,redirect,async){
+	var redirectAux = (typeof redirect === 'undefined');
+	var asyncAux = (typeof async === 'undefined');
+
+	if(redirectAux ==true){
+		redirect= '/';
+	}
+	if(asyncAux ==true){
+		async= false;
+	}
+
+	try{
+		_thisData = password;
+		_thisRedirect = redirect;
+		_thisAsync = async;
+		var result = false;
+		//Se verifica si al menos cumple el minimo de caracteres para realizar el request al servicio
+		if(_thisData.length>0){
+			var dataToEvaluate = encrypt(_thisData);
+			if(typeof(dataToEvaluate) == 'object'){
+				var ruta = '/trabajando/controller/trabajando.user.events.php?ev=checkPassword';
+				sent = requestAjax('POST',ruta,{1 : dataToEvaluate.data_base64, 2 : dataToEvaluate.iv_base64, 3 : dataToEvaluate.key_base64},_thisRedirect,'json',null,null,_thisAsync);
+				sent.success(function(password) {
+					if(typeof(password)=='object'){
+						if(password.success==true){
+							result = true;
+						}
+					}
+				});
+			}
+		}
+		return result;
+	}catch(e){
+		console.log(e);
+		return false;
+	}
+}
+
+function getPassMessage(text){
+	try{
+		var ruta = '/trabajando/controller/trabajando.user.events.php?ev=passwordTextValidation';
+	 	return sent = requestAjax('POST',ruta, {validationText: text},'noReload','json');
+	}catch(e){
+		// console.log(e);
+	}
+}
+
+/**
+ * [inputNotEmpty verifica en un si alguno de los elementos de un formulario tiene un valor distinto de undefined o vacio]
+ * @param  {string} form  [Id o class del formulario que contiene los elementos]
+ * @param  {array} 	array [Arreglo con los elementos a verificar]
+ * @return {boolean}      [True si existe un elemento con valor distinto de undefined o vacio, false en caso contrario]
+ */
+function oneInputNotEmpty(form,array){
+	var reponse = false;
+	var band = 0;
+	try{
+		if ($.isArray(array) && array.length>0){
+			$.each(array, function(index,value){
+				if(typeof($(form+' '+value).val())!='undefined' && $(form+' '+value).val()!=""){
+					band = 1;
+					return false;
+				}
+			});
+		}
+		if(band==1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	catch(e){
+		// console.log(e);
+	}
+}
+
+/**
+ * [viewPassword Despliega la password que se esta escribiendo en el input password]
+ */
+function viewPassword() {
+	try{
+		var passwordInput = document.getElementById('pass');
+		var passStatus = document.getElementById('pass-status');
+		 
+		if (passwordInput.type == 'password'){
+			passwordInput.type='text';
+			passStatus.className='fa fa-eye-slash';
+		
+		} else {
+			passwordInput.type='password';
+			passStatus.className='fa fa-eye';
+		}
+	} catch(err){
+		console.log(err);
+	}
+}
+
+/**
+* [formatNumber formatea un numero en miles EJ: 10000 => 10.000]
+* @param  {[number]} num [Numero a formatear]
+* @return {[string]}     [Retorna un string con el numero formateado]
+*/
+function formatNumber(num) {
+	try{
+		if(!isNaN(num)){
+			num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+			num = num.split('').reverse().join('').replace(/^[\.]/,'');
+		}
+	} catch(e) {
+		//console.log(e);
+		return num;
+	}
+	return num;
+}
+
+/**
+ * [insertNewElementToObjectInStorage Inserta un nuevo elemento a un objeto segun storage=>'localStorage','sessionStorage','variable']
+ * @param  {[String]} keyStorage [nombre clave para los datos guradados]
+ * @param  {[object]} object     [Objeto con los elementos a guardar]
+ * @return {[void]}            [guarda el nuevo object creado segun storage]
+ */
+function insertNewElementToObjectInStorage(keyStorage, object, storage) {
+	try{
+		var storageService = window.storageService;
+		var storageElements = null;
+		var storageObject = {};
+		var countStorageElements = 0;
+		var storageType = storage;
+		var keyStorageData = keyStorage.length > 0 ? keyStorage : '';
+		var objectKey = 0;
+		var json = '';
+
+		if(keyStorageData != '' && (typeof(object) === 'object' && object != null)){
+			storageElements = storageService.getData(keyStorageData,storageType);
+			storageObject = storageElements != null && isJson(storageElements) ? JSON.parse(storageElements) : {};
+			countStorageElements =  Object.keys(storageObject).length;
+			objectKey = countStorageElements > 0 ? (countStorageElements-1) + 1 : 0;
+			storageObject[objectKey] = object;
+			json = JSON.stringify(storageObject);
+			storageService.setData(keyStorageData, json, storageType);
+		}
+	} catch(e){
+		console.log(e);
+	}
+}
+
+/**
+ * [isJson valida si un string es un json]
+ * @param  {[string]}  str [string con el json a validar]
+ * @return {Boolean}     [true si es un json, false en caso contrario]
+ */
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+/**
+*Metodo para saber si un string tiene https
+*@param {string} string a revisar
+*@return {boolean} true si tiene false si no tiene
+*/
+function haveHttps(str){
+	return (str.indexOf('https://') == 0) ? true : false;
+}
+
+/*check if string is valid url*/
+function isURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+  '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return pattern.test(str);
+}
+
+function isMobile(){
+	var isMobile = false; //initiate as false
+	// device detection
+	if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4)))
+		isMobile = true;
+	return isMobile;
+}
+
+/**
+ * [sanitizeUrl Verifica una url en busca de codigo que pueda ser utilizado para ataques XSS]
+ * @param  {[string]} url [url a verificar]
+ * @return {[url]}     [retorna una url sanitizada. En caso de detectar que no es una url retornara 'about:blank']
+ */
+function sanitizeUrl(url) {
+	try{
+		var invalidPrototcolRegex = /^(%20|\s)*(javascript|data)/im;
+		var ctrlCharactersRegex = /[^\x20-\x7E]/gmi;
+		var xssCharactersRegex = /<(|\/|[^>\/bi]|\/[^>bi]|[^\/>][^>]+|\/[^>][^>]+)>/g;
+		var urlSchemeRegex = /^([^:]+):/gm;
+		var relativeFirstCharacters = ['.', '/']
+		var urlScheme, urlSchemeParseResults;
+		var sanitizedUrl = url.replace(ctrlCharactersRegex, '');
+			
+		sanitizedUrl = url.replace(xssCharactersRegex, '');
+		
+		if (relativeFirstCharacters.indexOf(url[0]) > -1) {
+	   		return sanitizedUrl;
+		}
+		  
+		urlSchemeParseResults = sanitizedUrl.match(urlSchemeRegex);
+
+		if (!urlSchemeParseResults) {
+	   		return 'about:blank';
+		}
+
+		urlScheme = urlSchemeParseResults[0];
+
+		if (invalidPrototcolRegex.test(urlScheme)) {
+	  		return 'about:blank';
+		}
+
+		return sanitizedUrl;
+	} catch(e){
+		//console.log(e);
+		return 'about:blank';	
+	}
+}
+
+function trackerSearch (opc){
+	var buscarRegion = "";
+	var buscarPalabra = "";
+	var mensajeRegion = "";
+
+	switch(opc){
+		case 1:
+			buscarRegion = "searchBarRegion";
+			buscarPalabra = "searchBarPalabra";
+		break;
+		case 2:
+			buscarRegion = "region2";
+			buscarPalabra = "palabra2";
+		break;
+		default:
+			buscarRegion = "region";
+			buscarPalabra = "palabra";
+		break;
+	}
+	if($('#'+buscarRegion +' option:selected').index() != 0){
+		mensajeRegion = $('#'+buscarRegion +' option:selected').text();
+	}else if(($.trim($('#'+buscarPalabra).val()).length) > 0 ){
+		mensajeRegion = "No seleccionado";
+	}
+	if(mensajeRegion != ""){
+		pageTrackerCons._trackEvent('Forms', 'Busqueda', 'Boton Region '+mensajeRegion);	
+		//console.log('track region '+mensajeRegion);
+	}
+	if(($.trim($('#'+buscarPalabra).val()).length) > 0 ){
+		pageTrackerCons._trackEvent('Searchbar', 'Buscar', $('#'+buscarPalabra).val());
+		//console.log('track palabra '+$('#'+buscarPalabra).val());
+	}
+
+}
+
+/**
+ * @brief Metodo para averiguar y retornar el nombre del dispositivo, Windows Phone, Android o iOS
+ * @details Metodo que en base al user agent de un navegador, evaluara a travez de una expresion regular si 
+ * el dispotivio corresponde a un "Windows Phone", "Android" o "iOS", de no encontrar ninguno respondera "unknow".
+ * @return {String}
+ */
+function getMobileOperatingSystem() {
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      // Windows Phone must come first because its UA also contains "Android"
+    if (/windows phone/i.test(userAgent)) {
+        return "Windows Phone";
+    }
+
+    if (/android/i.test(userAgent)) {
+        return "Android";
+    }
+
+    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return "iOS";
+    }
+
+    return "unknown";
+}
+
+
+/**
+ * [showModalBannerAd Funcion para desplegar un banner en forma de modal]
+ * @param  {string} containerId [Id del contenedor del banner]
+ * @param  {string} bannerClassName  [Nombre de la clase identificado para el o los banner. Puede existir una version de escritorio y una mobile con la misma clase ej: miTrabajandoBanner]
+ * @param  {int} maxWidth    [Ancho maximo del o los banner]
+ * @param  {int} maxHeight   [Alto maximo del o los banner]
+ * @param  {boolean} alwaysShow  [Permite indicar si el banner se debe mostrar siempre o ocultarlo despues de alguna accion]
+ * @param  {string} sessionId   [Id con la session del usuario. Permite establecer variables de session asociadas al banner en el backend]
+ * @return {void}             [Despliega el banner como modal y establece una variable para no desplegarlo si asi se indica]
+ */
+function showModalBanner(containerId, bannerClassName, maxWidth, maxHeight, alwaysShow, sessionId){
+    var baseUrl =  window.location.protocol + '//' + window.location.hostname;
+    $(containerId).fancybox({
+        maxWidth  : maxWidth > 0 ? maxWidth : 500,
+        maxHeight : maxHeight > 0 ? maxHeight : 500,
+        fitToView : true,
+        autoSize  : true,
+        closeClick  : false,
+        openEffect  : 'fade',
+        closeEffect : 'fade',
+        afterClose: function(){
+            if(typeof(alwaysShow) == 'boolean' && alwaysShow == false){
+                var data = {};
+                if(typeof(bannerClassName) == 'string'){
+                  data.bannerName = bannerClassName;
+                }
+                if(typeof(sessionId) == 'string'){
+                  data.id = sessionId;
+                }              
+                $.ajax({
+                  url: baseUrl +'/trabajando/controller/trabajando.user.events.php?ev=hideModal',
+                  data: data,
+                  dataType:'json',
+                  type:'POST',
+                  success: function(result, textStatus, xhr) {
+                    // console.log('ok');
+                  },
+                  error: function(xhr, textStatus, errorThrown) {
+                    // console.log('error');
+                    // console.log(xhr);
+                  }
+                });
+            }
+        }
+    }).trigger('click');
+}
