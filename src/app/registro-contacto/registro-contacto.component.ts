@@ -40,6 +40,7 @@ export class RegistroContactoComponent implements OnInit {habilitar: boolean;
   openDialogEdit(contacto: ContactoFire) {
     this.matDialog.open(DialogRegistraContactoComponent, /*dialogConfig,*/
       { width: '1200px',
+        height: '600px',
         data: contacto
       }
     );
@@ -48,6 +49,7 @@ export class RegistroContactoComponent implements OnInit {habilitar: boolean;
   openDialogNew(){
     this.matDialog.open(DialogRegistraContactoComponent, /*dialogConfig,*/
       { width: '2000px',
+        height: '600px',
         data: new ContactoFire()
       }
     );

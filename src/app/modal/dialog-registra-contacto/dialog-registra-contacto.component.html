@@ -76,10 +76,22 @@
                             </mat-form-field>
                         </div>
                         <div class="col-md-2"> 
+                            <mat-label><strong>Anexo: </strong> </mat-label>
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field hintLabel="Max 4 caracteres">
+                                <input formControlName="anexoInput" matInput #inputHoras  placeholder="Anexo de llamada" type="number" >
+                            </mat-form-field> 
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
                             <mat-label><strong>Correo: </strong> </mat-label> 
                         </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field hintLabel="Max 200 numeros">
+                        <div class="col-md-8"> 
+                            <mat-form-field hintLabel="Max 200 numeros" class="max-width">
                                 <input formControlName="correoInput" matInput #inputCorreo maxlength="200" placeholder="Ingrese correo" id="correo">
                                 <mat-hint align="end">{{inputCorreo.value?.length || 0}}/200</mat-hint>
                             </mat-form-field>
