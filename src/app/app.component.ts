@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +11,8 @@ export class AppComponent {
   selectedColor = '';
   dataSource: Object;
   chartConfig: Object;
+  intervalUpdate: any = null;	
+  chart: any = null;  
   
   colors = [
     {
@@ -28,14 +32,5 @@ export class AppComponent {
   onChange(value){
     this.selectedColor = value;
   }
-  constructor() {
-    this.chartConfig = {
-       width: '700',
-       height: '400',
-       type: 'column2d',
-       dataFormat: 'json',
-   };
-      
+  constructor() {}
 }
-}
-

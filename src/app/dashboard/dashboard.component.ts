@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { DialogRecursosComponent } from '../modal/dialog-recursos/dialog-recursos.component';
 import { DialogRiesgosComponent } from '../modal/dialog-riesgos/dialog-riesgos.component';
@@ -9,8 +9,8 @@ import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seg
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
 import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-lista-evento.component';
-
-
+import { ChartType } from 'chart.js';
+import { MultiDataSet, Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,13 +19,21 @@ import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-
 })
 export class DashboardComponent implements OnInit 
 {
+  doughnutChartLabels: Label[] = ['ToDo', 'DoIng', 'QA', 'Done'];
+  doughnutChartData: MultiDataSet = [
+    [80, 40, 90, 312]
+  ];
+  doughnutChartType: ChartType = 'doughnut';
+  
+  private intervalUpdate: any = null;
+  public chart: any = null;
   habilitar: boolean;
   selected: boolean;
   nuevo: boolean;
   edit: boolean;
   delete: boolean;
   tabla: any;
-  mensajeAccion: string;
+  mensajeAccion: string;  
   display: boolean = false;
   columnasTabla: string[] = ['numeroIniciativa', 'titulo','fechafin','estado'];
   title = "Example Angular 8 Material Dialog";
@@ -36,34 +44,50 @@ export class DashboardComponent implements OnInit
   tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaFire>([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   
   public tipoDocumento: IniciativaFire[];
   public tipoDocumentoSeleccionado: IniciativaFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
   loading: boolean;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
-
-  
-
-
-
- 
- 
-
+  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}  
   FiltraCanvas(filterValue: string) {
     this.iniciativas.filter = filterValue.trim().toLowerCase();
   }
 
+  chartClicked(e:any) {
+    
+    if(e.active.length > 0){
+      var points = [];
+      var pointSelected = e.active[0]._chart.tooltip._model.caretY;
+      var legends = e.active[0]._chart.legend.legendItems;
+      alert(e.active.length);
+      for (var i = 0; i < e.active.length; ++i) {
+        points.push(e.active[i]._model.y);
+      }
+    
+      let position = points.indexOf(pointSelected);
+      alert(pointSelected);
+      let label = legends[position].text;
+      
+    
+      console.log("Point: "+label);
+      alert("Point: "+label);
+    }
+  }
 
   onCloseHandled()
   {
  
   }
 
-  ngOnInit() {
-    this.callIniciativas();
-  }
+  ngOnInit(){
+    this.callIniciativas();    	  
+  } 
+
+  
+  
 
   async callIniciativas() {
     this.loading = true;
@@ -133,6 +157,6 @@ export class DashboardComponent implements OnInit
     this.TipoDocumenetHelpSeleccionado = tipo;
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
-  }
-
+  }  
+ 
 }

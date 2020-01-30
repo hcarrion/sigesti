@@ -1,0 +1,181 @@
+$(document).ready(function() {
+  var region;
+  var region2;
+  var fpago;
+
+  $('#region').change(function() {
+    region = $(this).val();
+    $('#ciudad').children().slice(1).appendTo('#hcity');
+    var target = $('#hcity').children().filter("[rid=" + region + "]");
+    target.appendTo('#ciudad');
+
+    var total = target.length;
+
+    if (total < 1) {
+      $('#ciudad').attr({
+        'disabled': 'disabled',
+        'title': '<?php echo seleccioneRegion ?>'
+      });
+    } else {
+      $('#ciudad').removeAttr('disabled title');
+      $('#ciudad').val('');
+    }
+  });
+
+  $('#region').trigger("change");
+
+  $('#region2').change(function() {
+    region2 = $(this).val();
+    $('#ciudad2').children().slice(1).appendTo('#hcity');
+    var target = $('#hcity').children().filter("[rid=" + region2 + "]");
+    target.appendTo('#ciudad2');
+
+    var total = target.length;
+
+    if (total < 1) {
+      $('#ciudad2').attr({
+        'disabled': 'disabled',
+        'title': '<?php echo seleccioneRegion ?>'
+      });
+    } else {
+      $('#ciudad2').removeAttr('disabled title');
+      $('#ciudad2').val('');
+    }
+  });
+
+  $('#region2').trigger("change");
+
+  $('#forma_pago').change(function() {
+    fpago = $(this).val();
+    $('#sueldo1').children().slice(1).appendTo('#hsueldo1');
+    var target1 = $('#hsueldo1').children().filter("[mid=" + fpago + "]");
+    target1.appendTo('#sueldo1');
+    var total1 = target1.length;
+
+    if (total1 < 1) $('#sueldo1').attr({
+      'disabled': 'disabled',
+      'title': '<?php echo seleccioneFormaPago ?>'
+    });
+    else $('#sueldo1').removeAttr('disabled title');
+
+    $('#sueldo').children().slice(1).appendTo('#hsueldo');
+    var target = $('#hsueldo').children().filter("[mid=" + fpago + "]");
+    target.appendTo('#sueldo');
+    var total = target.length;
+
+    if (total < 1) $('#sueldo').attr({
+      'disabled': 'disabled',
+      'title': '<?php echo seleccioneFormaPago ?>'
+    });
+    else $('#sueldo').removeAttr('disabled title');
+
+    $('#sueldo1').val('');
+    $('#sueldo').val('');
+  });
+
+  $('#forma_pago').trigger("change");
+
+  $('#buscador_avisos_form').submit(function() {
+    var palabra = $('#palabra').val();
+    if (palabra == '') {
+      var palabra = $('#palabra2').val();
+    };
+    //var palabra = $('#palabra').val();
+
+    var pais = $('#pais').val();
+    if (pais == '') {
+      var pais = $('#pais2').val();
+    };
+    if (busquedaPrincipal == "f_ciudades") {
+      var ciudad = $('#ciudad').val();
+      if (ciudad == '') {
+        var ciudad = $('#ciudad2').val();
+      };
+    } else {
+      var region = $('#region').val();
+      if (region == '') {
+        var region = $('#region2').val();
+      };
+    }
+    //var region = $('#region').val();
+    var fechaPublicacion = $('#fechaPublicacion').val();
+    var carrera = $('#carrera').val();
+    var tcargo = $('#tcargo').val();
+    var jorna = $('#jorna').val();
+    var contrato = $('#contrato').val();
+    var forma_pago = $('#forma_pago').val();
+    var sueldo1 = $('#sueldo1').val();
+    var sueldo = $('#sueldo').val();
+
+    if (busquedaPrincipal == "f_paises") {
+      if (
+        isEmpty(palabra) &&
+        isEmpty(ciudad) &&
+        isEmpty(fechaPublicacion) &&
+        isEmpty(carrera) &&
+        isEmpty(tcargo) &&
+        isEmpty(jorna) &&
+        isEmpty(pais) &&
+        isEmpty(pais2) && isEmpty(contrato) &&
+        isEmpty(forma_pago) &&
+        isEmpty(sueldo1) &&
+        isEmpty(sueldo) &&
+        isEmpty(region) &&
+        isEmpty(ciudad)
+      ) {
+        alert(noCamposVacios);
+        return false;
+      } else {
+        return true;
+      }
+    } else if (busquedaPrincipal == "f_ciudades") {
+      if (
+        isEmpty(palabra) &&
+        isEmpty(ciudad) &&
+        isEmpty(fechaPublicacion) &&
+        isEmpty(carrera) &&
+        isEmpty(tcargo) &&
+        isEmpty(jorna) &&
+        isEmpty(pais) &&
+        isEmpty(pais2) && isEmpty(contrato) &&
+        isEmpty(forma_pago) &&
+        isEmpty(sueldo1) &&
+        isEmpty(region) &&
+        isEmpty(pais)
+      ) {
+        alert(noCamposVacios);
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      if (
+        isEmpty(palabra) &&
+        isEmpty(ciudad) &&
+        isEmpty(fechaPublicacion) &&
+        isEmpty(carrera) &&
+        isEmpty(tcargo) &&
+        isEmpty(jorna) &&
+        isEmpty(pais) &&
+        isEmpty(pais2) && isEmpty(contrato) &&
+        isEmpty(forma_pago) &&
+        isEmpty(sueldo1) &&
+        isEmpty(sueldo) &&
+        isEmpty(pais) &&
+        isEmpty(ciudad)
+      ) {
+        alert(noCamposVacios);
+        return false;
+      } else {
+        return true;
+      }
+    }
+  });
+});
+
+function isEmpty(val) {
+  $(function() {
+    if (val.length < 1) return true;
+    return false;
+  });
+}

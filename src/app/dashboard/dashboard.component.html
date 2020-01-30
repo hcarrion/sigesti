@@ -1,36 +1,63 @@
 <div class="row" >    
     <div class="col-sm-3">
       <div class="card">
-        <div class="card-body">
-          <h2 class="card-title">Poyectos</h2>
-          <a  style="color: snow;" class="btn btn-primary"> <a (click)="FiltraCanvas('Proyecto')" style="color: thistle;">20</a> | <a style="color:darkorange;">10</a> | <a style="color:rgb(222, 236, 22);">90</a> | <a style="color:lime;">78</a> </a>
+        <div crlass="card-content">
+          <h3 class="card-title">Proyectos</h3>          
+          <div class="chart-wrapper">
+            <canvas baseChart 
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [chartType]="doughnutChartType">
+            </canvas>
+        </div>
         </div>
       </div>
     </div>
     <div class="col-sm-3">
       <div class="card">
-        <div class="card-body">
+        <div class="card-content">
           <h2 class="card-title">Mantenimiento</h2>
-          <a  style="color: snow;" class="btn btn-primary"> <a (click)="FiltraCanvas('Mantenim')" style="color: thistle;">20</a> | <a style="color:darkorange;">10</a> | <a style="color:rgb(222, 236, 22);">90</a> | <a style="color:lime;">78</a> </a>
+          <div class="chart-wrapper">
+            <canvas baseChart 
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [chartType]="doughnutChartType">
+            </canvas>
+        </div>
         </div>
       </div>
     </div>
+
     <div class="col-sm-3">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title">Mejoras</h2>
-            <a  style="color: snow;" class="btn btn-primary"> <a (click)="FiltraCanvas('Mejora')" style="color: thistle;">20</a> | <a style="color:darkorange;">10</a> | <a style="color:rgb(222, 236, 22);">90</a> | <a style="color:lime;">78</a> </a>
-          </div>
+      <div class="card">
+        <div class="card-content">
+          <h2 class="card-title">Mejoras</h2>
+          <div class="chart-wrapper">
+            <canvas baseChart 
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [chartType]="doughnutChartType">
+            </canvas>
         </div>
+        </div>
+      </div>
     </div>
+
     <div class="col-sm-3">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title">Incidencias</h2>
-            <a  style="color: snow;" class="btn btn-primary"> <a (click)="FiltraCanvas('Inciden')" style="color: thistle;">20</a> | <a style="color:darkorange;">10</a> | <a style="color:rgb(222, 236, 22);">90</a> | <a style="color:lime;">78</a> </a>
-          </div>
+      <div class="card">
+        <div class="card-content">
+          <h2 class="card-title">Incidencias</h2>
+          <div class="chart-wrapper">
+            <canvas baseChart 
+              [data]="doughnutChartData"
+              [labels]="doughnutChartLabels"
+              [chartType]="doughnutChartType">
+            </canvas>
         </div>
-    </div>        
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div *ngIf="loading" class="content-load">
@@ -44,7 +71,7 @@
     <div class="col-sm-6">
       <div class="card">
         <div class="card-body">
-          <h2 class="card-title">Poyectos</h2>
+          <h2 class="card-title">Proyectos</h2>
             <div class="pipeline-body">
               <table mat-table [dataSource]="iniciativas" matSort >
                  
@@ -74,7 +101,7 @@
                    <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
              </table>
 
-             <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>       
+             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
             </div>
         </div>
       </div>
@@ -112,7 +139,7 @@
                  <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
            </table>
 
-           <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>       
+           <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
           </div>
         </div>
       </div>
@@ -150,7 +177,7 @@
                    <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
              </table>
 
-             <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>       
+             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
             </div>
           </div>
         </div>
@@ -188,20 +215,27 @@
                    <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
              </table>
 
-             <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>       
+             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
             </div>
           </div>
         </div>
     </div>    
   </div>
-  <div class="row" >    
-    <div class="col-sm-12">
-      <div class="card">
-        <div class="card-body">
-          <h2 class="card-title">Resumen Total </h2>
-          <a  style="color: snow;" class="btn btn-primary"> <a (click)="FiltraCanvas('%')" style="color: thistle;">80</a> | <a style="color:darkorange;">40</a> | <a style="color:rgb(222, 236, 22);">90</a> | <a style="color:lime;">312 </a><a style="color:azure;">= 12000</a> </a>
-        </div>
-      </div>
-  </div>    
-  </div>
 
+  <div class="col-sm-12">
+    <div class="card" >
+      <div class="card-content">
+        <h3>Resumen Total</h3>        
+        <div class="chart-wrapper">
+          <canvas baseChart 
+          [data]="doughnutChartData"
+          [labels]="doughnutChartLabels"
+          [chartType]="doughnutChartType"
+          [legend]="doughnutChartLegend" 
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+      </div>
+    </div>
+  </div>
