@@ -29,6 +29,7 @@ export class FirebaseIniciativaService {
   getIniciativas() {
     return this.firestore.collection('iniciativas').snapshotChanges();
   }
+ 
 
   saveCorrelativo(){
     let correlativoF = new CorrelativoFire();

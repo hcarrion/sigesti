@@ -99,7 +99,7 @@ export class RegistroContactoComponent implements OnInit {habilitar: boolean;
   }
 
   highlight(row){
-    this.selectedRowIndex = row.numeroIniciativa;
+    this.selectedRowIndex = row.codigo;
   }
 
   selectedDocumento(todo: ContactoFire) {

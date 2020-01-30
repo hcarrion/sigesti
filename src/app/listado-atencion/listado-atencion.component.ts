@@ -82,7 +82,6 @@ export class ListadoAtencionComponent implements OnInit
   openDialog5()
   {
     this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
-    
       { width: '2000px',
         height: '600px'
       }

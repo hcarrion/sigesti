@@ -6,7 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Financiera';
   selectedColor = '';
   dataSource: Object;
   chartConfig: Object;
@@ -36,41 +35,7 @@ export class AppComponent {
        type: 'column2d',
        dataFormat: 'json',
    };
-   this.dataSource = {
-    "chart": {
-      "caption": "Paises con msa reservas en los años 2017 -2018",
-      "subCaption": "In MMbbl = One Million barrels",
-      "xAxisName": "Country",
-      "yAxisName": "Reserves (MMbbl)",
-      "numberSuffix": "K",
-      "theme": "fusion",
-    },
-    "data": [{
-      "label": "Venezuela",
-      "value": "290"
-    }, {
-      "label": "Saudi",
-      "value": "260"
-    }, {
-      "label": "Canada",
-      "value": "180"
-    }, {
-      "label": "Iran",
-      "value": "140"
-    }, {
-      "label": "Russia",
-      "value": "115"
-    }, {
-      "label": "UAE",
-      "value": "100"
-    }, {
-      "label": "US",
-      "value": "30"
-    }, {
-      "label": "China",
-      "value": "30"
-    }]
-  };
+      
 }
 }
 
