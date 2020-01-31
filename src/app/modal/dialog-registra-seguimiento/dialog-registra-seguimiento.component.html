@@ -257,11 +257,7 @@
                         <div class="col-md-3"> 
                             <mat-form-field>
                                 <mat-select formControlName="contactoSelect" placeholder="Selecciona contacto" [compareWith]="compareItems" [(ngModel)]="iniciativa.contacto">
-<<<<<<< HEAD
-                                    <mat-option *ngFor="let contactolet of contactos" [value]="contactolet">
-=======
                                     <mat-option *ngFor="let contactolet of contactos" [value]="contactolet" (click)="selectContacto(contactolet)">
->>>>>>> a46f57452897270c0c889096b4b513444fbd6608
                                         {{contactolet.nombres}}
                                     </mat-option>
                                 </mat-select>
