@@ -9,8 +9,9 @@ import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seg
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
 import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-lista-evento.component';
-import { ChartType } from 'chart.js';
-import { MultiDataSet, Label } from 'ng2-charts';
+import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
+import { MultiDataSet, Label, monkeyPatchChartJsTooltip, monkeyPatchChartJsLegend } from 'ng2-charts';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -19,14 +20,36 @@ import { MultiDataSet, Label } from 'ng2-charts';
 })
 export class DashboardComponent implements OnInit 
 {
-  doughnutChartLabels: Label[] = ['ToDo', 'DoIng', 'QA', 'Done'];
-  doughnutChartData: MultiDataSet = [
-    [80, 40, 90, 312]
+
+
+  barChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  barChartLabels: Label[] = ['ToDo', 'DoIng', 'QA', 'Done'];
+  barChartType: ChartType = 'bar';
+  barChartLegend = true;
+  barChartPlugins = [];
+
+  barChartData: ChartDataSets[] = [
+    { data: [45, 37, 60, 80], label: 'Cantidad de Iniciativas' }
   ];
-  doughnutChartType: ChartType = 'doughnut';
-  
-  private intervalUpdate: any = null;
-  public chart: any = null;
+
+  public doughnutChartTypeB:string = 'bar'
+  public doughnutChartLabels: Label[] = ['ToDo', 'DoIng', 'QA', 'Done'];
+  public doughnutChartData: number[] = [80, 40, 90, 312];
+  public doughnutChartType: ChartType = 'doughnut';
+  public doughnutchartOpti: any = {
+    pieceLabel: {
+      render: function (args) {
+      const label = args.label,
+          value = args.value;
+      return label + ': ' + value;
+      }
+    },
+      legend: {
+        display: true
+      }
+   }
   habilitar: boolean;
   selected: boolean;
   nuevo: boolean;
@@ -36,7 +59,7 @@ export class DashboardComponent implements OnInit
   mensajeAccion: string;  
   display: boolean = false;
   columnasTabla: string[] = ['numeroIniciativa', 'titulo','fechafin','estado'];
-  title = "Example Angular 8 Material Dialog";
+  title = "DahBoard - Confianza";
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
   selectedRowIndex: number = -1;
@@ -51,30 +74,33 @@ export class DashboardComponent implements OnInit
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
   loading: boolean;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}  
+  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {
+    monkeyPatchChartJsTooltip();
+    monkeyPatchChartJsLegend();
+  }  
   FiltraCanvas(filterValue: string) {
     this.iniciativas.filter = filterValue.trim().toLowerCase();
   }
-
+ 
   chartClicked(e:any) {
     
     if(e.active.length > 0){
       var points = [];
       var pointSelected = e.active[0]._chart.tooltip._model.caretY;
-      var legends = e.active[0]._chart.legend.legendItems;
-      alert(e.active.length);
-      for (var i = 0; i < e.active.length; ++i) {
-        points.push(e.active[i]._model.y);
+      //alert(pointSelected);
+      if (pointSelected>96&&pointSelected<98){
+        this.iniciativas.filter = "Terminado".trim().toLowerCase();
       }
-    
-      let position = points.indexOf(pointSelected);
-      alert(pointSelected);
-      let label = legends[position].text;
-      
-    
-      console.log("Point: "+label);
-      alert("Point: "+label);
-    }
+      if (pointSelected>65&&pointSelected<67){
+        this.iniciativas.filter = "Pendiente".trim().toLowerCase();
+      }
+      if (pointSelected>79&&pointSelected<81){
+        this.iniciativas.filter = "Asignado".trim().toLowerCase();
+      }
+      if (pointSelected>99&&pointSelected<101){
+        this.iniciativas.filter = "Suspendido".trim().toLowerCase();
+      }
+    } 
   }
 
   onCloseHandled()
@@ -158,5 +184,9 @@ export class DashboardComponent implements OnInit
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
   }  
- 
+  
+  public chartHovered(e:any):void {
+    console.log("hover",e);
+    }
+
 }

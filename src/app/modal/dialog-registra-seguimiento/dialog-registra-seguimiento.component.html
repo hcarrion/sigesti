@@ -1,3 +1,8 @@
+
+
+
+
+
 <div *ngIf="loading" class="content-load">
     <br>
     <mat-spinner class="child-load"></mat-spinner>
@@ -12,30 +17,22 @@
                 </div>  
                 <div style="align-content: center; vertical-align: middle;">    
             </div>
-                <div class="card-body">
+                <div class="card-content">
+                    <br>
                     <div class="row">
-                        <div class="col-md-1"></div>
+                        <div class="col-md-1" > 
+                            <mat-label style="font-size: small;"><strong>N°: </strong> </mat-label>
+                        </div>
                         <div class="col-md-2" > 
-                            <mat-label style="font-size: small;"><strong>N° Iniciativa: </strong> </mat-label>
+                                <input style="background-color: khaki; text-align: center;" readonly="readonly" formControlName="numIniciativaInput" matInput #inputAtencion>
+                        </div>                   
+                        
+                        <div class="col-md-1" > 
+                            <mat-label style="font-size: small;"><strong>#SVT: </strong> </mat-label>
                         </div>
-                        <div class="col-md-3"> 
+                        <div class="col-md-2"> 
                             <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
-                                <input formControlName="numIniciativaInput" matInput #inputAtencion>
-                            </mat-form-field> 
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2" > 
-                            <mat-label style="font-size: small;"><strong>Codigo SVT: </strong> </mat-label>
-                        </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
-<<<<<<< HEAD
-                                <input formControlName="codigoSvtInput" matInput #inputAtencion>
-=======
                                 <input formControlName="codigoSVTInput" matInput #inputAtencion>
->>>>>>> fa2ffd36c64a46ac2c31c4010fb3f268a773c6a5
                             </mat-form-field> 
                         </div>                      
                         <div class="col-md-2">
@@ -259,11 +256,7 @@
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
-<<<<<<< HEAD
-                                <mat-select formControlName="contactoSelect" placeholder="Selecciona contacto">
-=======
                                 <mat-select formControlName="contactoSelect" placeholder="Selecciona contacto" [compareWith]="compareItems" [(ngModel)]="iniciativa.contacto">
->>>>>>> fa2ffd36c64a46ac2c31c4010fb3f268a773c6a5
                                     <mat-option *ngFor="let contactolet of contactos" [value]="contactolet">
                                         {{contactolet.nombres}}
                                     </mat-option>
@@ -306,11 +299,7 @@
             <div class="row">
                 <div class="col-md-9"></div>
                 <div class="col-md-1">
-<<<<<<< HEAD
-                    <button type="button" class="btn btn-primary btn-sm active" (click)='saveIniciativa()'>Guardar</button>
-=======
                     <button type="button" class="btn btn-primary btn-sm active" (click)='saveIniciativa(iniciativa)'>Guardar</button>
->>>>>>> fa2ffd36c64a46ac2c31c4010fb3f268a773c6a5
                 </div>
                 <div class="col-md-1">
                     <button type="button" class="btn btn-info btn-sm" (click) = "resetFields()">Limpiar</button>
