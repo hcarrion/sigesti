@@ -146,7 +146,6 @@ export class DialogRegistraContactoComponent implements OnInit {
             this.close();
           },
           error => {
-            debugger;
             this.loading = false;
             if("repetido" == error.message){
               Swal.fire('Advertencia!', 'Contacto ya existe.', 'warning');

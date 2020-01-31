@@ -191,7 +191,6 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
   }
 
   updatePorcentajePorAsignar(){
-    debugger;
     if(-1 == this.sumaTotalPorcentaje(this.colaboradorDetFireList)){
       this.regRecursos.controls.porAsignarLabel.setValue("");
     }else{

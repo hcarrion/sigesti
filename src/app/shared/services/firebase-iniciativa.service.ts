@@ -20,7 +20,7 @@ export class FirebaseIniciativaService {
     this.isUpdateCorrelativo = true;
     return await this.getCorrelativo(iniciativaFire);
     /*let numIniciativa = await this.getCorrelativo();
-    debugger;
+    
     const iniciativa = await JSON.parse(JSON.stringify(iniciativaFire));
     this.iniciativaListRef = this.firestore.collection<IniciativaFire>('iniciativas');
     return this.iniciativaListRef.add(iniciativa);*/
@@ -30,6 +30,9 @@ export class FirebaseIniciativaService {
     return this.firestore.collection('iniciativas').snapshotChanges();
   }
  
+  getIniciativa(iniciativaFire: IniciativaFire) {
+    return this.firestore.doc('iniciativas/'+iniciativaFire.idIniciativa).snapshotChanges();
+  }
 
   saveCorrelativo(){
     let correlativoF = new CorrelativoFire();
@@ -69,4 +72,5 @@ export class FirebaseIniciativaService {
     const iniciativa = JSON.parse(JSON.stringify(iniciativaFire));
     return this.firestore.doc('iniciativas/'+iniciativaFire.idIniciativa).update(iniciativa);
   }
+
 }

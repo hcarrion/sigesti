@@ -92,7 +92,6 @@ export class RegistroContactoComponent implements OnInit {habilitar: boolean;
   }
 
   buscarDatos(filterValue: string) {
-    debugger;
     this.contactos.filter = filterValue.trim().toLowerCase();
   }
 

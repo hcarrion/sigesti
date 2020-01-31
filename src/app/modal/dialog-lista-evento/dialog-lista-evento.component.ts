@@ -9,6 +9,9 @@ import { DialogRegistraSeguimientoComponent } from '../../modal/dialog-registra-
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { DialogRegistraEventoComponent } from '../dialog-registra-evento/dialog-registra-evento.component';
 import { DialogRegistraRecursoEventoComponent } from '../dialog-registra-recurso-evento/dialog-registra-recurso-evento.component';
+import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fire';
+import { ActividadFire } from 'src/app/shared/models/actividad-fire';
+import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-fire';
 
 
 @Component({
@@ -24,10 +27,9 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
   tabla: any;
   mensajeAccion: string;
   display: boolean = false;
-  columnasTabla: string[] = ['numeroIniciativa', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
-  title = "Example Angular 8 Material Dialog";
+  columnasTabla: string[] = ['codigo', 'tipo','titulo','fechaInicio','horaAsignada','estado','accion'];
   //iniciativas: IniciativaFire[] = [];
-  iniciativas= new MatTableDataSource<IniciativaFire>([]);
+  actividades= new MatTableDataSource<ActividadDetalleFire>([]);
   selectedRowIndex: number = -1;
   tipoDocumentoData = new MatTableDataSource<IniciativaFire>([]);
   tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaFire>([]);
@@ -36,27 +38,51 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
   
   public tipoDocumento: IniciativaFire[];
   public tipoDocumentoSeleccionado: IniciativaFire;
+  iniciativa: IniciativaFire = new IniciativaFire();
+  actividadesDetFire: ActividadDetalleFire[] = [];
 
   loading: boolean;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
+  constructor(private matDialog: MatDialog, 
+    private firebaseIniciativas: FirebaseIniciativaService,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.iniciativa = data;
+    }
 
-  openDialog(iniciativa: IniciativaFire) {
+  openDialogRecurso(iniciativaFire: IniciativaFire, actividadDetalleFire: ActividadDetalleFire) {
+    let iniciativaDetFire = new IniciativaDetalleFire();
+    iniciativaDetFire.iniciativa = iniciativaFire;
+    iniciativaDetFire.actividadDetalle = actividadDetalleFire;
     this.matDialog.open(DialogRegistraRecursoEventoComponent, /*dialogConfig,*/
       { width: '1200px',
         height: '600px',
-        data: iniciativa
+        data: iniciativaDetFire
       }
     );
   }
 
-  openDialog4()
-  {
+  openDialogEdit(iniciativaFire: IniciativaFire, actividadDetalleFire: ActividadDetalleFire){
+    let iniciativaDetFire = new IniciativaDetalleFire();
+    iniciativaDetFire.iniciativa = iniciativaFire;
+    iniciativaDetFire.actividadDetalle = actividadDetalleFire;
     this.matDialog.open(DialogRegistraEventoComponent, /*dialogConfig,*/
-    
       { width: '2000px',
-        height: '600px'
+        height: '600px',
+        data: iniciativaDetFire
       }
-      );
+    );
+  }
+
+  openDialogNew(iniciativaFire: IniciativaFire){
+    let actividadDetalleFire = new ActividadDetalleFire();
+    let iniciativaDetFire = new IniciativaDetalleFire();
+    iniciativaDetFire.iniciativa = iniciativaFire;
+    iniciativaDetFire.actividadDetalle = actividadDetalleFire;
+    this.matDialog.open(DialogRegistraEventoComponent, /*dialogConfig,*/
+      { width: '2000px',
+        height: '600px',
+        data: iniciativaDetFire
+      }
+    );
   }
 
   onCloseHandled()
@@ -65,27 +91,28 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
   }
 
   ngOnInit() {
-    this.callIniciativas();
+    this.callIniciativa();
   }
 
-  async callIniciativas() {
+  async callIniciativa() {
     this.loading = true;
-    
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
-    iniciativasRef.subscribe(data => {
+    let iniciativaRef = this.firebaseIniciativas.getIniciativa(this.iniciativa);
+    iniciativaRef.subscribe(data => {
       var lista = [];
-      for(var i = 0; i < data.length; i++){
         //lista.push(data[i].payload.doc.data() as IniciativaFire);
-
-        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
-        let idIniciativa = data[i].payload.doc.id;
+        debugger;
+        let iniciativaObject= data.payload.data() as IniciativaFire;
+        let idIniciativa = data.payload.id;
         iniciativaObject.idIniciativa = idIniciativa;
-        lista.push(iniciativaObject);
-
-      }
-      this.iniciativas =  new MatTableDataSource(lista);
-      this.iniciativas.paginator = this.paginator;
-      this.iniciativas.sort = this.sort;
+        this.iniciativa = iniciativaObject;
+        if(undefined != this.iniciativa.actividad){
+          lista = this.iniciativa.actividad.actividades;
+          this.actividadesDetFire = this.iniciativa.actividad.actividades;
+        }
+      
+      this.actividades =  new MatTableDataSource(lista);
+      this.actividades.paginator = this.paginator;
+      this.actividades.sort = this.sort;
       this.InicializaDatosBusqueda();
       this.loading = false;
      
@@ -95,18 +122,18 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
 
   InicializaDatosBusqueda(){
      // Inicializa los datos de busqueda
-     this.iniciativas.filterPredicate = (data, filter) => {
-      const dataStr = data.numeroIniciativa + data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
+     this.actividades.filterPredicate = (data, filter) => {
+      const dataStr = data.codigo + data.tipo.descripcion + data.titulo + data.fechaInicio + data.horaAsignada + data.estado.descripcion;
       return dataStr.toLowerCase().indexOf(filter) != -1;       
     }
   }
 
   buscarDatos(filterValue: string) {
-    this.iniciativas.filter = filterValue.trim().toLowerCase();
+    this.actividades.filter = filterValue.trim().toLowerCase();
   }
 
   buscarDatosHelp(filterValue: string) {
-    this.iniciativas.filter = filterValue.trim();
+    this.actividades.filter = filterValue.trim();
   }
 
   highlight(row){

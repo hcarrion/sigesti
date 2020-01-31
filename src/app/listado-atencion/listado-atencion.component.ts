@@ -87,13 +87,13 @@ export class ListadoAtencionComponent implements OnInit
     );
   }
 
-  openDialog5()
-  {
+  openDialogActivity(iniciativa: IniciativaFire){
     this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
       { width: '2000px',
-        height: '600px'
+        height: '600px',
+        data: iniciativa
       }
-      );
+    );
   }
 
   onCloseHandled()

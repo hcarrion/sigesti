@@ -12,6 +12,8 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { MatSelect } from '@angular/material/select';
 import Swal from 'sweetalert2';
+import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-fire';
+import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fire';
 @Component({
   selector: 'app-dialog-registra-recurso-evento',
   templateUrl: './dialog-registra-recurso-evento.component.html',
@@ -19,7 +21,6 @@ import Swal from 'sweetalert2';
 })
 export class DialogRegistraRecursoEventoComponent implements OnInit {
   regRecursos: FormGroup;
-  iniciativa: IniciativaFire = new IniciativaFire();
   colaboradores: ColaboradorFire = new ColaboradorFire();
   columnasTabla: string[] = ['id', 'usuario','nombres','procentaje','horasasig','asignado'];
   public colaboradorCtrl: FormControl = new FormControl();
@@ -29,12 +30,18 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
   protected _onDestroy = new Subject<void>();
 
   colaboradorDetFireList: ColaboradorDetalleFire[] = [];
+
+  iniciativaDet: IniciativaDetalleFire = new IniciativaDetalleFire();
+  actividadDet: ActividadDetalleFire = new ActividadDetalleFire();
+  iniciativa: IniciativaFire = new IniciativaFire();
   loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRegistraRecursoEventoComponent>, 
     private firebaseColaboradores: FirebaseColaboradorService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private firebaseIniciativas: FirebaseIniciativaService) {
-      this.iniciativa = data;
+      this.iniciativaDet = data;
+      this.iniciativa = this.iniciativaDet.iniciativa;
+      this.actividadDet = this.iniciativaDet.actividadDetalle;
       this.regRecursos = new FormGroup({
         tituloInputDialog: new FormControl(),
         nIniciativaInputDialog: new FormControl(),

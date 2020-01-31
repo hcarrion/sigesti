@@ -32,7 +32,6 @@ export class FirebaseContactoService {
     let isCodigoContact: boolean = false;
     this.contactoDoc = this.firestore.doc('contactos/'+contactoFire.idContacto);
     await this.contactoDoc.get().toPromise().then(doc => {
-      debugger;
       let contactCodigo = doc.data().codigo;
       if(contactoFire.codigo != contactCodigo){
         isCodigoContact = true;
@@ -40,7 +39,6 @@ export class FirebaseContactoService {
       if (isCodigoContact) {
         throw new Error("repetido");
       }else{
-        debugger;
         const contacto = JSON.parse(JSON.stringify(contactoFire));
         return this.firestore.doc('contactos/'+contactoFire.idContacto).update(contacto);
       }
@@ -51,7 +49,6 @@ export class FirebaseContactoService {
     let isCodigoContact: boolean = false;
     this.contactoListRef = this.firestore.collection('contactos', ref => ref.where('codigo', '==', contactoFire.codigo));
     await this.contactoListRef.get().toPromise().then(doc => {
-      debugger;
       doc.forEach(contactoObj => {
         let contactCodigo = contactoObj.data().codigo;
         if(contactoFire.codigo != contactCodigo){
@@ -61,7 +58,6 @@ export class FirebaseContactoService {
       if (1 <= doc.size && isCodigoContact) {
         throw new Error("repetido");
       }else{
-        debugger;
         const contacto = JSON.parse(JSON.stringify(contactoFire));
         return this.firestore.doc('contactos/'+contactoFire.idContacto).update(contacto);
       }

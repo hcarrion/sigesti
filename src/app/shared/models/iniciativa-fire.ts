@@ -1,6 +1,7 @@
 import { ParametroDetalleFire } from './parametro-detalle-fire';
 import { ColaboradorDetalleFire } from './colaborador-detalle-fire';
 import { ContactoFire } from './contacto-fire';
+import { ActividadFire } from './actividad-fire';
 
 export class IniciativaFire {
     idIniciativa: string;
@@ -30,4 +31,5 @@ export class IniciativaFire {
     fechaIngresoBroker: Date;
     // Add Recursos
     recursos: ColaboradorDetalleFire[];
+    actividad: ActividadFire;
 }

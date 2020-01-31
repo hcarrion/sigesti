@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ViewChild, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, ViewEncapsulation, Input, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder  } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
@@ -14,6 +14,9 @@ import { FirebaseIniciativaService } from '../../shared/services/firebase-inicia
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import {MAT_DATE_LOCALE} from '@angular/material';
+import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fire';
+import { ActividadFire } from 'src/app/shared/models/actividad-fire';
+import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-fire';
 
 @Component({
   selector: 'app-dialog-registra-evento',
@@ -26,38 +29,32 @@ export class DialogRegistraEventoComponent implements OnInit {
   submitted = false;
   estado: ParametroFire = new ParametroFire();
   tipo: ParametroFire = new ParametroFire();
-  clasificacion: ParametroFire = new ParametroFire();
-  categoria: ParametroFire = new ParametroFire();
-  prioridad: ParametroFire = new ParametroFire();
-  area: ParametroFire = new ParametroFire();
-  colaboradores: ColaboradorFire = new ColaboradorFire();
-  iniciativas: IniciativaFire = new IniciativaFire();
 
-  panelColor = new FormControl('1');
-  constructor(public dialogRef: MatDialogRef<DialogRegistraEventoComponent>, private _ngZone: NgZone, private firestoreService: FirestoreService, 
+  iniciativaDet: IniciativaDetalleFire = new IniciativaDetalleFire();
+  actividadDet: ActividadDetalleFire = new ActividadDetalleFire();
+  iniciativa: IniciativaFire = new IniciativaFire();
+  loading: boolean;
+  constructor(public dialogRef: MatDialogRef<DialogRegistraEventoComponent>, 
+    private _ngZone: NgZone, private firestoreService: FirestoreService, 
     private formBuilder: FormBuilder, 
     private firebaseParametros: FirebaseParametroService, 
     private firebaseColaboradores: FirebaseColaboradorService, 
-    private firebaseIniciativas: FirebaseIniciativaService) {
-    this.regEvento = new FormGroup({
-      estadoSelect: new FormControl(),
-      tipoSelect: new FormControl(),
-      clasificacionSelect: new FormControl(),
-      categoriaSelect: new FormControl(),
-      prioridadSelect: new FormControl(),
-      areaSelect: new FormControl(),
-      jefeProyectoSelect: new FormControl(),
-      numIniciativaInput: new FormControl(),
-      tituloInput: new FormControl(),
-      sumillaInput: new FormControl(),
-      usuarioProcesosSelect: new FormControl(),
-      objPrincipalTextArea: new FormControl(),
-      objSecundarioTextArea: new FormControl(),
-      fechaInicioInput: new FormControl(),
-      horaEstimadaInput: new FormControl(),
-      fechaFinInput: new FormControl()
-    });
-  }
+    private firebaseIniciativas: FirebaseIniciativaService,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.iniciativaDet = data;
+      this.iniciativa = this.iniciativaDet.iniciativa;
+      this.actividadDet = this.iniciativaDet.actividadDetalle;
+      this.regEvento = new FormGroup({
+        codigoActividadInput: new FormControl(),
+        estadoActividadSelect: new FormControl(),
+        tipoActividadSelect: new FormControl(),
+        tituloActividadInput: new FormControl(),
+        descripcionActividadTextArea: new FormControl(),
+        fechaInicioActividadInput: new FormControl(),
+        horasAsigActividadInput: new FormControl()
+      });
+    }
+
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
   triggerResize() {
@@ -71,46 +68,28 @@ export class DialogRegistraEventoComponent implements OnInit {
   }
 
   async callParametros() {
+    this.loading = true;
     let parametrosRef = this.firebaseParametros.getParametros();
-    let colaboradoresRef = this.firebaseColaboradores.getColaboradores();
-
-      parametrosRef.subscribe(data => {data.forEach(paramObj => {
+      
+    parametrosRef.subscribe(data => {data.forEach(paramObj => {
           let paramObject= paramObj.payload.doc.data() as ParametroFire;
           if("estado" == paramObject.nombre) this.estado = paramObject;
           if("tipo" == paramObject.nombre) this.tipo = paramObject;
-          if("clasificacion" == paramObject.nombre) this.clasificacion = paramObject;
-          if("categoria" == paramObject.nombre) this.categoria = paramObject;
-          if("prioridad" == paramObject.nombre) this.prioridad = paramObject;
-          if("area" == paramObject.nombre) this.area = paramObject;
         });
+        this.loadData(this.actividadDet);
+        this.loading = false;
       });
-
-      colaboradoresRef.subscribe(data => {data.forEach(colabObj => {
-        let colabObject= colabObj.payload.doc.data() as ColaboradorFire;
-        this.colaboradores = colabObject;
-      });
-    });
   }
 
-  saveParametro() {
-    let paramObject = new ParametroFire();
-    paramObject.nombre = "prioridad";
-    let paramDetObjectList: Array<ParametroDetalleFire> = [];
-    let paramDetObject = new ParametroDetalleFire();
-    paramDetObject.codigo = 1;
-    paramDetObject.descripcion = 'Alto';
-    paramDetObjectList.push(paramDetObject);
-    let paramDetObject2 = new ParametroDetalleFire();
-    paramDetObject2.codigo = 2;
-    paramDetObject2.descripcion = 'Medio';
-    paramDetObjectList.push(paramDetObject2);
-    let paramDetObject3 = new ParametroDetalleFire();
-    paramDetObject3.codigo = 3;
-    paramDetObject3.descripcion = 'Bajo';
-    paramDetObjectList.push(paramDetObject3);
-    
-    paramObject.detalle = paramDetObjectList;
-    this.firebaseParametros.createParameter(paramObject);
+  loadData(actividadDetalle: ActividadDetalleFire){
+    debugger;
+    if(undefined != actividadDetalle.codigo){
+      this.regEvento.controls.codigoActividadInput.setValue(actividadDetalle.codigo);
+      this.regEvento.controls.tituloActividadInput.setValue(actividadDetalle.titulo);
+      this.regEvento.controls.descripcionActividadTextArea.setValue(actividadDetalle.descripcion);
+      this.regEvento.controls.fechaInicioActividadInput.setValue(actividadDetalle.fechaInicio);
+      this.regEvento.controls.horasAsigActividadInput.setValue(actividadDetalle.horaAsignada);
+    }
   }
 
   validarField(fieldValue) {
@@ -134,6 +113,152 @@ export class DialogRegistraEventoComponent implements OnInit {
     this.regEvento.reset();
   }
 
+  
+
+  saveActividad(iniciativaFire: IniciativaFire){
+    this.loading = true;
+    let resultValidate = false;
+    let iniciativaObject = new IniciativaFire();
+    let actividadDetalleObject = new ActividadDetalleFire();
+    
+    actividadDetalleObject.estado = this.regEvento.value.estadoActividadSelect as ParametroDetalleFire;
+    actividadDetalleObject.tipo = this.regEvento.value.tipoActividadSelect as ParametroDetalleFire;
+    actividadDetalleObject.titulo = this.regEvento.value.tituloActividadInput;
+    actividadDetalleObject.descripcion = this.regEvento.value.descripcionActividadTextArea;
+    actividadDetalleObject.fechaInicio = this.regEvento.value.fechaInicioActividadInput;
+    actividadDetalleObject.horaAsignada = this.regEvento.value.horasAsigActividadInput;
+
+    this.regEvento = this.formBuilder.group({
+      estadoActividadSelect: [actividadDetalleObject.estado, Validators.required],
+      tipoActividadSelect: [actividadDetalleObject.tipo, Validators.required],
+      tituloActividadInput: [actividadDetalleObject.titulo, Validators.required],
+      descripcionActividadTextArea: [actividadDetalleObject.descripcion, Validators.required],
+      fechaInicioActividadInput: [actividadDetalleObject.fechaInicio, Validators.required],
+      horasAsigActividadInput: [actividadDetalleObject.horaAsignada, Validators.required],
+    });
+
+    if (this.regEvento.invalid){
+      this.submitted = true;
+      resultValidate = true;
+    }
+    
+    if(resultValidate){
+      Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
+    }else{
+      debugger;
+      if(undefined == iniciativaFire.actividad){
+        let codigoInit = 1;
+        let actividadFire = new ActividadFire();
+        actividadFire.correlativo = codigoInit;
+        let actividadesDetFire: ActividadDetalleFire[] = [];
+        actividadDetalleObject.codigo = codigoInit;
+        actividadesDetFire.push(actividadDetalleObject);
+        actividadFire.actividades = actividadesDetFire;
+        iniciativaObject = iniciativaFire;
+        iniciativaObject.actividad = actividadFire;
+        this.firebaseIniciativas.updateIniciativa(iniciativaObject).then(
+          result => {
+            this.loading = false;
+            Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+            /*this.resetFields(); */
+            this.close();
+          },error => {
+            this.loading = false;
+            Swal.fire('Error!', 'Error al guardar la actividad.', 'error');
+          }
+        );
+      }else{
+        debugger;
+        if(undefined == this.actividadDet.codigo){
+          iniciativaObject = iniciativaFire;
+          let newCodigo = iniciativaObject.actividad.correlativo + 1;
+          let actividadDetList = iniciativaObject.actividad.actividades;
+          actividadDetalleObject.codigo = newCodigo;
+          actividadDetList.push(actividadDetalleObject);
+          iniciativaObject.actividad.actividades = actividadDetList;
+          iniciativaObject.actividad.correlativo = newCodigo;
+          this.firebaseIniciativas.updateIniciativa(iniciativaObject).then(
+            result => {
+              this.loading = false;
+              Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+              /*this.resetFields(); */
+              this.close();
+            },error => {
+              this.loading = false;
+              Swal.fire('Error!', 'Error al guardar la actividad.', 'error');
+            }
+          );
+        }else{
+          debugger;
+          iniciativaObject = iniciativaFire;
+          let actividadDetList = iniciativaObject.actividad.actividades;
+          actividadDetalleObject.codigo = this.actividadDet.codigo;
+          let itemIndex = actividadDetList.findIndex(item => item.codigo == this.actividadDet.codigo);
+          actividadDetList[itemIndex] = actividadDetalleObject;
+          iniciativaObject.actividad.actividades = actividadDetList;
+          this.firebaseIniciativas.updateIniciativa(iniciativaObject).then(
+            result => {
+              this.loading = false;
+              Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+              /*this.resetFields(); */
+              this.close();
+            },error => {
+              this.loading = false;
+              Swal.fire('Error!', 'Error al guardar la actividad.', 'error');
+            }
+          );
+        }
+      }
+    }
+  }
+
+  close(): void {
+    this.dialogRef.close();
+  }
+
+  compareItems(obj1, obj2) {
+    return obj1 && obj2 && obj1.codigo===obj2.codigo;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* add parametros */
+  saveParametro() {
+    let paramObject = new ParametroFire();
+    paramObject.nombre = "prioridad";
+    let paramDetObjectList: Array<ParametroDetalleFire> = [];
+    let paramDetObject = new ParametroDetalleFire();
+    paramDetObject.codigo = 1;
+    paramDetObject.descripcion = 'Alto';
+    paramDetObjectList.push(paramDetObject);
+    let paramDetObject2 = new ParametroDetalleFire();
+    paramDetObject2.codigo = 2;
+    paramDetObject2.descripcion = 'Medio';
+    paramDetObjectList.push(paramDetObject2);
+    let paramDetObject3 = new ParametroDetalleFire();
+    paramDetObject3.codigo = 3;
+    paramDetObject3.descripcion = 'Bajo';
+    paramDetObjectList.push(paramDetObject3);
+    
+    paramObject.detalle = paramDetObjectList;
+    this.firebaseParametros.createParameter(paramObject);
+  }
+
+  /* add colaborador */
   saveColaborador() {
     let colabObject = new ColaboradorFire();
     let colabDetObjectList: Array<ColaboradorDetalleFire> = [];
@@ -165,75 +290,5 @@ export class DialogRegistraEventoComponent implements OnInit {
 
     colabObject.colaboradores = colabDetObjectList;
     this.firebaseColaboradores.createColaborador(colabObject);
-  }
-
-  saveIniciativa(){
-    let resultValidate = false;
-    let iniciativaObject = new IniciativaFire();
-
-    iniciativaObject.numeroIniciativa = this.regEvento.value.numIniciativaInput;
-    iniciativaObject.estado = this.regEvento.value.estadoSelect as ParametroDetalleFire;
-    iniciativaObject.titulo = this.regEvento.value.tituloInput;
-    iniciativaObject.jefeProyecto = this.regEvento.value.jefeProyectoSelect as ColaboradorDetalleFire;
-    iniciativaObject.sumilla = this.regEvento.value.sumillaInput;
-    iniciativaObject.usuarioProcesos = this.regEvento.value.usuarioProcesosSelect as ColaboradorDetalleFire;
-    
-    iniciativaObject.objetivoPrincipal = this.regEvento.value.objPrincipalTextArea;
-    
-    iniciativaObject.objetivoSecundario = this.regEvento.value.objSecundarioTextArea;
-    
-    iniciativaObject.fechaInicio = this.regEvento.value.fechaInicioInput;
-    
-    iniciativaObject.horaEstimada = this.regEvento.value.horaEstimadaInput;
-    
-    iniciativaObject.fechaFin = this.regEvento.value.fechaFinInput;
-   
-    iniciativaObject.prioridad = this.panelColor.value as ParametroDetalleFire;
-    
-    iniciativaObject.clasificacion = this.regEvento.value.clasificacionSelect as ParametroDetalleFire;
-   
-    iniciativaObject.area = this.regEvento.value.areaSelect as ParametroDetalleFire;
-   
-    iniciativaObject.categoria = this.regEvento.value.categoriaSelect as ParametroDetalleFire;
-    
-    iniciativaObject.tipo = this.regEvento.value.tipoSelect as ParametroDetalleFire;
-    
-    this.regEvento = this.formBuilder.group({
-      tituloInput: [iniciativaObject.titulo, Validators.required],
-      estadoSelect: [iniciativaObject.estado, Validators.required],
-      jefeProyectoSelect: [iniciativaObject.jefeProyecto, Validators.required],
-      sumillaInput: [iniciativaObject.sumilla, Validators.required],
-      usuarioProcesosSelect: [iniciativaObject.usuarioProcesos, Validators.required],
-      objPrincipalTextArea: [iniciativaObject.objetivoPrincipal, Validators.required],
-      objSecundarioTextArea: [iniciativaObject.objetivoSecundario, Validators.required],
-      fechaInicioInput: [iniciativaObject.fechaInicio, Validators.required],
-      horaEstimadaInput: [iniciativaObject.horaEstimada, Validators.required],
-      fechaFinInput: [iniciativaObject.fechaFin, Validators.required],
-      clasificacionSelect: [iniciativaObject.clasificacion, Validators.required],
-      areaSelect: [iniciativaObject.area, Validators.required],
-      categoriaSelect: [iniciativaObject.categoria , Validators.required],
-      tipoSelect: [iniciativaObject.tipo, Validators.required],
-    });
-
-    if (this.regEvento.invalid) 
-    {
-      this.submitted = true;
-      resultValidate = true;
-    }
-
-
-    
-    if(resultValidate){
-      Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
-    }else{
-      this.firebaseIniciativas.createIniciativa(iniciativaObject).then(
-        result => {
-          Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
-          this.resetFields();
-        },error => {Swal.fire('Error!', 'Error al guardar la iniciativa.', 'error');});
-    }
-  }
-  close(): void {
-    this.dialogRef.close();
   }
 }
