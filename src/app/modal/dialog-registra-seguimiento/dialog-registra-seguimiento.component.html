@@ -1,3 +1,8 @@
+
+
+
+
+
 <div *ngIf="loading" class="content-load">
     <br>
     <mat-spinner class="child-load"></mat-spinner>
@@ -12,24 +17,20 @@
                 </div>  
                 <div style="align-content: center; vertical-align: middle;">    
             </div>
-                <div class="card-body">
+                <div class="card-content">
+                    <br>
                     <div class="row">
-                        <div class="col-md-1"></div>
+                        <div class="col-md-1" > 
+                            <mat-label style="font-size: small;"><strong>N°: </strong> </mat-label>
+                        </div>
                         <div class="col-md-2" > 
-                            <mat-label style="font-size: small;"><strong>N° Iniciativa: </strong> </mat-label>
+                                <input style="background-color: khaki; text-align: center;" readonly="readonly" formControlName="numIniciativaInput" matInput #inputAtencion>
+                        </div>                   
+                        
+                        <div class="col-md-1" > 
+                            <mat-label style="font-size: small;"><strong>#SVT: </strong> </mat-label>
                         </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
-                                <input formControlName="numIniciativaInput" matInput #inputAtencion>
-                            </mat-form-field> 
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2" > 
-                            <mat-label style="font-size: small;"><strong>Codigo SVT: </strong> </mat-label>
-                        </div>
-                        <div class="col-md-3"> 
+                        <div class="col-md-2"> 
                             <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
                                 <input formControlName="codigoSVTInput" matInput #inputAtencion>
                             </mat-form-field> 

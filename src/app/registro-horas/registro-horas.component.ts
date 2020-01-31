@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class RegistroHorasComponent implements OnInit {
   habilitar: boolean;
   habilitar1: boolean;
+  habilitar2: boolean;
+  habilitar3: boolean;
   constructor() { }
 
   ngOnInit() {
@@ -24,4 +26,14 @@ export class RegistroHorasComponent implements OnInit {
     if (this.habilitar1){this.habilitar1 = false;
     }else {this.habilitar1 = true;}
    }
+   InActiva2() {
+ 
+    if (this.habilitar2){this.habilitar2 = false;
+    }else {this.habilitar2 = true;}
+   }
+   InActiva3() {
+ 
+    if (this.habilitar3){this.habilitar3 = false;
+    }else {this.habilitar3 = true;}
+   } 
 }

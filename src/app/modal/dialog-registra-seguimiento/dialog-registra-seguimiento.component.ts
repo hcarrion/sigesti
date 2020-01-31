@@ -255,13 +255,6 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     }
   }
 
-
-
-
-
-
-
-
   /* Add param */
   saveParametro() {
     let paramObject = new ParametroFire();

@@ -7,7 +7,10 @@
             <canvas baseChart 
               [data]="doughnutChartData"
               [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType">
+              [chartType]="doughnutChartType"
+              (chartHover)="chartHovered($event)"          
+              (chartClick)="chartClicked($event)"
+              [options]="doughnutchartOpti">>
             </canvas>
         </div>
         </div>
@@ -21,7 +24,10 @@
             <canvas baseChart 
               [data]="doughnutChartData"
               [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType">
+              [chartType]="doughnutChartType"
+              (chartHover)="chartHovered($event)"          
+              (chartClick)="chartClicked($event)"
+              [options]="doughnutchartOpti">>
             </canvas>
         </div>
         </div>
@@ -36,7 +42,10 @@
             <canvas baseChart 
               [data]="doughnutChartData"
               [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType">
+              [chartType]="doughnutChartType"
+              (chartHover)="chartHovered($event)"          
+              (chartClick)="chartClicked($event)"
+              [options]="doughnutchartOpti">>
             </canvas>
         </div>
         </div>
@@ -51,7 +60,10 @@
             <canvas baseChart 
               [data]="doughnutChartData"
               [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType">
+              [chartType]="doughnutChartType"
+              (chartHover)="chartHovered($event)"          
+              (chartClick)="chartClicked($event)"
+              [options]="doughnutchartOpti">>
             </canvas>
         </div>
         </div>
@@ -222,20 +234,19 @@
     </div>    
   </div>
 
-  <div class="col-sm-12">
+  <div class="col-sm-4">
     <div class="card" >
       <div class="card-content">
         <h3>Resumen Total</h3>        
-        <div class="chart-wrapper">
-          <canvas baseChart 
-          [data]="doughnutChartData"
-          [labels]="doughnutChartLabels"
-          [chartType]="doughnutChartType"
-          [legend]="doughnutChartLegend" 
-          (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)">
-        </canvas>
-      </div>
+        <div style="display: block">
+          <canvas baseChart
+                  [datasets]="barChartData"
+                  [labels]="barChartLabels"
+                  [options]="barChartOptions"
+                  [legend]="barChartLegend"
+                  [chartType]="barChartType">
+          </canvas>
+        </div>
       </div>
     </div>
   </div>
