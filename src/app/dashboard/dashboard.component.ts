@@ -22,16 +22,18 @@ export class DashboardComponent implements OnInit
 {
 
 
-  barChartOptions: ChartOptions = {
-    responsive: true,
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
   };
-  barChartLabels: Label[] = ['ToDo', 'DoIng', 'QA', 'Done'];
-  barChartType: ChartType = 'bar';
-  barChartLegend = true;
-  barChartPlugins = [];
 
-  barChartData: ChartDataSets[] = [
-    { data: [45, 37, 60, 80], label: 'Cantidad de Iniciativas' }
+  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartType = 'bar';
+  public barChartLegend = true;
+
+  public barChartData = [
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
+    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
   ];
 
   public doughnutChartTypeB:string = 'bar'
