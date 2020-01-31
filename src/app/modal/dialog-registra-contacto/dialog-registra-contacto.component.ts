@@ -42,7 +42,8 @@ export class DialogRegistraContactoComponent implements OnInit {
       nombresInput: new FormControl(),
       cargoSelect: new FormControl(),
       telefonoInput: new FormControl(),
-      correoInput: new FormControl()
+      correoInput: new FormControl(),
+      anexoInput: new FormControl()
     });
   }
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
@@ -76,25 +77,9 @@ export class DialogRegistraContactoComponent implements OnInit {
     this.regContacto.controls.codigoContactoInput.setValue(this.contacto.codigo);
     this.regContacto.controls.nombresInput.setValue(this.contacto.nombres);
     this.regContacto.controls.telefonoInput.setValue(this.contacto.telefono);
+    this.regContacto.controls.anexoInput.setValue(this.contacto.anexo);
     this.regContacto.controls.correoInput.setValue(this.contacto.correo);
     /*this.regContacto.controls.estado.setValue(this.contacto.estado);*/
-  }
-
-  saveParametro() {
-    let paramObject = new ParametroFire();
-    paramObject.nombre = "estado-gen";
-    let paramDetObjectList: Array<ParametroDetalleFire> = [];
-    let paramDetObject = new ParametroDetalleFire();
-    paramDetObject.codigo = 1;
-    paramDetObject.descripcion = 'Activo';
-    paramDetObjectList.push(paramDetObject);
-    let paramDetObject2 = new ParametroDetalleFire();
-    paramDetObject2.codigo = 2;
-    paramDetObject2.descripcion = 'Inactivo';
-    paramDetObjectList.push(paramDetObject2);
-    
-    paramObject.detalle = paramDetObjectList;
-    this.firebaseParametros.createParameter(paramObject);
   }
 
   validarField(fieldValue) {
@@ -130,6 +115,7 @@ export class DialogRegistraContactoComponent implements OnInit {
     contactoObject.nombres = this.regContacto.value.nombresInput;
     contactoObject.cargo = this.regContacto.value.cargoSelect as ParametroDetalleFire;
     contactoObject.telefono = this.regContacto.value.telefonoInput;
+    contactoObject.anexo = this.regContacto.value.anexoInput;
     contactoObject.correo = this.regContacto.value.correoInput;
     
     this.regContacto = this.formBuilder.group({
@@ -138,6 +124,7 @@ export class DialogRegistraContactoComponent implements OnInit {
       nombresInput: [contactoObject.nombres, Validators.required],
       cargoSelect: [contactoObject.cargo, Validators.required],
       telefonoInput: [contactoObject.telefono, Validators.required],
+      anexoInput: [contactoObject.anexo, Validators.required],
       correoInput: [contactoObject.correo, Validators.required],
     });
 
@@ -201,9 +188,30 @@ export class DialogRegistraContactoComponent implements OnInit {
 
 
 
+
+
+
+
   
 
 
+  /* Add parameter */
+  saveParametro() {
+    let paramObject = new ParametroFire();
+    paramObject.nombre = "estado-gen";
+    let paramDetObjectList: Array<ParametroDetalleFire> = [];
+    let paramDetObject = new ParametroDetalleFire();
+    paramDetObject.codigo = 1;
+    paramDetObject.descripcion = 'Activo';
+    paramDetObjectList.push(paramDetObject);
+    let paramDetObject2 = new ParametroDetalleFire();
+    paramDetObject2.codigo = 2;
+    paramDetObject2.descripcion = 'Inactivo';
+    paramDetObjectList.push(paramDetObject2);
+    
+    paramObject.detalle = paramDetObjectList;
+    this.firebaseParametros.createParameter(paramObject);
+  }
 
   /* Add Cargo */
   saveCargo() {

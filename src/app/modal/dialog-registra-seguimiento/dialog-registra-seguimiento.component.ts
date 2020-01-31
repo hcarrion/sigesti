@@ -246,6 +246,25 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   compareItems(obj1, obj2) {
     return obj1 && obj2 && obj1.codigo===obj2.codigo;
   }
+<<<<<<< HEAD
+=======
+
+  selectContacto(contactoFire: ContactoFire){
+    if(undefined != contactoFire){
+      this.regIniciativa.controls.telefonoContactoInput.setValue(contactoFire.telefono);
+      this.regIniciativa.controls.correoContactoInput.setValue(contactoFire.correo);
+      this.regIniciativa.controls.anexoContactoInput.setValue(contactoFire.anexo);
+    }
+  }
+
+
+
+
+
+
+
+
+>>>>>>> a46f57452897270c0c889096b4b513444fbd6608
   /* Add param */
   saveParametro() {
     let paramObject = new ParametroFire();
