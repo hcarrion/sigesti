@@ -20,7 +20,7 @@ import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fi
   styleUrls: ['./dialog-registra-recurso-evento.component.css']
 })
 export class DialogRegistraRecursoEventoComponent implements OnInit {
-  regRecursos: FormGroup;
+  regRecursosAct: FormGroup;
   colaboradores: ColaboradorFire = new ColaboradorFire();
   columnasTabla: string[] = ['id', 'usuario','nombres','procentaje','horasasig','asignado'];
   public colaboradorCtrl: FormControl = new FormControl();
@@ -42,7 +42,7 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
       this.iniciativaDet = data;
       this.iniciativa = this.iniciativaDet.iniciativa;
       this.actividadDet = this.iniciativaDet.actividadDetalle;
-      this.regRecursos = new FormGroup({
+      this.regRecursosAct = new FormGroup({
         tituloInputDialog: new FormControl(),
         nIniciativaInputDialog: new FormControl(),
         porAsignarLabel: new FormControl()
@@ -55,28 +55,27 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
  
 
   ngOnInit() {
-    this.callColaboradores();
-    
+    this.loading = true;
+    this.loadData();
+    this.loading = false;
   }
 
-  callColaboradores() {
+  /*async callParametros() {
     this.loading = true;
-    let colaboradoresRef = this.firebaseColaboradores.getColaboradores();
-
-    colaboradoresRef.subscribe(data => {data.forEach(colabObj => {
-        let colabObject= colabObj.payload.doc.data() as ColaboradorFire;
-        this.colaboradores =  colabObject;
-        this.loadData();
-        this.activeSelect(this.colaboradores.colaboradores);
-        this.updatePorcentajePorAsignar();
+      
+    parametrosRef.subscribe(data => {data.forEach(paramObj => {
+          let paramObject= paramObj.payload.doc.data() as ParametroFire;
+          if("estado" == paramObject.nombre) this.estado = paramObject;
+          if("tipo" == paramObject.nombre) this.tipo = paramObject;
+        });
+        this.loadData(this.actividadDet);
         this.loading = false;
       });
-    });
-  }
+  }*/
 
   loadData(){
-    this.regRecursos.controls.tituloInputDialog.setValue(this.iniciativa.titulo);
-    this.regRecursos.controls.nIniciativaInputDialog.setValue(this.iniciativa.numeroIniciativa);
+    this.regRecursosAct.controls.tituloInputDialog.setValue(this.iniciativa.titulo);
+    this.regRecursosAct.controls.nIniciativaInputDialog.setValue(this.iniciativa.numeroIniciativa);
     this.colaboradorDetFireList = this.iniciativa.recursos;
   }
 
@@ -200,11 +199,11 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
   updatePorcentajePorAsignar(){
     debugger;
     if(-1 == this.sumaTotalPorcentaje(this.colaboradorDetFireList)){
-      this.regRecursos.controls.porAsignarLabel.setValue("");
+      this.regRecursosAct.controls.porAsignarLabel.setValue("");
     }else{
       let diferencia = 100 - this.sumaTotalPorcentaje(this.colaboradorDetFireList);
       let textoDiferencia = diferencia;
-      this.regRecursos.controls.porAsignarLabel.setValue(textoDiferencia);
+      this.regRecursosAct.controls.porAsignarLabel.setValue(textoDiferencia);
     }
   }
 

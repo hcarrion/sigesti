@@ -100,7 +100,6 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
     iniciativaRef.subscribe(data => {
       var lista = [];
         //lista.push(data[i].payload.doc.data() as IniciativaFire);
-        debugger;
         let iniciativaObject= data.payload.data() as IniciativaFire;
         let idIniciativa = data.payload.id;
         iniciativaObject.idIniciativa = idIniciativa;

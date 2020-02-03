@@ -82,7 +82,6 @@ export class DialogRegistraEventoComponent implements OnInit {
   }
 
   loadData(actividadDetalle: ActividadDetalleFire){
-    debugger;
     if(undefined != actividadDetalle.codigo){
       this.regEvento.controls.codigoActividadInput.setValue(actividadDetalle.codigo);
       this.regEvento.controls.tituloActividadInput.setValue(actividadDetalle.titulo);
@@ -145,7 +144,6 @@ export class DialogRegistraEventoComponent implements OnInit {
     if(resultValidate){
       Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
     }else{
-      debugger;
       if(undefined == iniciativaFire.actividad){
         let codigoInit = 1;
         let actividadFire = new ActividadFire();
@@ -168,7 +166,6 @@ export class DialogRegistraEventoComponent implements OnInit {
           }
         );
       }else{
-        debugger;
         if(undefined == this.actividadDet.codigo){
           iniciativaObject = iniciativaFire;
           let newCodigo = iniciativaObject.actividad.correlativo + 1;
@@ -189,7 +186,6 @@ export class DialogRegistraEventoComponent implements OnInit {
             }
           );
         }else{
-          debugger;
           iniciativaObject = iniciativaFire;
           let actividadDetList = iniciativaObject.actividad.actividades;
           actividadDetalleObject.codigo = this.actividadDet.codigo;
