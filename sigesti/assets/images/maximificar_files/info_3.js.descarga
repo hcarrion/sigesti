@@ -1,0 +1,352 @@
+$(document).ready(function(){
+
+
+  var barra = $('.navbar').css('height'),
+	icono_mobile = $('.icon-menu-mobile').css('top'),
+	cuerpo = $('body').css('margin-top');
+	parseInt(barra, 10);
+	parseInt(icono_mobile, 10);
+	parseInt(cuerpo, 10);
+
+
+	setTimeout(function(){
+        if($('#info').attr('class')){
+            var info = $('#info').css('height');
+            parseInt(info, 10);
+
+            var padding_top = parseInt(barra, 10) + parseInt(info, 10);
+
+            $("#info").slideDown();
+
+            $('#info').prependTo('body').css({
+                'position':'fixed',
+                'z-index' : '99',
+                'top' : '0'
+            });
+
+            $('.navbar').animate({top : '+' + info});
+            $('.icon-menu-mobile').animate({top : '+' + (parseInt(info, 10) + parseInt(icono_mobile, 10))});
+            $('body').animate({marginTop : 0, paddingTop : padding_top});
+
+            if(url == 'mobile.trabajando.es'){
+                $('#mobileOpenBank').animate({top : '+' + info});
+            }
+
+            $('#info').on('click', function(){
+                $('.navbar').animate({top : 0});
+                $('.icon-menu-mobile').animate({top : '+' + icono_mobile});
+                $('body').animate({marginTop : cuerpo, paddingTop : 0});
+                $('#mobileOpenBank').animate({top : 0});
+            });
+        }
+    }, 1000);
+
+    var mensaje = null;
+    var type = null;
+    var hide = null;
+
+    switch (gamma) {
+        case '1':
+            mensaje = hubo_problema_registro;
+            type = 'error';
+        break;
+        case '2':
+            mensaje = tu_solicitud_incompleta;
+        break;
+        case '3':
+            mensaje = tu_correo_confirmado;
+            type = 'success';
+        break;
+        case '4':
+            mensaje = hemos_actualizado_dash;
+            type = 'info';
+        break;
+        case '5':
+            mensaje = tu_registro_rs_correcto;
+            type = 'success';
+        break;
+        case '6':
+            mensaje = tu_registro_rs_incorrecto;
+            type = 'error';
+        break;
+        case '7':
+            mensaje = login_correcto;
+            type = 'success';
+        break;
+        case '8':
+            mensaje = tu_usuariopass_incorrectos;
+            type = 'error';
+        break;
+        case '9':
+            mensaje = hubo_problema_postulacion;
+            type = 'error';
+        break;
+        case '11':
+            mensaje = busqueda_correctamente;
+            type = 'success';
+        break;
+        case '12':
+            /* #0157810 - darriagada - 04/07/2016 - Fixed vista fancybox emailconfirm*/
+            $(".emailConfirm").fancybox({
+                maxWidth		: 1000,
+                maxHeight	: 600,
+                minHeight: 50,
+                fitToView	: true,
+                width			: '500px',
+                height		: '95px',
+                autoSize		: false,
+                closeClick	: false,
+                openEffect	: 'fade',
+                closeEffect	: 'fade'
+            });
+            $(".emailConfirm").click();
+        break;
+        case '13':
+            mensaje = busqueda_guardada;
+            type = 'success';
+        break;
+        case '14':
+            mensaje = busqueda_eliminada;
+            type = 'success';
+        break;
+        case '15':
+            mensaje = has_postulado_correctamente;
+            type = 'success';
+        break;
+        case '16':
+            mensaje = debes_iniciar_sesion_completo;
+            type = 'error';
+        break;
+        case '17':
+            mensaje = hubo_problema_desactivar_cuenta;
+        break;
+        case '18':
+            mensaje = tu_cuenta_desactivada;
+            type = 'success';
+        break;
+        case '19':
+            mensaje = tus_niveles_priv_ajustados;
+            type = 'success';
+        break;
+        case '20':
+            mensaje = oferta_enviada;
+            type = 'success';
+        break;
+        case '21':
+            mensaje = hubo_problema_changepass;
+            type = 'error';
+        break;
+        case '22':
+            mensaje = tu_pass_reestablecida;
+            type = 'success';
+        break;
+        case '23':
+            mensaje = le_hemos_enviado_correo_recuperarpass;
+            type = 'success';
+        break;
+        case '24':
+            mensaje = se_alcanzado_limite_recuperaaciones;
+            type = 'error';
+        break;
+        case '25':
+            mensaje = tu_pass_cambiada;
+            type = 'success';
+        break;
+        case '26':
+            mensaje = te_has_suscrito;
+            type = 'success';
+        break;
+        case '27':
+            mensaje = hubo_problema_suscripcion;
+        break;
+        case '28':
+            mensaje = hubo_problema_configprivacy;
+        break;
+        case '29':
+            mensaje = hubo_problema;
+        break;
+        case '30':
+            mensaje = correo_ya_existe + ' <a href="' + rutaLogin + '">' + userpass + '</a>.';
+        break;
+        case '31':
+            mensaje = no_posible_recuperar;
+            type = 'error';
+        break;
+        case '32':
+            mensaje = nombre_usuario_guardado;
+            type = 'success';
+        break;
+        case '33':
+            mensaje = anexo_no_encontrado;
+        break;
+        case '34':
+            mensaje = pronto_email_cambio;
+            type = 'info';
+        break;
+        case '35':
+            mensaje = correo_cambiado_exito;
+            type = 'success';
+        break;
+        case '36':
+            mensaje = enlace_expirado;
+            type = 'error';
+        break;
+        case '37':
+            mensaje = busqueda_existe;
+        break;
+        case '38':
+            mensaje = postular_despues_borrado;
+            type = 'success';
+        break;
+        case '39':
+            mensaje = hubo_problema;
+        break;
+        case '40':
+            mensaje = enviaste_tu_cv;
+            type = 'success';
+        break;
+        case '41':
+            mensaje = mensaje_enviado;
+            type = 'success';
+        break;
+        case '42':
+            mensaje = msjError;
+        break;
+        case '43':
+            mensaje = noCamposVacios;
+        break;
+        case '44':
+            mensaje = cuenta_dadaBaja;
+            type = 'error';
+        break;
+        case '45':
+            mensaje = fbErrorEmail;
+        break;
+        case '46':
+            mensaje = msjGuardado;
+            type = 'success';
+        break;
+        case '47':
+            mensaje = imagen_irregular;
+        break;
+        case '48':
+            mensaje = imagen_ok;
+            type = 'success';
+        break;
+        case '50':
+            mensaje = imagen_formatos;
+        break;
+        case '52':
+            mensaje = error_compartirCV;
+        break;
+        case '53':
+            mensaje = pda_ok;
+            type = 'success';
+        break;
+        case '60':
+            // #0155096 - darriagada - 10/06/2016 - mensaje de error de captcha
+            mensaje = error_captcha;
+        break;
+        case '66':
+            // #4597 - pmolina - 23/08/2017 - mensaje de error de generación de bts
+            mensaje = error_informebts;
+            type = 'error';
+        break;
+        case '67':
+            // #4597 - pmolina - 23/08/2017 - mensaje de exito de bts
+            mensaje = nuevo_informe_bts;
+            type = 'success';
+        break;
+        case '68':
+        if (typeof correo != "undefined" && correo.length > 0){
+                    mensaje = registro_pendiente2 + correo;
+            }else {
+                    mensaje = registro_pendiente;
+            }
+            type = 'success';
+        break;
+        case '69':
+            //157588 - mmunoz - 18/07/2016 - Se condiciona mensaje de login por matricula para tipo de documento. Se evita modificar validaciones en controlador user.events
+
+        if (typeof loginRestringidoTypeDoc != "undefined" && loginRestringidoTypeDoc == '2'){
+            mensaje = email_esta_validandose;
+        }else {
+            mensaje = matricula_esta_validandose+correo;
+        }
+        break;
+        case '70':
+            //157588 - mmunoz - 18/07/2016 - Se condiciona mensaje de login por matricula para tipo de documento. Se evita modificar validaciones en controlador user.events
+            if (typeof loginRestringidoTypeDoc != "undefined" && loginRestringidoTypeDoc == '2'){
+                mensaje = email_proceso_validar;
+            }else {
+                mensaje = matricula_proceso_validar+correo;
+            }
+        break;
+         case '71':
+         if (typeof correo != "undefined" && correo.length > 0){
+                mensaje = registro_pendiente2 +" "+ correo;
+        } else {
+                mensaje = dni_proceso_validar;
+            }
+        break;
+        case '77':
+            mensaje = ya_postulando_oferta;
+        break;
+        case '79':
+            mensaje = no_alumno_institucion;
+            type = 'error';
+        break;
+        case '80':
+            /*#0150525 - darriagada - 16/08/2016 - Case para mediodepago no logueado*/
+            mensaje = debes_iniciar_sesion_continuar;
+        break;
+        case '81':
+            mensaje = hubo_problema_inacap;
+            hide = false;
+        break;
+        case '82':
+            //#173873 - flagos - 01/03/2017 - Si agrega mensaje para acciones no permitidas.
+            mensaje = no_permitido;
+        break;
+        case '83':
+            /*#170592 - mmunoz - 27/12/2016 - Mensaje por defecto error request */
+            mensaje = error_request;
+            type = 'error';
+        break;
+        case '84':
+            /*#176235 -gvasquez- 06/04/17 - Mensaje de exito al compartir cv en inacap. */
+            mensaje = exito_comparte_inacap;
+            type = 'success';
+        break;
+        case '85':
+            /* mensaje para indicar a la persona que su cuenta se encuentra bloqueada */
+            mensaje = tu_cuenta_bloqueada;
+            type = 'error';
+        break;
+        case '86':
+  				mensaje = num_alumnoRepetido;
+  				type = 'error';
+  			break;
+        case '87':
+                mensaje = gdprSuccessfullySaved;
+                type = 'success';
+            break;
+        case '88':
+            mensaje = hubo_problema_eude;
+            hide = false;
+        	break;
+        case '89':
+            mensaje = hubo_problema_comillas;
+            hide = false;
+        	break;
+
+    };
+
+    if(mensaje!=null){
+        $(this).mostrar_info(mensaje,type,hide);
+    }
+	
+	if (aliasPais=='pt') {    
+        $(this).mostrar_info(avisocookies,'',false,true);
+	}
+});

@@ -42,7 +42,6 @@ import { DialogRegistraEventoComponent } from './modal/dialog-registra-evento/di
 import { DialogListaEventoComponent } from './modal/dialog-lista-evento/dialog-lista-evento.component';
 import { DialogRegistraRecursoEventoComponent } from './modal/dialog-registra-recurso-evento/dialog-registra-recurso-evento.component';
 import { ChartsModule } from 'ng2-charts';
-import { GraficobarComponent } from './graficobar/graficobar.component';
 
 
 @NgModule({
@@ -65,8 +64,7 @@ import { GraficobarComponent } from './graficobar/graficobar.component';
     DialogRegistraEventoComponent,
     DialogListaEventoComponent,
     DialogRegistraRecursoEventoComponent,
-    DialogRegistraEventoComponent,
-    GraficobarComponent
+    DialogRegistraEventoComponent
   ],
   imports: 
   [

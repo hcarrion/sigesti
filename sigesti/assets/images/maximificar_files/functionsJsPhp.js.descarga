@@ -1,0 +1,270 @@
+$(document).ready(function () {
+    $('.rulesPassword').on('focus', function(){
+        try{
+            displayInfoPass(this);
+        }
+        catch(err){
+            console.log(err);
+        }
+    });
+
+    // $('.rulesPassword').on('focusout',function(){
+    //     try{
+    //         var pswdspace = $(this).data('pswdspace');
+    //         var id = $(this).data('pswdspace').split('_')[1];
+    //         var passLength = $(this).val().length;
+    //         if(passLength==0){
+    //             $('#pswd_info_'+id).hide();
+    //         }
+    //           // passwordRulesValidation(this,'/','.btn_register',pswdspace,'.repearPass');
+    //         }
+    //         catch(err){
+    //
+    //         }
+    //     });
+
+    $('.rulesPassword').on('keyup', function(ev){
+        try{
+            if(ev.keyCode == 32){
+                var pass = $(this).val();
+                $(this).val(pass.substring(0, pass.length - 1));
+                alert(no_espacios_en_blanco);
+                return false;
+            }else{
+                displayInfoPass(this);
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
+    });
+
+    if(page_id==3){//registro
+  		//reglas pass
+  		displayInfoPass('.rulesPassword');
+  	}
+});
+
+/*******************PASSWORD FUNCTIONS***************************/
+/**
+ * [passwordRulesMet verifica las reglas con las que la password cumple y la clasifica]
+ * @param  {[string]} value [pass a verificar]
+ * @return {[string]}       [retorna un string indicando la clasificacion de la password]
+ */
+function passwordRulesMet(value){
+        try{
+            var countRulesToEvaluate =0;//permite saber cuantas reglas debe evaluar
+            var rulesCount = 0;//reglas con las que cumple la pass
+            var pass = value;
+            var rulesDetected = [];//reglas pass detectadas
+            var rulesComplete = [];//reglas pass completadas
+            var category ='';
+            var intersectionArray = [];//permite guardar las reglas que faltan por cumplir
+
+            //Se verifican las reglas para el portal y se validan las que corresponden
+            if(typeof(passRules.rules.minChars)=='number'){
+                countRulesToEvaluate++;
+                rulesDetected.push('minChars');
+                if ( pass.length >= passRules.rules.minChars ) {
+                    rulesCount++;
+                    rulesComplete.push('minChars');
+                }
+            }
+            if(typeof(passRules.rules.oneDigitAtLeast)=='boolean' && passRules.rules.oneDigitAtLeast==true){
+                countRulesToEvaluate++;
+                rulesDetected.push('oneDigitAtLeast');
+                var oneDigitAtLeast_regex = passRules.rules.oneDigitAtLeast_regex;
+                if ( pass.match(oneDigitAtLeast_regex) ) {
+                    rulesCount++;
+                    rulesComplete.push('oneDigitAtLeast');
+                }
+            }
+            if(typeof(passRules.rules.oneLowerCaseAtLeast)=='boolean' && passRules.rules.oneLowerCaseAtLeast==true){
+                countRulesToEvaluate++;
+                rulesDetected.push('oneLowerCaseAtLeast');
+                var oneLowerCaseAtLeast_regex = passRules.rules.oneLowerCaseAtLeast_regex;
+                if ( pass.match(oneLowerCaseAtLeast_regex) ) {
+                    rulesCount++;
+                    rulesComplete.push('oneLowerCaseAtLeast');
+                }
+            }
+            if(typeof(passRules.rules.oneUpperCaseAtLeast)=='boolean' && passRules.rules.oneUpperCaseAtLeast==true){
+                countRulesToEvaluate++;
+                rulesDetected.push('oneUpperCaseAtLeast');
+                var oneUpperCaseAtLeast_regex = passRules.rules.oneUpperCaseAtLeast_regex;
+                if ( pass.match(oneUpperCaseAtLeast_regex) ) {
+                    rulesCount++;
+                    rulesComplete.push('oneUpperCaseAtLeast');
+                }
+            }
+            if(typeof(passRules.rules.oneSpecialCharAtLeast)=='boolean' && passRules.rules.oneSpecialCharAtLeast==true){
+                countRulesToEvaluate++;
+                rulesDetected.push('oneSpecialCharAtLeast');
+                var oneSpecialCharAtLeast_regex = passRules.rules.oneSpecialCharAtLeast_regex;
+                if ( pass.match(oneSpecialCharAtLeast_regex) ) {
+                    rulesCount++;
+                    rulesComplete.push('oneSpecialCharAtLeast');
+                }
+            }
+
+            //Se obtienen las reglas que no se han cumplido
+            intersectionArray = rulesDetected.filter(function(obj) { return rulesComplete.indexOf(obj) == -1; });
+
+            //Se le da una categoria a la password
+            if(rulesCount<=(countRulesToEvaluate/2)){
+                category = 'short';
+            }
+            if(rulesCount>(countRulesToEvaluate/2) && rulesCount<countRulesToEvaluate){
+                category = 'good';
+            }
+            if(rulesCount==countRulesToEvaluate){
+                category = 'strong';
+            }
+
+
+            return JSON.stringify({
+                'category': category,
+                'rulesIncomplete': intersectionArray
+            });
+        }
+        catch(err){
+            console.log(err);
+        }
+}
+
+
+/**
+	 * [passwordTextValidation retorna el texto asociado al reglas que faltan por completar de la pass]
+	 * @param  {[array]} array [Arreglo con las reglas que faltan por cumplir]
+	 * @return {[text]}       [texto con las reglas faltantes]
+	 */
+	function passwordTextValidation(array){
+        try{
+            var $textValidation=[];
+
+            if ($.isArray(array) && array.length>0){
+                $textValidationInitial = pass_debe_tener + ':';
+                $band = 0;
+
+           //se obtiene el texto de las reglas faltantes para la contraseña
+           $.each(array, function(index,value){
+               switch (value) {
+                   case 'oneUpperCaseAtLeast':
+                   $textValidation.push(' '+al_menos_una_mayuscula+',');
+                   $band = 1;
+                   break;
+                   case 'oneLowerCaseAtLeast':
+                   $textValidation.push(' '+al_menos_una_minuscula+',');
+                   $band = 1;
+                   break;
+                   case 'oneDigitAtLeast':
+                   $textValidation.push(' '+al_menos_un_digito+',');
+                   $band = 1;
+                   break;
+                   case 'minChars':
+                   $textValidation.push(' '+minimo+' '+rulesminChars+' '+caracteres+',');
+                   $band = 1;
+                   break;
+                   case 'oneSpecialCharAtLeast':
+                   $textValidation.push(' '+al_menos_un_caracter_especial+',');
+                   $band = 1;
+                   break;
+               }
+           });
+
+           //Se verifica hay alguna regla faltante
+           if ($band == 1) {
+             //Si solo existe una regla faltante solo se borra la "," del final
+             if($textValidation.length==1){
+                 $textValidation[0] = $textValidation[0].substring(0, $textValidation[0].length - 1);
+                 $textValidation = $textValidationInitial+$textValidation[0];
+
+             } else if($textValidation.length>1){
+               //Si hay mas de una regla faltante, se reemplaza la penultima "," con un "y"
+               $textValidation[$textValidation.length-2] = $textValidation[$textValidation.length-2].replace(","," y ");
+               $textValidation = $textValidation.join("");
+               $textValidation = $textValidation.substring(0, $textValidation.length - 1);
+               $textValidation = $textValidationInitial+$textValidation;
+             }
+
+               return $textValidation;
+               }
+           }
+
+           return false;
+
+       }
+       catch(err){
+           console.log(err);
+       }
+   }
+
+	/**
+	 * [displayInfoPass Despliega cuadro de texto con las reglas para la password]
+	 * @param  {[object]} inputPass [objeto con las propiedades del input]
+	 * @return {[void]}           [muestra el cuadro de texto con las reglas de la contraseña]
+	 */
+    function displayInfoPass(inputPass){
+        try{
+            var _this = inputPass;
+            var titleText = seguridad_contrasena;
+            var contentText = pass_debe_tener+textPasswordRules;
+            var pswdspace = $(_this).data('pswdspace');
+            var id = $(_this).data('pswdspace').split('_')[1];
+            var pswd = $(_this).val();
+            var rulesComplete = '';
+
+            if($('.'+pswdspace).children().hasClass('pswd_info')==false){
+
+                $('.'+pswdspace).html(
+                    '<div class="pswd_info" id="pswd_info_'+id+'">'+
+                    '<h4>'+titleText+':</h4>'+
+                    '<div class="meter" id="passwdBar_'+id+'">'+
+                    '<span class="strength-bar" id="strength-bar_'+id+'"></span>'+
+                    '</div> <p></p></div>'
+                    );
+            }
+
+            rulesComplete = JSON.parse(passwordRulesMet(pswd));
+
+           //Se determina el tipo de color y ancho del indicador de fortaleza
+           if(rulesComplete.category=='short'){
+               $('#strength-bar_'+id).removeClass().addClass('short');
+               $('#strength-bar_'+id).addClass('strength-bar');
+               $('.repearPass').attr('disabled','disabled');
+               $('.submitPassFormBtn').addClass('disabled');
+           }
+           else if(rulesComplete.category=='good'){
+               $('#strength-bar_'+id).removeClass().addClass('good');
+               $('#strength-bar_'+id).addClass('strength-bar');
+               $('.repearPass').attr('disabled','disabled');
+               $('.submitPassFormBtn').addClass('disabled');
+           }
+           else if(rulesComplete.category=='strong'){
+               $('#strength-bar_'+id).removeClass().addClass('strong');
+               $('#strength-bar_'+id).addClass('strength-bar');
+               $('.repearPass').removeAttr('disabled');
+               $('.submitPassFormBtn').removeClass('disabled');
+           }
+
+           if(pswd.length>0){
+           //Se verifica si hay reglas faltantes para la password
+           if(rulesComplete.rulesIncomplete.length>0){
+               var text = passwordTextValidation(rulesComplete.rulesIncomplete);
+               if(typeof(text)==='string' && text!=""){
+                   $('.pswdSpace_1').children().children('p').html(text);
+               }
+           }else{
+               $('.pswdSpace_1').children().children('p').html(tu_pass_es_segura);
+           }
+       }else{
+           $('.pswdSpace_1').children().children('p').html(contentText);
+       }
+
+
+       $('#pswd_info_'+id).css("display","block");
+   }
+   catch(err){
+       console.log(err);
+   }
+}

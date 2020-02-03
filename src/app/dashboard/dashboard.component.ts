@@ -9,9 +9,9 @@ import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seg
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
 import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-lista-evento.component';
-import { ChartType, ChartOptions, ChartDataSets } from 'chart.js';
-import { MultiDataSet, Label, monkeyPatchChartJsTooltip, monkeyPatchChartJsLegend } from 'ng2-charts';
-
+import { ChartType } from 'chart.js';
+import { MultiDataSet, Label } from 'ng2-charts';
+import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,38 +20,15 @@ import { MultiDataSet, Label, monkeyPatchChartJsTooltip, monkeyPatchChartJsLegen
 })
 export class DashboardComponent implements OnInit 
 {
-
-
-  public barChartOptions = {
-    scaleShowVerticalLines: false,
-    responsive: true
-  };
-
-  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  public barChartType = 'bar';
-  public barChartLegend = true;
-
-  public barChartData = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+  doughnutChartLabels: Label[] = ['ToDo', 'DoIng', 'QA', 'Done'];
+  barChartPlugins = [pluginDataLabels];
+  doughnutChartData: MultiDataSet = [
+    [80, 40, 90, 312]
   ];
-
-  public doughnutChartTypeB:string = 'bar'
-  public doughnutChartLabels: Label[] = ['ToDo', 'DoIng', 'QA', 'Done'];
-  public doughnutChartData: number[] = [80, 40, 90, 312];
-  public doughnutChartType: ChartType = 'doughnut';
-  public doughnutchartOpti: any = {
-    pieceLabel: {
-      render: function (args) {
-      const label = args.label,
-          value = args.value;
-      return label + ': ' + value;
-      }
-    },
-      legend: {
-        display: true
-      }
-   }
+  doughnutChartType: ChartType = 'doughnut';
+  
+  private intervalUpdate: any = null;
+  public chart: any = null;
   habilitar: boolean;
   selected: boolean;
   nuevo: boolean;
@@ -61,7 +38,7 @@ export class DashboardComponent implements OnInit
   mensajeAccion: string;  
   display: boolean = false;
   columnasTabla: string[] = ['numeroIniciativa', 'titulo','fechafin','estado'];
-  title = "DahBoard - Confianza";
+  title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
   selectedRowIndex: number = -1;
@@ -75,35 +52,41 @@ export class DashboardComponent implements OnInit
   public tipoDocumentoSeleccionado: IniciativaFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
+  
   loading: boolean;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {
-    monkeyPatchChartJsTooltip();
-    monkeyPatchChartJsLegend();
-  }  
+  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}  
   FiltraCanvas(filterValue: string) {
     this.iniciativas.filter = filterValue.trim().toLowerCase();
   }
- 
-  chartClicked(e:any) {
-    
-    if(e.active.length > 0){
-      var points = [];
-      var pointSelected = e.active[0]._chart.tooltip._model.caretY;
-      //alert(pointSelected);
-      if (pointSelected>96&&pointSelected<98){
-        this.iniciativas.filter = "Terminado".trim().toLowerCase();
+
+  public chartOptions:any = { 
+    responsive: true
+  };
+
+  public chartClicked(e: any): void {
+    if (e.active.length > 0) {
+    const chart = e.active[0]._chart;
+    const activePoints = chart.getElementAtEvent(e.event);
+      if ( activePoints.length > 0) {
+        // get the internal index of slice in pie chart
+        const clickedElementIndex = activePoints[0]._index;
+        const label = chart.data.labels[clickedElementIndex];
+        // get value by index
+        const value = chart.data.datasets[0].data[clickedElementIndex];
+        
+        if (label=="ToDo"){this.FiltraCanvas("Pendiente")};
+        if (label=="DoIng"){this.FiltraCanvas("Asignado")};
+        if (label=="QA"){this.FiltraCanvas("Rechazado")};
+        if (label=="Done"){this.FiltraCanvas("Suspendido")};
+        
+        console.log(clickedElementIndex, label, value)
       }
-      if (pointSelected>65&&pointSelected<67){
-        this.iniciativas.filter = "Pendiente".trim().toLowerCase();
-      }
-      if (pointSelected>79&&pointSelected<81){
-        this.iniciativas.filter = "Asignado".trim().toLowerCase();
-      }
-      if (pointSelected>99&&pointSelected<101){
-        this.iniciativas.filter = "Suspendido".trim().toLowerCase();
-      }
-    } 
-  }
+     }
+    }
+  
+  private chartHovered(e: any): void { 
+    console.log(e);    
+    }
 
   onCloseHandled()
   {
@@ -186,9 +169,5 @@ export class DashboardComponent implements OnInit
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
   }  
-  
-  public chartHovered(e:any):void {
-    console.log("hover",e);
-    }
-
+ 
 }

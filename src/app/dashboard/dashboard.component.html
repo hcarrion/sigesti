@@ -1,127 +1,169 @@
 <div class="row" >    
-    <div class="col-sm-3">
-      <div class="card">
-        <div crlass="card-content">
-          <h3 class="card-title">Proyectos</h3>          
-          <div class="chart-wrapper">
-            <canvas baseChart 
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType"
-              (chartHover)="chartHovered($event)"          
-              (chartClick)="chartClicked($event)"
-              [options]="doughnutchartOpti">>
-            </canvas>
-        </div>
-        </div>
+  <div class="col-sm-3">
+    <div class="card">
+      <div crlass="card-content">
+        <h3 class="card-title">Proyectos</h3>          
+        <div class="chart-wrapper">
+          <canvas baseChart 
+            [data]="doughnutChartData"
+            [labels]="doughnutChartLabels"
+            [chartType]="doughnutChartType"
+            [options]="chartOptions"
+            [plugins]="barChartPlugins"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">>
+          </canvas>
+      </div>
       </div>
     </div>
-    <div class="col-sm-3">
-      <div class="card">
-        <div class="card-content">
-          <h2 class="card-title">Mantenimiento</h2>
-          <div class="chart-wrapper">
-            <canvas baseChart 
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType"
-              (chartHover)="chartHovered($event)"          
-              (chartClick)="chartClicked($event)"
-              [options]="doughnutchartOpti">>
-            </canvas>
-        </div>
-        </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="card">
+      <div class="card-content">
+        <h2 class="card-title">Mantenimiento</h2>
+        <div class="chart-wrapper">
+          <canvas baseChart 
+            [data]="doughnutChartData"
+            [labels]="doughnutChartLabels"
+            [chartType]="doughnutChartType"
+            [options]="chartOptions"
+            [plugins]="barChartPlugins"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">>
+          </canvas>
+      </div>
       </div>
     </div>
-
-    <div class="col-sm-3">
-      <div class="card">
-        <div class="card-content">
-          <h2 class="card-title">Mejoras</h2>
-          <div class="chart-wrapper">
-            <canvas baseChart 
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType"
-              (chartHover)="chartHovered($event)"          
-              (chartClick)="chartClicked($event)"
-              [options]="doughnutchartOpti">>
-            </canvas>
-        </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-3">
-      <div class="card">
-        <div class="card-content">
-          <h2 class="card-title">Incidencias</h2>
-          <div class="chart-wrapper">
-            <canvas baseChart 
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType"
-              (chartHover)="chartHovered($event)"          
-              (chartClick)="chartClicked($event)"
-              [options]="doughnutchartOpti">>
-            </canvas>
-        </div>
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <div *ngIf="loading" class="content-load">
-    <br>
-    <mat-spinner class="child-load"></mat-spinner>
-    <br>
-    <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+  <div class="col-sm-3">
+    <div class="card">
+      <div class="card-content">
+        <h2 class="card-title">Mejoras</h2>
+        <div class="chart-wrapper">
+          <canvas baseChart 
+            [data]="doughnutChartData"
+            [labels]="doughnutChartLabels"
+            [chartType]="doughnutChartType"
+            [options]="chartOptions"
+            [plugins]="barChartPlugins"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">>
+          </canvas>
+      </div>
+      </div>
+    </div>
   </div>
+
+  <div class="col-sm-3">
+    <div class="card">
+      <div class="card-content">
+        <h2 class="card-title">Incidencias</h2>
+        <div class="chart-wrapper">
+          <canvas baseChart 
+            [data]="doughnutChartData"
+            [labels]="doughnutChartLabels"
+            [chartType]="doughnutChartType"
+            [options]="chartOptions"
+            [plugins]="barChartPlugins"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">>
+          </canvas>
+      </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="loading" class="content-load">
+  <br>
+  <mat-spinner class="child-load"></mat-spinner>
+  <br>
+  <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+</div>
+
+<div class="row">    
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">Proyectos</h2>
+          <div class="pipeline-body">
+            <table mat-table [dataSource]="iniciativas" matSort >
+               
+                 <!-- Position Column -->
+                 <ng-container matColumnDef="numeroIniciativa">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> N° INICIATIVA </th>
+                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.numeroIniciativa}} </td>
+                 </ng-container>
+
+    
+                 <!-- Name Column -->
+                 <ng-container matColumnDef="titulo">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
+                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
+                 </ng-container>
+               
+                 <ng-container matColumnDef="fechafin">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
+                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
+                 </ng-container>
+
+                 <ng-container matColumnDef="estado">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
+                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.estado.descripcion}} </td>
+                 </ng-container>                     
+                 <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+                 <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
+           </table>
+
+           <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">Mantenimiento.</h2>
+        <div class="pipeline-body">
+          <table mat-table [dataSource]="iniciativas" matSort >
+             
+               <!-- Position Column -->
+               <ng-container matColumnDef="numeroIniciativa">
+                   <th mat-header-cell *matHeaderCellDef mat-sort-header> N° INICIATIVA </th>
+                   <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.numeroIniciativa}} </td>
+               </ng-container>
+
   
-  <div class="row">    
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h2 class="card-title">Proyectos</h2>
-            <div class="pipeline-body">
-              <table mat-table [dataSource]="iniciativas" matSort >
-                 
-                   <!-- Position Column -->
-                   <ng-container matColumnDef="numeroIniciativa">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> N° INICIATIVA </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.numeroIniciativa}} </td>
-                   </ng-container>
+               <!-- Name Column -->
+               <ng-container matColumnDef="titulo">
+                   <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
+                   <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
+               </ng-container>
+             
+               <ng-container matColumnDef="fechafin">
+                   <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
+                   <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
+               </ng-container>
 
-      
-                   <!-- Name Column -->
-                   <ng-container matColumnDef="titulo">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
-                   </ng-container>
-                 
-                   <ng-container matColumnDef="fechafin">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
-                   </ng-container>
+               <ng-container matColumnDef="estado">
+                   <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
+                   <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.estado.descripcion}} </td>
+               </ng-container>                     
+               <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+               <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
+         </table>
 
-                   <ng-container matColumnDef="estado">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.estado.descripcion}} </td>
-                   </ng-container>                     
-                   <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-                   <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-             </table>
-
-             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
-            </div>
+         <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
         </div>
       </div>
     </div>
-    <div class="col-sm-6">
+  </div>
+  <div class="col-sm-6">
       <div class="card">
         <div class="card-body">
-          <h2 class="card-title">Mantenimiento.</h2>
+          <h2 class="card-title">Mejoras</h2>
           <div class="pipeline-body">
             <table mat-table [dataSource]="iniciativas" matSort >
                
@@ -155,98 +197,80 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title">Mejoras</h2>
-            <div class="pipeline-body">
-              <table mat-table [dataSource]="iniciativas" matSort >
-                 
-                   <!-- Position Column -->
-                   <ng-container matColumnDef="numeroIniciativa">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> N° INICIATIVA </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.numeroIniciativa}} </td>
-                   </ng-container>
-
-      
-                   <!-- Name Column -->
-                   <ng-container matColumnDef="titulo">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
-                   </ng-container>
-                 
-                   <ng-container matColumnDef="fechafin">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
-                   </ng-container>
-
-                   <ng-container matColumnDef="estado">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.estado.descripcion}} </td>
-                   </ng-container>                     
-                   <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-                   <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-             </table>
-
-             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
-            </div>
-          </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title">Incidencias</h2>
-            <div class="pipeline-body">
-              <table mat-table [dataSource]="iniciativas" matSort >
-                 
-                   <!-- Position Column -->
-                   <ng-container matColumnDef="numeroIniciativa">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> N° INICIATIVA </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.numeroIniciativa}} </td>
-                   </ng-container>
-
-      
-                   <!-- Name Column -->
-                   <ng-container matColumnDef="titulo">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
-                   </ng-container>
-                 
-                   <ng-container matColumnDef="fechafin">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
-                   </ng-container>
-
-                   <ng-container matColumnDef="estado">
-                       <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
-                       <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.estado.descripcion}} </td>
-                   </ng-container>                     
-                   <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-                   <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-             </table>
-
-             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
-            </div>
-          </div>
-        </div>
-    </div>    
   </div>
+  <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title">Incidencias</h2>
+          <div class="pipeline-body">
+            <table mat-table [dataSource]="iniciativas" matSort >
+               
+                 <!-- Position Column -->
+                 <ng-container matColumnDef="numeroIniciativa">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> N° INICIATIVA </th>
+                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.numeroIniciativa}} </td>
+                 </ng-container>
 
+    
+                 <!-- Name Column -->
+                 <ng-container matColumnDef="titulo">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
+                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
+                 </ng-container>
+               
+                 <ng-container matColumnDef="fechafin">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
+                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
+                 </ng-container>
+
+                 <ng-container matColumnDef="estado">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
+                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.estado.descripcion}} </td>
+                 </ng-container>                     
+                 <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+                 <tr mat-row  *matRowDef="let row; columns: columnasTabla;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
+           </table>
+
+           <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
+          </div>
+        </div>
+      </div>
+  </div>    
+</div>
+
+<div class="col-sm-12">
+  <div class="card" >
+    <div class="card-content">
+      <h3>Resumen Total</h3>        
+      <div class="chart-wrapper">
+        <canvas baseChart 
+        [data]="doughnutChartData"
+        [labels]="doughnutChartLabels"
+        [chartType]="doughnutChartType"
+        [legend]="doughnutChartLegend" 
+        [options]="chartOptions"
+        [plugins]="barChartPlugins"
+        (chartHover)="chartHovered($event)"
+        (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
+    </div>
+  </div>
+  
   <div class="col-sm-4">
     <div class="card" >
       <div class="card-content">
         <h3>Resumen Total</h3>        
-        <div style="display: block">
-          <canvas baseChart
-                  [datasets]="barChartData"
-                  [labels]="barChartLabels"
-                  [options]="barChartOptions"
-                  [legend]="barChartLegend"
-                  [chartType]="barChartType">
-          </canvas>
-        </div>
+        <div class="chart-wrapper">
+          <canvas baseChart 
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+          [chartType]="barChartType">
+        </canvas>
+      </div>
       </div>
     </div>
   </div>

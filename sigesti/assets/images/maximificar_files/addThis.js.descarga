@@ -1,0 +1,18 @@
+function fixAddThis() {
+    try{
+        var scriptAddThis = 'https://s7.addthis.com/js/300/addthis_widget.js#domready=1';
+        if (window.addthis) {
+            window.addthis = null;
+            window._adr = null;
+            window._atc = null;
+            window._atd = null;
+            window._ate = null;
+            /*window._atr = null;*/
+            window._atw = null;
+        }
+        return scriptAddThis;
+    }
+    catch(err){
+       //console.log(err);
+   }
+}

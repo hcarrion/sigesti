@@ -1,0 +1,14 @@
+$(document).ready(function(){
+  $("#btn_adv_search, #flechitas_search").click(function(){
+    if (beta < 1) {
+      $("#top_search").css('display','table');
+      $("#region2").val('');
+      $("#palabra2").val('');
+
+    } else {
+      $("#top_search").css('display','none');
+      $("#region").val('');
+      $("#palabra").val('');
+    };
+  });
+});
