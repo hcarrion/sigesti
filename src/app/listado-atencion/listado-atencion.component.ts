@@ -133,7 +133,7 @@ export class ListadoAtencionComponent implements OnInit
   InicializaDatosBusqueda(){
      // Inicializa los datos de busqueda
      this.iniciativas.filterPredicate = (data, filter) => {
-      const dataStr = data.numeroIniciativa + data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
+      const dataStr = data.codigoSVT + data.numeroIniciativa + data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
       return dataStr.toLowerCase().indexOf(filter) != -1;       
     }
   }

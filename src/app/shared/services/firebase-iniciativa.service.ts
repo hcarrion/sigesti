@@ -30,8 +30,8 @@ export class FirebaseIniciativaService {
     return this.firestore.collection('iniciativas').snapshotChanges();
   }
  
-  getfiltro(campo: string,condicion: string){
-    return this.firestore.collection('iniciativas', ref => ref.where(campo, '==', condicion));
+  getIniciativaFiltro(campo: string,condicion: string){
+    return this.firestore.collection('iniciativas', ref => ref.where(campo, '==', condicion)).snapshotChanges();
   }
 
   getIniciativa(iniciativaFire: IniciativaFire) {
