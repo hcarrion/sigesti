@@ -62,10 +62,10 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
  
 
   ngOnInit() {
-    this.callParametros();
+    this.callIniciativa();
   }
 
-  async callParametros() {
+  async callIniciativa() {
     this.loading = true;
     
     let iniciativasRef = this.firebaseIniciativas.getIniciativa(this.iniciativa);
@@ -74,6 +74,9 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
         let idIniciativa = data.payload.id;
         iniciativaObject.idIniciativa = idIniciativa;
         this.iniciativa = iniciativaObject;
+        debugger;
+        let actDet = this.iniciativa.actividad.actividades.filter(actiDet => actiDet.codigo == this.actividadDet.codigo);
+        this.actividadDet = actDet[0];
         this.loadData(this.iniciativa);
         this.loading = false;
       });
@@ -149,6 +152,7 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
   }*/
 
   guardarRecursos(recuColabDetFireList: ColaboradorDetalleFire[]){
+    debugger;
     this.loading = true;
     let resultValidate = false;
     if(undefined != recuColabDetFireList && 0 != recuColabDetFireList.length){
@@ -158,7 +162,6 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
         this.loading = false;
         Swal.fire('Advertencia!', 'Las horas asignados deben sumar '+this.actividadDet.horaAsignada+'.', 'warning');
       }else{
-        debugger;
         this.actividadDet.recursos = recuColabDetFireList;
         let activityList = this.iniciativa.actividad.actividades;
         let itemActividadIndex = activityList.findIndex(item => item.codigo == this.actividadDet.codigo);
@@ -170,7 +173,9 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
             this.loading = false;
             Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
             this.close();
-          },error => {Swal.fire('Error!', 'Error al guardar los recursos de la actividad.', 'error');});
+          },error => {
+            Swal.fire('Error!', 'Error al guardar los recursos de la actividad.', 'error');
+          });
       }
     }else{
       this.loading = false;
