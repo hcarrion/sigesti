@@ -14,6 +14,7 @@ import { MatSelect } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-fire';
 import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fire';
+import { MatCheckboxChange } from '@angular/material';
 @Component({
   selector: 'app-dialog-registra-recurso-evento',
   templateUrl: './dialog-registra-recurso-evento.component.html',
@@ -22,7 +23,7 @@ import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fi
 export class DialogRegistraRecursoEventoComponent implements OnInit {
   regRecursosAct: FormGroup;
   colaboradores: ColaboradorFire = new ColaboradorFire();
-  columnasTabla: string[] = ['id', 'usuario','nombres','procentaje','horasasig','asignado'];
+  columnasTabla: string[] = ['id', 'usuario','nombres','porcentaje','horasAsig','asignado'];
   public colaboradorCtrl: FormControl = new FormControl();
   public colaboradorFilterCtrl: FormControl = new FormControl();
   public filteredColaboradores: ReplaySubject<ColaboradorDetalleFire[]> = new ReplaySubject<ColaboradorDetalleFire[]>(1);
@@ -30,10 +31,12 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
   protected _onDestroy = new Subject<void>();
 
   colaboradorDetFireList: ColaboradorDetalleFire[] = [];
+  recursosIniciativaFireList: ColaboradorDetalleFire[] = [];
 
   iniciativaDet: IniciativaDetalleFire = new IniciativaDetalleFire();
   actividadDet: ActividadDetalleFire = new ActividadDetalleFire();
   iniciativa: IniciativaFire = new IniciativaFire();
+  recursosColabDetFireList: ColaboradorDetalleFire[] = [];
   loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRegistraRecursoEventoComponent>, 
     private firebaseColaboradores: FirebaseColaboradorService,
@@ -42,9 +45,13 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
       this.iniciativaDet = data;
       this.iniciativa = this.iniciativaDet.iniciativa;
       this.actividadDet = this.iniciativaDet.actividadDetalle;
+      this.recursosIniciativaFireList = this.iniciativa.recursos;
       this.regRecursosAct = new FormGroup({
-        tituloInputDialog: new FormControl(),
-        nIniciativaInputDialog: new FormControl(),
+        nIniciativaInputDialogResource: new FormControl(),
+        tituloIniciativaInputDialogResource: new FormControl(),
+        codigoActividadInputDialogResource: new FormControl(),
+        tituloActividadInputDialogResource: new FormControl(),
+        horasAsigActividadInputDialogResource: new FormControl(),
         porAsignarLabel: new FormControl()
       })
   }
@@ -55,31 +62,42 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
  
 
   ngOnInit() {
-    this.loading = true;
-    this.loadData();
-    this.loading = false;
+    this.callParametros();
   }
 
-  /*async callParametros() {
+  async callParametros() {
     this.loading = true;
-      
-    parametrosRef.subscribe(data => {data.forEach(paramObj => {
-          let paramObject= paramObj.payload.doc.data() as ParametroFire;
-          if("estado" == paramObject.nombre) this.estado = paramObject;
-          if("tipo" == paramObject.nombre) this.tipo = paramObject;
-        });
-        this.loadData(this.actividadDet);
+    
+    let iniciativasRef = this.firebaseIniciativas.getIniciativa(this.iniciativa);
+    iniciativasRef.subscribe(data => {
+        let iniciativaObject= data.payload.data() as IniciativaFire;
+        let idIniciativa = data.payload.id;
+        iniciativaObject.idIniciativa = idIniciativa;
+        this.iniciativa = iniciativaObject;
+        this.loadData(this.iniciativa);
         this.loading = false;
       });
-  }*/
-
-  loadData(){
-    this.regRecursosAct.controls.tituloInputDialog.setValue(this.iniciativa.titulo);
-    this.regRecursosAct.controls.nIniciativaInputDialog.setValue(this.iniciativa.numeroIniciativa);
-    this.colaboradorDetFireList = this.iniciativa.recursos;
   }
 
-  activeSelect(colaboradorDetList: ColaboradorDetalleFire[]){
+  loadData(iniciativaF: IniciativaFire){
+    this.regRecursosAct.controls.nIniciativaInputDialogResource.setValue(iniciativaF.numeroIniciativa);
+    this.regRecursosAct.controls.tituloIniciativaInputDialogResource.setValue(iniciativaF.titulo);
+    this.regRecursosAct.controls.codigoActividadInputDialogResource.setValue(this.actividadDet.codigo);
+    this.regRecursosAct.controls.tituloActividadInputDialogResource.setValue(this.actividadDet.titulo);
+    this.regRecursosAct.controls.horasAsigActividadInputDialogResource.setValue(this.actividadDet.horaAsignada);
+    this.colaboradorDetFireList = iniciativaF.recursos;
+    debugger;
+    if(undefined != this.actividadDet.recursos){
+      this.recursosColabDetFireList = this.actividadDet.recursos;
+      this.recursosColabDetFireList.forEach(element => {
+        let itemIndex = this.colaboradorDetFireList.findIndex(item => item.codigo == element.codigo);
+        this.colaboradorDetFireList[itemIndex] = element;
+      });
+    }
+    this.updateHorasPorAsignar();
+  }
+
+  /*activeSelect(colaboradorDetList: ColaboradorDetalleFire[]){
     this.colaboradorCtrl.setValue(colaboradorDetList);
     this.filteredColaboradores.next(colaboradorDetList.slice());
     this.colaboradorFilterCtrl.valueChanges
@@ -87,9 +105,9 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
       .subscribe(() => {
         this.filterBanks();
       });
-  }
+  }*/
 
-  protected filterBanks() {
+  /*protected filterBanks() {
     if (!this.colaboradores.colaboradores) {
       return;
     }
@@ -104,89 +122,96 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
     this.filteredColaboradores.next(
       this.colaboradores.colaboradores.filter(colaborador => colaborador.nombres.toLowerCase().indexOf(search) > -1)
     );
-  }
+  }*/
 
   ngOnDestroy() {
     this._onDestroy.next();
     this._onDestroy.complete();
   }
 
-  agregarTablaRecursos(colaboradorDetFire: ColaboradorDetalleFire){
+  /*agregarTablaRecursos(colaboradorDetFire: ColaboradorDetalleFire){
     if(undefined == this.colaboradorDetFireList){
       this.colaboradorDetFireList = [];
       this.colaboradorDetFireList.push(colaboradorDetFire);
-      this.updatePorcentajePorAsignar();
+      this.updateHorasPorAsignar();
     }else{
       let isExists = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario == colaboradorDetFire.codigoUsuario).length > 0;
       if(!isExists){
         this.colaboradorDetFireList.push(colaboradorDetFire);
-        this.updatePorcentajePorAsignar();
+        this.updateHorasPorAsignar();
       }   
     }
-  }
+  }*/
 
-  eliminarRecursoTabla(colaboradorDetFire: ColaboradorDetalleFire){
+  /*eliminarRecursoTabla(colaboradorDetFire: ColaboradorDetalleFire){
     this.colaboradorDetFireList = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario !== colaboradorDetFire.codigoUsuario); 
-    this.updatePorcentajePorAsignar();
-  }
+    this.updateHorasPorAsignar();
+  }*/
 
-  guardarRecursos(colabDetFireList: ColaboradorDetalleFire[]){
-    debugger;
+  guardarRecursos(recuColabDetFireList: ColaboradorDetalleFire[]){
     this.loading = true;
     let resultValidate = false;
-    if(undefined != colabDetFireList && 0 != colabDetFireList.length){
-      resultValidate = this.validarPorcentajes(colabDetFireList);
+    if(undefined != recuColabDetFireList && 0 != recuColabDetFireList.length){
+      resultValidate = this.validarHoras(recuColabDetFireList);
       
       if(!resultValidate){
         this.loading = false;
-        Swal.fire('Advertencia!', 'Los porcentajes asignados deben sumar 100%.', 'warning');
+        Swal.fire('Advertencia!', 'Las horas asignados deben sumar '+this.actividadDet.horaAsignada+'.', 'warning');
       }else{
-        this.iniciativa.recursos = colabDetFireList;
+        debugger;
+        this.actividadDet.recursos = recuColabDetFireList;
+        let activityList = this.iniciativa.actividad.actividades;
+        let itemActividadIndex = activityList.findIndex(item => item.codigo == this.actividadDet.codigo);
+        activityList[itemActividadIndex] = this.actividadDet;
+        this.iniciativa.actividad.actividades = activityList;
+        this.iniciativa.recursos = this.recursosIniciativaFireList;
         this.firebaseIniciativas.updateIniciativa(this.iniciativa).then(
           result => {
             this.loading = false;
             Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
             this.close();
-          },error => {Swal.fire('Error!', 'Error al guardar los recursos.', 'error');});
+          },error => {Swal.fire('Error!', 'Error al guardar los recursos de la actividad.', 'error');});
       }
     }else{
       this.loading = false;
-      Swal.fire('Advertencia!', 'Debe seleccionar recurso.', 'warning');
+      Swal.fire('Advertencia!', 'Debe seleccionar recurso para la actividad.', 'warning');
     }
   }
 
   focusOut(event: any, colaboradorDetFire: ColaboradorDetalleFire){
     var trObject = (document.getElementById(String(colaboradorDetFire.codigo))) as HTMLTableRowElement;
-    let inputObject = trObject.cells[2].children[0] as HTMLInputElement;
-    let valuePorcen = inputObject.value;
-    colaboradorDetFire.porcentaje = Number(valuePorcen);
-    this.updateColaboradorDetList(colaboradorDetFire);
-    this.updatePorcentajePorAsignar();
+    let inputObject = trObject.cells[4].children[0] as HTMLInputElement;
+    let valueHorasAsig = inputObject.value;
+    colaboradorDetFire.horasAsig = Number(valueHorasAsig);
+    this.updateRecursoDetList(colaboradorDetFire);
+    this.updateHorasPorAsignar();
     
   }
 
-  updateColaboradorDetList(colaboDetFire: ColaboradorDetalleFire){
+  updateRecursoDetList(colaboDetFire: ColaboradorDetalleFire){
     let itemIndex = this.colaboradorDetFireList.findIndex(item => item.codigoUsuario == colaboDetFire.codigoUsuario);
     this.colaboradorDetFireList[itemIndex] = colaboDetFire;
+    let itemRecursoIndex = this.recursosColabDetFireList.findIndex(item => item.codigoUsuario == colaboDetFire.codigoUsuario);
+    this.recursosColabDetFireList[itemRecursoIndex] = colaboDetFire;
   }
 
-  validarPorcentajes(colabDetFireList: ColaboradorDetalleFire[]){
+  validarHoras(recursoColabDetFireList: ColaboradorDetalleFire[]){
     let isValid = false;
-    let sumatotal = this.sumaTotalPorcentaje(colabDetFireList);
-    
-    if(100 >= sumatotal){
+    let sumatotal = this.sumaTotalHoras(recursoColabDetFireList);
+    let horaAsigActividad = this.actividadDet.horaAsignada;
+    if(horaAsigActividad >= sumatotal){
       isValid = true;
     }
     return isValid;
   }
 
-  sumaTotalPorcentaje(colabDetFireList: ColaboradorDetalleFire[]){
+  sumaTotalHoras(recurDetFireList: ColaboradorDetalleFire[]){
     let sumatotal: number = 0;
-    if(undefined != colabDetFireList && 0 != colabDetFireList.length){
-      colabDetFireList.forEach(element => {
-        let valuePorcentaje = element.porcentaje;
-        if(undefined != valuePorcentaje){
-          sumatotal = sumatotal+valuePorcentaje;
+    if(undefined != recurDetFireList && 0 != recurDetFireList.length){
+      recurDetFireList.forEach(element => {
+        let valueHorasAsig = element.horasAsig;
+        if(undefined != valueHorasAsig){
+          sumatotal = sumatotal+valueHorasAsig;
         }
       });
     }else{
@@ -196,15 +221,33 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
     return sumatotal;
   }
 
-  updatePorcentajePorAsignar(){
-    debugger;
-    if(-1 == this.sumaTotalPorcentaje(this.colaboradorDetFireList)){
+  updateHorasPorAsignar(){
+    if(-1 == this.sumaTotalHoras(this.recursosColabDetFireList)){
       this.regRecursosAct.controls.porAsignarLabel.setValue("");
     }else{
-      let diferencia = 100 - this.sumaTotalPorcentaje(this.colaboradorDetFireList);
+      let horaAsigActividad = this.actividadDet.horaAsignada;
+      let diferencia = horaAsigActividad - this.sumaTotalHoras(this.recursosColabDetFireList);
       let textoDiferencia = diferencia;
       this.regRecursosAct.controls.porAsignarLabel.setValue(textoDiferencia);
     }
+  }
+
+  showOptions(event: MatCheckboxChange, colabDetFire: ColaboradorDetalleFire): void {
+    if(event.checked){
+      this.addResourcesActivity(colabDetFire);
+    }else{
+      this.deleteResourcesActivity(colabDetFire);
+    }
+  }
+
+  addResourcesActivity(colabDetFire: ColaboradorDetalleFire){
+    colabDetFire.isAsignado = true;
+    this.recursosColabDetFireList.push(colabDetFire);
+  }
+
+  deleteResourcesActivity(colabDetFire: ColaboradorDetalleFire){
+    colabDetFire.isAsignado = false;
+    this.recursosColabDetFireList = this.recursosColabDetFireList.filter(colaboDetFire => colaboDetFire.codigoUsuario !== colabDetFire.codigoUsuario); 
   }
 
 }

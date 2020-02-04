@@ -1,4 +1,5 @@
 import { ParametroDetalleFire } from './parametro-detalle-fire';
+import { ColaboradorDetalleFire } from './colaborador-detalle-fire';
 
 export class ActividadDetalleFire {
     codigo: number;
@@ -8,4 +9,5 @@ export class ActividadDetalleFire {
     descripcion: string;
     fechaInicio: Date;
     horaAsignada: number;
+    recursos: ColaboradorDetalleFire[];
 }
