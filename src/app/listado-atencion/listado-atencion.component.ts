@@ -25,7 +25,7 @@ export class ListadoAtencionComponent implements OnInit
   tabla: any;
   mensajeAccion: string;
   display: boolean = false;
-  columnasTabla: string[] = ['numeroIniciativa', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
+  columnasTabla: string[] = ['codigosvt', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
   title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
