@@ -102,3 +102,10 @@ input,
 label {
     margin: .4rem 0;
 }
+
+.mat-icon {
+  text-align: right;
+  vertical-align: middle;
+  font-size: 15px;
+  width: 15px;
+}

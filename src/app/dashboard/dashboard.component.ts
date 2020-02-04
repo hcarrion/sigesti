@@ -37,32 +37,47 @@ export class DashboardComponent implements OnInit
   tabla: any;
   mensajeAccion: string;  
   display: boolean = false;
-  columnasTabla: string[] = ['numeroIniciativa', 'titulo','fechafin','estado'];
+  columnasTablaP: string[] = ['codigosvt', 'titulo','fechafin','estado','accion'];
+  columnasTablaM: string[] = ['codigosvt', 'titulo','fechafin','estado','accion'];
+  columnasTablaI: string[] = ['codigosvt', 'titulo','fechafin','estado','accion'];
+  columnasTablaJ: string[] = ['codigosvt', 'titulo','fechafin','estado','accion'];
   title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
+  iniciativas2= new MatTableDataSource<IniciativaFire>([]);
+  iniciativas3= new MatTableDataSource<IniciativaFire>([]);
+  iniciativas4= new MatTableDataSource<IniciativaFire>([]);
+  
   selectedRowIndex: number = -1;
   tipoDocumentoData = new MatTableDataSource<IniciativaFire>([]);
   tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaFire>([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  
+  public estado: string="";
   public tipoDocumento: IniciativaFire[];
   public tipoDocumentoSeleccionado: IniciativaFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
   
   loading: boolean;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}  
+  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {} 
+
   FiltraCanvas(filterValue: string) {
     this.iniciativas.filter = filterValue.trim().toLowerCase();
+    this.iniciativas2.filter = filterValue.trim().toLowerCase();
+    this.iniciativas3.filter = filterValue.trim().toLowerCase();
+    this.iniciativas4.filter = filterValue.trim().toLowerCase();
   }
 
   public chartOptions:any = { 
     responsive: true
   };
 
+
+  esMuyListo():boolean {
+          return true;    
+}
   public chartClicked(e: any): void {
     if (e.active.length > 0) {
     const chart = e.active[0]._chart;
@@ -74,10 +89,10 @@ export class DashboardComponent implements OnInit
         // get value by index
         const value = chart.data.datasets[0].data[clickedElementIndex];
         
-        if (label=="ToDo"){this.FiltraCanvas("Pendiente")};
-        if (label=="DoIng"){this.FiltraCanvas("Asignado")};
-        if (label=="QA"){this.FiltraCanvas("Rechazado")};
-        if (label=="Done"){this.FiltraCanvas("Suspendido")};
+        if (label=="ToDo"){this.FiltraCanvas("Pendiente");this.estado=" - Por Hacer";};
+        if (label=="DoIng"){this.FiltraCanvas("Asignado");this.estado=" - En Progreso";};
+        if (label=="QA"){this.FiltraCanvas("Rechazado");this.estado=" - En Calidad";};
+        if (label=="Done"){this.FiltraCanvas("Suspendido");this.estado=" - Concluido";};
         
         console.log(clickedElementIndex, label, value)
       }
@@ -94,12 +109,17 @@ export class DashboardComponent implements OnInit
   }
 
   ngOnInit(){
-    this.callIniciativas();    	  
+    this.callIniciativas();    
+    this.callIniciativas2();    
+    this.callIniciativas3();    
+    this.callIniciativas4();    	  
   } 
 
-  
-  
-
+  openDialogActivity(iniciativa: IniciativaFire){
+    this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
+      { width: '2000px', height: '600px', data: iniciativa}
+    );
+  }
   async callIniciativas() {
     this.loading = true;
     
@@ -125,16 +145,124 @@ export class DashboardComponent implements OnInit
     });
   }
 
+  async callIniciativas2() {
+    this.loading = true;
+    
+    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    iniciativasRef.subscribe(data => {
+      var lista = [];
+      for(var i = 0; i < data.length; i++){
+        //lista.push(data[i].payload.doc.data() as IniciativaFire);
+
+        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+        let idIniciativa = data[i].payload.doc.id;
+        iniciativaObject.idIniciativa = idIniciativa;
+        lista.push(iniciativaObject);
+
+      }
+      this.iniciativas2 =  new MatTableDataSource(lista);
+      this.iniciativas2.paginator = this.paginator;
+      this.iniciativas2.sort = this.sort;
+      this.InicializaDatosBusqueda2();
+      this.loading = false;
+     
+      
+    });
+  }
+
+  async callIniciativas3() {
+    this.loading = true;
+    
+    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    iniciativasRef.subscribe(data => {
+      var lista = [];
+      for(var i = 0; i < data.length; i++){
+        //lista.push(data[i].payload.doc.data() as IniciativaFire);
+
+        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+        let idIniciativa = data[i].payload.doc.id;
+        iniciativaObject.idIniciativa = idIniciativa;
+        lista.push(iniciativaObject);
+
+      }
+      this.iniciativas3 =  new MatTableDataSource(lista);
+      this.iniciativas3.paginator = this.paginator;
+      this.iniciativas3.sort = this.sort;
+      this.InicializaDatosBusqueda3();
+      this.loading = false;
+     
+      
+    });
+  }
+
+  async callIniciativas4() {
+    this.loading = true;
+    
+    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    iniciativasRef.subscribe(data => {
+      var lista = [];
+      for(var i = 0; i < data.length; i++){
+        //lista.push(data[i].payload.doc.data() as IniciativaFire);
+
+        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+        let idIniciativa = data[i].payload.doc.id;
+        iniciativaObject.idIniciativa = idIniciativa;
+        lista.push(iniciativaObject);
+
+      }
+      this.iniciativas4 =  new MatTableDataSource(lista);
+      this.iniciativas4.paginator = this.paginator;
+      this.iniciativas4.sort = this.sort;
+      this.InicializaDatosBusqueda4();
+      this.loading = false;
+     
+      
+    });
+  }
+
   InicializaDatosBusqueda(){
      // Inicializa los datos de busqueda
      this.iniciativas.filterPredicate = (data, filter) => {
-      const dataStr = data.numeroIniciativa + data.categoria.descripcion +  data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
+      const dataStr = data.codigoSVT + data.numeroIniciativa + data.categoria.descripcion +  data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
       return dataStr.toLowerCase().indexOf(filter) != -1;       
+    }
+  }
+
+  InicializaDatosBusqueda2(){
+    // Inicializa los datos de busqueda
+    this.iniciativas2.filterPredicate = (data, filter) => {
+     const dataStr = data.codigoSVT + data.numeroIniciativa + data.categoria.descripcion +  data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
+     return dataStr.toLowerCase().indexOf(filter) != -1;       
+   }
+  }
+
+  InicializaDatosBusqueda3(){
+  // Inicializa los datos de busqueda
+  this.iniciativas3.filterPredicate = (data, filter) => {
+   const dataStr = data.codigoSVT + data.numeroIniciativa + data.categoria.descripcion +  data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
+   return dataStr.toLowerCase().indexOf(filter) != -1;       
+    }
+  }
+
+  InicializaDatosBusqueda4(){
+  // Inicializa los datos de busqueda
+  this.iniciativas4.filterPredicate = (data, filter) => {
+   const dataStr = data.codigoSVT + data.numeroIniciativa + data.categoria.descripcion +  data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
+   return dataStr.toLowerCase().indexOf(filter) != -1;       
     }
   }
 
   buscarDatos(filterValue: string) {
     this.iniciativas.filter = filterValue.trim().toLowerCase();
+  }
+  buscarDatos2(filterValue: string) {
+    this.iniciativas2.filter = filterValue.trim().toLowerCase();
+  }
+  buscarDatos3(filterValue: string) {
+    this.iniciativas3.filter = filterValue.trim().toLowerCase();
+  }
+  buscarDatos4(filterValue: string) {
+    this.iniciativas4.filter = filterValue.trim().toLowerCase();
   }
 
   buscarDatosHelp(filterValue: string) {
