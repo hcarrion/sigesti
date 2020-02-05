@@ -41,12 +41,12 @@
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-2"> 
-                            <mat-label style="font-size: small;"><strong>Tipo Actividad: </strong> </mat-label>  
+                            <mat-label style="font-size: small;"><strong>Tipo actividad: </strong> </mat-label>  
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
                                 <mat-select formControlName="tipoActividadSelect" placeholder="Selecciona tipo actividad" style="font-size: small;" [compareWith]="compareItems" [(ngModel)]="actividadDet.tipo">
-                                    <mat-option *ngFor="let tipoactividadlet of tipo.detalle" [value]="tipoactividadlet">
+                                    <mat-option *ngFor="let tipoactividadlet of tipo.detalle" [value]="tipoactividadlet" (click)="loadSubTipo(tipoactividadlet, true)">
                                         {{tipoactividadlet.descripcion}}
                                     </mat-option>
                                 </mat-select>
@@ -54,10 +54,26 @@
                         </div>
                         
                         <div class="col-md-2"> 
-                            <mat-label style="font-size: small;"><strong>Actividad: </strong> </mat-label>  
+                            <mat-label style="font-size: small;"><strong>Subtipo actividad: </strong> </mat-label>  
                         </div>
                         <div class="col-md-3"> 
-                            <mat-form-field hintLabel="Max 200 caracteres">
+                            <mat-form-field>
+                                <mat-select formControlName="subtipoActividadSelect" placeholder="Selecciona subtipo actividad" style="font-size: small;" [compareWith]="compareItems" [(ngModel)]="actividadDet.subtipo">
+                                    <mat-option *ngFor="let subtipoactividadlet of subtipo" [value]="subtipoactividadlet">
+                                        {{subtipoactividadlet.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label style="font-size: small;"><strong>Actividad: </strong> </mat-label>  
+                        </div>
+                        <div class="col-md-8"> 
+                            <mat-form-field hintLabel="Max 200 caracteres" class="max-width">
                                 <input formControlName="tituloActividadInput" matInput #inputTitulo maxlength="200" placeholder="Ingrese actividad" style="font-size: small;">
                                 <mat-hint align="end">{{inputTitulo.value?.length || 0}}/200</mat-hint>
                             </mat-form-field>

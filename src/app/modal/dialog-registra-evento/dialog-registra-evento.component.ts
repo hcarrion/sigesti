@@ -27,6 +27,8 @@ export class DialogRegistraEventoComponent implements OnInit {
 
   regEvento: FormGroup;
   submitted = false;
+  subtipoall: ParametroFire = new ParametroFire();
+  subtipo: ParametroDetalleFire[] = [];
   estado: ParametroFire = new ParametroFire();
   tipo: ParametroFire = new ParametroFire();
 
@@ -48,6 +50,7 @@ export class DialogRegistraEventoComponent implements OnInit {
         codigoActividadInput: new FormControl(),
         estadoActividadSelect: new FormControl(),
         tipoActividadSelect: new FormControl(),
+        subtipoActividadSelect: new FormControl(),
         tituloActividadInput: new FormControl(),
         descripcionActividadTextArea: new FormControl(),
         fechaInicioActividadInput: new FormControl(),
@@ -73,8 +76,9 @@ export class DialogRegistraEventoComponent implements OnInit {
       
     parametrosRef.subscribe(data => {data.forEach(paramObj => {
           let paramObject= paramObj.payload.doc.data() as ParametroFire;
-          if("subtipo-actividad" == paramObject.nombre) this.estado = paramObject;
+          if("subtipo-actividad" == paramObject.nombre) this.subtipoall = paramObject;
           if("tipo-actividad" == paramObject.nombre) this.tipo = paramObject;
+          if("estado" == paramObject.nombre) this.estado = paramObject;
         });
         this.loadData(this.actividadDet);
         this.loading = false;
@@ -88,6 +92,10 @@ export class DialogRegistraEventoComponent implements OnInit {
       this.regEvento.controls.descripcionActividadTextArea.setValue(actividadDetalle.descripcion);
       this.regEvento.controls.fechaInicioActividadInput.setValue(actividadDetalle.fechaInicio);
       this.regEvento.controls.horasAsigActividadInput.setValue(actividadDetalle.horaAsignada);
+      debugger;
+      if(undefined != actividadDetalle.subtipo || null != actividadDetalle.subtipo){
+        this.loadSubTipo(actividadDetalle.tipo, false);
+      }
     }
   }
 
@@ -112,16 +120,14 @@ export class DialogRegistraEventoComponent implements OnInit {
     this.regEvento.reset();
   }
 
-  
-
   saveActividad(iniciativaFire: IniciativaFire){
     this.loading = true;
     let resultValidate = false;
     let iniciativaObject = new IniciativaFire();
     let actividadDetalleObject = new ActividadDetalleFire();
-    
     actividadDetalleObject.estado = this.regEvento.value.estadoActividadSelect as ParametroDetalleFire;
     actividadDetalleObject.tipo = this.regEvento.value.tipoActividadSelect as ParametroDetalleFire;
+    actividadDetalleObject.subtipo = this.regEvento.value.subtipoActividadSelect as ParametroDetalleFire;
     actividadDetalleObject.titulo = this.regEvento.value.tituloActividadInput;
     actividadDetalleObject.descripcion = this.regEvento.value.descripcionActividadTextArea;
     actividadDetalleObject.fechaInicio = this.regEvento.value.fechaInicioActividadInput;
@@ -130,6 +136,7 @@ export class DialogRegistraEventoComponent implements OnInit {
     this.regEvento = this.formBuilder.group({
       estadoActividadSelect: [actividadDetalleObject.estado, Validators.required],
       tipoActividadSelect: [actividadDetalleObject.tipo, Validators.required],
+      subtipoActividadSelect: [actividadDetalleObject.subtipo, Validators.required],
       tituloActividadInput: [actividadDetalleObject.titulo, Validators.required],
       descripcionActividadTextArea: [actividadDetalleObject.descripcion, Validators.required],
       fechaInicioActividadInput: [actividadDetalleObject.fechaInicio, Validators.required],
@@ -140,8 +147,9 @@ export class DialogRegistraEventoComponent implements OnInit {
       this.submitted = true;
       resultValidate = true;
     }
-    
+
     if(resultValidate){
+      this.loading = false;
       Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
     }else{
       if(undefined == iniciativaFire.actividad){
@@ -216,6 +224,12 @@ export class DialogRegistraEventoComponent implements OnInit {
     return obj1 && obj2 && obj1.codigo===obj2.codigo;
   }
 
+  loadSubTipo(tipo: ParametroDetalleFire, isChangeTipo: boolean){
+    if(isChangeTipo){
+      this.regEvento.controls.subtipoActividadSelect.reset();
+    }
+    this.subtipo = this.subtipoall.detalle.filter(subtipo => subtipo.codigoDependencia == tipo.codigo); 
+  }
 
 
 

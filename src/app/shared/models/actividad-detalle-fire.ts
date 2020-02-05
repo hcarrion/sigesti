@@ -5,6 +5,7 @@ export class ActividadDetalleFire {
     codigo: number;
     estado: ParametroDetalleFire;
     tipo: ParametroDetalleFire;
+    subtipo: ParametroDetalleFire;
     titulo: string;
     descripcion: string;
     fechaInicio: Date;
