@@ -20,14 +20,9 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 })
 export class DashboardComponent implements OnInit 
 {
-  doughnutChartLabels: Label[] = ['ToDo', 'DoIng', 'QA', 'Done'];
-  barChartPlugins = [pluginDataLabels];
-  doughnutChartData: MultiDataSet = [
-    [80, 40, 90, 312]
-  ];
-  doughnutChartType: ChartType = 'doughnut';
+
   
-  private intervalUpdate: any = null;
+  private intervalUpdate: any = null; 
   public chart: any = null;
   habilitar: boolean;
   selected: boolean;
@@ -41,8 +36,8 @@ export class DashboardComponent implements OnInit
   columnasTablaM: string[] = ['codigosvt', 'titulo','fechafin','estado','accion'];
   columnasTablaI: string[] = ['codigosvt', 'titulo','fechafin','estado','accion'];
   columnasTablaJ: string[] = ['codigosvt', 'titulo','fechafin','estado','accion'];
-  title = "Example Angular 8 Material Dialog";
-  //iniciativas: IniciativaFire[] = [];
+  title = "Tablero de Control de las iniciativas";
+  iniciativasR= new MatTableDataSource<IniciativaFire>([]);
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
   iniciativas2= new MatTableDataSource<IniciativaFire>([]);
   iniciativas3= new MatTableDataSource<IniciativaFire>([]);
@@ -59,7 +54,16 @@ export class DashboardComponent implements OnInit
   public tipoDocumentoSeleccionado: IniciativaFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
+  doughnutChartLabels: Label[] =  ['ToDo', 'DoIng', 'QA', 'Done'];
+  barChartPlugins = [pluginDataLabels];
+  doughnutChartDataP: MultiDataSet = [[0,0,0,0]];
+  doughnutChartDataT: MultiDataSet = [[0,0,0,0]];
+  doughnutChartDataM: MultiDataSet = [[0,0,0,0]];
+  doughnutChartDataI: MultiDataSet = [[0,0,0,0]];
+  doughnutChartType: ChartType = 'doughnut';
   
+
+
   loading: boolean;
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {} 
 
@@ -79,7 +83,9 @@ export class DashboardComponent implements OnInit
           return true;    
 }
   public chartClicked(e: any): void {
+    
     if (e.active.length > 0) {
+      
     const chart = e.active[0]._chart;
     const activePoints = chart.getElementAtEvent(e.event);
       if ( activePoints.length > 0) {
@@ -97,10 +103,20 @@ export class DashboardComponent implements OnInit
         console.log(clickedElementIndex, label, value)
       }
      }
+     else{
+      this.callIniciativas();    
+      this.callIniciativas2();    
+      this.callIniciativas3();    
+      this.callIniciativas4();    
+     }
     }
   
   private chartHovered(e: any): void { 
     console.log(e);    
+    }
+
+  onAgrupadorxCanvas(){
+    
     }
 
   onCloseHandled()
@@ -109,6 +125,7 @@ export class DashboardComponent implements OnInit
   }
 
   ngOnInit(){
+    this.callIniciativasR(); 
     this.callIniciativas();    
     this.callIniciativas2();    
     this.callIniciativas3();    
@@ -120,10 +137,89 @@ export class DashboardComponent implements OnInit
       { width: '2000px', height: '600px', data: iniciativa}
     );
   }
+
+  openDialogEdit(iniciativa: IniciativaFire){
+    this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
+      { width: '2000px',
+        height: '600px',
+        data: iniciativa
+      }
+    );
+  }
+  async callIniciativasR() {
+    var arrayP= new Array();
+    var arrayT= new Array();
+    var arrayM= new Array();
+    var arrayI= new Array();
+
+    arrayP[0]= 0;
+    arrayP[1]= 0;
+    arrayP[2]= 0;
+    arrayP[3]= 0;
+
+    arrayT[0]= 0;
+    arrayT[1]= 0;
+    arrayT[2]= 0;
+    arrayT[3]= 0;
+    
+    arrayM[0]= 0;
+    arrayM[1]= 0;
+    arrayM[2]= 0;
+    arrayM[3]= 0;
+
+    arrayI[0]= 0;
+    arrayI[1]= 0;
+    arrayI[2]= 0;
+    arrayI[3]= 0;
+
+    this.loading = true;    
+     let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+     iniciativasRef.subscribe(data => {
+       for(var i = 0; i < data.length; i++){                 
+         let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+         if (iniciativaObject.categoria.descripcion=="Proyecto"){
+            if(iniciativaObject.estado.descripcion=="Pendiente"){arrayP[0]++}
+            else if(iniciativaObject.estado.descripcion=="Asignado"){arrayP[1]++}
+            else if(iniciativaObject.estado.descripcion=="Terminado"){arrayP[2]++}
+            else if(iniciativaObject.estado.descripcion=="Cerrado"){arrayP[3]++}
+            else arrayP[3]++;
+         }
+         if (iniciativaObject.categoria.descripcion=="Tarea"){
+            if(iniciativaObject.estado.descripcion=="Pendiente"){arrayT[0]++}
+            else if(iniciativaObject.estado.descripcion=="Asignado"){arrayT[1]++}
+            else if(iniciativaObject.estado.descripcion=="Terminado"){arrayT[2]++}
+            else if(iniciativaObject.estado.descripcion=="Cerrado"){arrayT[3]++}
+            else arrayT[3]++;
+         }
+         if (iniciativaObject.categoria.descripcion=="Mejora"){
+            if(iniciativaObject.estado.descripcion=="Pendiente"){arrayM[0]++}
+            else if(iniciativaObject.estado.descripcion=="Asignado"){arrayM[1]++}
+            else if(iniciativaObject.estado.descripcion=="Terminado"){arrayM[2]++}
+            else if(iniciativaObject.estado.descripcion=="Cerrado"){arrayM[3]++}
+            else arrayM[3]++;
+         }
+         if (iniciativaObject.categoria.descripcion=="Incidencia"){
+            if(iniciativaObject.estado.descripcion=="Pendiente"){arrayI[0]++}
+            else if(iniciativaObject.estado.descripcion=="Asignado"){arrayI[1]++}
+            else if(iniciativaObject.estado.descripcion=="Terminado"){arrayI[2]++}
+            else if(iniciativaObject.estado.descripcion=="Cerrado"){arrayI[3]++}
+            else arrayI[3]++;
+         }
+       }      
+       //doughnutChartData:  [ [arrayP[0], arrayP[1], arrayP[2], arrayP[3]] ];
+       
+       this.doughnutChartDataP= arrayP;
+       this.doughnutChartDataT= arrayT;
+       this.doughnutChartDataM= arrayM;
+       this.doughnutChartDataI= arrayI;
+       this.loading = false;
+    });
+  }
   async callIniciativas() {
     this.loading = true;
     
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+   // let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaFiltro("categoria.descripcion","Proyecto");
     iniciativasRef.subscribe(data => {
       var lista = [];
       for(var i = 0; i < data.length; i++){
@@ -139,16 +235,15 @@ export class DashboardComponent implements OnInit
       this.iniciativas.paginator = this.paginator;
       this.iniciativas.sort = this.sort;
       this.InicializaDatosBusqueda();
-      this.loading = false;
-     
+      this.loading = false; 
       
     });
   }
 
   async callIniciativas2() {
     this.loading = true;
-    
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaFiltro("categoria.descripcion","Tarea");
+   //let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       var lista = [];
       for(var i = 0; i < data.length; i++){
@@ -172,8 +267,8 @@ export class DashboardComponent implements OnInit
 
   async callIniciativas3() {
     this.loading = true;
-    
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaFiltro("categoria.descripcion","Mejora");
+    //let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       var lista = [];
       for(var i = 0; i < data.length; i++){
@@ -197,8 +292,8 @@ export class DashboardComponent implements OnInit
 
   async callIniciativas4() {
     this.loading = true;
-    
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaFiltro("categoria.descripcion","Incidencia");
+    //let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       var lista = [];
       for(var i = 0; i < data.length; i++){
