@@ -73,8 +73,8 @@ export class DialogRegistraEventoComponent implements OnInit {
       
     parametrosRef.subscribe(data => {data.forEach(paramObj => {
           let paramObject= paramObj.payload.doc.data() as ParametroFire;
-          if("estado" == paramObject.nombre) this.estado = paramObject;
-          if("tipo" == paramObject.nombre) this.tipo = paramObject;
+          if("subtipo-actividad" == paramObject.nombre) this.estado = paramObject;
+          if("tipo-actividad" == paramObject.nombre) this.tipo = paramObject;
         });
         this.loadData(this.actividadDet);
         this.loading = false;
