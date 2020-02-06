@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit
      }
     }
   
-  private chartHovered(e: any): void { 
+  public chartHovered(e: any): void { 
     console.log(e);    
     }
 
