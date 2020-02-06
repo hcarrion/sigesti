@@ -77,4 +77,7 @@ export class FirebaseIniciativaService {
     return this.firestore.doc('iniciativas/'+iniciativaFire.idIniciativa).update(iniciativa);
   }
 
+  getPlanesIniciativaFiltro(campo: string, condicion: string){
+    return this.firestore.collection('iniciativas', ref => ref.where(campo, '==', condicion).where('estado.descripcion', 'in', ["Asignado", "Terminado", "Suspendido"]).orderBy('prioridad.codigo')).snapshotChanges();
+  }
 }
