@@ -1,0 +1,10 @@
+<div class="col-sm-3">
+    <div class="card">
+      <div class="card-content">
+        <h2 class="card-title">Tipo de Requerimiento</h2>
+        <div class="chart-wrapper">
+            <ngx-select-dropdown (change)="selectionChanged($event)" [multiple]="true" [(ngModel)]="dataModel" [config]="config" [options]="dropdownOptions"></ngx-select-dropdown>
+      </div>
+      </div>
+    </div>
+  </div>

@@ -36,13 +36,17 @@ import { MaterialModule } from './material-module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { DialogRegistraContactoComponent } from './modal/dialog-registra-contacto/dialog-registra-contacto.component';
 import { DialogRegistraEventoComponent } from './modal/dialog-registra-evento/dialog-registra-evento.component';
 import { DialogListaEventoComponent } from './modal/dialog-lista-evento/dialog-lista-evento.component';
 import { DialogRegistraRecursoEventoComponent } from './modal/dialog-registra-recurso-evento/dialog-registra-recurso-evento.component';
 import { ChartsModule } from 'ng2-charts';
-
+import { StatusreportComponent } from './statusreport/statusreport.component';
+import { HttpClientModule} from '@angular/common/http';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { DialogavancescategoriaComponent } from './modal/dialogavancescategoria/dialogavancescategoria.component';
+import { DialogavancespersonalComponent } from './modal/dialogavancespersonal/dialogavancespersonal.component';
 
 @NgModule({
   declarations: 
@@ -64,7 +68,10 @@ import { ChartsModule } from 'ng2-charts';
     DialogRegistraEventoComponent,
     DialogListaEventoComponent,
     DialogRegistraRecursoEventoComponent,
-    DialogRegistraEventoComponent
+    DialogRegistraEventoComponent,
+    StatusreportComponent,
+    DialogavancescategoriaComponent,
+    DialogavancespersonalComponent
   ],
   imports: 
   [
@@ -79,7 +86,10 @@ import { ChartsModule } from 'ng2-charts';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
     MatProgressSpinnerModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    HttpClientModule, 
+    AngularEditorModule,
+    SelectDropDownModule
   ],
   providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService, 
     DialogRecursosComponent,],
