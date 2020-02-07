@@ -50,6 +50,7 @@ import { DialogavancespersonalComponent } from './modal/dialogavancespersonal/di
 import { CommonModule, DatePipe } from '@angular/common';
 
 
+
 @NgModule({
   declarations: 
   [

@@ -8,6 +8,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
   styleUrls: ['./statusreport.component.css']
 })
 export class StatusreportComponent implements OnInit {
+  htmlContent='';
   editorConfig: AngularEditorConfig = {
     editable: true,
       spellcheck: true,
@@ -44,17 +45,20 @@ export class StatusreportComponent implements OnInit {
         tag: 'h1',
       },
     ],
-    uploadUrl: 'v1/image',
+    uploadUrl: 'assets/images',
     sanitize: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize']
+      
+      ['insertImage', 'insertVideo']
     ]
 };
+
   constructor() { }
 
   ngOnInit() {
+
+    
   } 
 
 }
