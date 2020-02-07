@@ -74,7 +74,6 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
         let idIniciativa = data.payload.id;
         iniciativaObject.idIniciativa = idIniciativa;
         this.iniciativa = iniciativaObject;
-        debugger;
         let actDet = this.iniciativa.actividad.actividades.filter(actiDet => actiDet.codigo == this.actividadDet.codigo);
         this.actividadDet = actDet[0];
         this.loadData(this.iniciativa);
@@ -89,7 +88,6 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
     this.regRecursosAct.controls.tituloActividadInputDialogResource.setValue(this.actividadDet.titulo);
     this.regRecursosAct.controls.horasAsigActividadInputDialogResource.setValue(this.actividadDet.horaAsignada);
     this.colaboradorDetFireList = iniciativaF.recursos;
-    debugger;
     if(undefined != this.actividadDet.recursos){
       this.recursosColabDetFireList = this.actividadDet.recursos;
       this.recursosColabDetFireList.forEach(element => {
@@ -152,8 +150,8 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
   }*/
 
   guardarRecursos(recuColabDetFireList: ColaboradorDetalleFire[]){
-    debugger;
     this.loading = true;
+    debugger;
     let resultValidate = false;
     if(undefined != recuColabDetFireList && 0 != recuColabDetFireList.length){
       resultValidate = this.validarHoras(recuColabDetFireList);
@@ -170,6 +168,7 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
         this.iniciativa.recursos = this.recursosIniciativaFireList;
         this.firebaseIniciativas.updateIniciativa(this.iniciativa).then(
           result => {
+            debugger;
             this.loading = false;
             Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
             this.close();

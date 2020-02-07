@@ -28,7 +28,7 @@
 /* Absolute Center Spinner */
 .content-load {
     position: fixed;
-    z-index: 9999999999;
+    z-index: 999999999999999;
     height: 2em;
     width: 2em;
     overflow: show;

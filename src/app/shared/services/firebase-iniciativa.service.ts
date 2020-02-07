@@ -38,6 +38,10 @@ export class FirebaseIniciativaService {
     return this.firestore.doc('iniciativas/'+iniciativaFire.idIniciativa).snapshotChanges();
   }
 
+  getIniciativa2(idIniciativa: string) {
+    return this.firestore.doc('iniciativas/'+idIniciativa).valueChanges();
+  }
+
   saveCorrelativo(){
     let correlativoF = new CorrelativoFire();
     correlativoF.iniciativa = 1;

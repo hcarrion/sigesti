@@ -24,7 +24,7 @@
                             </mat-form-field> 
                         </div>                      
                         <div class="col-md-2">
-                            <mat-label><strong style="font-size: small;">Estado: </strong> </mat-label> 
+                            <mat-label style="font-size: small;"><strong>Estado: </strong> </mat-label> 
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field>
@@ -83,7 +83,7 @@
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-2"> 
-                            <mat-label><strong>Descripción: </strong> </mat-label> 
+                            <mat-label style="font-size: small;"><strong>Descripción: </strong> </mat-label> 
                         </div>
                         <div class="col-md-8">
                             <mat-form-field class="max-width">
@@ -99,7 +99,7 @@
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-2"> 
-                            <mat-label><strong>Fecha Inicio: </strong> </mat-label> 
+                            <mat-label style="font-size: small;"><strong>Fecha Inicio: </strong> </mat-label> 
                         </div>
                         <div class="col-md-3">
                             <mat-form-field>
@@ -110,15 +110,27 @@
                         </div>
 
                         <div class="col-md-2"> 
-                            <mat-label><strong>Horas Asignadas: </strong> </mat-label> 
+                            <mat-label style="font-size: small;"><strong>Horas Asignadas: </strong> </mat-label> 
                         </div>
                         <div class="col-md-3"> 
                             <mat-form-field hintLabel="Max 3 numeros">
-                                <input formControlName="horasAsigActividadInput" matInput #inputHoras maxlength="3" placeholder="Ingrese horas asignadas" id="horas">
-                                <mat-hint align="end">{{inputHoras.value?.length || 0}}/3</mat-hint>
+                                <input formControlName="horasAsigActividadInput" type="number" min="1" step="1" matInput #inputHoras maxlength="3" placeholder="Ingrese horas asignadas" id="horas" (focusout)="focusOut($event)">
                             </mat-form-field>
                         </div>
-                    </div>                                                            
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2"> 
+                            <mat-label style="font-size: small;"><strong>Fecha Fin: </strong> </mat-label> 
+                        </div>
+                        <div class="col-md-3">
+                            <mat-form-field>
+                                <input formControlName="fechaFinActividadInput" matInput [matDatepicker]="picker3" placeholder="Selecciona fecha fin">
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>                                                          
                 </div>
             </div>
             <div class="row">

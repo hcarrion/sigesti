@@ -17,6 +17,7 @@ import {MAT_DATE_LOCALE} from '@angular/material';
 import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fire';
 import { ActividadFire } from 'src/app/shared/models/actividad-fire';
 import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-fire';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-dialog-registra-evento',
@@ -38,7 +39,7 @@ export class DialogRegistraEventoComponent implements OnInit {
   loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRegistraEventoComponent>, 
     private _ngZone: NgZone, private firestoreService: FirestoreService, 
-    private formBuilder: FormBuilder, 
+    private formBuilder: FormBuilder,
     private firebaseParametros: FirebaseParametroService, 
     private firebaseColaboradores: FirebaseColaboradorService, 
     private firebaseIniciativas: FirebaseIniciativaService,
@@ -54,7 +55,8 @@ export class DialogRegistraEventoComponent implements OnInit {
         tituloActividadInput: new FormControl(),
         descripcionActividadTextArea: new FormControl(),
         fechaInicioActividadInput: new FormControl(),
-        horasAsigActividadInput: new FormControl()
+        horasAsigActividadInput: new FormControl(),
+        fechaFinActividadInput: new FormControl()
       });
     }
 
@@ -92,7 +94,7 @@ export class DialogRegistraEventoComponent implements OnInit {
       this.regEvento.controls.descripcionActividadTextArea.setValue(actividadDetalle.descripcion);
       this.regEvento.controls.fechaInicioActividadInput.setValue(actividadDetalle.fechaInicio);
       this.regEvento.controls.horasAsigActividadInput.setValue(actividadDetalle.horaAsignada);
-      debugger;
+      this.regEvento.controls.fechaFinActividadInput.setValue(actividadDetalle.fechaFin);
       if(undefined != actividadDetalle.subtipo || null != actividadDetalle.subtipo){
         this.loadSubTipo(actividadDetalle.tipo, false);
       }
@@ -122,6 +124,8 @@ export class DialogRegistraEventoComponent implements OnInit {
 
   saveActividad(iniciativaFire: IniciativaFire){
     this.loading = true;
+    let dateToday = new Date();
+    /*let dateTodayStr = this.datePipe.transform(dateToday, 'dd/MM/yyyy');*/
     let resultValidate = false;
     let iniciativaObject = new IniciativaFire();
     let actividadDetalleObject = new ActividadDetalleFire();
@@ -132,6 +136,7 @@ export class DialogRegistraEventoComponent implements OnInit {
     actividadDetalleObject.descripcion = this.regEvento.value.descripcionActividadTextArea;
     actividadDetalleObject.fechaInicio = this.regEvento.value.fechaInicioActividadInput;
     actividadDetalleObject.horaAsignada = this.regEvento.value.horasAsigActividadInput;
+    actividadDetalleObject.fechaFin = this.regEvento.value.fechaFinActividadInput;
 
     this.regEvento = this.formBuilder.group({
       estadoActividadSelect: [actividadDetalleObject.estado, Validators.required],
@@ -141,6 +146,7 @@ export class DialogRegistraEventoComponent implements OnInit {
       descripcionActividadTextArea: [actividadDetalleObject.descripcion, Validators.required],
       fechaInicioActividadInput: [actividadDetalleObject.fechaInicio, Validators.required],
       horasAsigActividadInput: [actividadDetalleObject.horaAsignada, Validators.required],
+      fechaFinActividadInput: [actividadDetalleObject.fechaFin, Validators.required],
     });
 
     if (this.regEvento.invalid){
@@ -158,6 +164,7 @@ export class DialogRegistraEventoComponent implements OnInit {
         actividadFire.correlativo = codigoInit;
         let actividadesDetFire: ActividadDetalleFire[] = [];
         actividadDetalleObject.codigo = codigoInit;
+        actividadDetalleObject.fechaReg = dateToday;
         actividadesDetFire.push(actividadDetalleObject);
         actividadFire.actividades = actividadesDetFire;
         iniciativaObject = iniciativaFire;
@@ -179,6 +186,7 @@ export class DialogRegistraEventoComponent implements OnInit {
           let newCodigo = iniciativaObject.actividad.correlativo + 1;
           let actividadDetList = iniciativaObject.actividad.actividades;
           actividadDetalleObject.codigo = newCodigo;
+          actividadDetalleObject.fechaReg = dateToday;
           actividadDetList.push(actividadDetalleObject);
           iniciativaObject.actividad.actividades = actividadDetList;
           iniciativaObject.actividad.correlativo = newCodigo;
@@ -197,6 +205,7 @@ export class DialogRegistraEventoComponent implements OnInit {
           iniciativaObject = iniciativaFire;
           let actividadDetList = iniciativaObject.actividad.actividades;
           actividadDetalleObject.codigo = this.actividadDet.codigo;
+          actividadDetalleObject.fechaAct = dateToday;
           let itemIndex = actividadDetList.findIndex(item => item.codigo == this.actividadDet.codigo);
           actividadDetList[itemIndex] = actividadDetalleObject;
           iniciativaObject.actividad.actividades = actividadDetList;
@@ -229,6 +238,47 @@ export class DialogRegistraEventoComponent implements OnInit {
       this.regEvento.controls.subtipoActividadSelect.reset();
     }
     this.subtipo = this.subtipoall.detalle.filter(subtipo => subtipo.codigoDependencia == tipo.codigo); 
+  }
+
+  focusOut(event: any){
+    let trObject = (document.getElementById("horas")) as HTMLInputElement;
+    let numHoras = trObject.value;
+    if("" != numHoras){
+      let numDias = (Number.parseInt(numHoras))/8;
+      let numDiasFixed = Number.parseInt(numDias.toFixed());
+      if(numDias > numDiasFixed){
+        numDias = numDiasFixed + 1;
+      }else if(numDias < numDiasFixed){
+        numDias = numDiasFixed;
+      }
+      debugger;
+      let numeroDias = numDias;
+      let fechaInicio = this.regEvento.value.fechaInicioActividadInput;
+      let fechaFin = this.daysSum(fechaInicio, numeroDias);
+      this.regEvento.controls.fechaFinActividadInput.setValue(fechaFin);
+    }
+  }
+
+  daysSum(fechaI: Date, numDias: number){
+    let fechaF = new Date();
+    let fechaIni = new Date(fechaI);
+    let contador: number = 0;
+    while(contador != numDias){
+      fechaF = new Date(fechaIni.setDate(fechaIni.getDate() + 1));
+      if(!this.isFinDeSemana(fechaF)){
+        contador = contador+1;
+      }
+    }
+    return fechaF;
+  }
+
+  isFinDeSemana(fech: Date){
+    let fecha = new Date(fech);
+    if(fecha.getDay() !== 0 && fecha.getDay() !== 6){
+      return false;
+    }else{
+      return true;
+    }
   }
 
 

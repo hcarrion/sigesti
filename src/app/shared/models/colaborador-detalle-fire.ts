@@ -1,3 +1,5 @@
+import { HoraFire } from './hora-fire';
+
 export class ColaboradorDetalleFire {
     codigo: number;
     codigoUsuario: string;
@@ -7,4 +9,5 @@ export class ColaboradorDetalleFire {
     porcentaje: number;
     horasAsig: number;
     isAsignado: boolean;
+    horasReg: HoraFire[] = [];
 }

@@ -11,4 +11,7 @@ export class ActividadDetalleFire {
     fechaInicio: Date;
     horaAsignada: number;
     recursos: ColaboradorDetalleFire[];
+    fechaFin: Date;
+    fechaReg: Date;
+    fechaAct: Date;
 }
