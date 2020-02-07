@@ -48,6 +48,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { DialogavancescategoriaComponent } from './modal/dialogavancescategoria/dialogavancescategoria.component';
 import { DialogavancespersonalComponent } from './modal/dialogavancespersonal/dialogavancespersonal.component';
 
+
 @NgModule({
   declarations: 
   [

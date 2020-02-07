@@ -297,3 +297,6 @@
     font-size: 6px;
   }
 
+  input{
+    text-transform: uppercase;
+}
