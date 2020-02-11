@@ -71,7 +71,7 @@ export class RegistroHorasComponent implements OnInit {
 
    loadColumns(){
      let dateToday = new Date();
-     if(5 == dateToday.getDay()){
+     if(1 == dateToday.getDay()){
       let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       let fechas: string[] = [];
       fechas.push(dateTodayStr);
@@ -119,7 +119,7 @@ export class RegistroHorasComponent implements OnInit {
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
-     }else if(1 == dateToday.getDay()){
+     }else if(5 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt4 = this.daysSubtraction(dateToday, 4);
       let fechaAnt4Str =this.datePipe.transform(fechaAnt4, 'dd/MM/yy');
