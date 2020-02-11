@@ -125,6 +125,7 @@ export class DashboardComponent implements OnInit
   }
 
   ngOnInit(){
+    localStorage.setItem('indinicio',"false");   
     this.callIniciativasR(); 
     this.callIniciativas();    
     this.callIniciativas2();    
