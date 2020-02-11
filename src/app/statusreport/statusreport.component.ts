@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorConfig } from '@kolkov/angular-editor'; 
+import { FormGroup, FormControl } from '@angular/forms';
+import { StatusReportFire } from '../shared/models/status-report-fire';
+import { FirebaseStatusreportService } from '../shared/services/firebase-statusreport.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-statusreport',
@@ -9,7 +13,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 })
 export class StatusreportComponent implements OnInit {
   htmlContent='';
-  //email  = require('emailjs/email');
+  generateStatusReport: FormGroup;
+  statusReportFire: StatusReportFire;
   editorConfig: AngularEditorConfig = {
     editable: true,
       spellcheck: true,
@@ -55,10 +60,38 @@ export class StatusreportComponent implements OnInit {
     ]
 };
 
-  constructor() { }
+  constructor(private firebaseStatusReport: FirebaseStatusreportService) {
+    this.generateStatusReport = new FormGroup({
+      actCompSemAnteAngularEditor: new FormControl()
+    });
+  }
 
   ngOnInit() {
-    localStorage.setItem('indinicio',"false");  
-  } 
+    localStorage.setItem('indinicio',"false");
+    this.loadStatusReport();
+  }
 
+  loadStatusReport(){
+    let statusReportRef = this.firebaseStatusReport.getStatusReport("40hsbW3oRCliJtKP0tkw");
+    statusReportRef.subscribe(data => {
+      data.forEach(element => {
+        this.statusReportFire = element.payload.doc.data() as StatusReportFire;
+        this.generateStatusReport.controls.actCompSemAnteAngularEditor.setValue(this.statusReportFire.actSemanaAnterior);
+      });
+    });
+  }
+
+  saveStatusReport(){
+    let statusReportFire = new StatusReportFire();
+    statusReportFire.actSemanaAnterior = this.generateStatusReport.value.actCompSemAnteAngularEditor;
+    debugger;
+
+
+    this.firebaseStatusReport.createStatusReport(statusReportFire).then(
+      result => {
+        Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+      },error => {
+        Swal.fire('Error!', 'Error al guardar el status report.', 'error');
+      });
+  }
 }
