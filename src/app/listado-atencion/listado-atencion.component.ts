@@ -102,6 +102,7 @@ export class ListadoAtencionComponent implements OnInit
   }
 
   ngOnInit() {
+    localStorage.setItem('indinicio',"false");   
     this.callIniciativas();
   }
 

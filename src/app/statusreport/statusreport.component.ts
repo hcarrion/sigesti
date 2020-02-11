@@ -9,6 +9,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 })
 export class StatusreportComponent implements OnInit {
   htmlContent='';
+  //email  = require('emailjs/email');
   editorConfig: AngularEditorConfig = {
     editable: true,
       spellcheck: true,

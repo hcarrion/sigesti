@@ -67,6 +67,7 @@ export class RegistroIniciativaComponent implements OnInit {
   }
 
   ngOnInit() {
+    localStorage.setItem('indinicio',"false");   
     this.callParametros();
     /*this.regIniciativa.controls.numIniciativaInput.setValue('0000001');*/
     

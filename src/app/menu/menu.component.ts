@@ -42,6 +42,7 @@ export class MenuComponent implements OnDestroy  {
   shouldRun = true;
 
   ngOnInit(){
+    alert("pase aqui");
     localStorage.setItem('indinicio', "true");   	  
   } 
   readLocalStorageValue(key) {
