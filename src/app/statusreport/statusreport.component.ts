@@ -76,6 +76,7 @@ export class StatusreportComponent implements OnInit {
     statusReportRef.subscribe(data => {
       data.forEach(element => {
         this.statusReportFire = element.payload.doc.data() as StatusReportFire;
+        this.statusReportFire.idStatusReport = element.payload.doc.id;
         this.generateStatusReport.controls.actCompSemAnteAngularEditor.setValue(this.statusReportFire.actSemanaAnterior);
       });
     });
@@ -85,14 +86,23 @@ export class StatusreportComponent implements OnInit {
     let statusReportFire = new StatusReportFire();
     statusReportFire.actSemanaAnterior = this.generateStatusReport.value.actCompSemAnteAngularEditor;
     statusReportFire.idIniciativa = "40hsbW3oRCliJtKP0tkw";
-    debugger;
 
-
-    this.firebaseStatusReport.createStatusReport(statusReportFire).then(
-      result => {
-        Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
-      },error => {
-        Swal.fire('Error!', 'Error al guardar el status report.', 'error');
-      });
+    if(undefined != this.statusReportFire.codigo){
+      statusReportFire.codigo = this.statusReportFire.codigo;
+      statusReportFire.idStatusReport = this.statusReportFire.idStatusReport;
+      this.firebaseStatusReport.updateStatusReport(statusReportFire).then(
+        result => {
+          Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+        },error => {
+          Swal.fire('Error!', 'Error al guardar el status report.', 'error');
+        });
+    }else{
+      this.firebaseStatusReport.createStatusReport(statusReportFire).then(
+        result => {
+          Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+        },error => {
+          Swal.fire('Error!', 'Error al guardar el status report.', 'error');
+        });
+    }
   }
 }

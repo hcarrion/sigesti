@@ -70,11 +70,11 @@ export class FirebaseStatusreportService {
     });
   }
 
-  /*updateIniciativa(iniciativaFire: IniciativaFire){
-    const iniciativa = JSON.parse(JSON.stringify(iniciativaFire));
-    return this.firestore.doc('iniciativas/'+iniciativaFire.idIniciativa).update(iniciativa);
+  updateStatusReport(statusReportFire: StatusReportFire){
+    const statusReport = JSON.parse(JSON.stringify(statusReportFire));
+    return this.firestore.doc('statusreports/'+statusReportFire.idStatusReport).update(statusReport);
   }
-
+  /*
   getPlanesIniciativaFiltro(campo: string, condicion: string){
     return this.firestore.collection('iniciativas', ref => ref.where(campo, '==', condicion).where('estado.descripcion', 'in', ["Asignado", "Terminado", "Suspendido"]).orderBy('prioridad.codigo')).snapshotChanges();
   }*/
