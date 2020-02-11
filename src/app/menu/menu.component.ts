@@ -10,9 +10,9 @@ import { map, shareReplay } from 'rxjs/operators';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent implements OnDestroy  {
-  mobileQuery: MediaQueryList;
 
+export class MenuComponent implements OnDestroy  { 
+  mobileQuery: MediaQueryList;
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
 
   fillerContent = Array.from({length: 50}, () =>
@@ -41,4 +41,17 @@ export class MenuComponent implements OnDestroy  {
 
   shouldRun = true;
 
+  ngOnInit(){
+    localStorage.setItem('indinicio', "true");   	  
+  } 
+  readLocalStorageValue(key) {
+    let value =   localStorage.getItem(key);
+    console.log(key+': '+value);
+  
+    if(value == undefined) {
+      value =='false';
+    }
+    
+    return value;
+  }
 }

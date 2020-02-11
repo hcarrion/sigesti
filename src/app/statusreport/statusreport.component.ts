@@ -57,8 +57,7 @@ export class StatusreportComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
-    
+    localStorage.setItem('indinicio',"false");  
   } 
 
 }
