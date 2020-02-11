@@ -84,6 +84,7 @@ export class StatusreportComponent implements OnInit {
   saveStatusReport(){
     let statusReportFire = new StatusReportFire();
     statusReportFire.actSemanaAnterior = this.generateStatusReport.value.actCompSemAnteAngularEditor;
+    statusReportFire.idIniciativa = "40hsbW3oRCliJtKP0tkw";
     debugger;
 
 
