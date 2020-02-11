@@ -7,4 +7,5 @@ export class ActividadHorasFire {
     fechaInicioAct: Date;
     fechaFinAct: Date;
     avance: string;
+    horasFecha: number[] = [];
 }

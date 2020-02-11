@@ -39,34 +39,34 @@
                 <div class="pipeline-body">
                   <table mat-table [dataSource]="proyectoIniciativas" matSort id="tableHoras">
                     <ng-container matColumnDef="codigosvt">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO SVT </th>
+                      <th mat-header-cell *matHeaderCellDef> CODIGO SVT </th>
                       <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}} </td>
                     </ng-container>
                   <!-- Name Column -->
                     <ng-container matColumnDef="titulo">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
+                      <th mat-header-cell *matHeaderCellDef> TITULO </th>
                       <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
                     </ng-container>
                     <ng-container matColumnDef="fechainicio">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA INICIO </th>
+                      <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
                       <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
                     </ng-container>
                     <ng-container matColumnDef="fechafin">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
+                      <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
                       <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
                     </ng-container>
                     <ng-container matColumnDef="avance">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> AVANCE </th>
+                      <th mat-header-cell *matHeaderCellDef> AVANCE </th>
                       <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
                     </ng-container>
                     <ng-container matColumnDef="prioridad">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> PRIORIDAD </th>
+                      <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
                       <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
                     </ng-container>
-                    <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla">
+                    <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
                       <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
                       <ng-container>
-                        <td mat-cell *matCellDef="let element"> <input #inputHoras type="number" style="text-align: center; width: 50px;" > </td>
+                        <td mat-cell *matCellDef="let element"> <input #inputHoras type="number" value="{{element.horasFecha[i]}}" style="text-align: center; width: 50px;" > </td>
                       </ng-container>
                     </ng-container>
                     

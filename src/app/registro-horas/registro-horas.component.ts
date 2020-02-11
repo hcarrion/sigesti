@@ -71,74 +71,73 @@ export class RegistroHorasComponent implements OnInit {
 
    loadColumns(){
      let dateToday = new Date();
-     if(1 == dateToday.getDay()){
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yyyy');
+     if(5 == dateToday.getDay()){
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       let fechas: string[] = [];
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
-      debugger;
      }else if(2 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yyyy');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yyyy');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
      }else if(3 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
-      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yyyy');
+      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yy');
       fechas.push(fechaAnt2Str);
       this.columnasTabla.push(fechaAnt2Str);
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yyyy');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yyyy');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
      }else if(4 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt3 = this.daysSubtraction(dateToday, 3);
-      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM/yyyy');
+      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM/yy');
       fechas.push(fechaAnt3Str);
       this.columnasTabla.push(fechaAnt3Str);
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
-      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yyyy');
+      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yy');
       fechas.push(fechaAnt2Str);
       this.columnasTabla.push(fechaAnt2Str);
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yyyy');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yyyy');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
-     }else if(5 == dateToday.getDay()){
+     }else if(1 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt4 = this.daysSubtraction(dateToday, 4);
-      let fechaAnt4Str =this.datePipe.transform(fechaAnt4, 'dd/MM/yyyy');
+      let fechaAnt4Str =this.datePipe.transform(fechaAnt4, 'dd/MM/yy');
       fechas.push(fechaAnt4Str);
       this.columnasTabla.push(fechaAnt4Str);
       let fechaAnt3 = this.daysSubtraction(dateToday, 3);
-      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM/yyyy');
+      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM/yy');
       fechas.push(fechaAnt3Str);
       this.columnasTabla.push(fechaAnt3Str);
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
-      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yyyy');
+      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yy');
       fechas.push(fechaAnt2Str);
       this.columnasTabla.push(fechaAnt2Str);
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yyyy');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yyyy');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
@@ -186,15 +185,26 @@ export class RegistroHorasComponent implements OnInit {
                 actividadHorasFire.fechaFinAct = actividadDet.fechaFin;
                 let porcentaje: number = 0;
                 let horasTotales: number = 0;
+                let horasFechas: number[] = [];
                 if(undefined != recurso.horasReg){
                   recurso.horasReg.forEach(hora => {
                     horasTotales = horasTotales + hora.horas;
+                    for(let i = 0; i < this.columnasFechTabla.length; i++){
+                      let fechaSavedStr = hora.fecha;
+                      let fechaSaved = (new Date(fechaSavedStr)).getTime();
+                      let fechaColumnarStr = this.getFechWithFormat(this.columnasFechTabla[i]);
+                      let fechaColumna = (new Date(fechaColumnarStr)).getTime();
+                      if(fechaSaved == fechaColumna ){
+                        horasFechas[i] = hora.horas;
+                      }
+                    }
                   });
                   porcentaje = (horasTotales * 100)/recurso.horasAsig;
                 }else{
                   porcentaje = 0;
                 }
-                actividadHorasFire.avance = porcentaje+"%";
+                actividadHorasFire.avance = porcentaje.toPrecision(2)+"%";
+                actividadHorasFire.horasFecha = horasFechas;
                 listaActi.push(actividadHorasFire);
               }
             });
@@ -209,55 +219,75 @@ export class RegistroHorasComponent implements OnInit {
   saveHoras(idTable: string, isUpdate: boolean){
     this.loading = true;
     let tblObject = (document.getElementById(idTable)) as HTMLTableElement;
-    var trObject = tblObject.rows[1] as HTMLTableRowElement;
-    let idIniciativa = trObject.cells[0].id;
-    let codActividadStr = trObject.cells[1].id;
-    let codActividad = Number.parseInt(codActividadStr);
-    let fechaStr = tblObject.rows[0].cells[6].textContent;
-    let fechaDate = new Date(fechaStr);
-    let inputObject = tblObject.rows[1].cells[6].children[0] as HTMLInputElement;
-    let horaStr = inputObject.value;
-    let horaNum = Number.parseInt(horaStr);
-
-    let horaFireList: HoraFire[] = [];
-    let horaFire = new HoraFire();
-
-    horaFire.fecha = fechaDate;
-    horaFire.horas = horaNum;
-    horaFire.fechaReg = new Date();
-    horaFireList.push(horaFire);
-
-    let iniciativaRef = this.firebaseIniciativas.getIniciativa2(idIniciativa);
-    let iniciativaFire = new IniciativaFire();
-    iniciativaRef.forEach(data => {
-      iniciativaFire = data as IniciativaFire;
-      if(isUpdate){
+    for(let k = 1; k < tblObject.rows.length; k++){
+      var trObject = tblObject.rows[k] as HTMLTableRowElement;
+      let idIniciativa = trObject.cells[0].id;
+      let codActividadStr = trObject.cells[1].id;
+      let codActividad = Number.parseInt(codActividadStr);
+      let numColumns = 6 + this.columnasFechTabla.length;
+      let horaFireList: HoraFire[] = [];
+      for(let w = 6; w < numColumns; w++){
+        let fechaStr = this.getFechWithFormat(tblObject.rows[0].cells[w].textContent);
+        let fechaDate = new Date(fechaStr);
+        let inputObject = tblObject.rows[k].cells[w].children[0] as HTMLInputElement;
+        let horaStr = inputObject.value;
+        let horaNum = Number.parseInt(horaStr);
+        let horaFire = new HoraFire();
+        horaFire.fecha = fechaDate;
+        horaFire.horas = horaNum;
+        horaFireList.push(horaFire);
+      }
+      isUpdate = true;
+      let iniciativaRef = this.firebaseIniciativas.getIniciativa2(idIniciativa);
+      let iniciativaFire = new IniciativaFire();
+      iniciativaRef.forEach(data => {
+        iniciativaFire = data.data() as IniciativaFire;
         for(let j = 0; j < iniciativaFire.actividad.actividades.length; j++){
           if(codActividad == iniciativaFire.actividad.actividades[j].codigo){
             for(let i = 0; i < iniciativaFire.actividad.actividades[j].recursos.length; i++){
               if(this.usuario == iniciativaFire.actividad.actividades[j].recursos[i].codigoUsuario){
                 if(undefined == iniciativaFire.actividad.actividades[j].recursos[i].horasReg){
+                  for(let x = 0; x < horaFireList.length; x++){
+                    horaFireList[x].fechaReg = new Date();
+                  }
                   iniciativaFire.actividad.actividades[j].recursos[i].horasReg = horaFireList;
                 }else{
                   let horaList = iniciativaFire.actividad.actividades[j].recursos[i].horasReg;
                   horaFireList.forEach(element => {
-                    horaList.push(element);
+                    let indexHora = horaList.findIndex(horaFire => {
+                      let fechaSavedStr = horaFire.fecha;
+                      let fechaSaved = (new Date(fechaSavedStr)).getTime();
+                      let fechaBuscar = element.fecha.getTime();
+                      return fechaSaved == fechaBuscar;
+                    });
+                    if(-1 == indexHora){
+                      element.fechaReg = new Date();
+                      horaList.push(element);
+                    }else{
+                      element.fechaAct = new Date();
+                      horaList[indexHora] = element;
+                    }
                   });
                 }
               }
             }
           }
         }
-        isUpdate = false;
         this.firebaseIniciativas.updateIniciativa(iniciativaFire).then(
           result => {
-            this.loading = false;
-            Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
           },error => {
             Swal.fire('Error!', 'Error al guardar las horas de la actividad.', 'error');
           });
-      }
-    });
+      });
+
+    }
+    debugger;
+    try {
+      this.loading = false;
+      Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+    } catch (error) {
+      Swal.fire('Error!', 'Error al guardar las horas de la actividad.', 'error');
+    }
   }
 
   daysSum(fechaI: Date, numDias: number){
@@ -280,5 +310,13 @@ export class RegistroHorasComponent implements OnInit {
       contador = contador+1;
     }
     return fechaF;
+  }
+
+  getFechWithFormat(fechaStr: string){
+    let day = fechaStr.substring(0,2);
+    let month = fechaStr.substring(3,5);
+    let year = fechaStr.substring(6,9);
+    let newFechStr = month+"/"+day+"/"+year;
+    return newFechStr;
   }
 }

@@ -39,7 +39,7 @@ export class FirebaseIniciativaService {
   }
 
   getIniciativa2(idIniciativa: string) {
-    return this.firestore.doc('iniciativas/'+idIniciativa).valueChanges();
+    return this.firestore.collection('iniciativas').doc(idIniciativa).get();
   }
 
   saveCorrelativo(){
