@@ -299,7 +299,6 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   focusOut(event: any){
     let trObject = (document.getElementById("horas-est")) as HTMLInputElement;
     let fechaInicio = this.regIniciativa.value.fechaInicioInput;
-    debugger;
     let numHoras = trObject.value;
     if("" != numHoras && null != fechaInicio){
       let numDias = ((Number.parseInt(numHoras))-8)/8;
