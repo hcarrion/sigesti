@@ -154,9 +154,9 @@
 
                 </div>
                 <div class="col-md-3">
-                    <mat-form-field hintLabel="Max 4 caracteres">
+                    <mat-form-field hintLabel="Max 4 dígitos">
                         <input formControlName="horaEstimadaInput" matInput #inputHoras placeholder="Estimado en horas"
-                            type="number">
+                            type="number" (focusout)="focusOut($event)" id="horas-est">
                     </mat-form-field>
                 </div>
             </div>

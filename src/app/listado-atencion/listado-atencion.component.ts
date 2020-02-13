@@ -73,7 +73,7 @@ export class ListadoAtencionComponent implements OnInit
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '600px',
-        data: new IniciativaFire()
+        data: ''
       }
     );
   }

@@ -97,8 +97,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     let parametrosRef = this.firebaseParametros.getParametros();
     let colaboradoresRef = this.firebaseColaboradores.getColaboradores();
     let contactosRef = this.firebaseContactos.getContactos();
-    let iniciativaRef = this.firebaseIniciativas.getIniciativa2(this.idIniciativa);
-
+    
       parametrosRef.subscribe(data => {data.forEach(paramObj => {
           let paramObject= paramObj.payload.doc.data() as ParametroFire;
           if("estado" == paramObject.nombre) this.estado = paramObject;
@@ -121,11 +120,17 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
         this.contactos.push(contactObject);
       });
 
-      iniciativaRef.forEach(data => {
-        this.iniciativa = data.data() as IniciativaFire;
+      if("" != this.idIniciativa){
+        let iniciativaRef = this.firebaseIniciativas.getIniciativa2(this.idIniciativa);
+        iniciativaRef.forEach(data => {
+          this.iniciativa = data.data() as IniciativaFire;
+          this.loadData();
+          this.loading = false;
+        });
+      }else{
         this.loadData();
         this.loading = false;
-      });
+      }
     });
   }
 
@@ -145,6 +150,13 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
         this.regIniciativa.controls.correoContactoInput.setValue(this.iniciativa.contacto.correo);
         this.regIniciativa.controls.anexoContactoInput.setValue(this.iniciativa.contacto.anexo);
       }
+    }else{
+      this.estado.detalle.forEach(element =>{
+        if("PENDIENTE" == element.descripcion){
+          this.iniciativa.estado = element;
+        }
+      });
+      this.regIniciativa.controls.estadoSelect.disable();
     }
   }
 
@@ -192,7 +204,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   saveIniciativa(iniciativaFire: IniciativaFire){
     this.loading = true;
     let resultValidate = false;
-    let iniciativaObject = new IniciativaFire();
+    let iniciativaObject = iniciativaFire;
     
     iniciativaObject.codigoSVT = this.regIniciativa.value.codigoSVTInput;
     iniciativaObject.estado = this.regIniciativa.value.estadoSelect as ParametroDetalleFire;
@@ -241,7 +253,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       this.loading = false;
       Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
     }else{
-      if(undefined == iniciativaFire.idIniciativa){
+      if(undefined == iniciativaObject.idIniciativa){
         this.firebaseIniciativas.createIniciativa(iniciativaObject).then(
           result => {
             this.loading = false;
@@ -254,8 +266,6 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
           }
         );
       }else{
-        iniciativaObject.idIniciativa = iniciativaFire.idIniciativa;
-        iniciativaObject.numeroIniciativa = iniciativaFire.numeroIniciativa;
         this.firebaseIniciativas.updateIniciativa(iniciativaObject).then(
           result => {
             this.loading = false;
@@ -285,6 +295,60 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       this.regIniciativa.controls.anexoContactoInput.setValue(contactoFire.anexo);
     }
   }
+
+  focusOut(event: any){
+    let trObject = (document.getElementById("horas-est")) as HTMLInputElement;
+    let fechaInicio = this.regIniciativa.value.fechaInicioInput;
+    debugger;
+    let numHoras = trObject.value;
+    if("" != numHoras && null != fechaInicio){
+      let numDias = ((Number.parseInt(numHoras))-8)/8;
+      let numDiasFixed = Number.parseInt(numDias.toFixed());
+      if(numDias > numDiasFixed){
+        numDias = numDiasFixed + 1;
+      }else if(numDias < numDiasFixed){
+        numDias = numDiasFixed;
+      }
+      let numeroDias = numDias;
+      let fechaFin = this.daysSum(fechaInicio, numeroDias);
+      this.regIniciativa.controls.fechaFinInput.setValue(fechaFin);
+    }
+  }
+
+  daysSum(fechaI: Date, numDias: number){
+    let fechaF = new Date();
+    let fechaIni = new Date(fechaI);
+    let contador: number = 0;
+    while(contador != numDias){
+      fechaF = new Date(fechaIni.setDate(fechaIni.getDate() + 1));
+      if(!this.isFinDeSemana(fechaF)){
+        contador = contador+1;
+      }
+    }
+    return fechaF;
+  }
+
+  isFinDeSemana(fech: Date){
+    let fecha = new Date(fech);
+    if(fecha.getDay() !== 0 && fecha.getDay() !== 6){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /* Add param */
   saveParametro() {
