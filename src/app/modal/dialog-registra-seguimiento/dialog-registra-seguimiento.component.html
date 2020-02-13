@@ -276,7 +276,7 @@
                 </div>
                 <div class="col-md-3">
                     <mat-form-field style="font-size: small;">
-                        <input formControlName="telefonoContactoInput" matInput #inputHoras
+                        <input [formControl]="telefonoContactoInput" matInput #inputHoras
                             type="number">
                     </mat-form-field>
                 </div>
@@ -289,7 +289,7 @@
                 </div>
                 <div class="col-md-3">
                     <mat-form-field style="font-size: small;">
-                        <input formControlName="correoContactoInput" matInput #inputHoras
+                        <input [formControl]="correoContactoInput" matInput #inputHoras
                             type="email">
                     </mat-form-field>
                 </div>
@@ -298,7 +298,7 @@
                 </div>
                 <div class="col-md-3">
                     <mat-form-field style="font-size: small;">
-                        <input formControlName="anexoContactoInput" matInput #inputHoras
+                        <input [formControl]="anexoContactoInput" matInput #inputHoras
                             type="number">
                     </mat-form-field>
                 </div>

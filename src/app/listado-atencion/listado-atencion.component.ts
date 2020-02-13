@@ -113,7 +113,6 @@ export class ListadoAtencionComponent implements OnInit
       var lista = [];
       for(var i = 0; i < data.length; i++){
         //lista.push(data[i].payload.doc.data() as IniciativaFire);
-
         let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
         let idIniciativa = data[i].payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;

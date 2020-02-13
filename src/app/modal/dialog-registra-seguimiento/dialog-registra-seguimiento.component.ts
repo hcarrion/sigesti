@@ -39,7 +39,9 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   iniciativas: IniciativaFire = new IniciativaFire();
   iniciativa: IniciativaFire = new IniciativaFire();
   idIniciativa: string;
-
+  telefonoContactoInput = new FormControl();
+  correoContactoInput = new FormControl();
+  anexoContactoInput = new FormControl();
   /*panelColor = new FormControl('1');*/
   loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRegistraSeguimientoComponent>, 
@@ -69,10 +71,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
         horaEstimadaInput: new FormControl(),
         fechaFinInput: new FormControl(),
         codigoSVTInput: new FormControl(),
-        contactoSelect: new FormControl(),
-        telefonoContactoInput: new FormControl(),
-        correoContactoInput: new FormControl(),
-        anexoContactoInput: new FormControl()
+        contactoSelect: new FormControl()
       });
   }
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
@@ -90,9 +89,9 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   async callParametros() {
     this.loading = true;
     
-    this.regIniciativa.controls.telefonoContactoInput.disable();
-    this.regIniciativa.controls.correoContactoInput.disable();
-    this.regIniciativa.controls.anexoContactoInput.disable();
+    this.telefonoContactoInput.disable();
+    this.correoContactoInput.disable();
+    this.anexoContactoInput.disable();
 
     let parametrosRef = this.firebaseParametros.getParametros();
     let colaboradoresRef = this.firebaseColaboradores.getColaboradores();
@@ -135,7 +134,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   }
 
   loadData(){
-    if(undefined != this.iniciativa.idIniciativa){
+    if("" != this.idIniciativa){
       this.regIniciativa.controls.numIniciativaInput.setValue(this.iniciativa.numeroIniciativa);
       this.regIniciativa.controls.codigoSVTInput.setValue(this.iniciativa.codigoSVT);
       this.regIniciativa.controls.tituloInput.setValue(this.iniciativa.titulo);
@@ -146,9 +145,9 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       this.regIniciativa.controls.fechaFinInput.setValue(this.iniciativa.fechaFin);
       this.regIniciativa.controls.horaEstimadaInput.setValue(this.iniciativa.horaEstimada);
       if(undefined != this.iniciativa.contacto){
-        this.regIniciativa.controls.telefonoContactoInput.setValue(this.iniciativa.contacto.telefono);
-        this.regIniciativa.controls.correoContactoInput.setValue(this.iniciativa.contacto.correo);
-        this.regIniciativa.controls.anexoContactoInput.setValue(this.iniciativa.contacto.anexo);
+        this.telefonoContactoInput.setValue(this.iniciativa.contacto.telefono);
+        this.correoContactoInput.setValue(this.iniciativa.contacto.correo);
+        this.anexoContactoInput.setValue(this.iniciativa.contacto.anexo);
       }
     }else{
       this.estado.detalle.forEach(element =>{
@@ -195,9 +194,9 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     this.regIniciativa.controls.categoriaSelect.setValue("");
     this.regIniciativa.controls.tipoSelect.setValue("");
     this.regIniciativa.controls.contactoSelect.setValue("");
-    this.regIniciativa.controls.telefonoContactoInput.reset();
-    this.regIniciativa.controls.correoContactoInput.reset();
-    this.regIniciativa.controls.anexoContactoInput.reset();
+    this.telefonoContactoInput.reset();
+    this.correoContactoInput.reset();
+    this.anexoContactoInput.reset();
     /*this.regIniciativa.reset();*/
   }
 
@@ -207,13 +206,13 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     let iniciativaObject = iniciativaFire;
     
     iniciativaObject.codigoSVT = this.regIniciativa.value.codigoSVTInput;
-    iniciativaObject.estado = this.regIniciativa.value.estadoSelect as ParametroDetalleFire;
-    iniciativaObject.titulo = this.regIniciativa.value.tituloInput.trim();
+    iniciativaObject.estado = this.regIniciativa.controls.estadoSelect.value as ParametroDetalleFire;
+    if(null != this.regIniciativa.value.tituloInput) iniciativaObject.titulo = this.regIniciativa.value.tituloInput.trim();
     iniciativaObject.jefeProyecto = this.regIniciativa.value.jefeProyectoSelect as ColaboradorDetalleFire;
-    iniciativaObject.sumilla = this.regIniciativa.value.sumillaInput.trim();
+    if(null != this.regIniciativa.value.sumillaInput) iniciativaObject.sumilla = this.regIniciativa.value.sumillaInput.trim();
     iniciativaObject.usuarioProcesos = this.regIniciativa.value.usuarioProcesosSelect as ColaboradorDetalleFire;
-    iniciativaObject.objetivoPrincipal = this.regIniciativa.value.objPrincipalTextArea.trim();
-    iniciativaObject.objetivoSecundario = this.regIniciativa.value.objSecundarioTextArea.trim();
+    if(null != this.regIniciativa.value.objPrincipalTextArea) iniciativaObject.objetivoPrincipal = this.regIniciativa.value.objPrincipalTextArea.trim();
+    if(null != this.regIniciativa.value.objSecundarioTextArea) iniciativaObject.objetivoSecundario = this.regIniciativa.value.objSecundarioTextArea.trim();
     iniciativaObject.fechaInicio = this.regIniciativa.value.fechaInicioInput;
     iniciativaObject.horaEstimada = this.regIniciativa.value.horaEstimadaInput;
     iniciativaObject.fechaFin = this.regIniciativa.value.fechaFinInput;
@@ -243,17 +242,16 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       contactoSelect: [iniciativaObject.contacto, Validators.required],
     });
 
-    if (this.regIniciativa.invalid) 
-    {
+    if (this.regIniciativa.invalid) {
       this.submitted = true;
       resultValidate = true;
     }
-    
+
     if(resultValidate){
       this.loading = false;
       Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
     }else{
-      if(undefined == iniciativaObject.idIniciativa){
+      if("" == this.idIniciativa){
         this.firebaseIniciativas.createIniciativa(iniciativaObject).then(
           result => {
             this.loading = false;
@@ -266,6 +264,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
           }
         );
       }else{
+        iniciativaObject.idIniciativa = this.idIniciativa;
         this.firebaseIniciativas.updateIniciativa(iniciativaObject).then(
           result => {
             this.loading = false;
@@ -290,9 +289,9 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
 
   selectContacto(contactoFire: ContactoFire){
     if(undefined != contactoFire){
-      this.regIniciativa.controls.telefonoContactoInput.setValue(contactoFire.telefono);
-      this.regIniciativa.controls.correoContactoInput.setValue(contactoFire.correo);
-      this.regIniciativa.controls.anexoContactoInput.setValue(contactoFire.anexo);
+      this.telefonoContactoInput.setValue(contactoFire.telefono);
+      this.correoContactoInput.setValue(contactoFire.correo);
+      this.anexoContactoInput.setValue(contactoFire.anexo);
     }
   }
 
