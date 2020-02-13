@@ -78,11 +78,11 @@ export class ListadoAtencionComponent implements OnInit
     );
   }
 
-  openDialogEdit(iniciativa: IniciativaFire){
+  openDialogEdit(idIniciativa: string){
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '600px',
-        data: iniciativa
+        data: idIniciativa
       }
     );
   }

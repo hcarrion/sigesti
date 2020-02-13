@@ -1,8 +1,3 @@
-
-
-
-
-
 <div *ngIf="loading" class="content-load">
     <br>
     <mat-spinner class="child-load"></mat-spinner>
@@ -10,304 +5,330 @@
     <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
 </div>
 <div [formGroup]="regIniciativa">
-            <div class="card">
-                <div class="card-header card-header-info">
-                    <h4 class="card-title"><p style="color:#3F52B6; text-align: left;">
-                        <strong> <i class="material-icons">library_add</i> Registro de Atención</strong></p></h4>                    
-                </div>  
-                <div style="align-content: center; vertical-align: middle;">    
-            </div>
-                <div class="card-content">
-                    <br>
-                    <div class="row">
-                        <div class="col-md-1" > 
-                            <mat-label style="font-size: small;"><strong>N°: </strong> </mat-label>
-                        </div>
-                        <div class="col-md-2" > 
-                                <input style="background-color: khaki; text-align: center;" readonly="readonly" formControlName="numIniciativaInput" matInput #inputAtencion>
-                        </div>                   
-                        
-                        <div class="col-md-1" > 
-                            <mat-label style="font-size: small;"><strong>#SVT: </strong> </mat-label>
-                        </div>
-                        <div class="col-md-2"> 
-                            <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
-                                <input formControlName="codigoSVTInput" matInput #inputAtencion>
-                            </mat-form-field> 
-                        </div>                      
-                        <div class="col-md-2">
-                            <mat-label><strong style="font-size: small;">Estado: </strong> </mat-label> 
-                        </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field>
-                                <mat-select formControlName="estadoSelect" placeholder="Selecciona estado" style="font-size: small;" [compareWith]="compareItems" [(ngModel)]="iniciativa.estado">
-                                    <mat-option *ngFor="let estadolet of estado.detalle" [value]="estadolet">
-                                        {{estadolet.descripcion}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2"> 
-                            <mat-label style="font-size: small;"><strong>Título: </strong> </mat-label>  
-                        </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field hintLabel="Max 20 caracteres">
-                                <input formControlName="tituloInput" matInput #inputTitulo maxlength="20" placeholder="Ingrese un Título" style="font-size: small;">
-                                <mat-hint align="end">{{inputTitulo.value?.length || 0}}/20</mat-hint>
-                            </mat-form-field>
-                        </div>
-                        
-                        <div class="col-md-2"> 
-                            <mat-label style="font-size: small;"><strong>Jefe de proyecto: </strong> </mat-label>  
-                        </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field>
-                                <mat-select formControlName="jefeProyectoSelect" placeholder="Selecciona jefe de proyecto" style="font-size: small;" [compareWith]="compareItems" [(ngModel)]="iniciativa.jefeProyecto">
-                                    <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores" [value]="colaboradorlet">
-                                        {{colaboradorlet.nombres}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Sumilla: </strong> </mat-label> 
-                        </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field hintLabel="Max 50 caracteres">
-                                <input formControlName="sumillaInput" matInput #inputSumilla maxlength="50" placeholder="Ingrese una Sumilla" id="sumilla">
-                                <mat-hint align="end">{{inputSumilla.value?.length || 0}}/50</mat-hint>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Usuario de procesos: </strong> </mat-label> 
-                        </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field>
-                                <mat-select formControlName="usuarioProcesosSelect" placeholder="Selecciona usuario de procesos" [compareWith]="compareItems" [(ngModel)]="iniciativa.usuarioProcesos">
-                                    <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores" [value]="colaboradorlet">
-                                        {{colaboradorlet.nombres}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field> 
-                        </div>
-                    </div>
-                    <br> 
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Objetivo principal:  </strong> </mat-label> 
-                        </div>
-                        <div class="col-md-3"> 
-                            
-                            <mat-form-field >
-                                <mat-label>Objetivo principal</mat-label>
-                                <textarea formControlName="objPrincipalTextArea" matInput
-                                        cdkTextareaAutosize
-                                        #autosize="cdkTextareaAutosize"
-                                        
-                                        cdkAutosizeMinRows="1"
-                                        cdkAutosizeMaxRows="5"></textarea>
-                            </mat-form-field>
-
-                        </div>
-
-                        <div class="col-md-2"> 
-                            
-                            <mat-label><strong>Objetivo secundario:  </strong> </mat-label> 
-                        </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field >
-                                <mat-label>Objetivo secundario</mat-label>
-                                <textarea formControlName="objSecundarioTextArea" matInput
-                                        cdkTextareaAutosize
-                                        #autosize2="cdkTextareaAutosize"
-                                        cdkAutosizeMinRows="1"
-                                        cdkAutosizeMaxRows="5"></textarea>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2">
-                            <mat-label><strong>Fecha de inicio: </strong> </mat-label> 
-                        </div>
-                        <div class="col-md-3">
-                            <mat-form-field>
-                                <input formControlName="fechaInicioInput" matInput [matDatepicker]="picker2" placeholder="Selecciona fecha">
-                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                <mat-datepicker #picker2></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Estimado(horas):</strong> </mat-label> 
-                            
-                        </div>
-                        <div class="col-md-3">
-                            <mat-form-field hintLabel="Max 4 caracteres">
-                                <input formControlName="horaEstimadaInput" matInput #inputHoras  placeholder="Estimado en horas" type="number" >
-                            </mat-form-field> 
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2"> 
-                            
-                            <mat-label><strong>Fecha de fin:</strong> </mat-label> 
-                        </div>
-
-                        <div class="col-md-3">
-                            <mat-form-field>
-                                <input formControlName="fechaFinInput" matInput [matDatepicker]="picker" placeholder="Selecciona fecha">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Prioridad: </strong> </mat-label>
-                        </div>
-
-                        <div class="col-md-3">
-                            <mat-form-field>
-                                <mat-select formControlName="prioridadSelect" placeholder="Selecciona prioridad" [compareWith]="compareItems" [(ngModel)]="iniciativa.prioridad">
-                                    <mat-option *ngFor="let prioridadlet of prioridad.detalle" [value]="prioridadlet">
-                                        {{prioridadlet.descripcion}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Clasificación: </strong> </mat-label>
-                        </div>
-                        <div class="col-md-3">
-                            <mat-form-field>
-                                <mat-select formControlName="clasificacionSelect" placeholder="Selecciona clasificación" [compareWith]="compareItems" [(ngModel)]="iniciativa.clasificacion">
-                                    <mat-option *ngFor="let clasificacionlet of clasificacion.detalle" [value]="clasificacionlet">
-                                        {{clasificacionlet.descripcion}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Area: </strong> </mat-label>
-                        </div>
-                        <div class="col-md-3">
-                            <mat-form-field>
-                                <mat-select formControlName="areaSelect" placeholder="Selecciona área" [compareWith]="compareItems" [(ngModel)]="iniciativa.area"> 
-                                    <mat-option *ngFor="let arealet of area.detalle" [value]="arealet">
-                                        {{arealet.descripcion}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2">
-                            <mat-label><strong>Categoría: </strong> </mat-label>
-                            
-                        </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field>
-                                <mat-select formControlName="categoriaSelect" placeholder="Selecciona categoría" [compareWith]="compareItems" [(ngModel)]="iniciativa.categoria">
-                                    <mat-option *ngFor="let categorialet of categoria.detalle" [value]="categorialet">
-                                        {{categorialet.descripcion}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Tipo: </strong> </mat-label>
-                        </div>
-                        <div class="col-md-3">
-                            <mat-form-field>
-                                <mat-select formControlName="tipoSelect" placeholder="Selecciona tipo" [compareWith]="compareItems" [(ngModel)]="iniciativa.tipo">
-                                    <mat-option *ngFor="let tipolet of tipo.detalle" [value]="tipolet">
-                                        {{tipolet.descripcion}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2">
-                            <mat-label><strong>Contacto: </strong> </mat-label>
-                            
-                        </div>
-                        <div class="col-md-3"> 
-                            <mat-form-field>
-                                <mat-select formControlName="contactoSelect" placeholder="Selecciona contacto" [compareWith]="compareItems" [(ngModel)]="iniciativa.contacto">
-                                    <mat-option *ngFor="let contactolet of contactos" [value]="contactolet" (click)="selectContacto(contactolet)">
-                                        {{contactolet.nombres}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Telefono: </strong> </mat-label>
-                        </div>
-                        <div class="col-md-3">
-                            <mat-form-field hintLabel="Max 11 caracteres">
-                                <input formControlName="telefonoContactoInput" matInput #inputHoras  placeholder="Telefono celualr/fijo" type="number" >
-                            </mat-form-field> 
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2">
-                            <mat-label><strong>correo: </strong> </mat-label>
-                            
-                        </div>
-                        <div class="col-md-3">
-                            <mat-form-field hintLabel="Max 150 caracteres">
-                                <input formControlName="correoContactoInput" matInput #inputHoras  placeholder="Correo nombre@confianza.pe" type="email" >
-                            </mat-form-field> 
-                        </div>
-                        <div class="col-md-2"> 
-                            <mat-label><strong>Anexo: </strong> </mat-label>
-                        </div>
-                        <div class="col-md-3">
-                            <mat-form-field hintLabel="Max 4 caracteres">
-                                <input formControlName="anexoContactoInput" matInput #inputHoras  placeholder="Anexo de llamada" type="number" >
-                            </mat-form-field> 
-                        </div>
-                    </div>
-                    <br>
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-header card-header-info">
+            <h4 class="card-title">
+                <p style="color:#3F52B6; text-align: left;">
+                    <strong><i class="material-icons">library_add</i> Registro de atención</strong></p>
+            </h4>
+        </div>
+        <div style="align-content: center; vertical-align: middle;">
+        </div>
+        <div class="card-content">
+            <br>
             <div class="row">
-                <div class="col-md-9"></div>
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-primary btn-sm active" (click)='saveIniciativa(iniciativa)'>Guardar</button>
+                    <mat-label><strong style="font-size: small;">N°: </strong> </mat-label>
                 </div>
+                <div class="col-md-2">
+                    <input style="background-color: khaki; text-align: center;" readonly="readonly"
+                        formControlName="numIniciativaInput" matInput #inputAtencion>
+                </div>
+
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-info btn-sm" (click) = "resetFields()">Limpiar</button>
+                    <mat-label><strong style="font-size: small;">#SVT: </strong> </mat-label>
                 </div>
-                <div class="col-md-1" >
-                    <button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
-                </div> 
+                <div class="col-md-2">
+                    <mat-form-field hintLabel="Max 9 caracteres" style="font-size: small;">
+                        <input formControlName="codigoSVTInput" matInput #inputAtencion>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Estado: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field>
+                        <mat-select formControlName="estadoSelect" placeholder="Selecciona estado"
+                            style="font-size: small;" [compareWith]="compareItems" [(ngModel)]="iniciativa.estado">
+                            <mat-option *ngFor="let estadolet of estado.detalle" [value]="estadolet">
+                                {{estadolet.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
             </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Título: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field hintLabel="Max 50 caracteres" style="font-size: small;">
+                        <input formControlName="tituloInput" matInput #inputTitulo maxlength="50"
+                            placeholder="Ingrese un Título" oninput="this.value = this.value.toUpperCase()">
+                        <mat-hint align="end">{{inputTitulo.value?.length || 0}}/50</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Jefe de proyecto: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field>
+                        <mat-select formControlName="jefeProyectoSelect" placeholder="Selecciona jefe de proyecto"
+                            style="font-size: small;" [compareWith]="compareItems"
+                            [(ngModel)]="iniciativa.jefeProyecto">
+                            <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores"
+                                [value]="colaboradorlet">
+                                {{colaboradorlet.nombres}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Sumilla: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field hintLabel="Max 120 caracteres" style="font-size: small;">
+                        <input formControlName="sumillaInput" matInput #inputSumilla maxlength="120"
+                            placeholder="Ingrese una Sumilla" id="sumilla" oninput="this.value = this.value.toUpperCase()">
+                        <mat-hint align="end">{{inputSumilla.value?.length || 0}}/120</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Usuario de procesos: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field>
+                        <mat-select formControlName="usuarioProcesosSelect" placeholder="Selecciona usuario de procesos"
+                            [compareWith]="compareItems" [(ngModel)]="iniciativa.usuarioProcesos" style="font-size: small;">
+                            <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores"
+                                [value]="colaboradorlet">
+                                {{colaboradorlet.nombres}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Objetivo principal: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+
+                    <mat-form-field style="font-size: small;">
+                        <mat-label>Objetivo principal</mat-label>
+                        <textarea formControlName="objPrincipalTextArea" matInput cdkTextareaAutosize
+                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" oninput="this.value = this.value.toUpperCase()"></textarea>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <mat-label><strong style="font-size: small;">Objetivo secundario: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <mat-label>Objetivo secundario</mat-label>
+                        <textarea formControlName="objSecundarioTextArea" matInput cdkTextareaAutosize
+                            #autosize2="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" oninput="this.value = this.value.toUpperCase()"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Fecha de inicio: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <input formControlName="fechaInicioInput" matInput [matDatepicker]="picker2"
+                            placeholder="Selecciona fecha">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Estimado(horas):</strong> </mat-label>
+
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field hintLabel="Max 4 caracteres">
+                        <input formControlName="horaEstimadaInput" matInput #inputHoras placeholder="Estimado en horas"
+                            type="number">
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+
+                    <mat-label><strong style="font-size: small;">Fecha de fin:</strong> </mat-label>
+                </div>
+
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <input formControlName="fechaFinInput" matInput [matDatepicker]="picker"
+                            placeholder="Selecciona fecha">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Prioridad: </strong> </mat-label>
+                </div>
+
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <mat-select formControlName="prioridadSelect" placeholder="Selecciona prioridad"
+                            [compareWith]="compareItems" [(ngModel)]="iniciativa.prioridad">
+                            <mat-option *ngFor="let prioridadlet of prioridad.detalle" [value]="prioridadlet">
+                                {{prioridadlet.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Clasificación: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <mat-select formControlName="clasificacionSelect" placeholder="Selecciona clasificación"
+                            [compareWith]="compareItems" [(ngModel)]="iniciativa.clasificacion">
+                            <mat-option *ngFor="let clasificacionlet of clasificacion.detalle"
+                                [value]="clasificacionlet">
+                                {{clasificacionlet.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Área: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <mat-select formControlName="areaSelect" placeholder="Selecciona área"
+                            [compareWith]="compareItems" [(ngModel)]="iniciativa.area">
+                            <mat-option *ngFor="let arealet of area.detalle" [value]="arealet">
+                                {{arealet.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Categoría: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <mat-select formControlName="categoriaSelect" placeholder="Selecciona categoría"
+                            [compareWith]="compareItems" [(ngModel)]="iniciativa.categoria">
+                            <mat-option *ngFor="let categorialet of categoria.detalle" [value]="categorialet">
+                                {{categorialet.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Tipo: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <mat-select formControlName="tipoSelect" placeholder="Selecciona tipo"
+                            [compareWith]="compareItems" [(ngModel)]="iniciativa.tipo">
+                            <mat-option *ngFor="let tipolet of tipo.detalle" [value]="tipolet">
+                                {{tipolet.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Contacto: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <mat-select formControlName="contactoSelect" placeholder="Selecciona contacto"
+                            [compareWith]="compareItems" [(ngModel)]="iniciativa.contacto">
+                            <mat-option *ngFor="let contactolet of contactos" [value]="contactolet"
+                                (click)="selectContacto(contactolet)">
+                                {{contactolet.nombres}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Teléfono: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <input formControlName="telefonoContactoInput" matInput #inputHoras
+                            type="number">
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Correo: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <input formControlName="correoContactoInput" matInput #inputHoras
+                            type="email">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-label><strong style="font-size: small;">Anexo: </strong> </mat-label>
+                </div>
+                <div class="col-md-3">
+                    <mat-form-field style="font-size: small;">
+                        <input formControlName="anexoContactoInput" matInput #inputHoras
+                            type="number">
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-2 align-right-all">
+            <button mat-raised-button class="btn-primary" (click)="saveIniciativa(iniciativa)">
+                <mat-icon>save</mat-icon>
+                Guardar
+            </button>
+            <!--<button type="button" class="btn btn-primary btn-sm active"
+                (click)='saveIniciativa(iniciativa)'><mat-icon>save</mat-icon>Guardar</button>-->
+        </div>
+        <div class="col-md-2 align-right-all">
+            <button mat-raised-button class="btn-info" (click)="resetFields()">
+                <mat-icon>clear</mat-icon>
+                Limpiar
+            </button>
+            <!--<button type="button" class="btn btn-info btn-sm" (click)="resetFields()">Limpiar</button>-->
+        </div>
+        <div class="col-md-2 align-right-all">
+            <button mat-raised-button class="btn-danger" (click)="close()">
+                <mat-icon>close</mat-icon>
+                Cerrar
+            </button>
+            <!--<button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button>-->
+        </div>
+    </div>
 </div>
-
-
