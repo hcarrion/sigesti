@@ -39,18 +39,19 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
   public tipoDocumento: IniciativaFire[];
   public tipoDocumentoSeleccionado: IniciativaFire;
   iniciativa: IniciativaFire = new IniciativaFire();
+  idIniciativaF: string;
   actividadesDetFire: ActividadDetalleFire[] = [];
 
   loading: boolean;
   constructor(private matDialog: MatDialog, 
     private firebaseIniciativas: FirebaseIniciativaService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.iniciativa = data;
+      this.idIniciativaF = data;
     }
 
-  openDialogRecurso(iniciativaFire: IniciativaFire, actividadDetalleFire: ActividadDetalleFire) {
+  openDialogRecurso(idIniciativaFire: string, actividadDetalleFire: ActividadDetalleFire) {
     let iniciativaDetFire = new IniciativaDetalleFire();
-    iniciativaDetFire.iniciativa = iniciativaFire;
+    iniciativaDetFire.idIniciativa = idIniciativaFire;
     iniciativaDetFire.actividadDetalle = actividadDetalleFire;
     this.matDialog.open(DialogRegistraRecursoEventoComponent, /*dialogConfig,*/
       { width: '1200px',
@@ -60,9 +61,9 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
     );
   }
 
-  openDialogEdit(iniciativaFire: IniciativaFire, actividadDetalleFire: ActividadDetalleFire){
+  openDialogEdit(idIniciativaFire: string, actividadDetalleFire: ActividadDetalleFire){
     let iniciativaDetFire = new IniciativaDetalleFire();
-    iniciativaDetFire.iniciativa = iniciativaFire;
+    iniciativaDetFire.idIniciativa = idIniciativaFire;
     iniciativaDetFire.actividadDetalle = actividadDetalleFire;
     this.matDialog.open(DialogRegistraEventoComponent, /*dialogConfig,*/
       { width: '2000px',
@@ -72,10 +73,10 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
     );
   }
 
-  openDialogNew(iniciativaFire: IniciativaFire){
+  openDialogNew(idIniciativaFire: string){
     let actividadDetalleFire = new ActividadDetalleFire();
     let iniciativaDetFire = new IniciativaDetalleFire();
-    iniciativaDetFire.iniciativa = iniciativaFire;
+    iniciativaDetFire.idIniciativa = idIniciativaFire;
     iniciativaDetFire.actividadDetalle = actividadDetalleFire;
     this.matDialog.open(DialogRegistraEventoComponent, /*dialogConfig,*/
       { width: '2000px',
@@ -96,7 +97,7 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
 
   async callIniciativa() {
     this.loading = true;
-    let iniciativaRef = this.firebaseIniciativas.getIniciativa(this.iniciativa);
+    let iniciativaRef = this.firebaseIniciativas.getIniciativa3(this.idIniciativaF);
     iniciativaRef.subscribe(data => {
       var lista = [];
         //lista.push(data[i].payload.doc.data() as IniciativaFire);

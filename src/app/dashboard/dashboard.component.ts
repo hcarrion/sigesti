@@ -100,7 +100,6 @@ export class DashboardComponent implements OnInit
         if (label=="QA"){this.FiltraCanvas("Rechazado");this.estado=" - En Calidad";};
         if (label=="Done"){this.FiltraCanvas("Suspendido");this.estado=" - Concluido";};
         
-        console.log(clickedElementIndex, label, value)
       }
      }
      else{
@@ -112,7 +111,6 @@ export class DashboardComponent implements OnInit
     }
   
   public chartHovered(e: any): void { 
-    console.log(e);    
     }
 
   onAgrupadorxCanvas(){

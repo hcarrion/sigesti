@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 export class DialogRecursosComponent implements OnInit, OnDestroy {
   regRecursos: FormGroup;
   iniciativa: IniciativaFire = new IniciativaFire();
+  idIniciativaR: string;
   colaboradores: ColaboradorFire = new ColaboradorFire();
 
   public colaboradorCtrl: FormControl = new FormControl();
@@ -35,7 +36,7 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
     private firebaseColaboradores: FirebaseColaboradorService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private firebaseIniciativas: FirebaseIniciativaService) {
-      this.iniciativa = data;
+      this.idIniciativaR = data;
       this.regRecursos = new FormGroup({
         tituloInputDialog: new FormControl(),
         nIniciativaInputDialog: new FormControl(),
@@ -60,10 +61,20 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
     colaboradoresRef.subscribe(data => {data.forEach(colabObj => {
         let colabObject= colabObj.payload.doc.data() as ColaboradorFire;
         this.colaboradores =  colabObject;
-        this.loadData();
-        this.activeSelect(this.colaboradores.colaboradores);
-        this.updatePorcentajePorAsignar();
-        this.loading = false;
+
+        if("" != this.idIniciativaR){
+          let iniciativaRef = this.firebaseIniciativas.getIniciativa2(this.idIniciativaR);
+          iniciativaRef.forEach(data => {
+            this.iniciativa = data.data() as IniciativaFire;
+            this.loadData();
+            this.activeSelect(this.colaboradores.colaboradores);
+            this.updatePorcentajePorAsignar();
+            this.loading = false;
+          });
+        }else{
+          this.loadData();
+          this.loading = false;
+        }
       });
     });
   }

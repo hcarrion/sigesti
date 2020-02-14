@@ -42,11 +42,11 @@ export class ListadoAtencionComponent implements OnInit
   loading: boolean;
   constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
 
-  openDialogRecursos(iniciativa: IniciativaFire) {
+  openDialogRecursos(idIniciativa: string) {
     this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
       { width: '1200px',
         height: '600px',
-        data: iniciativa
+        data: idIniciativa
       }
     );
   }
@@ -73,7 +73,7 @@ export class ListadoAtencionComponent implements OnInit
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '600px',
-        data: new IniciativaFire()
+        data: ''
       }
     );
   }
@@ -87,11 +87,11 @@ export class ListadoAtencionComponent implements OnInit
     );
   }
 
-  openDialogActivity(iniciativa: IniciativaFire){
+  openDialogActivity(idIniciativa: string){
     this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '600px',
-        data: iniciativa
+        data: idIniciativa
       }
     );
   }
@@ -114,7 +114,6 @@ export class ListadoAtencionComponent implements OnInit
       var lista = [];
       for(var i = 0; i < data.length; i++){
         //lista.push(data[i].payload.doc.data() as IniciativaFire);
-
         let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
         let idIniciativa = data[i].payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;

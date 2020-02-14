@@ -47,7 +47,6 @@ export class MenuComponent implements OnDestroy  {
   } 
   readLocalStorageValue(key) {
     let value =   localStorage.getItem(key);
-    console.log(key+': '+value);
   
     if(value == undefined) {
       value =='false';
