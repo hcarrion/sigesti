@@ -7,93 +7,113 @@
 <div [formGroup]="regRecursosAct">
     <div class="card">
         <div class="card-header card-header-primary">
-            <h4 class="card-title"><p align="left" style=color:#3F52B6>
-                <strong> <i class="material-icons">people</i> Asignar Recursos a las Actividades </strong></p>
+            <h4 class="card-title">
+                <p align="left" style=color:#3F52B6>
+                    <strong> <i class="material-icons">people</i> Recurso(s) de las actividades </strong></p>
             </h4>
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-2"> N° iniciativa: </div>
-                <div class="col-md-1"> 
-                    <input formControlName="nIniciativaInputDialogResource" class="form-control form-control-sm" type="text" ng-disabled="true" maxlength="9" disabled/>  
+                <div class="col-md-2"><strong style="font-size: small;">N° iniciativa: </strong></div>
+                <div class="col-md-1">
+                    <input formControlName="nIniciativaInputDialogResource" class="form-control form-control-sm"
+                        style="font-size: small;" type="text" ng-disabled="true" maxlength="9" disabled />
                 </div>
                 <div class="col-md-1"></div>
-                <div class="col-md-2">Título: </div>
+                <div class="col-md-2"><strong style="font-size: small;">Título:</strong></div>
                 <div class="col-md-6">
-                    <input formControlName="tituloIniciativaInputDialogResource" class="form-control form-control-sm"  type="text" ng-disabled="true" disabled> 
+                    <input formControlName="tituloIniciativaInputDialogResource" class="form-control form-control-sm"
+                        style="font-size: small;" type="text" ng-disabled="true" disabled>
                 </div>
             </div>
             <br>
             <div class="row">
-                <div class="col-md-2">Código actividad: </div>
+                <div class="col-md-2"><strong style="font-size: small;">Código actividad:</strong></div>
                 <div class="col-md-1">
-                    <input formControlName="codigoActividadInputDialogResource" class="form-control form-control-sm"  type="text" ng-disabled="true" disabled> 
+                    <input formControlName="codigoActividadInputDialogResource" class="form-control form-control-sm"
+                        style="font-size: small;" type="text" ng-disabled="true" disabled>
                 </div>
                 <div class="col-md-1"></div>
-                <div class="col-md-2"> Actividad: </div>
-                <div class="col-md-6"> 
-                    <input formControlName="tituloActividadInputDialogResource" class="form-control form-control-sm" type="text" ng-disabled="true" maxlength="9" disabled/>  
+                <div class="col-md-2"><strong style="font-size: small;">Actividad:</strong></div>
+                <div class="col-md-6">
+                    <input formControlName="tituloActividadInputDialogResource" class="form-control form-control-sm"
+                        style="font-size: small;" type="text" ng-disabled="true" maxlength="9" disabled />
                 </div>
             </div>
             <br>
             <div class="row">
-                <div class="col-md-2">Horas actividad: </div>
+                <div class="col-md-2"><strong style="font-size: small;">Horas actividad:</strong></div>
                 <div class="col-md-1">
-                    <input formControlName="horasAsigActividadInputDialogResource" class="form-control form-control-sm"  type="text" ng-disabled="true" disabled> 
+                    <input formControlName="horasAsigActividadInputDialogResource" class="form-control form-control-sm"
+                        style="font-size: small;" type="text" ng-disabled="true" disabled>
                 </div>
-            </div>  
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <hr style="width:100%;">
                 </div>
             </div>
-             
-              <div class="row">
-                  <div class="col-md-12" >
-                      <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
-                          <thead> 
-                              <tr>
-                                  <th class="encabezado" width="20%" style="white-space: normal;">Código</th>
-                                  <th class="encabezado" width="50%" style="white-space: normal;">Nombres</th>
-                                  <th class="encabezado cell-cabecera-center" width="10%" style="white-space: normal;">%</th>
-                                  <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">Activ. Asig.</th>
-                                  <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">Horas  Asig.</th>
-                                 
-                              </tr>
-                          </thead>
-                          <tbody *ngFor="let colabDetFire of colaboradorDetFireList" class="tablaRecurso"> 
-                              <tr style="vertical-align:center !important;" id="{{colabDetFire.codigo}}">
-                                  <td class="tabla-center cell-td" width="20%">{{colabDetFire.codigoUsuario}}</td>
-                                  <td class="tabla-center cell-td" width="50%">{{colabDetFire.nombres}}</td>
-                                  <td class="tabla-center cell-td" width="10%" align="center" >{{colabDetFire.porcentaje}}</td>
-                                  <td class="tabla-center cell-td" width="10%" align="center" ><mat-checkbox class="align:center;" (change)="showOptions($event, colabDetFire)" [checked]="colabDetFire.isAsignado"></mat-checkbox></td>
-                                  <td class="tabla-center cell-td" width="10%" align="center" ><input width="20px" type="number" min="1" step="1" (focusout)="focusOut($event, colabDetFire)" ng-model="colabDetFire.horasAsig" style="text-align:center;width:50px;" value={{colabDetFire.horasAsig}}></td>                                  
-                              </tr>
-                          </tbody>    
-                      </table>
-                  </div>
-              </div>
-              <br>
-              <div class="row">
-                  <div class="col-md-3">
-                      <label style=color:#3F52B6>Horas por asignar: </label>
-                  </div>
-                  <div class="col-md-2">
-                      <input class="form-control" formControlName="porAsignarLabel" type="text" ng-disabled="true" disabled>
-                  </div>
-              </div>
-          </div>
-        </div>
-        <div class="row">
-            <div class="col-md-9">
-            </div>
-            <div class="col-md-2 align-right">
-                <button type="button" class="btn btn-primary btn-sm" (click)="guardarRecursos(recursosColabDetFireList)">Guardar</button>
-            </div>
-            <div class="col-md-1" >
-                <button type="button" class="btn btn-danger btn-sm" (click)="close()">Cerrar</button> 
-            </div>
-        </div>
-  </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
+                        <thead>
+                            <tr>
+                                <th class="encabezado" width="20%" style="white-space: normal;">Código</th>
+                                <th class="encabezado" width="50%" style="white-space: normal;">Nombres</th>
+                                <th class="encabezado cell-cabecera-center" width="10%" style="white-space: normal;">%
+                                </th>
+                                <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">
+                                    Activ. Asig.</th>
+                                <th class="encabezado cell-cabecera-center" width="20%" style="white-space: normal;">
+                                    Horas Asig.</th>
 
-
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let colabDetFire of colaboradorDetFireList" class="tablaRecurso">
+                            <tr style="vertical-align:center !important;" id="{{colabDetFire.codigo}}">
+                                <td class="tabla-center cell-td" width="20%">{{colabDetFire.codigoUsuario}}</td>
+                                <td class="tabla-center cell-td" width="50%">{{colabDetFire.nombres}}</td>
+                                <td class="tabla-center cell-td" width="10%" align="center">{{colabDetFire.porcentaje}}
+                                </td>
+                                <td class="tabla-center cell-td" width="10%" align="center">
+                                    <mat-checkbox class="align:center;" (change)="showOptions($event, colabDetFire)"
+                                        [checked]="colabDetFire.isAsignado"></mat-checkbox>
+                                </td>
+                                <td class="tabla-center cell-td" width="10%" align="center"><input width="20px"
+                                        type="number" min="1" step="1" oninput="this.value = Math.trunc(this.value)" (focusout)="focusOut($event, colabDetFire)"
+                                        ng-model="colabDetFire.horasAsig" style="text-align:center;width:50px;"
+                                        value={{colabDetFire.horasAsig}}></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-2">
+                    <label style=color:#3F52B6><strong style="font-size: small;">Horas por asignar:</strong></label>
+                </div>
+                <div class="col-md-1">
+                    <input class="form-control" formControlName="porAsignarLabel" type="text" style="font-size: small;" ng-disabled="true"
+                        disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+        </div>
+        <div class="col-md-2 align-right-all">
+            <button mat-raised-button class="btn-primary" (click)="guardarRecursos(recursosColabDetFireList)">
+                <mat-icon>save</mat-icon>
+                Guardar
+            </button>
+        </div>
+        <div class="col-md-2 align-right-all">
+            <button mat-raised-button class="btn-danger" (click)="close()">
+                <mat-icon>close</mat-icon>
+                Cerrar
+            </button>
+        </div>
+    </div>
+</div>

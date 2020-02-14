@@ -122,7 +122,7 @@
                     <mat-form-field hintLabel="Max 3 numeros" style="font-size: small;">
                         <input formControlName="horasAsigActividadInput" type="number" min="1" step="1" matInput
                             #inputHoras maxlength="3" placeholder="Ingrese horas asignadas" id="horas"
-                            (focusout)="focusOut($event)">
+                            (focusout)="focusOut($event)" oninput="this.value = Math.trunc(this.value)">
                     </mat-form-field>
                 </div>
             </div>
