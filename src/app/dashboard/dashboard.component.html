@@ -13,6 +13,9 @@
             (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)">>
           </canvas>
+          <div class="col-sm-2 align-right">
+            <button mat-raised-button type="button" class="btn btn-primary btn-sm active" (click)='saveHoras("tableHoras", true)'><mat-icon>save</mat-icon></button>
+          </div>
       </div>
       </div>
     </div>

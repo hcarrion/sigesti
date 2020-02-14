@@ -61,6 +61,7 @@ export class RegistroContactoComponent implements OnInit {habilitar: boolean;
   }
 
   ngOnInit() {
+    localStorage.setItem('indinicio',"false");   
     this.callContactos();
   }
 

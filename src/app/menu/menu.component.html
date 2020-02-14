@@ -7,7 +7,7 @@
   <mat-sidenav-container class="example-sidenav-container">
     <mat-sidenav #snav>
       <mat-nav-list>
-        <a mat-list-item [routerLink]="['dashboard']"> 
+        <a mat-list-item [routerLink]="['dashboard']" (click)="snav.toggle()"> 
           <p style=color:#3F52B6>
             <strong> 
               <i class="material-icons md-11" style="vertical-align: middle;" >3d_rotation</i>
@@ -15,7 +15,7 @@
             </strong>
           </p>
         </a>
-        <a mat-list-item [routerLink]="['listado_atencion']"> 
+        <a mat-list-item [routerLink]="['listado_atencion']" (click)="snav.toggle()"> 
           <p style=color:#3F52B6>
             <strong> 
               <i class="material-icons md-11" style="vertical-align: middle;" >settings_input_antenna</i>
@@ -23,7 +23,7 @@
             </strong>
           </p>
         </a>
-        <a mat-list-item [routerLink]="['registro_contacto']"> 
+        <a mat-list-item [routerLink]="['registro_contacto']" (click)="snav.toggle()"> 
           <p style=color:#3F52B6>
             <strong> 
               <i class="material-icons md-18" style="vertical-align: middle;">record_voice_overy</i>
@@ -31,7 +31,7 @@
             </strong>
           </p>
         </a>
-        <a mat-list-item [routerLink]="['registro_horas']"> 
+        <a mat-list-item [routerLink]="['registro_horas']" (click)="snav.toggle()"> 
           <p style=color:#3F52B6>
             <strong> 
               <i class="material-icons md-18" style="vertical-align: middle;">alarm_on</i>

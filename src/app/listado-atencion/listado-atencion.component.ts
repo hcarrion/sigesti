@@ -102,6 +102,7 @@ export class ListadoAtencionComponent implements OnInit
   }
 
   ngOnInit() {
+    localStorage.setItem('indinicio',"false");   
     this.callIniciativas();
   }
 
@@ -173,6 +174,8 @@ export class ListadoAtencionComponent implements OnInit
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
   }
-
+  openStatusReport(tipo: Listadoatencionhelp){
+    alert(tipo);
+  }
   
 }

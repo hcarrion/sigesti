@@ -41,6 +41,7 @@ export class RegistroHorasComponent implements OnInit {
     }
 
   ngOnInit() {
+    localStorage.setItem('indinicio',"false");   
     this.loading = true;
     this.loadColumns();
     this.getProyectoIniciativas();

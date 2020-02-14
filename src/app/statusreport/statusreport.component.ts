@@ -87,6 +87,7 @@ export class StatusreportComponent implements OnInit {
   }
 
   saveStatusReport(){
+    alert(this.editorConfig.editable.valueOf.toString  );
     let statusReportFire = new StatusReportFire();
     /*let actSemanaAnterior = (document.getElementById("editor1")) as HTMLTextAreaElement;
     let actSemanaProxima = (document.getElementById("editor2")) as HTMLTextAreaElement;
@@ -113,5 +114,8 @@ export class StatusreportComponent implements OnInit {
           Swal.fire('Error!', 'Error al guardar el status report.', 'error');
         });
     }
+  }
+  saveHoras(){
+    alert("sssssss");
   }
 }
