@@ -78,11 +78,11 @@ export class ListadoAtencionComponent implements OnInit
     );
   }
 
-  openDialogEdit(iniciativa: IniciativaFire){
+  openDialogEdit(idIniciativa: string){
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '600px',
-        data: iniciativa
+        data: idIniciativa
       }
     );
   }
@@ -175,6 +175,8 @@ export class ListadoAtencionComponent implements OnInit
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
   }
-
+  openStatusReport(tipo: Listadoatencionhelp){
+    alert(tipo);
+  }
   
 }

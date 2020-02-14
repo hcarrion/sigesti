@@ -62,7 +62,9 @@ export class StatusreportComponent implements OnInit {
 
   constructor(private firebaseStatusReport: FirebaseStatusreportService) {
     this.generateStatusReport = new FormGroup({
-      actCompSemAnteAngularEditor: new FormControl()
+      actCompSemAnteAngularEditor: new FormControl(),
+      actPlanSemProxAngularEditor: new FormControl(),
+      temDeciRiesgosAngularEditor: new FormControl()
     });
   }
 
@@ -78,6 +80,8 @@ export class StatusreportComponent implements OnInit {
         this.statusReportFire = element.payload.doc.data() as StatusReportFire;
         this.statusReportFire.idStatusReport = element.payload.doc.id;
         this.generateStatusReport.controls.actCompSemAnteAngularEditor.setValue(this.statusReportFire.actSemanaAnterior);
+        this.generateStatusReport.controls.actPlanSemProxAngularEditor.setValue(this.statusReportFire.actSemanaProxima);
+        this.generateStatusReport.controls.temDeciRiesgosAngularEditor.setValue(this.statusReportFire.temasDecisionesRiesgos);
       });
     });
   }
@@ -85,8 +89,12 @@ export class StatusreportComponent implements OnInit {
   saveStatusReport(){
     alert(this.editorConfig.editable.valueOf.toString  );
     let statusReportFire = new StatusReportFire();
+    /*let actSemanaAnterior = (document.getElementById("editor1")) as HTMLTextAreaElement;
+    let actSemanaProxima = (document.getElementById("editor2")) as HTMLTextAreaElement;
+    let temasDeciRiesgos = (document.getElementById("editor3")) as HTMLTextAreaElement;*/
     statusReportFire.actSemanaAnterior = this.generateStatusReport.value.actCompSemAnteAngularEditor;
-    alert(this.generateStatusReport.value);
+    statusReportFire.actSemanaProxima = this.generateStatusReport.value.actPlanSemProxAngularEditor;
+    statusReportFire.temasDecisionesRiesgos = this.generateStatusReport.value.temDeciRiesgosAngularEditor;
     statusReportFire.idIniciativa = "40hsbW3oRCliJtKP0tkw";
 
     if(undefined != this.statusReportFire.codigo){
@@ -106,5 +114,8 @@ export class StatusreportComponent implements OnInit {
           Swal.fire('Error!', 'Error al guardar el status report.', 'error');
         });
     }
+  }
+  saveHoras(){
+    alert("sssssss");
   }
 }
