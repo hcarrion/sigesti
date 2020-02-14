@@ -8,6 +8,7 @@ import { ActividadHorasFire } from '../shared/models/actividad-horas-fire';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/util/date.adapter';
 import { HoraFire } from '../shared/models/hora-fire';
 import Swal from 'sweetalert2';
+import { HoraRow } from '../shared/models/hora-row';
 
 @Component({
   selector: 'app-registro-horas',
@@ -220,6 +221,164 @@ export class RegistroHorasComponent implements OnInit {
   saveHoras(idTable: string, isUpdate: boolean){
     this.loading = true;
     let tblObject = (document.getElementById(idTable)) as HTMLTableElement;
+    let horaRowList: HoraRow[] = [];
+    for(let k = 1; k < tblObject.rows.length; k++){
+      let horaRow = new HoraRow();
+      var trObject = tblObject.rows[k] as HTMLTableRowElement;
+      let idIniciativa = trObject.cells[0].id;
+      let hRow = horaRowList.find(hRow => hRow.idIniciativa == idIniciativa);
+      if(undefined != hRow){
+        let nVeces = hRow.numVeces;
+        hRow.numVeces = nVeces + 1;
+        let indics = hRow.indicadores;
+        indics.push(k)
+        hRow.indicadores = indics;
+        let indx = horaRowList.findIndex(hRow => hRow.idIniciativa == idIniciativa);
+        horaRowList[indx] = hRow;
+      }else{
+        horaRow.idIniciativa = idIniciativa;
+        let numIndic: number[] = [];
+        numIndic.push(k);
+        horaRow.numVeces = 1;
+        horaRow.indicadores = numIndic;
+        horaRowList.push(horaRow);
+      }
+    }
+    horaRowList.forEach(horaRow =>{
+      if(1 == horaRow.indicadores.length){
+        horaRow.indicadores.forEach(indic => {
+          var trObject = tblObject.rows[indic] as HTMLTableRowElement;
+          let idIniciativa = trObject.cells[0].id;
+          let codActividadStr = trObject.cells[1].id;
+          let codActividad = Number.parseInt(codActividadStr);
+          let numColumns = 6 + this.columnasFechTabla.length;
+          let horaFireList: HoraFire[] = [];
+          for(let w = 6; w < numColumns; w++){
+            let fechaStr = this.getFechWithFormat(tblObject.rows[0].cells[w].textContent);
+            let fechaDate = new Date(fechaStr);
+            let inputObject = tblObject.rows[indic].cells[w].children[0] as HTMLInputElement;
+            let horaStr = inputObject.value;
+            let horaNum = Number.parseInt(horaStr);
+            let horaFire = new HoraFire();
+            horaFire.fecha = fechaDate;
+            horaFire.horas = horaNum;
+            horaFireList.push(horaFire);
+          }
+          let iniciativaRef = this.firebaseIniciativas.getIniciativa2(idIniciativa);
+          let iniciativaFire = new IniciativaFire();
+          iniciativaRef.forEach(data => {
+            iniciativaFire = data.data() as IniciativaFire;
+            for(let j = 0; j < iniciativaFire.actividad.actividades.length; j++){
+              if(codActividad == iniciativaFire.actividad.actividades[j].codigo){
+                for(let i = 0; i < iniciativaFire.actividad.actividades[j].recursos.length; i++){
+                  if(this.usuario == iniciativaFire.actividad.actividades[j].recursos[i].codigoUsuario){
+                    if(undefined == iniciativaFire.actividad.actividades[j].recursos[i].horasReg){
+                      for(let x = 0; x < horaFireList.length; x++){
+                        horaFireList[x].fechaReg = new Date();
+                      }
+                      iniciativaFire.actividad.actividades[j].recursos[i].horasReg = horaFireList;
+                    }else{
+                      let horaList = iniciativaFire.actividad.actividades[j].recursos[i].horasReg;
+                      horaFireList.forEach(element => {
+                        let indexHora = horaList.findIndex(horaFire => {
+                          let fechaSavedStr = horaFire.fecha;
+                          let fechaSaved = (new Date(fechaSavedStr)).getTime();
+                          let fechaBuscar = element.fecha.getTime();
+                          return fechaSaved == fechaBuscar;
+                        });
+                        if(-1 == indexHora){
+                          element.fechaReg = new Date();
+                          horaList.push(element);
+                        }else{
+                          element.fechaAct = new Date();
+                          horaList[indexHora] = element;
+                        }
+                      });
+                    }
+                  }
+                }
+              }
+            }
+            this.firebaseIniciativas.updateIniciativa(iniciativaFire).then(
+              result => {
+              },error => {
+                Swal.fire('Error!', 'Error al guardar las horas de la actividad.', 'error');
+              });
+          });
+        });
+      }else{
+        let iniciativaRef = this.firebaseIniciativas.getIniciativa2(horaRow.idIniciativa);
+        let iniciativaFire = new IniciativaFire();
+        iniciativaRef.forEach(data => {
+          iniciativaFire = data.data() as IniciativaFire;
+          horaRow.indicadores.forEach(indix =>{
+            var trObject = tblObject.rows[indix] as HTMLTableRowElement;
+            let idIniciativa = trObject.cells[0].id;
+            let codActividadStr = trObject.cells[1].id;
+            let codActividad = Number.parseInt(codActividadStr);
+            let numColumns = 6 + this.columnasFechTabla.length;
+            let horaFireList: HoraFire[] = [];
+            for(let w = 6; w < numColumns; w++){
+              let fechaStr = this.getFechWithFormat(tblObject.rows[0].cells[w].textContent);
+              let fechaDate = new Date(fechaStr);
+              let inputObject = tblObject.rows[indix].cells[w].children[0] as HTMLInputElement;
+              let horaStr = inputObject.value;
+              let horaNum = Number.parseInt(horaStr);
+              let horaFire = new HoraFire();
+              horaFire.fecha = fechaDate;
+              horaFire.horas = horaNum;
+              horaFireList.push(horaFire);
+            }
+
+            for(let j = 0; j < iniciativaFire.actividad.actividades.length; j++){
+              if(codActividad == iniciativaFire.actividad.actividades[j].codigo){
+                for(let i = 0; i < iniciativaFire.actividad.actividades[j].recursos.length; i++){
+                  if(this.usuario == iniciativaFire.actividad.actividades[j].recursos[i].codigoUsuario){
+                    if(undefined == iniciativaFire.actividad.actividades[j].recursos[i].horasReg){
+                      for(let x = 0; x < horaFireList.length; x++){
+                        horaFireList[x].fechaReg = new Date();
+                      }
+                      iniciativaFire.actividad.actividades[j].recursos[i].horasReg = horaFireList;
+                    }else{
+                      let horaList = iniciativaFire.actividad.actividades[j].recursos[i].horasReg;
+                      horaFireList.forEach(element => {
+                        let indexHora = horaList.findIndex(horaFire => {
+                          let fechaSavedStr = horaFire.fecha;
+                          let fechaSaved = (new Date(fechaSavedStr)).getTime();
+                          let fechaBuscar = element.fecha.getTime();
+                          return fechaSaved == fechaBuscar;
+                        });
+                        if(-1 == indexHora){
+                          element.fechaReg = new Date();
+                          horaList.push(element);
+                        }else{
+                          element.fechaAct = new Date();
+                          horaList[indexHora] = element;
+                        }
+                      });
+                    }
+                  }
+                }
+              }
+            }
+          });
+          this.firebaseIniciativas.updateIniciativa(iniciativaFire).then(
+            result => {
+            },error => {
+              Swal.fire('Error!', 'Error al guardar las horas de la actividad.', 'error');
+            });
+        });
+      }
+      
+    });
+    try {
+      this.loading = false;
+      Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+    } catch (error) {
+      Swal.fire('Error!', 'Error al guardar las horas de la actividad.', 'error');
+    }
+
+/*
     for(let k = 1; k < tblObject.rows.length; k++){
       var trObject = tblObject.rows[k] as HTMLTableRowElement;
       let idIniciativa = trObject.cells[0].id;
@@ -288,7 +447,7 @@ export class RegistroHorasComponent implements OnInit {
       Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
     } catch (error) {
       Swal.fire('Error!', 'Error al guardar las horas de la actividad.', 'error');
-    }
+    }*/
   }
 
   daysSum(fechaI: Date, numDias: number){
