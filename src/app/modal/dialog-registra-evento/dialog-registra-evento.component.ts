@@ -207,6 +207,7 @@ export class DialogRegistraEventoComponent implements OnInit {
         actividadFire.actividades = actividadesDetFire;
         iniciativaObject = iniciativaFire;
         iniciativaObject.actividad = actividadFire;
+        iniciativaObject.idIniciativa = this.idIniciativaA;
         this.firebaseIniciativas.updateIniciativa(iniciativaObject).then(
           result => {
             this.loading = false;
@@ -221,6 +222,7 @@ export class DialogRegistraEventoComponent implements OnInit {
       }else{
         if(undefined == this.actividadDet.codigo){
           iniciativaObject = iniciativaFire;
+          iniciativaObject.idIniciativa = this.idIniciativaA;
           let newCodigo = iniciativaObject.actividad.correlativo + 1;
           let actividadDetList = iniciativaObject.actividad.actividades;
           actividadDetalleObject.codigo = newCodigo;

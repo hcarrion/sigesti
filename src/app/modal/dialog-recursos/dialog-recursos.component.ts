@@ -147,12 +147,15 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
         Swal.fire('Advertencia!', 'Los porcentajes asignados deben sumar 100%.', 'warning');
       }else{
         this.iniciativa.recursos = colabDetFireList;
+        this.iniciativa.idIniciativa = this.idIniciativaR;
         this.firebaseIniciativas.updateIniciativa(this.iniciativa).then(
           result => {
             this.loading = false;
             Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
             this.close();
-          },error => {Swal.fire('Error!', 'Error al guardar los recursos.', 'error');});
+          },error => {
+            this.loading = false;
+            Swal.fire('Error!', 'Error al guardar los recursos.', 'error');});
       }
     }else{
       this.loading = false;
