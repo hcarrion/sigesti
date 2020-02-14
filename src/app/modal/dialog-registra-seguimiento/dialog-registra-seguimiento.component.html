@@ -87,7 +87,8 @@
                 <div class="col-md-3">
                     <mat-form-field hintLabel="Max 120 caracteres" style="font-size: small;">
                         <input formControlName="sumillaInput" matInput #inputSumilla maxlength="120"
-                            placeholder="Ingrese una Sumilla" id="sumilla" oninput="this.value = this.value.toUpperCase()">
+                            placeholder="Ingrese una Sumilla" id="sumilla"
+                            oninput="this.value = this.value.toUpperCase()">
                         <mat-hint align="end">{{inputSumilla.value?.length || 0}}/120</mat-hint>
                     </mat-form-field>
                 </div>
@@ -97,7 +98,8 @@
                 <div class="col-md-3">
                     <mat-form-field>
                         <mat-select formControlName="usuarioProcesosSelect" placeholder="Selecciona usuario de procesos"
-                            [compareWith]="compareItems" [(ngModel)]="iniciativa.usuarioProcesos" style="font-size: small;">
+                            [compareWith]="compareItems" [(ngModel)]="iniciativa.usuarioProcesos"
+                            style="font-size: small;">
                             <mat-option *ngFor="let colaboradorlet of colaboradores.colaboradores"
                                 [value]="colaboradorlet">
                                 {{colaboradorlet.nombres}}
@@ -117,7 +119,8 @@
                     <mat-form-field style="font-size: small;">
                         <mat-label>Objetivo principal</mat-label>
                         <textarea formControlName="objPrincipalTextArea" matInput cdkTextareaAutosize
-                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" oninput="this.value = this.value.toUpperCase()"></textarea>
+                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                            oninput="this.value = this.value.toUpperCase()"></textarea>
                     </mat-form-field>
 
                 </div>
@@ -130,7 +133,8 @@
                     <mat-form-field style="font-size: small;">
                         <mat-label>Objetivo secundario</mat-label>
                         <textarea formControlName="objSecundarioTextArea" matInput cdkTextareaAutosize
-                            #autosize2="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" oninput="this.value = this.value.toUpperCase()"></textarea>
+                            #autosize2="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                            oninput="this.value = this.value.toUpperCase()"></textarea>
                     </mat-form-field>
                 </div>
             </div>
@@ -276,8 +280,7 @@
                 </div>
                 <div class="col-md-3">
                     <mat-form-field style="font-size: small;">
-                        <input [formControl]="telefonoContactoInput" matInput #inputHoras
-                            type="number">
+                        <input [formControl]="telefonoContactoInput" matInput #inputHoras type="number">
                     </mat-form-field>
                 </div>
             </div>
@@ -289,8 +292,7 @@
                 </div>
                 <div class="col-md-3">
                     <mat-form-field style="font-size: small;">
-                        <input [formControl]="correoContactoInput" matInput #inputHoras
-                            type="email">
+                        <input [formControl]="correoContactoInput" matInput #inputHoras type="email">
                     </mat-form-field>
                 </div>
                 <div class="col-md-2">
@@ -298,8 +300,7 @@
                 </div>
                 <div class="col-md-3">
                     <mat-form-field style="font-size: small;">
-                        <input [formControl]="anexoContactoInput" matInput #inputHoras
-                            type="number">
+                        <input [formControl]="anexoContactoInput" matInput #inputHoras type="number">
                     </mat-form-field>
                 </div>
             </div>

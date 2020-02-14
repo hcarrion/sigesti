@@ -178,7 +178,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   resetFields() {
     this.submitted = false;
     this.regIniciativa.controls.codigoSVTInput.reset();
-    this.regIniciativa.controls.estadoSelect.setValue("");
+    if("" != this.idIniciativa)this.regIniciativa.controls.estadoSelect.setValue("");
     this.regIniciativa.controls.tituloInput.reset();
     this.regIniciativa.controls.jefeProyectoSelect.setValue("");
     this.regIniciativa.controls.sumillaInput.reset();

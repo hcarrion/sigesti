@@ -18,6 +18,7 @@ import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fi
 import { ActividadFire } from 'src/app/shared/models/actividad-fire';
 import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-fire';
 import { DatePipe } from '@angular/common';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-dialog-registra-evento',
@@ -34,8 +35,10 @@ export class DialogRegistraEventoComponent implements OnInit {
   tipo: ParametroFire = new ParametroFire();
 
   iniciativaDet: IniciativaDetalleFire = new IniciativaDetalleFire();
+  actividadDetA: ActividadDetalleFire = new ActividadDetalleFire();
   actividadDet: ActividadDetalleFire = new ActividadDetalleFire();
   iniciativa: IniciativaFire = new IniciativaFire();
+  idIniciativaA: string;
   loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRegistraEventoComponent>, 
     private _ngZone: NgZone, private firestoreService: FirestoreService, 
@@ -45,8 +48,8 @@ export class DialogRegistraEventoComponent implements OnInit {
     private firebaseIniciativas: FirebaseIniciativaService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.iniciativaDet = data;
-      this.iniciativa = this.iniciativaDet.iniciativa;
-      this.actividadDet = this.iniciativaDet.actividadDetalle;
+      this.idIniciativaA = this.iniciativaDet.idIniciativa;
+      this.actividadDetA = this.iniciativaDet.actividadDetalle;
       this.regEvento = new FormGroup({
         codigoActividadInput: new FormControl(),
         estadoActividadSelect: new FormControl(),
@@ -74,6 +77,7 @@ export class DialogRegistraEventoComponent implements OnInit {
 
   async callParametros() {
     this.loading = true;
+    this.regEvento.controls.codigoActividadInput.disable();
     let parametrosRef = this.firebaseParametros.getParametros();
       
     parametrosRef.subscribe(data => {data.forEach(paramObj => {
@@ -82,8 +86,27 @@ export class DialogRegistraEventoComponent implements OnInit {
           if("tipo-actividad" == paramObject.nombre) this.tipo = paramObject;
           if("estado" == paramObject.nombre) this.estado = paramObject;
         });
-        this.loadData(this.actividadDet);
-        this.loading = false;
+        
+        if("" != this.idIniciativaA){
+          let iniciativaRef = this.firebaseIniciativas.getIniciativa2(this.idIniciativaA);
+          iniciativaRef.forEach(data => {
+            this.iniciativa = data.data() as IniciativaFire;
+            if(undefined != this.actividadDetA.codigo){
+              this.iniciativa.actividad.actividades.forEach(element =>{
+                if(this.actividadDetA.codigo == element.codigo){
+                  this.actividadDet = element as ActividadDetalleFire;
+                }
+              });
+            }else{
+              this.actividadDet = this.actividadDetA;
+            }
+            this.loadData(this.actividadDet);
+            this.loading = false;
+          });
+        }else{
+          this.loadData(this.actividadDet);
+          this.loading = false;
+        }
       });
   }
 
@@ -98,6 +121,13 @@ export class DialogRegistraEventoComponent implements OnInit {
       if(undefined != actividadDetalle.subtipo || null != actividadDetalle.subtipo){
         this.loadSubTipo(actividadDetalle.tipo, false);
       }
+    }else{
+      this.estado.detalle.forEach(element =>{
+        if("PENDIENTE" == element.descripcion){
+          actividadDetalle.estado = element;
+        }
+      });
+      this.regEvento.controls.estadoActividadSelect.disable();
     }
   }
 
@@ -119,7 +149,15 @@ export class DialogRegistraEventoComponent implements OnInit {
 
   resetFields() {
     this.submitted = false;
-    this.regEvento.reset();
+    if(undefined != this.actividadDet.codigo) this.regEvento.controls.estadoActividadSelect.reset();
+    this.regEvento.controls.tipoActividadSelect.reset();
+    this.regEvento.controls.subtipoActividadSelect.reset();
+    this.regEvento.controls.tituloActividadInput.reset();
+    this.regEvento.controls.descripcionActividadTextArea.reset();
+    this.regEvento.controls.fechaInicioActividadInput.reset();
+    this.regEvento.controls.horasAsigActividadInput.reset();
+    this.regEvento.controls.fechaFinActividadInput.reset();
+    /*this.regEvento.reset();*/
   }
 
   saveActividad(iniciativaFire: IniciativaFire){
@@ -129,7 +167,7 @@ export class DialogRegistraEventoComponent implements OnInit {
     let resultValidate = false;
     let iniciativaObject = new IniciativaFire();
     let actividadDetalleObject = new ActividadDetalleFire();
-    actividadDetalleObject.estado = this.regEvento.value.estadoActividadSelect as ParametroDetalleFire;
+    actividadDetalleObject.estado = this.regEvento.controls.estadoActividadSelect.value as ParametroDetalleFire;
     actividadDetalleObject.tipo = this.regEvento.value.tipoActividadSelect as ParametroDetalleFire;
     actividadDetalleObject.subtipo = this.regEvento.value.subtipoActividadSelect as ParametroDetalleFire;
     actividadDetalleObject.titulo = this.regEvento.value.tituloActividadInput;
@@ -242,16 +280,16 @@ export class DialogRegistraEventoComponent implements OnInit {
 
   focusOut(event: any){
     let trObject = (document.getElementById("horas")) as HTMLInputElement;
+    let fechaInicioAct = this.regEvento.value.fechaInicioActividadInput;
     let numHoras = trObject.value;
-    if("" != numHoras){
-      let numDias = (Number.parseInt(numHoras))/8;
+    if("" != numHoras && null != fechaInicioAct){
+      let numDias = ((Number.parseInt(numHoras))-8)/8;
       let numDiasFixed = Number.parseInt(numDias.toFixed());
       if(numDias > numDiasFixed){
         numDias = numDiasFixed + 1;
       }else if(numDias < numDiasFixed){
         numDias = numDiasFixed;
       }
-      debugger;
       let numeroDias = numDias;
       let fechaInicio = this.regEvento.value.fechaInicioActividadInput;
       let fechaFin = this.daysSum(fechaInicio, numeroDias);
@@ -280,6 +318,12 @@ export class DialogRegistraEventoComponent implements OnInit {
       return true;
     }
   }
+
+
+
+
+
+
 
 
 

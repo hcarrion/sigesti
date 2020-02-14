@@ -31,11 +31,14 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
   protected _onDestroy = new Subject<void>();
 
   colaboradorDetFireList: ColaboradorDetalleFire[] = [];
+  recursosIniciativaFireListR: ColaboradorDetalleFire[] = [];
   recursosIniciativaFireList: ColaboradorDetalleFire[] = [];
 
   iniciativaDet: IniciativaDetalleFire = new IniciativaDetalleFire();
+  actividadDetR: ActividadDetalleFire = new ActividadDetalleFire();
   actividadDet: ActividadDetalleFire = new ActividadDetalleFire();
   iniciativa: IniciativaFire = new IniciativaFire();
+  idIniciativaR: string;
   recursosColabDetFireList: ColaboradorDetalleFire[] = [];
   loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRegistraRecursoEventoComponent>, 
@@ -43,9 +46,9 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private firebaseIniciativas: FirebaseIniciativaService) {
       this.iniciativaDet = data;
-      this.iniciativa = this.iniciativaDet.iniciativa;
-      this.actividadDet = this.iniciativaDet.actividadDetalle;
-      this.recursosIniciativaFireList = this.iniciativa.recursos;
+      this.idIniciativaR = this.iniciativaDet.idIniciativa;
+      this.actividadDetR = this.iniciativaDet.actividadDetalle;
+      this.recursosIniciativaFireListR = this.iniciativa.recursos;
       this.regRecursosAct = new FormGroup({
         nIniciativaInputDialogResource: new FormControl(),
         tituloIniciativaInputDialogResource: new FormControl(),
