@@ -13,7 +13,7 @@ import { IniciativaFire } from '../../shared/models/iniciativa-fire';
 import { FirebaseIniciativaService } from '../../shared/services/firebase-iniciativa.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import {MAT_DATE_LOCALE} from '@angular/material';
+import {MAT_DATE_LOCALE, MatDatepickerInputEvent} from '@angular/material';
 import { ContactoFire } from 'src/app/shared/models/contacto-fire';
 import { FirebaseContactoService } from 'src/app/shared/services/firebase-contacto.service';
 
@@ -42,6 +42,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   telefonoContactoInput = new FormControl();
   correoContactoInput = new FormControl();
   anexoContactoInput = new FormControl();
+  minDate: Date;
   /*panelColor = new FormControl('1');*/
   loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRegistraSeguimientoComponent>, 
@@ -53,6 +54,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     private firebaseContactos: FirebaseContactoService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.idIniciativa = data;
+      this.minDate = new Date();
       this.regIniciativa = new FormGroup({
         estadoSelect: new FormControl(),
         tipoSelect: new FormControl(),
@@ -202,6 +204,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
 
   saveIniciativa(iniciativaFire: IniciativaFire){
     this.loading = true;
+    let msj = "";
     let resultValidate = false;
     let iniciativaObject = iniciativaFire;
     
@@ -247,9 +250,15 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       resultValidate = true;
     }
 
+    if(0 == iniciativaObject.horaEstimada){
+      resultValidate = true;
+      msj ='Valor inválido en campo "Estimado(Horas)"';
+    }
+
     if(resultValidate){
       this.loading = false;
-      Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
+      msj = 'Debe completar la información requerida.';
+      Swal.fire('Advertencia!', msj, 'warning');
     }else{
       if("" == this.idIniciativa){
         this.firebaseIniciativas.createIniciativa(iniciativaObject).then(
@@ -299,17 +308,22 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     let trObject = (document.getElementById("horas-est")) as HTMLInputElement;
     let fechaInicio = this.regIniciativa.value.fechaInicioInput;
     let numHoras = trObject.value;
-    if("" != numHoras && null != fechaInicio){
-      let numDias = ((Number.parseInt(numHoras))-8)/8;
-      let numDiasFixed = Number.parseInt(numDias.toFixed());
-      if(numDias > numDiasFixed){
-        numDias = numDiasFixed + 1;
-      }else if(numDias < numDiasFixed){
-        numDias = numDiasFixed;
+    if("" != numHoras && "0" != numHoras && null != fechaInicio){
+      if(8 < (Number.parseInt(numHoras))){
+        let numDias = ((Number.parseInt(numHoras))-8)/8;
+        let numDiasFixed = Number.parseInt(numDias.toFixed());
+        if(numDias > numDiasFixed){
+          numDias = numDiasFixed + 1;
+        }else if(numDias < numDiasFixed){
+          numDias = numDiasFixed;
+        }
+        let numeroDias = numDias;
+        let fechaFin = this.daysSum(fechaInicio, numeroDias);
+        this.regIniciativa.controls.fechaFinInput.setValue(fechaFin);
+      }else{
+        let fechaFin = fechaInicio;
+        this.regIniciativa.controls.fechaFinInput.setValue(fechaFin);
       }
-      let numeroDias = numDias;
-      let fechaFin = this.daysSum(fechaInicio, numeroDias);
-      this.regIniciativa.controls.fechaFinInput.setValue(fechaFin);
     }
   }
 
@@ -334,6 +348,29 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       return true;
     }
   }
+
+  changeFech(type: string, event: MatDatepickerInputEvent<Date>) {
+    debugger;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -147,7 +147,7 @@
                 <div class="col-md-3">
                     <mat-form-field style="font-size: small;">
                         <input formControlName="fechaInicioInput" matInput [matDatepicker]="picker2"
-                            placeholder="Selecciona fecha">
+                            placeholder="Selecciona fecha" (min) = "minDate" (dateInput)="changeFech('input', $event)" (dateChange)="changeFech('change', $event)">
                         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                         <mat-datepicker #picker2></mat-datepicker>
                     </mat-form-field>
@@ -160,7 +160,7 @@
                 <div class="col-md-3">
                     <mat-form-field hintLabel="Max 4 dígitos">
                         <input formControlName="horaEstimadaInput" matInput #inputHoras placeholder="Estimado en horas"
-                            type="number" (focusout)="focusOut($event)" id="horas-est" oninput="this.value = Math.trunc(this.value)">
+                            type="number" min="1" max="9999" onPaste="return false" onKeyPress="if(this.value.length==4) return false;" (focusout)="focusOut($event)" id="horas-est" oninput="this.value = Math.trunc(this.value)">
                     </mat-form-field>
                 </div>
             </div>
