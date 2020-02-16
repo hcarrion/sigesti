@@ -9,11 +9,6 @@ import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/util/date.adapter';
 import { HoraFire } from '../shared/models/hora-fire';
 import Swal from 'sweetalert2';
 import { HoraRow } from '../shared/models/hora-row';
-import { ColaboradorDetalleFire } from '../shared/models/colaborador-detalle-fire';
-import { ReplaySubject, Subject } from 'rxjs';
-import { FirebaseColaboradorService } from '../shared/services/firebase-colaborador.service';
-import { ColaboradorFire } from 'src/app/shared/models/colaborador-fire';
-import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-registro-horas',
@@ -30,29 +25,15 @@ export class RegistroHorasComponent implements OnInit {
   habilitar1: boolean;
   habilitar2: boolean;
   habilitar3: boolean;
-  idIniciativaR: string;
-  iniciativa: IniciativaFire = new IniciativaFire();
-  protected _onDestroy = new Subject<void>();
-  
-  colaboradores: ColaboradorFire = new ColaboradorFire();
-
-  usuario: string =  'THALG001';
+  public usuario = "";
   listaAct: ActividadHorasFire[] = [];
   regHoras: FormGroup;
   columnasTabla: string[] = ['codigosvt', 'titulo', 'fechainicio', 'fechafin', 'avance', 'prioridad'];
   columnasFechTabla: string[] = ['06/02/20', '07/02/20', '08/02/20'];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   proyectoIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
-
-  public colaboradorCtrl: FormControl = new FormControl();
-  public colaboradorFilterCtrl: FormControl = new FormControl();
-  public filteredColaboradores: ReplaySubject<ColaboradorDetalleFire[]> = new ReplaySubject<ColaboradorDetalleFire[]>(1);
-  
-  colaboradorDetFireList: ColaboradorDetalleFire[] = [];
   loading: boolean;
-
   constructor(private firebaseIniciativas: FirebaseIniciativaService,
-    private firebaseColaboradores: FirebaseColaboradorService,
     public datePipe: DatePipe) {
       this.regHoras = new FormGroup({
         estadoHorasSelect: new FormControl()
@@ -64,93 +45,32 @@ export class RegistroHorasComponent implements OnInit {
     this.loading = true;
     this.loadColumns();
     this.getProyectoIniciativas();
-    this.callColaboradores();
+    
   }
 
-  callColaboradores() {
-    this.loading = true;
-    let colaboradoresRef = this.firebaseColaboradores.getColaboradores();
-
-    colaboradoresRef.subscribe(data => {data.forEach(colabObj => {
-        let colabObject= colabObj.payload.doc.data() as ColaboradorFire;
-        this.colaboradores =  colabObject;
-
-        if("" != this.idIniciativaR){
-          let iniciativaRef = this.firebaseIniciativas.getIniciativa2(this.idIniciativaR);
-          iniciativaRef.forEach(data => {
-            this.iniciativa = data.data() as IniciativaFire;
-            this.loadData();
-            this.activeSelect(this.colaboradores.colaboradores);
-            this.loading = false;
-          });
-        }else{
-          this.loadData();
-          this.loading = false;
-        }
-      });
-    });
-  }
-
-  activeSelect(colaboradorDetList: ColaboradorDetalleFire[]){
-    this.colaboradorCtrl.setValue(colaboradorDetList);
-    this.filteredColaboradores.next(colaboradorDetList.slice());
-    this.colaboradorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterBanks();
-      });
-  }
-
-  loadData(){
-    this.regHoras.controls.tituloInputDialog.setValue(this.iniciativa.titulo);
-    this.regHoras.controls.nIniciativaInputDialog.setValue(this.iniciativa.numeroIniciativa);
-    this.colaboradorDetFireList = this.iniciativa.recursos;
-  }
   InActiva() {
+  
    if (this.habilitar){this.habilitar = false;
    }else {this.habilitar = true;}
   }
-
-  protected filterBanks() {
-    if (!this.colaboradores.colaboradores) {
-      return;
-    }
-    let search = this.colaboradorFilterCtrl.value;
-    if (!search) {
-      this.filteredColaboradores.next(this.colaboradores.colaboradores.slice());
-      this.agregarTablaRecursos(this.colaboradorCtrl.value);
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    this.filteredColaboradores.next(
-      this.colaboradores.colaboradores.filter(colaborador => colaborador.nombres.toLowerCase().indexOf(search) > -1)
-    );
-  }
-
-  agregarTablaRecursos(colaboradorDetFire: ColaboradorDetalleFire){
-    if(undefined == this.colaboradorDetFireList){
-      this.colaboradorDetFireList = [];
-      this.colaboradorDetFireList.push(colaboradorDetFire);
-    }else{
-      let isExists = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario == colaboradorDetFire.codigoUsuario).length > 0;
-      if(!isExists){
-        this.colaboradorDetFireList.push(colaboradorDetFire);
-      }   
-    }
+ 
+  public onChange(valor){
+    this.usuario = (event.target as HTMLInputElement).value;
+    this.getProyectoIniciativas();
   }
 
   InActiva1() {
+ 
     if (this.habilitar1){this.habilitar1 = false;
     }else {this.habilitar1 = true;}
    }
-
    InActiva2() {
+ 
     if (this.habilitar2){this.habilitar2 = false;
     }else {this.habilitar2 = true;}
    }
-
    InActiva3() {
+ 
     if (this.habilitar3){this.habilitar3 = false;
     }else {this.habilitar3 = true;}
    }
@@ -231,7 +151,7 @@ export class RegistroHorasComponent implements OnInit {
    }
    
    async getProyectoIniciativas() {
-    let iniciativasRef = this.firebaseIniciativas.getPlanesIniciativaFiltro("categoria.descripcion","Proyecto");
+    let iniciativasRef = this.firebaseIniciativas.getPlanesIniciativaFiltro("categoria.descripcion","PROYECTO");
     iniciativasRef.subscribe(data => {
       var lista = [];
       data.forEach(dataElement => {
