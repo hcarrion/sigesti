@@ -27,16 +27,25 @@ export class RegistroHorasComponent implements OnInit {
   habilitar3: boolean;
   public usuario = "";
   listaAct: ActividadHorasFire[] = [];
+  listaMantenimientoAct: ActividadHorasFire[] = [];
+  listaSoporteAct: ActividadHorasFire[] = [];
+  listaIncidenciaAct: ActividadHorasFire[] = [];
   regHoras: FormGroup;
   columnasTabla: string[] = ['codigosvt', 'titulo', 'fechainicio', 'fechafin', 'avance', 'prioridad'];
   columnasFechTabla: string[] = ['06/02/20', '07/02/20', '08/02/20'];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   proyectoIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
+  mantenimientoIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
+  soporteIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
+  incidenciaIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
   loading: boolean;
   constructor(private firebaseIniciativas: FirebaseIniciativaService,
     public datePipe: DatePipe) {
       this.regHoras = new FormGroup({
-        estadoHorasSelect: new FormControl()
+        estadoHorasSelect: new FormControl(),
+        estadoHorasMantSelect: new FormControl(),
+        estadoHorasSoporteSelect: new FormControl(),
+        estadoHorasIncidenciaSelect: new FormControl()
       });
     }
 
@@ -45,7 +54,9 @@ export class RegistroHorasComponent implements OnInit {
     this.loading = true;
     this.loadColumns();
     this.getProyectoIniciativas();
-    
+    this.getMantenimientoIniciativas();
+    this.getSoporteIniciativas();
+    this.getIncidenciaIniciativas();
   }
 
   InActiva() {
@@ -57,6 +68,9 @@ export class RegistroHorasComponent implements OnInit {
   public onChange(valor){
     this.usuario = (event.target as HTMLInputElement).value;
     this.getProyectoIniciativas();
+    this.getMantenimientoIniciativas();
+    this.getSoporteIniciativas();
+    this.getIncidenciaIniciativas();
   }
 
   InActiva1() {
@@ -125,7 +139,7 @@ export class RegistroHorasComponent implements OnInit {
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
-     }else if(5 == dateToday.getDay()){
+     }else if(0 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt4 = this.daysSubtraction(dateToday, 4);
       let fechaAnt4Str =this.datePipe.transform(fechaAnt4, 'dd/MM/yy');
@@ -163,6 +177,60 @@ export class RegistroHorasComponent implements OnInit {
       this.listaAct = this.getActividades(lista, this.usuario);
       this.proyectoIniciativas =  new MatTableDataSource(this.listaAct);
       this.proyectoIniciativas.paginator = this.paginator;
+      this.getFechaHoy(this.columnasTabla);
+      this.loading = false;
+    });
+  }
+
+  async getMantenimientoIniciativas() {
+    let iniciativasRef = this.firebaseIniciativas.getPlanesIniciativaFiltro("categoria.descripcion","MANTENIMIENTO");
+    iniciativasRef.subscribe(data => {
+      var lista = [];
+      data.forEach(dataElement => {
+        let iniciativaObject= dataElement.payload.doc.data() as IniciativaFire;
+        let idIniciativa = dataElement.payload.doc.id;
+        iniciativaObject.idIniciativa = idIniciativa;
+        lista.push(iniciativaObject);
+      });
+      this.listaMantenimientoAct = this.getActividades(lista, this.usuario);
+      this.mantenimientoIniciativas =  new MatTableDataSource(this.listaMantenimientoAct);
+      this.mantenimientoIniciativas.paginator = this.paginator;
+      this.getFechaHoy(this.columnasTabla);
+      this.loading = false;
+    });
+  }
+
+  async getSoporteIniciativas() {
+    let iniciativasRef = this.firebaseIniciativas.getPlanesIniciativaFiltro("categoria.descripcion","SOPORTE");
+    iniciativasRef.subscribe(data => {
+      var lista = [];
+      data.forEach(dataElement => {
+        let iniciativaObject= dataElement.payload.doc.data() as IniciativaFire;
+        let idIniciativa = dataElement.payload.doc.id;
+        iniciativaObject.idIniciativa = idIniciativa;
+        lista.push(iniciativaObject);
+      });
+      this.listaSoporteAct = this.getActividades(lista, this.usuario);
+      this.soporteIniciativas =  new MatTableDataSource(this.listaSoporteAct);
+      this.soporteIniciativas.paginator = this.paginator;
+      this.getFechaHoy(this.columnasTabla);
+      this.loading = false;
+    });
+  }
+
+  async getIncidenciaIniciativas() {
+    let iniciativasRef = this.firebaseIniciativas.getPlanesIniciativaFiltro("categoria.descripcion","INCIDENCIA");
+    iniciativasRef.subscribe(data => {
+      var lista = [];
+      data.forEach(dataElement => {
+        let iniciativaObject= dataElement.payload.doc.data() as IniciativaFire;
+        let idIniciativa = dataElement.payload.doc.id;
+        iniciativaObject.idIniciativa = idIniciativa;
+        lista.push(iniciativaObject);
+      });
+      this.listaIncidenciaAct = this.getActividades(lista, this.usuario);
+      this.incidenciaIniciativas =  new MatTableDataSource(this.listaIncidenciaAct);
+      this.incidenciaIniciativas.paginator = this.paginator;
       this.getFechaHoy(this.columnasTabla);
       this.loading = false;
     });

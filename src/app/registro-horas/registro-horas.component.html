@@ -5,629 +5,295 @@
   <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
 </div>
 <div class="row" [formGroup]="regHoras">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h5 class="card-title"><p style="vertical-align: middle; color:#3F52B6">
-                    <i class="material-icons" style="vertical-align: middle; ">schedule</i> Planifica tus Actividades Diarias </h5>
-
-                    <mat-form-field class="example-full-width">
-                      <mat-label>Ingrese usuario</mat-label>
-                      <input name="usuario" matInput placeholder="Ingreso de usuario" value="" (change)="onChange($event)" oninput="this.value = this.value.toUpperCase()">
-                    </mat-form-field>
-
-                  </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <p style="text-align: left; color:#AA004F">
-                            <strong><i class="material-icons" style="vertical-align: middle; " (click)="InActiva()">library_add</i> Proyectos</strong>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-2">
-                    <mat-form-field>
-                      <mat-select formControlName="estadoHorasSelect" placeholder="Selecciona estado" style="font-size: small;"> 
-                        <mat-option [value]="2">Asignado</mat-option>
-                        <mat-option [value]="3">Terminado</mat-option>
-                        <mat-option [value]="4">Suspendido</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-sm-8"></div>
-                  <div class="col-sm-2 align-right">
-                    <button mat-raised-button type="button" class="btn-primary" (click)='saveHoras("tableHoras", true)'><mat-icon>save</mat-icon> Guardar</button>
-                  </div>
-                </div>
-                <div class="pipeline-body">
-                  <table mat-table [dataSource]="proyectoIniciativas" matSort id="tableHoras">
-                    <ng-container matColumnDef="codigosvt">
-                      <th mat-header-cell *matHeaderCellDef> COD.SVT/TICKET </th>
-                      <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}} </td>
-                    </ng-container>
-                  <!-- Name Column -->
-                    <ng-container matColumnDef="titulo">
-                      <th mat-header-cell *matHeaderCellDef> TITULO </th>
-                      <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="fechainicio">
-                      <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
-                      <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="fechafin">
-                      <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
-                      <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="avance">
-                      <th mat-header-cell *matHeaderCellDef> AVANCE </th>
-                      <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
-                    </ng-container>
-                    <ng-container matColumnDef="prioridad">
-                      <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
-                      <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-                      <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
-                      <ng-container>
-                        <td mat-cell *matCellDef="let element"><input #inputHoras type="number" 
-                          step="1" min="1" max="8" onPaste="return false"
-                          onKeyPress="if(this.value.length==1) return false;" oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}" style="text-align: center; width: 50px;" > </td>
-                      </ng-container>
-                    </ng-container>
-                    
-                    <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-                    <tr mat-row  *matRowDef="let row; columns: columnasTabla;" ></tr>
-                  </table>
-                  <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>       
-                </div>
-
-                   
-                <div class="row">
-                  <div class="col-sm-12">
-                      <p style="text-align: left; color:#AA004F">
-                          <strong><i class="material-icons" style="vertical-align: middle; " (click)="InActiva1()">library_add</i> Mantenimientos</strong>
-                      </p>
-                  </div>
-                </div>
-                <div class="table-responsive-md;" *ngIf="habilitar1" [style.overflow]="'auto'" [style.height.px]="'300'">
-                  <table id="tblproyectos" name="tblproyectos" class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
-                      <thead > 
-                          <tr>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Codigo </th>
-                              <th class="table-dark" width="200px" style="background-color: #4598D8; white-space: normal;"> Título </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Inicio </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Fin </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Avance </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Prioridad </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 13.01.20 </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 14.01.20 </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 15.01.20 </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 16.01.20 </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 17.01.20 </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 18.01.20 </th>
-                              <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 19.01.20 </th>                              
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr>
-                            <th width="7%" scope="row">RQ0001</th>
-                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                            <td width="8%" style="white-space: normal;">01/03/2019</td>
-                            <td width="8%" style="white-space: normal;">31/10/2019</td>
-                            <td width="7%" style="white-space: normal; text-align: right;">100% <img class="logo" src="../../assets/images/circuloverde.png" alt="" width="10"></td>
-                            <td width="7%" style="white-space: normal;">Bajo</td>
-                            <td width="7%" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                                
-                          </tr>
-                          <tr>
-                            <th width="7%" scope="row">RQ0002</th>
-                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                            <td width="8%" style="white-space: normal;">01/03/2019</td>
-                            <td width="8%" style="white-space: normal;">31/10/2019</td>
-                            <td width="7%" style="white-space: normal; text-align: right;">26% <img class="logo" src="../../assets/images/circulorojo.png" alt="" width="10"></td>
-                            <td width="7%" style="white-space: normal;">Bajo</td>
-                            <td width="7%" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                                
-                          </tr>
-                          <tr>
-                            <th width="7%" scope="row">RQ0003</th>
-                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                            <td width="8%" style="white-space: normal;">01/03/2019</td>
-                            <td width="8%" style="white-space: normal;">31/10/2019</td>                            
-                            <td width="7%" style="white-space: normal; text-align: right;">42% <img class="logo" src="../../assets/images/circuloamarillo.png" alt="" width="10"></td>
-                            <td width="7%" style="white-space: normal;">Bajo</td>
-                            <td width="7%" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                                
-                          </tr>
-                          <tr>
-                            <th width="7%" scope="row">RQ0004</th>
-                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                            <td width="8%" style="white-space: normal;">01/03/2019</td>
-                            <td width="8%" style="white-space: normal;">31/10/2019</td>
-                            <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                            <td width="7%" style="white-space: normal;">Bajo</td>
-                            <td width="7%" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                                
-                          </tr>
-                          <tr>
-                            <th width="7%" scope="row">RQ0005</th>
-                            <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                            <td width="8%" style="white-space: normal;">01/03/2019</td>
-                            <td width="8%" style="white-space: normal;">31/10/2019</td>
-                            <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                            <td width="7%" style="white-space: normal;">Bajo</td>
-                            <td width="7%" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                            <td width="100px" style="white-space: normal;">
-                              <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                            </td>
-                                
-                          </tr>
-                      </tbody>
-                  </table>
-             
-                   
-                </div>   
-                <div class="row">
-                  <div class="col-sm-12">
-                      <p style="text-align: left; color:#AA004F">
-                          <strong><i class="material-icons" style="vertical-align: middle; " (click)="InActiva2()">library_add</i> Mejoras Continuas</strong>
-                      </p>
-                  </div>
-              </div>
-              <div class="table-responsive-md;" *ngIf="habilitar2" [style.overflow]="'auto'" [style.height.px]="'300'">
-                <table id="tblproyectos" name="tblproyectos" class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
-                    <thead > 
-                        <tr>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Codigo </th>
-                            <th class="table-dark" width="200px" style="background-color: #4598D8; white-space: normal;"> Título </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Inicio </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Fin </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Avance </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Prioridad </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 13.01.20 </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 14.01.20 </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 15.01.20 </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 16.01.20 </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 17.01.20 </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 18.01.20 </th>
-                            <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 19.01.20 </th>                              
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                          <th width="7%" scope="row">RQ0001</th>
-                          <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                          <td width="8%" style="white-space: normal;">01/03/2019</td>
-                          <td width="8%" style="white-space: normal;">31/10/2019</td>
-                          <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                          <td width="7%" style="white-space: normal;">Bajo</td>
-                          <td width="7%" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                              
-                        </tr>
-                        <tr>
-                          <th width="7%" scope="row">RQ0002</th>
-                          <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                          <td width="8%" style="white-space: normal;">01/03/2019</td>
-                          <td width="8%" style="white-space: normal;">31/10/2019</td>
-                          <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                          <td width="7%" style="white-space: normal;">Bajo</td>
-                          <td width="7%" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                              
-                        </tr>
-                        <tr>
-                          <th width="7%" scope="row">RQ0003</th>
-                          <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                          <td width="8%" style="white-space: normal;">01/03/2019</td>
-                          <td width="8%" style="white-space: normal;">31/10/2019</td>
-                          <td width="7%" style="white-space: normal; text-align: center;">42%</td>
-                          <td width="7%" style="white-space: normal;">Bajo</td>
-                          <td width="7%" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                              
-                        </tr>
-                        <tr>
-                          <th width="7%" scope="row">RQ0004</th>
-                          <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                          <td width="8%" style="white-space: normal;">01/03/2019</td>
-                          <td width="8%" style="white-space: normal;">31/10/2019</td>
-                          <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                          <td width="7%" style="white-space: normal;">Bajo</td>
-                          <td width="7%" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                              
-                        </tr>
-                        <tr>
-                          <th width="7%" scope="row">RQ0005</th>
-                          <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                          <td width="8%" style="white-space: normal;">01/03/2019</td>
-                          <td width="8%" style="white-space: normal;">31/10/2019</td>
-                          <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                          <td width="7%" style="white-space: normal;">Bajo</td>
-                          <td width="7%" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                          <td width="100px" style="white-space: normal;">
-                            <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                          </td>
-                              
-                        </tr>
-                    </tbody>
-                </table>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
-                    <p style="text-align: left; color:#AA004F">
-                        <strong><i class="material-icons" style="vertical-align: middle; " (click)="InActiva3()">library_add</i> Incidencias </strong>
-                    </p>
-                </div>
-            </div>
-            <div class="table-responsive-md;" *ngIf="habilitar3" [style.overflow]="'auto'" [style.height.px]="'300'">
-              <table id="tblproyectos" name="tblproyectos" class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
-                  <thead > 
-                      <tr>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Codigo </th>
-                          <th class="table-dark" width="200px" style="background-color: #4598D8; white-space: normal;"> Título </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Inicio </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> F.Fin </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Avance </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> Prioridad </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 13.01.20 </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 14.01.20 </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 15.01.20 </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 16.01.20 </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 17.01.20 </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 18.01.20 </th>
-                          <th class="table-dark" width="100px" style="background-color: #4598D8; white-space: normal;"> 19.01.20 </th>                              
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr>
-                        <th width="7%" scope="row">RQ0001</th>
-                        <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                        <td width="8%" style="white-space: normal;">01/03/2019</td>
-                        <td width="8%" style="white-space: normal;">31/10/2019</td>
-                        <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                        <td width="7%" style="white-space: normal;">Bajo</td>
-                        <td width="7%" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                            
-                      </tr>
-                      <tr>
-                        <th width="7%" scope="row">RQ0002</th>
-                        <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                        <td width="8%" style="white-space: normal;">01/03/2019</td>
-                        <td width="8%" style="white-space: normal;">31/10/2019</td>
-                        <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                        <td width="7%" style="white-space: normal;">Bajo</td>
-                        <td width="7%" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                            
-                      </tr>
-                      <tr>
-                        <th width="7%" scope="row">RQ0003</th>
-                        <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                        <td width="8%" style="white-space: normal;">01/03/2019</td>
-                        <td width="8%" style="white-space: normal;">31/10/2019</td>
-                        <td width="7%" style="white-space: normal; text-align: center;">42%</td>
-                        <td width="7%" style="white-space: normal;">Bajo</td>
-                        <td width="7%" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                            
-                      </tr>
-                      <tr>
-                        <th width="7%" scope="row">RQ0004</th>
-                        <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                        <td width="8%" style="white-space: normal;">01/03/2019</td>
-                        <td width="8%" style="white-space: normal;">31/10/2019</td>
-                        <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                        <td width="7%" style="white-space: normal;">Bajo</td>
-                        <td width="7%" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                            
-                      </tr>
-                      <tr>
-                        <th width="7%" scope="row">RQ0005</th>
-                        <td width="7%" style="white-space: normal;">Proyecto Pricing</td>
-                        <td width="8%" style="white-space: normal;">01/03/2019</td>
-                        <td width="8%" style="white-space: normal;">31/10/2019</td>
-                        <td width="7%" style="white-space: normal; text-align: center;">46%</td>
-                        <td width="7%" style="white-space: normal;">Bajo</td>
-                        <td width="7%" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" > 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;"> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                        <td width="100px" style="white-space: normal;">
-                          <input matInput #inputHoras type="number" value="0" style="text-align: center; width: 50px;" disabled> 
-                        </td>
-                            
-                      </tr>
-                  </tbody>
-              </table>
-            </div>
-            </div>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <h5 class="card-title">
+              <p style="vertical-align: middle; color:#3F52B6">
+                <i class="material-icons" style="vertical-align: middle; ">schedule</i> Planifica tus Actividades
+                Diarias
+            </h5>
+            <mat-form-field class="example-full-width">
+              <mat-label>Ingrese usuario</mat-label>
+              <input name="usuario" matInput placeholder="Ingreso de usuario" value="" (change)="onChange($event)"
+                oninput="this.value = this.value.toUpperCase()">
+            </mat-form-field>
+          </div>
         </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="text-align: left; color:#AA004F">
+              <strong><i class="material-icons" style="vertical-align: middle; " (click)="InActiva()">library_add</i>
+                Proyectos</strong>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2">
+            <mat-form-field>
+              <mat-select formControlName="estadoHorasSelect" placeholder="Selecciona estado" style="font-size: small;">
+                <mat-option [value]="2">Asignado</mat-option>
+                <mat-option [value]="3">Terminado</mat-option>
+                <mat-option [value]="4">Suspendido</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-8"></div>
+          <div class="col-sm-2 align-right">
+            <button mat-raised-button type="button" class="btn-primary" (click)='saveHoras("tableHoras", true)'>
+              <mat-icon>save</mat-icon> Guardar
+            </button>
+          </div>
+        </div>
+        <div class="pipeline-body">
+          <table mat-table [dataSource]="proyectoIniciativas" matSort id="tableHoras">
+            <ng-container matColumnDef="codigosvt">
+              <th mat-header-cell *matHeaderCellDef> COD.SVT/TICKET </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef> TITULO </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechainicio">
+              <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechafin">
+              <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="avance">
+              <th mat-header-cell *matHeaderCellDef> AVANCE </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prioridad">
+              <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
+            </ng-container>
+            <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
+              <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
+              <ng-container>
+                <td mat-cell *matCellDef="let element"><input #inputHoras type="number" step="1" min="1" max="8"
+                    onPaste="return false" onKeyPress="if(this.value.length==1) return false;"
+                    oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
+                    style="text-align: center; width: 50px;"> </td>
+              </ng-container>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="text-align: left; color:#AA004F">
+              <strong><i class="material-icons" style="vertical-align: middle; " (click)="InActiva1()">library_add</i>
+                Mantenimientos</strong>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2">
+            <mat-form-field>
+              <mat-select formControlName="estadoHorasMantSelect" placeholder="Selecciona estado" style="font-size: small;">
+                <mat-option [value]="2">Asignado</mat-option>
+                <mat-option [value]="3">Terminado</mat-option>
+                <mat-option [value]="4">Suspendido</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-8"></div>
+          <div class="col-sm-2 align-right">
+            <button mat-raised-button type="button" class="btn-primary" (click)='saveHoras("tableHorasMantenimiento", true)'>
+              <mat-icon>save</mat-icon> Guardar
+            </button>
+          </div>
+        </div>
+        <div class="pipeline-body">
+          <table mat-table [dataSource]="mantenimientoIniciativas" matSort id="tableHorasMantenimiento">
+            <ng-container matColumnDef="codigosvt">
+              <th mat-header-cell *matHeaderCellDef> COD.SVT/TICKET </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef> TITULO </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechainicio">
+              <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechafin">
+              <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="avance">
+              <th mat-header-cell *matHeaderCellDef> AVANCE </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prioridad">
+              <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
+            </ng-container>
+            <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
+              <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
+              <ng-container>
+                <td mat-cell *matCellDef="let element"><input #inputHoras type="number" step="1" min="1" max="8"
+                    onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
+                    oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
+                    style="text-align: center; width: 50px;"> </td>
+              </ng-container>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+        
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="text-align: left; color:#AA004F">
+              <strong><i class="material-icons" style="vertical-align: middle; " (click)="InActiva2()">library_add</i>
+                Soporte</strong>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2">
+            <mat-form-field>
+              <mat-select formControlName="estadoHorasSoporteSelect" placeholder="Selecciona estado" style="font-size: small;">
+                <mat-option [value]="2">Asignado</mat-option>
+                <mat-option [value]="3">Terminado</mat-option>
+                <mat-option [value]="4">Suspendido</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-8"></div>
+          <div class="col-sm-2 align-right">
+            <button mat-raised-button type="button" class="btn-primary" (click)='saveHoras("tableHorasSoporte", true)'>
+              <mat-icon>save</mat-icon> Guardar
+            </button>
+          </div>
+        </div>
+        <div class="pipeline-body">
+          <table mat-table [dataSource]="soporteIniciativas" matSort id="tableHorasSoporte">
+            <ng-container matColumnDef="codigosvt">
+              <th mat-header-cell *matHeaderCellDef> COD.SVT/TICKET </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef> TITULO </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechainicio">
+              <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechafin">
+              <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="avance">
+              <th mat-header-cell *matHeaderCellDef> AVANCE </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prioridad">
+              <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
+            </ng-container>
+            <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
+              <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
+              <ng-container>
+                <td mat-cell *matCellDef="let element"><input #inputHoras type="number" step="1" min="1" max="8"
+                    onPaste="return false" onKeyPress="if(this.value.length==1) return false;"
+                    oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
+                    style="text-align: center; width: 50px;"> </td>
+              </ng-container>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+        
+        <div class="row">
+          <div class="col-sm-12">
+            <p style="text-align: left; color:#AA004F">
+              <strong><i class="material-icons" style="vertical-align: middle; " (click)="InActiva3()">library_add</i>
+                Incidencias </strong>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2">
+            <mat-form-field>
+              <mat-select formControlName="estadoHorasIncidenciaSelect" placeholder="Selecciona estado" style="font-size: small;">
+                <mat-option [value]="2">Asignado</mat-option>
+                <mat-option [value]="3">Terminado</mat-option>
+                <mat-option [value]="4">Suspendido</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-8"></div>
+          <div class="col-sm-2 align-right">
+            <button mat-raised-button type="button" class="btn-primary" (click)='saveHoras("tableHorasIncidencia", true)'>
+              <mat-icon>save</mat-icon> Guardar
+            </button>
+          </div>
+        </div>
+        <div class="pipeline-body">
+          <table mat-table [dataSource]="incidenciaIniciativas" matSort id="tableHorasIncidencia">
+            <ng-container matColumnDef="codigosvt">
+              <th mat-header-cell *matHeaderCellDef> COD.SVT/TICKET </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef> TITULO </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechainicio">
+              <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechafin">
+              <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="avance">
+              <th mat-header-cell *matHeaderCellDef> AVANCE </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prioridad">
+              <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
+            </ng-container>
+            <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
+              <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
+              <ng-container>
+                <td mat-cell *matCellDef="let element"><input #inputHoras type="number" step="1" min="1" max="8"
+                    onPaste="return false" onKeyPress="if(this.value.length==1) return false;"
+                    oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
+                    style="text-align: center; width: 50px;"> </td>
+              </ng-container>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+        
+      </div>
     </div>
+  </div>
 </div>

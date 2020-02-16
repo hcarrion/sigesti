@@ -258,9 +258,11 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       this.submitted = true;
       resultValidate = true;
     }
-    if(iniciativaObject.fechaInicio.getTime() > iniciativaObject.fechaFin.getTime()){
+    let newDateInit = new Date(iniciativaObject.fechaInicio);
+    let newDateEnd = new Date(iniciativaObject.fechaFin);
+    if(newDateInit.getTime() > newDateEnd.getTime()){
       resultValidate = true;
-      msj ='Valor inválido en campo "Fecha de fin"';
+      msj ='Valor inválido en campo "Fecha fin"';
     }
 
     if(0 == iniciativaObject.horaEstimada){

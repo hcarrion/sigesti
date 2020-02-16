@@ -178,7 +178,7 @@ export class DialogRegistraEventoComponent implements OnInit {
     /*let dateTodayStr = this.datePipe.transform(dateToday, 'dd/MM/yyyy');*/
     let resultValidate = false;
     let iniciativaObject = new IniciativaFire();
-    let actividadDetalleObject = new ActividadDetalleFire();
+    let actividadDetalleObject = this.actividadDet;
     actividadDetalleObject.estado = this.regEvento.controls.estadoActividadSelect.value as ParametroDetalleFire;
     actividadDetalleObject.tipo = this.regEvento.value.tipoActividadSelect as ParametroDetalleFire;
     actividadDetalleObject.subtipo = this.regEvento.value.subtipoActividadSelect as ParametroDetalleFire;
@@ -203,8 +203,9 @@ export class DialogRegistraEventoComponent implements OnInit {
       this.submitted = true;
       resultValidate = true;
     }
-
-    if(actividadDetalleObject.fechaInicio.getTime() > actividadDetalleObject.fechaFin.getTime()){
+    let newDateInit = new Date(actividadDetalleObject.fechaInicio);
+    let newDateEnd = new Date(actividadDetalleObject.fechaFin);
+    if(newDateInit.getTime() > newDateEnd.getTime()){
       resultValidate = true;
       msj ='Valor inválido en campo "Fecha de fin"';
     }
