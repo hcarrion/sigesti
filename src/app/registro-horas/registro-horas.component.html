@@ -15,7 +15,7 @@
 
                     <mat-form-field class="example-full-width">
                       <mat-label>Ingrese usuario</mat-label>
-                      <input name="usuario" matInput placeholder="Ingreso de usuario" value="" (change)="onChange($event)">
+                      <input name="usuario" matInput placeholder="Ingreso de usuario" value="" (change)="onChange($event)" oninput="this.value = this.value.toUpperCase()">
                     </mat-form-field>
 
                   </div>
