@@ -15,25 +15,23 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-2"><strong style="font-size: small;">N° iniciativa: </strong></div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <input formControlName="nIniciativaInputDialogResource" class="form-control form-control-sm"
                         style="font-size: small;" type="text" ng-disabled="true" maxlength="9" disabled />
                 </div>
-                <div class="col-md-1"></div>
                 <div class="col-md-2"><strong style="font-size: small;">Título:</strong></div>
                 <div class="col-md-6">
                     <input formControlName="tituloIniciativaInputDialogResource" class="form-control form-control-sm"
-                        style="font-size: small;" type="text" ng-disabled="true" disabled>
+                        style="font-size: small; width: 100%;" type="text" ng-disabled="true" disabled>
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-md-2"><strong style="font-size: small;">Código actividad:</strong></div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <input formControlName="codigoActividadInputDialogResource" class="form-control form-control-sm"
                         style="font-size: small;" type="text" ng-disabled="true" disabled>
                 </div>
-                <div class="col-md-1"></div>
                 <div class="col-md-2"><strong style="font-size: small;">Actividad:</strong></div>
                 <div class="col-md-6">
                     <input formControlName="tituloActividadInputDialogResource" class="form-control form-control-sm"
@@ -43,7 +41,7 @@
             <br>
             <div class="row">
                 <div class="col-md-2"><strong style="font-size: small;">Horas actividad:</strong></div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <input formControlName="horasAsigActividadInputDialogResource" class="form-control form-control-sm"
                         style="font-size: small;" type="text" ng-disabled="true" disabled>
                 </div>
@@ -80,7 +78,9 @@
                                         [checked]="colabDetFire.isAsignado"></mat-checkbox>
                                 </td>
                                 <td class="tabla-center cell-td" width="10%" align="center"><input width="20px"
-                                        type="number" min="1" step="1" oninput="this.value = Math.trunc(this.value)" (focusout)="focusOut($event, colabDetFire)"
+                                        type="number" min="1" max="999" step="1" onPaste="return false"
+                                        onKeyPress="if(this.value.length==3) return false;"
+                                        oninput="this.value = Math.trunc(this.value)" (focusout)="focusOut($event, colabDetFire)"
                                         ng-model="colabDetFire.horasAsig" style="text-align:center;width:50px;"
                                         value={{colabDetFire.horasAsig}}></td>
                             </tr>
@@ -93,7 +93,7 @@
                 <div class="col-md-2">
                     <label style=color:#3F52B6><strong style="font-size: small;">Horas por asignar:</strong></label>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <input class="form-control" formControlName="porAsignarLabel" type="text" style="font-size: small;" ng-disabled="true"
                         disabled>
                 </div>

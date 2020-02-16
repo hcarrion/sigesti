@@ -87,7 +87,9 @@
                     <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
                       <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
                       <ng-container>
-                        <td mat-cell *matCellDef="let element"><input #inputHoras type="number" min="1" step="1" oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}" style="text-align: center; width: 50px;" > </td>
+                        <td mat-cell *matCellDef="let element"><input #inputHoras type="number" 
+                          step="1" min="1" max="8" onPaste="return false"
+                          onKeyPress="if(this.value.length==1) return false;" oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}" style="text-align: center; width: 50px;" > </td>
                       </ng-container>
                     </ng-container>
                     

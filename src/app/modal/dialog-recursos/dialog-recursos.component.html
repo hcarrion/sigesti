@@ -15,18 +15,16 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-2"><strong style="font-size: small;">N° iniciativa: </strong></div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <input formControlName="nIniciativaInputDialog" class="form-control form-control-sm" type="text"
                         style="font-size: small;" ng-disabled="true" disabled>
                 </div>
-                <div class="col-md-1"></div>
                 <div class="col-md-2"><strong style="font-size: small;">Título: </strong></div>
                 <div class="col-md-6">
                     <input formControlName="tituloInputDialog" class="form-control form-control-sm" type="text"
                         style="font-size: small;" ng-disabled="true" disabled>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-12">
                     <hr style="width:100%;">
@@ -70,8 +68,9 @@
                                 <td class="tabla-center cell-td" width="20%">{{colabDetFire.codigoUsuario}}</td>
                                 <td class="tabla-center cell-td" width="50%">{{colabDetFire.nombres}}</td>
                                 <td class="tabla-center cell-td" width="10%"><input class="widthMax porcentaje"
-                                        type="number" min="1" step="1" (focusout)="focusOut($event, colabDetFire)"
-                                        ng-model="colabDetFire.porcentaje" style="text-align:center;"
+                                        type="number" min="1" step="1" max="100" (focusout)="focusOut($event, colabDetFire)"
+                                        ng-model="colabDetFire.porcentaje" style="text-align:center;" onPaste="return false"
+                                        onKeyPress="if(this.value.length==3) return false;"
                                         value="{{colabDetFire.porcentaje}}" oninput="this.value = Math.trunc(this.value)"></td>
                                 <td class="tabla-center" width="20%" align="center">
                                     <strong><i class="material-icons link" style="color:rgb(182, 63, 63); height:5px;"

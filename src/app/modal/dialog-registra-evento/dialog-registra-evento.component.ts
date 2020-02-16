@@ -13,7 +13,7 @@ import { IniciativaFire } from '../../shared/models/iniciativa-fire';
 import { FirebaseIniciativaService } from '../../shared/services/firebase-iniciativa.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import {MAT_DATE_LOCALE} from '@angular/material';
+import {MAT_DATE_LOCALE, MatDatepickerInputEvent} from '@angular/material';
 import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fire';
 import { ActividadFire } from 'src/app/shared/models/actividad-fire';
 import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-fire';
@@ -40,6 +40,10 @@ export class DialogRegistraEventoComponent implements OnInit {
   iniciativa: IniciativaFire = new IniciativaFire();
   idIniciativaA: string;
   loading: boolean;
+  minDate: Date;
+  maxDate: Date;
+  minDateFin: Date;
+  maxDateFin: Date;
   constructor(public dialogRef: MatDialogRef<DialogRegistraEventoComponent>, 
     private _ngZone: NgZone, private firestoreService: FirestoreService, 
     private formBuilder: FormBuilder,
@@ -50,6 +54,13 @@ export class DialogRegistraEventoComponent implements OnInit {
       this.iniciativaDet = data;
       this.idIniciativaA = this.iniciativaDet.idIniciativa;
       this.actividadDetA = this.iniciativaDet.actividadDetalle;
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth();
+      const currentDay = new Date().getDate();
+      this.minDate = new Date();
+      this.maxDate = new Date(currentYear, 11, 31);
+      this.minDateFin = new Date(currentYear, currentMonth, currentDay +1);
+      this.maxDateFin = new Date(currentYear, 11, 31);
       this.regEvento = new FormGroup({
         codigoActividadInput: new FormControl(),
         estadoActividadSelect: new FormControl(),
@@ -162,6 +173,7 @@ export class DialogRegistraEventoComponent implements OnInit {
 
   saveActividad(iniciativaFire: IniciativaFire){
     this.loading = true;
+    let msj = "";
     let dateToday = new Date();
     /*let dateTodayStr = this.datePipe.transform(dateToday, 'dd/MM/yyyy');*/
     let resultValidate = false;
@@ -192,9 +204,17 @@ export class DialogRegistraEventoComponent implements OnInit {
       resultValidate = true;
     }
 
+    if(actividadDetalleObject.fechaInicio.getTime() > actividadDetalleObject.fechaFin.getTime()){
+      resultValidate = true;
+      msj ='Valor inválido en campo "Fecha de fin"';
+    }
+
     if(resultValidate){
       this.loading = false;
-      Swal.fire('Advertencia!', 'Debe completar la información requerida.', 'warning');
+      if("" == msj){
+        msj = 'Debe completar la información requerida.';
+      }
+      Swal.fire('Advertencia!', msj, 'warning');
     }else{
       if(undefined == iniciativaFire.actividad){
         let codigoInit = 1;
@@ -284,18 +304,23 @@ export class DialogRegistraEventoComponent implements OnInit {
     let trObject = (document.getElementById("horas")) as HTMLInputElement;
     let fechaInicioAct = this.regEvento.value.fechaInicioActividadInput;
     let numHoras = trObject.value;
-    if("" != numHoras && null != fechaInicioAct){
-      let numDias = ((Number.parseInt(numHoras))-8)/8;
-      let numDiasFixed = Number.parseInt(numDias.toFixed());
-      if(numDias > numDiasFixed){
-        numDias = numDiasFixed + 1;
-      }else if(numDias < numDiasFixed){
-        numDias = numDiasFixed;
+    if("" != numHoras && "0" != numHoras && null != fechaInicioAct){
+      if(8 < (Number.parseInt(numHoras))){
+        let numDias = ((Number.parseInt(numHoras))-8)/8;
+        let numDiasFixed = Number.parseInt(numDias.toFixed());
+        if(numDias > numDiasFixed){
+          numDias = numDiasFixed + 1;
+        }else if(numDias < numDiasFixed){
+          numDias = numDiasFixed;
+        }
+        let numeroDias = numDias;
+        let fechaInicio = this.regEvento.value.fechaInicioActividadInput;
+        let fechaFin = this.daysSum(fechaInicio, numeroDias);
+        this.regEvento.controls.fechaFinActividadInput.setValue(fechaFin);
+      }else{
+        let fechaFin = fechaInicioAct;
+        this.regEvento.controls.fechaFinActividadInput.setValue(fechaFin);
       }
-      let numeroDias = numDias;
-      let fechaInicio = this.regEvento.value.fechaInicioActividadInput;
-      let fechaFin = this.daysSum(fechaInicio, numeroDias);
-      this.regEvento.controls.fechaFinActividadInput.setValue(fechaFin);
     }
   }
 
@@ -321,6 +346,16 @@ export class DialogRegistraEventoComponent implements OnInit {
     }
   }
 
+  changeFech(type: string, event: MatDatepickerInputEvent<Date>) {
+    let daySelect = event.value;
+    if("change" == type){
+      this.minDateFin  = new Date(daySelect.getFullYear(), daySelect.getMonth(), daySelect.getDate()+1);
+    }
+  }
+
+  changeFechFin(type: string, event: MatDatepickerInputEvent<Date>) {
+
+  }
 
 
 

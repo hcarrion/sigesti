@@ -43,6 +43,9 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   correoContactoInput = new FormControl();
   anexoContactoInput = new FormControl();
   minDate: Date;
+  maxDate: Date;
+  minDateFin: Date;
+  maxDateFin: Date;
   /*panelColor = new FormControl('1');*/
   loading: boolean;
   constructor(public dialogRef: MatDialogRef<DialogRegistraSeguimientoComponent>, 
@@ -54,7 +57,13 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     private firebaseContactos: FirebaseContactoService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.idIniciativa = data;
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth();
+      const currentDay = new Date().getDate();
       this.minDate = new Date();
+      this.maxDate = new Date(currentYear, 11, 31);
+      this.minDateFin = new Date(currentYear, currentMonth, currentDay +1);
+      this.maxDateFin = new Date(currentYear, 11, 31);
       this.regIniciativa = new FormGroup({
         estadoSelect: new FormControl(),
         tipoSelect: new FormControl(),
@@ -249,6 +258,10 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       this.submitted = true;
       resultValidate = true;
     }
+    if(iniciativaObject.fechaInicio.getTime() > iniciativaObject.fechaFin.getTime()){
+      resultValidate = true;
+      msj ='Valor inválido en campo "Fecha de fin"';
+    }
 
     if(0 == iniciativaObject.horaEstimada){
       resultValidate = true;
@@ -257,7 +270,9 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
 
     if(resultValidate){
       this.loading = false;
-      msj = 'Debe completar la información requerida.';
+      if("" == msj){
+        msj = 'Debe completar la información requerida.';
+      }
       Swal.fire('Advertencia!', msj, 'warning');
     }else{
       if("" == this.idIniciativa){
@@ -350,7 +365,14 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   }
 
   changeFech(type: string, event: MatDatepickerInputEvent<Date>) {
-    debugger;
+    let daySelect = event.value;
+    if("change" == type){
+      this.minDateFin  = new Date(daySelect.getFullYear(), daySelect.getMonth(), daySelect.getDate()+1);
+    }
+  }
+
+  changeFechFin(type: string, event: MatDatepickerInputEvent<Date>) {
+
   }
 
 
