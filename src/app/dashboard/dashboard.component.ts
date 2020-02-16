@@ -109,6 +109,7 @@ export class DashboardComponent implements OnInit
       this.callIniciativas2("");    
       this.callIniciativas3("");    
       this.callIniciativas4("");    
+      this.estado="";
      }
     }
   

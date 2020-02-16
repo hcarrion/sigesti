@@ -44,6 +44,10 @@ table {
   overflow: auto;
 }
 
+.card-title{
+  color: #0d478f;
+}
+
 .mat-row:nth-child(even){
   background-color:rgba(94, 130, 152, 0.05)
 }
