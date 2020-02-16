@@ -11,6 +11,7 @@ import { DialogRiesgosMantenedorComponent} from './modal/dialog-riesgos/dialog-r
 import { RegistroContactoComponent } from './registro-contacto/registro-contacto.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StatusreportComponent } from './statusreport/statusreport.component';
+import { MonitoreoComponent } from './monitoreo/monitoreo.component';
 
 const routes: Routes = 
 [
@@ -22,6 +23,7 @@ const routes: Routes =
   { path: 'registro_contacto', component: RegistroContactoComponent},
   { path: 'dashboard', component: DashboardComponent},
   { path: 'statusreport', component: StatusreportComponent},
+  { path: 'monitorea', component: MonitoreoComponent},
   { path: '**', redirectTo: '/', pathMatch: 'full'},
 ];
 

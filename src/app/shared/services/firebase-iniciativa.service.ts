@@ -30,10 +30,26 @@ export class FirebaseIniciativaService {
     return this.firestore.collection('iniciativas').snapshotChanges();
   }
  
-  getIniciativaFiltro(campo: string,condicion: string){
-    return this.firestore.collection('iniciativas', ref => ref.where(campo, '==', condicion)).snapshotChanges();
+  getIniciativaFiltro(campo: string,condicion: string, campo1: string, condicion1: string){
+    var ArrBus = new Array;
+    var cont=0;    
+    if (campo1 != "") {
+      condicion1.split(",").forEach(element => {
+        ArrBus[cont] = element;
+        cont++;
+      }); 
+      condicion =  condicion.toUpperCase();  
+      return this.firestore.collection('iniciativas', ref => ref.where(campo, '==', condicion).where(campo1,"in",ArrBus)).snapshotChanges();
+    } 
+    else{
+      condicion =  condicion.toUpperCase();
+      return this.firestore.collection('iniciativas', ref => ref.where(campo, '==', condicion)).snapshotChanges();
+    }    
   }
 
+  getIniciativaFiltroMulti(campo: string,condicion: string){
+    return this.firestore.collection('iniciativas', ref => ref.where(campo, 'array-contains-any', condicion.toUpperCase)).snapshotChanges();
+  }
   getIniciativa(iniciativaFire: IniciativaFire) {
     return this.firestore.doc('iniciativas/'+iniciativaFire.idIniciativa).snapshotChanges();
   }

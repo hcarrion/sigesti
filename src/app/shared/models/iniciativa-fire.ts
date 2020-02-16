@@ -3,7 +3,7 @@ import { ColaboradorDetalleFire } from './colaborador-detalle-fire';
 import { ContactoFire } from './contacto-fire';
 import { ActividadFire } from './actividad-fire';
 
-export class IniciativaFire {
+export class    IniciativaFire {
     idIniciativa: string;
     numeroIniciativa: number;
     estado: ParametroDetalleFire;

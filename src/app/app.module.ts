@@ -45,9 +45,8 @@ import { ChartsModule } from 'ng2-charts';
 import { StatusreportComponent } from './statusreport/statusreport.component';
 import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { DialogavancescategoriaComponent } from './modal/dialogavancescategoria/dialogavancescategoria.component';
-import { DialogavancespersonalComponent } from './modal/dialogavancespersonal/dialogavancespersonal.component';
 import { CommonModule, DatePipe } from '@angular/common';
+import { MonitoreoComponent } from './monitoreo/monitoreo.component';
 
 
 
@@ -73,8 +72,7 @@ import { CommonModule, DatePipe } from '@angular/common';
     DialogRegistraRecursoEventoComponent,
     DialogRegistraEventoComponent,
     StatusreportComponent,
-    DialogavancescategoriaComponent,
-    DialogavancespersonalComponent
+    MonitoreoComponent
   ],
   imports: 
   [
@@ -99,7 +97,7 @@ import { CommonModule, DatePipe } from '@angular/common';
     DialogRecursosComponent, CommonModule, DatePipe, ],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
   DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent,
-  DialogListaEventoComponent, DialogRegistraRecursoEventoComponent, DialogRegistraEventoComponent],
+  DialogListaEventoComponent, DialogRegistraRecursoEventoComponent, DialogRegistraEventoComponent, MonitoreoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {   
