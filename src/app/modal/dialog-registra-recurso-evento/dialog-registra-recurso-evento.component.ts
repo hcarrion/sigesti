@@ -15,6 +15,8 @@ import Swal from 'sweetalert2';
 import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-fire';
 import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fire';
 import { MatCheckboxChange } from '@angular/material';
+import { ParametroDetalleFire } from 'src/app/shared/models/parametro-detalle-fire';
+import { ParametroFire } from 'src/app/shared/models/parametro-fire';
 @Component({
   selector: 'app-dialog-registra-recurso-evento',
   templateUrl: './dialog-registra-recurso-evento.component.html',
@@ -41,8 +43,10 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
   idIniciativaR: string;
   recursosColabDetFireList: ColaboradorDetalleFire[] = [];
   loading: boolean;
+  estado: ParametroDetalleFire[] = [];
   constructor(public dialogRef: MatDialogRef<DialogRegistraRecursoEventoComponent>, 
     private firebaseColaboradores: FirebaseColaboradorService,
+    private firebaseParametros: FirebaseParametroService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private firebaseIniciativas: FirebaseIniciativaService) {
       this.iniciativaDet = data;
@@ -70,8 +74,14 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
 
   async callIniciativa() {
     this.loading = true;
-    
     let iniciativasRef = this.firebaseIniciativas.getIniciativa3(this.idIniciativaR);
+    let parametrosRef = this.firebaseParametros.getParametrosFiltro("nombre", "estado");
+      
+    parametrosRef.subscribe(data => {data.forEach(paramObj => {
+          let paramObject= paramObj.payload.doc.data() as ParametroFire;
+          this.estado = paramObject.detalle;
+        });
+      });
     iniciativasRef.subscribe(data => {
         let iniciativaObject= data.payload.data() as IniciativaFire;
         let idIniciativa = data.payload.id;
@@ -162,6 +172,14 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
         this.loading = false;
         Swal.fire('Advertencia!', 'Las horas asignados deben sumar '+this.actividadDet.horaAsignada+'.', 'warning');
       }else{
+        if("PENDIENTE" == this.actividadDet.estado.descripcion){
+          this.estado.forEach(element =>{
+            if("ASIGNADO" == element.descripcion){
+              this.iniciativa.estado = element;
+              this.actividadDet.estado = element;
+            }
+          });
+        }
         this.actividadDet.recursos = recuColabDetFireList;
         let activityList = this.iniciativa.actividad.actividades;
         let itemActividadIndex = activityList.findIndex(item => item.codigo == this.actividadDet.codigo);

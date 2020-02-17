@@ -73,4 +73,8 @@ export class FirebaseParametroService {
     return this.parametrosListRef.add(param);
   }
 
+  getParametrosFiltro(campo: string, condicion: string){
+    return this.firestore.collection('parametros', ref => ref.where(campo, '==', condicion)).snapshotChanges();
+  }
+
 }
