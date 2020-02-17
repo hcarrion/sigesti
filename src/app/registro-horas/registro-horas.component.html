@@ -50,7 +50,7 @@
         <div class="pipeline-body">
           <table mat-table [dataSource]="proyectoIniciativas" matSort id="tableHoras">
             <ng-container matColumnDef="codigosvt">
-              <th mat-header-cell *matHeaderCellDef> COD.SVT/TICKET </th>
+              <th mat-header-cell *matHeaderCellDef width ="10%"> N° SVT/TICKET </th>
               <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
               </td>
             </ng-container>
@@ -60,23 +60,23 @@
               <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
             </ng-container>
             <ng-container matColumnDef="fechainicio">
-              <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
+              <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA INICIO </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="fechafin">
-              <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
+              <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA FIN </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="avance">
-              <th mat-header-cell *matHeaderCellDef> AVANCE </th>
+              <th mat-header-cell *matHeaderCellDef width ="6%"> AVANCE </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
             </ng-container>
             <ng-container matColumnDef="prioridad">
-              <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
+              <th mat-header-cell *matHeaderCellDef width ="7%"> PRIORIDAD </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
             </ng-container>
             <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-              <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
+              <th mat-header-cell *matHeaderCellDef width ="5%">{{columnName}}</th>
               <ng-container>
                 <td mat-cell *matCellDef="let element"><input #inputHoras type="number" step="1" min="1" max="8"
                     onPaste="return false" onKeyPress="if(this.value.length==1) return false;"
@@ -117,7 +117,7 @@
         <div class="pipeline-body">
           <table mat-table [dataSource]="mantenimientoIniciativas" matSort id="tableHorasMantenimiento">
             <ng-container matColumnDef="codigosvt">
-              <th mat-header-cell *matHeaderCellDef> COD.SVT/TICKET </th>
+              <th mat-header-cell *matHeaderCellDef width ="10%"> N° SVT/TICKET </th>
               <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
               </td>
             </ng-container>
@@ -127,23 +127,23 @@
               <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
             </ng-container>
             <ng-container matColumnDef="fechainicio">
-              <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
+              <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA INICIO </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="fechafin">
-              <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
+              <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA FIN </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="avance">
-              <th mat-header-cell *matHeaderCellDef> AVANCE </th>
+              <th mat-header-cell *matHeaderCellDef width ="6%"> AVANCE </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
             </ng-container>
             <ng-container matColumnDef="prioridad">
-              <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
+              <th mat-header-cell *matHeaderCellDef width ="7%"> PRIORIDAD </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
             </ng-container>
             <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-              <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
+              <th mat-header-cell *matHeaderCellDef width ="5%">{{columnName}}</th>
               <ng-container>
                 <td mat-cell *matCellDef="let element"><input #inputHoras type="number" step="1" min="1" max="8"
                     onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
@@ -185,7 +185,7 @@
         <div class="pipeline-body">
           <table mat-table [dataSource]="soporteIniciativas" matSort id="tableHorasSoporte">
             <ng-container matColumnDef="codigosvt">
-              <th mat-header-cell *matHeaderCellDef> COD.SVT/TICKET </th>
+              <th mat-header-cell *matHeaderCellDef width ="10%"> N° SVT/TICKET </th>
               <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
               </td>
             </ng-container>
@@ -195,23 +195,23 @@
               <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
             </ng-container>
             <ng-container matColumnDef="fechainicio">
-              <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
+              <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA INICIO </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="fechafin">
-              <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
+              <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA FIN </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="avance">
-              <th mat-header-cell *matHeaderCellDef> AVANCE </th>
+              <th mat-header-cell *matHeaderCellDef width ="6%"> AVANCE </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
             </ng-container>
             <ng-container matColumnDef="prioridad">
-              <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
+              <th mat-header-cell *matHeaderCellDef width ="7%"> PRIORIDAD </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
             </ng-container>
             <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-              <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
+              <th mat-header-cell *matHeaderCellDef width ="5%">{{columnName}}</th>
               <ng-container>
                 <td mat-cell *matCellDef="let element"><input #inputHoras type="number" step="1" min="1" max="8"
                     onPaste="return false" onKeyPress="if(this.value.length==1) return false;"
@@ -253,7 +253,7 @@
         <div class="pipeline-body">
           <table mat-table [dataSource]="incidenciaIniciativas" matSort id="tableHorasIncidencia">
             <ng-container matColumnDef="codigosvt">
-              <th mat-header-cell *matHeaderCellDef> COD.SVT/TICKET </th>
+              <th mat-header-cell *matHeaderCellDef width ="10%"> N° SVT/TICKET </th>
               <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
               </td>
             </ng-container>
@@ -263,23 +263,23 @@
               <td mat-cell *matCellDef="let tipo" id="{{tipo.codigoAct}}"> {{tipo.tituloAct}} </td>
             </ng-container>
             <ng-container matColumnDef="fechainicio">
-              <th mat-header-cell *matHeaderCellDef> FECHA INICIO </th>
+              <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA INICIO </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.fechaInicioAct | date: 'dd/MM/yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="fechafin">
-              <th mat-header-cell *matHeaderCellDef> FECHA FIN </th>
+              <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA FIN </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.fechaFinAct | date: 'dd/MM/yyyy'}} </td>
             </ng-container>
             <ng-container matColumnDef="avance">
-              <th mat-header-cell *matHeaderCellDef> AVANCE </th>
+              <th mat-header-cell *matHeaderCellDef width ="6%"> AVANCE </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
             </ng-container>
             <ng-container matColumnDef="prioridad">
-              <th mat-header-cell *matHeaderCellDef> PRIORIDAD </th>
+              <th mat-header-cell *matHeaderCellDef width ="7%"> PRIORIDAD </th>
               <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
             </ng-container>
             <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-              <th mat-header-cell *matHeaderCellDef>{{columnName}}</th>
+              <th mat-header-cell *matHeaderCellDef width ="5%">{{columnName}}</th>
               <ng-container>
                 <td mat-cell *matCellDef="let element"><input #inputHoras type="number" step="1" min="1" max="8"
                     onPaste="return false" onKeyPress="if(this.value.length==1) return false;"
