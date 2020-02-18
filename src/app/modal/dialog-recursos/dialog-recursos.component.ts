@@ -194,7 +194,7 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
       colabDetFireList.forEach(element => {
         let valuePorcentaje = element.porcentaje;
         if(undefined != valuePorcentaje){
-          sumatotal = sumatotal+valuePorcentaje;
+          sumatotal = sumatotal/colabDetFireList.length;
         }
       });
     }else{

@@ -177,6 +177,11 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     }
     return result;
   }
+  
+  onKey(event:any) { // without type info
+    alert(event.target.value);
+  }
+
 
   validarField2(fieldValue) {
     let result;

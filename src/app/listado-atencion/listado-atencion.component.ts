@@ -71,18 +71,13 @@ export class ListadoAtencionComponent implements OnInit
   }
   openDialogNew(){
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
-      { width: '2000px',
-        height: '600px',
-        data: ''
-      }
+      { width: '2000px', height: '600px', data: '' }
     );
   }
 
   openDialogEdit(idIniciativa: string){
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
-      { width: '2000px',
-        height: '600px',
-        data: idIniciativa
+      { width: '2000px', height: '600px', data: idIniciativa
       }
     );
   }

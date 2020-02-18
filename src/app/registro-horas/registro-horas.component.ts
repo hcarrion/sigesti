@@ -31,7 +31,9 @@ export class RegistroHorasComponent implements OnInit {
   listaSoporteAct: ActividadHorasFire[] = [];
   listaIncidenciaAct: ActividadHorasFire[] = [];
   regHoras: FormGroup;
+  
   columnasTabla: string[] = ['codigosvt', 'titulo', 'fechainicio', 'fechafin', 'avance', 'prioridad'];
+
   columnasFechTabla: string[] = ['06/02/20', '07/02/20', '08/02/20'];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   proyectoIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
@@ -92,7 +94,7 @@ export class RegistroHorasComponent implements OnInit {
    loadColumns(){
      let dateToday = new Date();
      if(1 == dateToday.getDay()){
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
       let fechas: string[] = [];
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
@@ -100,64 +102,64 @@ export class RegistroHorasComponent implements OnInit {
      }else if(2 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
      }else if(3 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
-      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yy');
+      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM');
       fechas.push(fechaAnt2Str);
       this.columnasTabla.push(fechaAnt2Str);
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
      }else if(4 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt3 = this.daysSubtraction(dateToday, 3);
-      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM/yy');
+      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM');
       fechas.push(fechaAnt3Str);
       this.columnasTabla.push(fechaAnt3Str);
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
-      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yy');
+      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM');
       fechas.push(fechaAnt2Str);
       this.columnasTabla.push(fechaAnt2Str);
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
      }else if(0 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt4 = this.daysSubtraction(dateToday, 4);
-      let fechaAnt4Str =this.datePipe.transform(fechaAnt4, 'dd/MM/yy');
+      let fechaAnt4Str =this.datePipe.transform(fechaAnt4, 'dd/MM');
       fechas.push(fechaAnt4Str);
       this.columnasTabla.push(fechaAnt4Str);
       let fechaAnt3 = this.daysSubtraction(dateToday, 3);
-      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM/yy');
+      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM');
       fechas.push(fechaAnt3Str);
       this.columnasTabla.push(fechaAnt3Str);
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
-      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yy');
+      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM');
       fechas.push(fechaAnt2Str);
       this.columnasTabla.push(fechaAnt2Str);
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);

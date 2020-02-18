@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit
   selected: boolean;
   nuevo: boolean;
   edit: boolean;
+
   delete: boolean;
   tabla: any;
   mensajeAccion: string;  
@@ -134,18 +135,15 @@ export class DashboardComponent implements OnInit
     this.callIniciativas4("");    	  
   } 
 
-  openDialogActivity(iniciativa: IniciativaFire){
+  openDialogActivity(idIniciativa: string){
     this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
-      { width: '2000px', height: '600px', data: iniciativa}
+      { width: '2000px', height: '600px', data: idIniciativa}
     );
   }
 
-  openDialogEdit(iniciativa: IniciativaFire){
+  openDialogEdit(idIniciativa: string){
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
-      { width: '2000px',
-        height: '600px',
-        data: iniciativa
-      }
+      { width: '2000px', height: '600px',data: idIniciativa }
     );
   }
   async callIniciativasR() {
@@ -246,8 +244,8 @@ export class DashboardComponent implements OnInit
         arraypr[1]++;
         break;
       case "EN PROCESO":
-          arraypr[1]++;
-          break;
+        arraypr[1]++;
+        break;
       case "TERMINADO":
         arraypr[2]++;
         break;

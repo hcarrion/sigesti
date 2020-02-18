@@ -12,6 +12,7 @@ import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seg
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
 import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-lista-evento.component';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -30,9 +31,9 @@ export class MonitoreoComponent implements OnInit {
   display: boolean = false;
   mostrar1: string = 'false';
   mostrar2: string = 'false';
-  columnasTabla: string[] = ['codigosvt', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'];
-  columnasTabla1: string[] = ['codigosvt', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'];
-  
+  columnasTabla: string[] ;
+  columnasTabla1: string[]; 
+  public ultimaDia: number;
   title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaFire>([]);
@@ -46,28 +47,56 @@ export class MonitoreoComponent implements OnInit {
   public tipoDocumentoSeleccionado: IniciativaFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
+  public TipoActividad: string;
+  public NivelAtencion: string;
+
   loading: boolean;
   
   tiporeporte = new FormControl();
   tipoiniciativa = new FormControl();
   codigosvt = new FormControl();
 
-  tiporeportelista: string[] = ['Iniciativa', 'Personal'];
-  tipoiniciativalista: string[] = ['Proyecto', 'Mantenimiento','Soporte','Incidencias'];
-  codigosvtlista: string[] = ['Iniciativa', 'Personal'];
+  tiporeportelista: string[] = ['INICIATIVA', 'PERSONAL'];
+  tipoiniciativalista: string[] = ['PROYECTO', 'MANTENIMIENTO','SOPORTE','INCIDENCIA'];
+  codigosvtlista: string[] = ['Alto', 'Medio','Bajo'];
   i: number;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
+  constructor(private matDialog: MatDialog,public datepipe: DatePipe, private firebaseIniciativas: FirebaseIniciativaService) {}
 
   ngOnInit() {
-
     localStorage.setItem('indinicio',"false");   
-    this.callIniciativas();
-  }
+    this.callIniciativas("","");
 
-  async callIniciativas() {
+    let latest_date =new Date();
+    let f =this.datepipe.transform(latest_date, 'yyyy-MM-dd');
+    this.ultimaDia = +this.ultimoDiaMes(f);
+
+    switch (this.ultimaDia) {
+      case 29:
+        this.columnasTabla = ['codigosvt', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','Total'];
+        this.columnasTabla1 = ['codigosvt', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','Total'];
+        break;
+      case 30:
+        this.columnasTabla =['codigosvt', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','Total'];
+        this.columnasTabla1 = ['codigosvt', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','Total'];
+        break;
+      default:
+        this.columnasTabla =['codigosvt', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','Total'];
+        this.columnasTabla1 = ['codigosvt', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','Total'];
+        break;
+    }
+  } 
+
+  ultimoDiaMes(fecha){    
+    let arrayFecha = fecha.split('-');
+    let fechaUltimo = new Date(arrayFecha[0], arrayFecha[1]);      
+    fechaUltimo.setDate(fechaUltimo.getDate() - 1);    
+    return fechaUltimo.getDate();
+  } 
+
+  async callIniciativas(campo,condicion) {
     this.loading = true;
     
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple(campo,condicion);
     iniciativasRef.subscribe(data => {
       var lista = [];
       for(var i = 0; i < data.length; i++){
@@ -142,18 +171,28 @@ openDialogEdit(iniciativa: IniciativaFire){
 buscarDatos(filterValue: string) {
   this.iniciativas.filter = filterValue.trim().toLowerCase();
 }
+
 select1(plan)
 {
-  alert(plan);
+  this.TipoActividad=plan.value;
+  this.callIniciativas("categoria.descripcion;",this.TipoActividad + ";");
 }
+
+select2(plan)
+{
+  this.NivelAtencion=plan.value;
+  this.callIniciativas("prioridad.descripcion;",plan.value+";");
+  alert(plan.value);
+}
+
 select(plan)
 {
   this.mostrar1= "false";
   this.mostrar2= "false";
-    if(plan.value.indexOf("Personal")>-1){
+    if(plan.value.indexOf("PERSONAL")>-1){
       this.mostrar2= "true";
     } 
-    if (plan.value.indexOf("Iniciativa")>-1  ){
+    if (plan.value.indexOf("INICIATIVA")>-1  ){
       this.mostrar1= "true";
     }
 }
