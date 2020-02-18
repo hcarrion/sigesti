@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit
   selected: boolean;
   nuevo: boolean;
   edit: boolean;
-
+ 
   delete: boolean;
   tabla: any;
   mensajeAccion: string;  
@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit
   public tipoDocumentoSeleccionado: IniciativaFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
-  doughnutChartLabels: Label[] =  ['ToDo', 'DoIng', 'QA', 'Done'];
+  doughnutChartLabels: Label[] =  ['Por Hacer', 'En Progreso', 'QA', 'Cerrado'];
   barChartPlugins = [pluginDataLabels];
   doughnutChartDataP: MultiDataSet = [[0,0,0,0]];
   doughnutChartDataT: MultiDataSet = [[0,0,0,0]];
@@ -99,10 +99,10 @@ export class DashboardComponent implements OnInit
         // Haciendo Asignado y en proceso
         // QA Terminado 
         // Done cerrado, rechazado, suspendido
-        if (label=="ToDo"){this.FiltraCanvas("PENDIENTE");this.estado=" - Por Hacer";};
-        if (label=="DoIng"){this.FiltraCanvas("ASIGNADO,EN PROCESO");this.estado=" - En Progreso";};
+        if (label=="Por Hacer"){this.FiltraCanvas("PENDIENTE");this.estado=" - Por Hacer";};
+        if (label=="En Progreso"){this.FiltraCanvas("ASIGNADO,EN PROCESO");this.estado=" - En Progreso";};
         if (label=="QA"){this.FiltraCanvas("TERMINADO");this.estado=" - En Calidad";};
-        if (label=="Done"){this.FiltraCanvas("CERRADO,SUSPENDIDO,RECHAZADO");this.estado=" - Concluido";};        
+        if (label=="Cerrado"){this.FiltraCanvas("CERRADO,SUSPENDIDO,RECHAZADO");this.estado=" - Concluido";};        
       } 
      }
      else{
@@ -413,5 +413,5 @@ export class DashboardComponent implements OnInit
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
   }  
- 
+
 }

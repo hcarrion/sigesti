@@ -45,6 +45,7 @@
     "html2canvas": "^1.0.0-rc.5",
     "jquery": "^3.4.1",
     "jspdf": "^1.5.3",
+    "lodash-es": "^4.17.15",
     "net": "^1.0.2",
     "ng2-charts": "^2.3.0",
     "ngx-mat-select-search": "^2.1.1",

@@ -3,17 +3,18 @@
 
 table {
   width: 100%;
+  overflow-y: hidden !important;
 }
 
 .mat-form-field {
-font-size: 14px;
-width: 95% !important;
-margin-top: 2%;
-margin-left: 2%;
+font-size: 12px;
+width: 999% !important;
+margin-top: 1%;
+margin-left: 1%;
 }
 
 .highlight{
-background: #0275d8 !important; 
+background: #80bcf0 !important; 
 }
 
 .highlight td{
@@ -32,7 +33,7 @@ padding: 8px 24px 0;
 }
 
 .mat-form-field {
-font-size: 14px;
+font-size: 12px;
 width: 100%;
 }
 
@@ -44,10 +45,6 @@ overflow: auto;
 background-color:rgba(94, 130, 152, 0.05)
 }
 
-/*.mat-row:nth-child(odd){
-background-color:rgb(247, 241, 241)
-}
-*/
 .encabezado{
   background-color: #eff4fa;
 }
@@ -63,20 +60,3 @@ height: 38px;
 tr.mat-header-row {
 height: 46px;
 }
-/*
-tr.example-element-row:not(.example-expanded-row):hover {
-background: #0275d8;
-}
-
-tr.example-element-row:not(.example-expanded-row):active {
-background: #efefef;
-}
-
-td.mat-cell{
-border-bottom-style: none;
-}
-
-th.mat-header-cell{
-border-bottom-style: none;
-}
-*/

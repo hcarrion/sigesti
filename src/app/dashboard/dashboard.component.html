@@ -1,3 +1,17 @@
+<div *ngIf="loading" class="content-load">
+  <br>
+  <mat-spinner class="child-load"></mat-spinner>
+  <br>
+  <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+</div>
+
+
+<mat-card-header>
+  <mat-card-title>Dashboard {{estado}} </mat-card-title>
+</mat-card-header>
+
+<div class="example-container1 mat-elevation-z8">  
+
 <div class="row" >    
   <div class="col-sm-3" (click)="chartClicked($event)">
     <div class="card">
@@ -17,7 +31,50 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-3">
+  <div class="col-sm-9">  
+  <div class="example-container mat-elevation-z8"> 
+            <table mat-table [dataSource]="iniciativas" matSort>
+              <!-- Position Column -->
+              <ng-container matColumnDef="codigosvt">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> C.SVT/TKT </th>
+                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.codigoSVT}} </td>
+              </ng-container>
+        
+              <!-- Name Column -->
+              <ng-container matColumnDef="titulo">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
+                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="fechafin">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
+                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="estado">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header align="center"> ESTADO </th>
+                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" align="center"> 
+                   {{tipo.estado.descripcion}}                      
+                     </td>
+              </ng-container>
+
+              <ng-container matColumnDef="accion">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header align="center"> ACCION </th>
+                      <td mat-cell *matCellDef="let tipo" >
+                            <p><strong> 
+                              <i class="material-icons link" (click)="openDialogEdit(tipo.idIniciativa)" align="center" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
+                            </strong></p>
+                      </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="columnasTablaP; sticky: true;  " class="encabezado"></tr>
+              <tr mat-row  *matRowDef="let row; columns: columnasTablaP;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
+             </table>
+  </div>
+  </div>
+</div>
+
+<div class="row" >    
+  <div class="col-sm-3" (click)="chartClicked($event)">
     <div class="card">
       <div class="card-content">
         <h2 class="card-title">Mantenimiento</h2>
@@ -35,27 +92,49 @@
       </div>
     </div>
   </div>
+  <div class="col-sm-9">  
+    <div class="example-container mat-elevation-z8">         
+      <table mat-table [dataSource]="iniciativas2" matSort > 
+        <!-- Position Column -->
+        <ng-container matColumnDef="codigosvt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> C.SVT/TKT </th>
+            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.codigoSVT}} </td>
+        </ng-container>
+  
+        <!-- Name Column -->
+        <ng-container matColumnDef="titulo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
+            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
+        </ng-container>
 
-  <div class="col-sm-3">
-    <div class="card">
-      <div class="card-content">
-        <h2 class="card-title">Soporte</h2>
-        <div class="chart-wrapper">
-          <canvas baseChart 
-            [data]="doughnutChartDataM"
-            [labels]="doughnutChartLabels"
-            [chartType]="doughnutChartType"
-            [options]="chartOptions"
-            [plugins]="barChartPlugins"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)">>
-          </canvas>
-      </div>
-      </div>
-    </div>
+        <ng-container matColumnDef="fechafin">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
+            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header align="center"> ESTADO </th>
+            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" align="center"> 
+              {{tipo.estado.descripcion}}     </td>
+        </ng-container>
+
+        <ng-container matColumnDef="accion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header align="center"> ACCION </th>
+                <td mat-cell *matCellDef="let tipo">
+                      <p><strong> 
+                        <i class="material-icons link"  (click)="openDialogEdit(tipo.idIniciativa)" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
+                      </strong></p>
+                </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnasTablaM; sticky: true;" class="encabezado"></tr>
+        <tr mat-row  *matRowDef="let row; columns: columnasTablaM;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
+      </table>
   </div>
+  </div>
+</div>
 
-  <div class="col-sm-3">
+<div class="row" >    
+  <div class="col-sm-3" (click)="chartClicked($event)">
     <div class="card">
       <div class="card-content">
         <h2 class="card-title">Incidencias</h2>
@@ -73,229 +152,46 @@
       </div>
     </div>
   </div>
-
-</div>
-
-<div *ngIf="loading" class="content-load">
-  <br>
-  <mat-spinner class="child-load"></mat-spinner>
-  <br>
-  <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
-</div>
-
-<div class="row">      
-  <div class="col-sm-6">
-    <div class="card">      
-      <div class="card-body">        
-        <h4 class="card-title">Proyecto {{estado}} <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color " aria-hidden="true" role="img">open_in_new</mat-icon>          
-        </h4>
-          <div class="pipeline-body">
-            <table mat-table [dataSource]="iniciativas" matSort >
+  <div class="col-sm-9">  
+    <div class="example-container mat-elevation-z8">           
+      <table mat-table [dataSource]="iniciativas4" matSort >
                   
-              <!-- Position Column -->
-              <ng-container matColumnDef="codigosvt">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO SVT </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.codigoSVT}} </td>
-              </ng-container>
-        
-              <!-- Name Column -->
-              <ng-container matColumnDef="titulo">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
-              </ng-container>
+        <!-- Position Column -->
+        <ng-container matColumnDef="codigosvt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> C.SVT/TKT </th>
+            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.codigoSVT}} </td>
+        </ng-container>
+  
+        <!-- Name Column -->
+        <ng-container matColumnDef="titulo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
+            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
+        </ng-container>
 
-              <ng-container matColumnDef="fechafin">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
-              </ng-container>
+        <ng-container matColumnDef="fechafin">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
+            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
+        </ng-container>
 
-              <ng-container matColumnDef="estado">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" align="center"> 
-                    <img class="logo" *ngIf="tipo.estado.descripcion!=='TERMINADO'&&tipo.estado.descripcion!=='ASIGNADO'&&tipo.estado.descripcion!=='PENDIENTE'&&tipo.estado.descripcion!=='TERMINADO'" src="../../assets/images/circulorojo.png" alt="" width="10">
-                    <img class="logo" *ngIf="tipo.estado.descripcion==='TERMINADO'" src="../../assets/images/circuloverde.png" alt="" width="10">
-                    <img class="logo" *ngIf="tipo.estado.descripcion==='ASIGNADO'" src="../../assets/images/circuloamarillo.png" alt="" width="10">                      
-                    <img class="logo" *ngIf="tipo.estado.descripcion==='PENDIENTE'" src="../../assets/images/circuloplomo.png" alt="" width="10">                      
-                     </td>
-              </ng-container>
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header align="center"> ESTADO </th>
+            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" align="center"> 
+              {{tipo.estado.descripcion}}    </td>
+        </ng-container>
 
-              <ng-container matColumnDef="accion">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> ACCION </th>
-                      <td mat-cell *matCellDef="let tipo">
-                            <p><strong> 
-                              <i class="material-icons link" (click)="openDialogActivity(tipo.idIniciativa)" style="text-align: center; color:rgb(43, 41, 160)">art_track</i>  
-                              <i class="material-icons link"  (click)="openDialogEdit(tipo.idIniciativa)" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
-                            </strong></p>
-                      </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="columnasTablaP" class="encabezado"></tr>
-              <tr mat-row  *matRowDef="let row; columns: columnasTablaP;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-             </table>
-             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>       
-          </div>
-      </div>
+        <ng-container matColumnDef="accion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header align="center"> ACCION </th>
+                <td mat-cell *matCellDef="let tipo">
+                      <p><strong> 
+                        <i class="material-icons link" (click)="openDialogEdit(tipo.idIniciativa)"  style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
+                      </strong></p>
+                </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnasTablaI; sticky: true;" class="encabezado"></tr>
+        <tr mat-row  *matRowDef="let row; columns: columnasTablaI;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
+       </table>
     </div>
   </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Mantenimiento  {{estado}} <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color " aria-hidden="true" role="img">open_in_new</mat-icon></h4>
-        <div class="pipeline-body">
-          <table mat-table [dataSource]="iniciativas2" matSort >
-                  
-            <!-- Position Column -->
-            <ng-container matColumnDef="codigosvt">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO SVT </th>
-                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.codigoSVT}} </td>
-            </ng-container>
-      
-            <!-- Name Column -->
-            <ng-container matColumnDef="titulo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="fechafin">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
-                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="estado">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
-                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" align="center"> 
-                  <img class="logo" *ngIf="tipo.estado.descripcion!=='TERMINADO'&&tipo.estado.descripcion!=='ASIGNADO'&&tipo.estado.descripcion!=='PENDIENTE'&&tipo.estado.descripcion!=='TERMINADO'" src="../../assets/images/circulorojo.png" alt="" width="10">
-                  <img class="logo" *ngIf="tipo.estado.descripcion==='TERMINADO'" src="../../assets/images/circuloverde.png" alt="" width="10">
-                  <img class="logo" *ngIf="tipo.estado.descripcion==='ASIGNADO'" src="../../assets/images/circuloamarillo.png" alt="" width="10">                      
-                  <img class="logo" *ngIf="tipo.estado.descripcion==='PENDIENTE'" src="../../assets/images/circuloplomo.png" alt="" width="10">                      
-                   </td>
-            </ng-container>
-
-            <ng-container matColumnDef="accion">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ACCION </th>
-                    <td mat-cell *matCellDef="let tipo">
-                          <p><strong> 
-                            <i class="material-icons link" (click)="openDialogActivity(tipo.idIniciativa)" style="text-align: center; color:rgb(43, 41, 160)">art_track</i>  
-                            <i class="material-icons link" (click)="openDialogEdit(tipo.idIniciativa)" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
-                          </strong></p>
-                    </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnasTablaM" class="encabezado"></tr>
-            <tr mat-row  *matRowDef="let row; columns: columnasTablaM;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-           </table>
-           <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
-          
-          
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Soporte  {{estado}} <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color " aria-hidden="true" role="img">open_in_new</mat-icon>           </h4>
-          <div class="pipeline-body">
-            
-            <table mat-table [dataSource]="iniciativas3" matSort >
-                  
-              <!-- Position Column -->
-              <ng-container matColumnDef="codigosvt">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO SVT </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.codigoSVT}} </td>
-              </ng-container>
-        
-              <!-- Name Column -->
-              <ng-container matColumnDef="titulo">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="fechafin">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="estado">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" align="center"> 
-                    <img class="logo" *ngIf="tipo.estado.descripcion!=='TERMINADO'&&tipo.estado.descripcion!=='ASIGNADO'&&tipo.estado.descripcion!=='PENDIENTE'&&tipo.estado.descripcion!=='TERMINADO'" src="../../assets/images/circulorojo.png" alt="" width="10">
-                    <img class="logo" *ngIf="tipo.estado.descripcion==='TERMINADO'" src="../../assets/images/circuloverde.png" alt="" width="10">
-                    <img class="logo" *ngIf="tipo.estado.descripcion==='ASIGNADO'" src="../../assets/images/circuloamarillo.png" alt="" width="10">                      
-                    <img class="logo" *ngIf="tipo.estado.descripcion==='PENDIENTE'" src="../../assets/images/circuloplomo.png" alt="" width="10">                      
-                     </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="accion">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> ACCION </th>
-                      <td mat-cell *matCellDef="let tipo">
-                            <p><strong> 
-                              <i class="material-icons link" (click)="openDialogActivity(tipo.idIniciativa)" style="text-align: center; color:rgb(43, 41, 160)">art_track</i>  
-                              <i class="material-icons link" (click)="openDialogEdit(tipo.idIniciativa)" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
-                            </strong></p>
-                      </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="columnasTablaJ" class="encabezado"></tr>
-              <tr mat-row  *matRowDef="let row; columns: columnasTablaJ;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-             </table>
-             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
-            
-
-          </div>
-        </div>
-      </div>
-  </div>
-  <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Incidencias  {{estado}} <mat-icon class="mat-icon notranslate material-icons mat-icon-no-color " aria-hidden="true" role="img">open_in_new</mat-icon>           </h4>
-          <div class="pipeline-body">    
-            
-            <table mat-table [dataSource]="iniciativas4" matSort >
-                  
-              <!-- Position Column -->
-              <ng-container matColumnDef="codigosvt">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO SVT </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" > {{tipo.codigoSVT}} </td>
-              </ng-container>
-        
-              <!-- Name Column -->
-              <ng-container matColumnDef="titulo">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="fechafin">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA FIN </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaFin | date: 'dd/MM/yyyy'}} </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="estado">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
-                  <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)" align="center"> 
-                    <img class="logo" *ngIf="tipo.estado.descripcion!=='TERMINADO'&&tipo.estado.descripcion!=='ASIGNADO'&&tipo.estado.descripcion!=='PENDIENTE'&&tipo.estado.descripcion!=='TERMINADO'" src="../../assets/images/circulorojo.png" alt="" width="10">
-                    <img class="logo" *ngIf="tipo.estado.descripcion==='TERMINADO'" src="../../assets/images/circuloverde.png" alt="" width="10">
-                    <img class="logo" *ngIf="tipo.estado.descripcion==='ASIGNADO'" src="../../assets/images/circuloamarillo.png" alt="" width="12">                      
-                    <img class="logo" *ngIf="tipo.estado.descripcion==='PENDIENTE'" src="../../assets/images/circuloplomo.png" alt="" width="10">                      
-                     </td>
-              </ng-container>
-  
-              <ng-container matColumnDef="accion">
-                      <th mat-header-cell *matHeaderCellDef mat-sort-header> ACCION </th>
-                      <td mat-cell *matCellDef="let tipo">
-                            <p><strong> 
-                              <i class="material-icons link" (click)="openDialogActivity(tipo.idIniciativa)" style="text-align: center; color:rgb(43, 41, 160)">art_track</i>  
-                              <i class="material-icons link" (click)="openDialogEdit(tipo.idIniciativa)"  style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
-                            </strong></p>
-                      </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="columnasTablaI" class="encabezado"></tr>
-              <tr mat-row  *matRowDef="let row; columns: columnasTablaI;"  [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-             </table>
-             <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
-            
-
-          </div>
-        </div>
-      </div>
-  </div>    
 </div>
-  
+
+</div>

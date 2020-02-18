@@ -32,7 +32,7 @@
                     <mat-form-field hintLabel="Max 9 numeros" style="font-size: small; width: 100%;">
                         <input type="number" min="1" max="999999999" onPaste="return false" 
                         onKeyPress="if(this.value.length==9) return false;" (focusout)="focusOut($event)"
-                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"                
+                                
                         formControlName="codigoSVTInput" matInput #inputAtencion maxlength="9">
                     </mat-form-field>
                 </div>

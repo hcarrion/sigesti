@@ -49,7 +49,7 @@ table {
     background-color: #eff4fa;
 }
 .encabezado th{
-  color: blue;
+  color: #0d478f;
 }
 th.mat-sort-header-sorted {
   color: black;
@@ -90,3 +90,68 @@ tr.mat-header-row {
 .padding-icon{
   padding-right: 16%;
 }
+
+
+.example-container1 {
+  height: 300px;
+  overflow: auto;
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.example-container1::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.example-container1::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+.example-container1::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.example-container1::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.example-container1::-webkit-scrollbar-thumb {
+  background-color: #2708af;
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+.example-container1::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.example-container::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.example-container::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+.example-container::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.example-container::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.example-container::-webkit-scrollbar-thumb {
+  background-color: #af0885;
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+.example-container::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+.mat-cell{
+  font-size: 12px;
+} 

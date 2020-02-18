@@ -115,12 +115,34 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
           if("clasificacion" == paramObject.nombre) this.clasificacion = paramObject;
           if("categoria" == paramObject.nombre) this.categoria = paramObject;
           if("prioridad" == paramObject.nombre) this.prioridad = paramObject;
-          if("area" == paramObject.nombre) this.area = paramObject;
+          if("area" == paramObject.nombre) {
+            let areas = paramObject.detalle.sort((n1,n2) => {
+              if (n1.descripcion > n2.descripcion) {
+                  return 1;
+              }
+              if (n1.descripcion < n2.descripcion) {
+                  return -1;
+              }
+              return 0;
+            });
+            paramObject.detalle = areas;
+            this.area = paramObject;
+          }
         });
       });
 
       colaboradoresRef.subscribe(data => {data.forEach(colabObj => {
         let colabObject= colabObj.payload.doc.data() as ColaboradorFire;
+        let colabs = colabObject.colaboradores.sort((n1,n2) => {
+          if (n1.nombres > n2.nombres) {
+              return 1;
+          }
+          if (n1.nombres < n2.nombres) {
+              return -1;
+          }
+          return 0;
+      });
+      colabObject.colaboradores = colabs;
         this.colaboradores = colabObject;
         });
       });
@@ -177,11 +199,6 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     }
     return result;
   }
-  
-  onKey(event:any) { // without type info
-    alert(event.target.value);
-  }
-
 
   validarField2(fieldValue) {
     let result;
