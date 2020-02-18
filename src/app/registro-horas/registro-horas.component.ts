@@ -139,7 +139,7 @@ export class RegistroHorasComponent implements OnInit {
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
-     }else if(0 == dateToday.getDay()){
+     }else if(5 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt4 = this.daysSubtraction(dateToday, 4);
       let fechaAnt4Str =this.datePipe.transform(fechaAnt4, 'dd/MM/yy');
@@ -277,7 +277,8 @@ export class RegistroHorasComponent implements OnInit {
                 }else{
                   porcentaje = 0;
                 }
-                actividadHorasFire.avance = porcentaje.toPrecision(2)+"%";
+                debugger;
+                actividadHorasFire.avance = porcentaje.toPrecision(3)+"%";
                 actividadHorasFire.horasFecha = horasFechas;
                 listaActi.push(actividadHorasFire);
               }
@@ -294,6 +295,7 @@ export class RegistroHorasComponent implements OnInit {
     this.loading = true;
     let tblObject = (document.getElementById(idTable)) as HTMLTableElement;
     let horaRowList: HoraRow[] = [];
+    let isValidSumHours: boolean = true;
     for(let k = 1; k < tblObject.rows.length; k++){
       let horaRow = new HoraRow();
       var trObject = tblObject.rows[k] as HTMLTableRowElement;
@@ -367,6 +369,9 @@ export class RegistroHorasComponent implements OnInit {
                         }
                       });
                     }
+                    let horasAsignadas = iniciativaFire.actividad.actividades[j].recursos[i].horasAsig;
+                    let horasRegList = iniciativaFire.actividad.actividades[j].recursos[i].horasReg;
+                    isValidSumHours = this.validarHorasRegistradas(horasAsignadas, horasRegList);
                   }
                 }
               }
@@ -551,4 +556,18 @@ export class RegistroHorasComponent implements OnInit {
     let newFechStr = month+"/"+day+"/"+year;
     return newFechStr;
   }
+
+  validarHorasRegistradas(hAsig: number, horasReg: HoraFire[]){
+    let sumaHorasReg: number = 0;
+    horasReg.forEach(element =>{
+      sumaHorasReg = sumaHorasReg + element.horas;
+    });
+    debugger;
+    if(hAsig >= sumaHorasReg){
+      return true;
+    }else{
+      return false;
+    }
+  }
 }
+
