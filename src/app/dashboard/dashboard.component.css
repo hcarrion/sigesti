@@ -1,7 +1,7 @@
 html, body, #container {
   width: 100%;
   height: 100%;
-  margin: 0;
+  margin: 1;
   padding: 0;
 }
 
@@ -10,14 +10,14 @@ table {
 }
 
 .mat-form-field {
-  font-size: 14px;
+  font-size: 10px;
   width: 95% !important;
   margin-top: 2%;
   margin-left: 2%;
 }
 
 .highlight{
-  background: #0275d8 !important; 
+  background: #90c7f7 !important; 
 }
 
 .highlight td{
@@ -31,21 +31,24 @@ table {
 }
 
 .example-header {
-  min-height: 64px;
-  padding: 8px 24px 0;
+  min-height: 30px;
+  padding: 8px 14px 0;
 }
 
 .mat-form-field {
-  font-size: 14px;
+  font-size: 10px;
   width: 100%;
 }
 
 .mat-table {
-  overflow: auto;
+  overflow: auto; 
+  width: 100%;
+  overflow-x: scroll;
 }
 
 .card-title{
   color: #0d478f;
+  font-sizE: small;
 }
 
 .mat-row:nth-child(even){
@@ -60,16 +63,17 @@ table {
     background-color: #eff4fa;
 }
 .encabezado th{
-  color: blue;
+  color: #0d478f;
 }
 th.mat-sort-header-sorted {
   color: black;
 }
 tr.mat-footer-row, tr.mat-row {
-  height: 38px;
+  height: 15px;
 }
 tr.mat-header-row {
-  height: 46px;
+  height: 30px;
+  font-size: 08;
 }
 
 /* Absolute Center Spinner */
@@ -84,6 +88,7 @@ tr.mat-header-row {
   left: 0;
   bottom: 0;
   right: 0;
+  font-size: 08px;
 }
 
 /* Transparent Overlay */
@@ -110,19 +115,98 @@ label {
 .mat-icon {
   text-align: right;
   vertical-align: middle;
-  font-size: 15px;
+  font-size: 10px;
   width: 15px;
 }
 
 .material-icons{
   text-align: center;
   vertical-align: middle;
-  font-size: 14px;
-  width: 14px;
+  font-size: 15px;
+  width: 15px;
 }
 .logo{
   text-align: center;
   vertical-align: middle;
-  font-size: 10px;
-  width: 10px;
+  font-size: 12px;
+  width: 12px;
 }
+
+.mat-card-title {
+  color: #0d478f;
+}
+.example-container {
+  height: 180px;
+  width: 100%;
+  overflow: auto;
+  font-size: xx-small;
+}
+
+table {
+  width: 100%;
+}
+
+.example-container1 {
+  height: 500px;
+  overflow: auto;
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.example-container1::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.example-container1::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+.example-container1::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.example-container1::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.example-container1::-webkit-scrollbar-thumb {
+  background-color: #2708af;
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+.example-container1::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.example-container::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.example-container::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+.example-container::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.example-container::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.example-container::-webkit-scrollbar-thumb {
+  background-color: #af0885;
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+.example-container::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
+.mat-cell{
+  font-size: 12px;
+} 
