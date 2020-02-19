@@ -3,8 +3,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angu
 import { DialogRecursosComponent } from '../modal/dialog-recursos/dialog-recursos.component';
 import { DialogRiesgosComponent } from '../modal/dialog-riesgos/dialog-riesgos.component';
 import { DialogSeguimientoComponent} from "../modal/dialog-seguimiento/dialog-seguimiento.component";
-import { FirebaseIniciativaService } from '../shared/services/firebase-iniciativa.service';
-import { IniciativaFire } from '../shared/models/iniciativa-fire';
+import { FirebaseIniciativaMainService } from '../shared/services/firebase-iniciativa-main.service';
+import { IniciativaMainFire } from '../shared/models/iniciativa-main-fire';
 import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
@@ -28,19 +28,19 @@ export class ListadoAtencionComponent implements OnInit
   columnasTabla: string[] = ['codigosvt', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
   title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
-  iniciativas= new MatTableDataSource<IniciativaFire>([]);
+  iniciativas= new MatTableDataSource<IniciativaMainFire>([]);
   selectedRowIndex: number = -1;
-  tipoDocumentoData = new MatTableDataSource<IniciativaFire>([]);
-  tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaFire>([]);
+  tipoDocumentoData = new MatTableDataSource<IniciativaMainFire>([]);
+  tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaMainFire>([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   
-  public tipoDocumento: IniciativaFire[];
-  public tipoDocumentoSeleccionado: IniciativaFire;
+  public tipoDocumento: IniciativaMainFire[];
+  public tipoDocumentoSeleccionado: IniciativaMainFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
   loading: boolean;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaService) {}
+  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaMainService) {}
 
   openDialogRecursos(idIniciativa: string) {
     this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
@@ -109,11 +109,10 @@ export class ListadoAtencionComponent implements OnInit
       var lista = [];
       for(var i = 0; i < data.length; i++){
         //lista.push(data[i].payload.doc.data() as IniciativaFire);
-        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+        let iniciativaObject= data[i].payload.doc.data() as IniciativaMainFire;
         let idIniciativa = data[i].payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
-
       }
       this.iniciativas =  new MatTableDataSource(lista);
       this.iniciativas.paginator = this.paginator;
@@ -145,7 +144,7 @@ export class ListadoAtencionComponent implements OnInit
     this.selectedRowIndex = row.numeroIniciativa;
   }
 
-  selectedDocumento(todo: IniciativaFire) {
+  selectedDocumento(todo: IniciativaMainFire) {
     this.InReset();
     this.habilitar = true;
     this.selected = true;
@@ -169,6 +168,7 @@ export class ListadoAtencionComponent implements OnInit
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
   }
+  
   openStatusReport(tipo: Listadoatencionhelp){
     alert(tipo);
   }

@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject, NgZone, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
-import { IniciativaFire } from 'src/app/shared/models/iniciativa-fire';
+import { IniciativaMainFire } from 'src/app/shared/models/iniciativa-main-fire';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FirebaseParametroService } from 'src/app/shared/services/firebase-parametro.service';
 import { FirebaseColaboradorService } from 'src/app/shared/services/firebase-colaborador.service';
-import { FirebaseIniciativaService } from 'src/app/shared/services/firebase-iniciativa.service';
+import { FirebaseIniciativaMainService } from 'src/app/shared/services/firebase-iniciativa-main.service';
 import { FirestoreService } from 'src/app/services/firestore/firestore.service';
 import { ColaboradorFire } from 'src/app/shared/models/colaborador-fire';
 import { ColaboradorDetalleFire } from 'src/app/shared/models/colaborador-detalle-fire';
@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
 })
 export class DialogRecursosComponent implements OnInit, OnDestroy {
   regRecursos: FormGroup;
-  iniciativa: IniciativaFire = new IniciativaFire();
+  iniciativa: IniciativaMainFire = new IniciativaMainFire();
   idIniciativaR: string;
   colaboradores: ColaboradorFire = new ColaboradorFire();
 
@@ -35,7 +35,7 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
   constructor(public dialogRef: MatDialogRef<DialogRecursosComponent>, 
     private firebaseColaboradores: FirebaseColaboradorService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private firebaseIniciativas: FirebaseIniciativaService) {
+    private firebaseIniciativas: FirebaseIniciativaMainService) {
       this.idIniciativaR = data;
       this.regRecursos = new FormGroup({
         tituloInputDialog: new FormControl(),
@@ -51,7 +51,6 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.callColaboradores();
-    
   }
 
   callColaboradores() {
@@ -60,12 +59,22 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
 
     colaboradoresRef.subscribe(data => {data.forEach(colabObj => {
         let colabObject= colabObj.payload.doc.data() as ColaboradorFire;
+        let colabs = colabObject.colaboradores.sort((n1,n2) => {
+          if (n1.nombres > n2.nombres){
+              return 1;
+          }
+          if (n1.nombres < n2.nombres){
+              return -1;
+          }
+          return 0;
+        });
+        colabObject.colaboradores = colabs;
         this.colaboradores =  colabObject;
 
         if("" != this.idIniciativaR){
           let iniciativaRef = this.firebaseIniciativas.getIniciativa2(this.idIniciativaR);
           iniciativaRef.forEach(data => {
-            this.iniciativa = data.data() as IniciativaFire;
+            this.iniciativa = data.data() as IniciativaMainFire;
             this.loadData();
             this.activeSelect(this.colaboradores.colaboradores);
             this.updatePorcentajePorAsignar();
@@ -148,6 +157,7 @@ export class DialogRecursosComponent implements OnInit, OnDestroy {
       }else{
         this.iniciativa.recursos = colabDetFireList;
         this.iniciativa.idIniciativa = this.idIniciativaR;
+        this.iniciativa.fechaAct = new Date();
         this.firebaseIniciativas.updateIniciativa(this.iniciativa).then(
           result => {
             this.loading = false;
