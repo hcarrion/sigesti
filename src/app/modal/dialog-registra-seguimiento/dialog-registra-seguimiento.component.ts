@@ -94,7 +94,8 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
         horaEstimadaInput: new FormControl(),
         fechaFinInput: new FormControl(),
         codigoSVTInput: new FormControl(),
-        contactoSelect: new FormControl()
+        contactoSelect: new FormControl(),
+        horaRealInput: new FormControl(),
       });
   }
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
@@ -191,6 +192,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       this.regIniciativa.controls.fechaInicioInput.setValue(this.iniciativa.fechaInicio);
       this.regIniciativa.controls.fechaFinInput.setValue(this.iniciativa.fechaFin);
       this.regIniciativa.controls.horaEstimadaInput.setValue(this.iniciativa.horaEstimada);
+      this.regIniciativa.controls.horaRealInput.setValue(this.iniciativa.horaReal);
       if(undefined != this.iniciativa.contacto){
         this.telefonoContactoInput.setValue(this.iniciativa.contacto.telefono);
         this.correoContactoInput.setValue(this.iniciativa.contacto.correo);
@@ -198,7 +200,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       }
     }else{
       this.estado.detalle.forEach(element =>{
-        if("PENDIENTE" == element.descripcion){
+        if("PLANIFICACION" == element.descripcion){
           this.iniciativa.estado = element;
         }
       });
@@ -244,6 +246,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     this.telefonoContactoInput.reset();
     this.correoContactoInput.reset();
     this.anexoContactoInput.reset();
+    this.regIniciativa.controls.horaRealInput.reset();
     /*this.regIniciativa.reset();*/
   }
 
@@ -254,7 +257,6 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     let iniciativaObject = iniciativaFire;
     
     iniciativaObject.codigoSVT = this.regIniciativa.value.codigoSVTInput;
-    debugger;
     iniciativaObject.estado = this.regIniciativa.controls.estadoSelect.value as ParametroDetalleFire;
     if(null != this.regIniciativa.value.tituloInput) iniciativaObject.titulo = this.regIniciativa.value.tituloInput.trim();
     iniciativaObject.jefeProyecto = this.jefeProyectoCtrl.value as ColaboradorDetalleFire;
@@ -271,6 +273,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     iniciativaObject.categoria = this.regIniciativa.value.categoriaSelect as ParametroDetalleFire;
     iniciativaObject.tipo = this.regIniciativa.value.tipoSelect as ParametroDetalleFire;
     iniciativaObject.contacto = this.regIniciativa.value.contactoSelect as ContactoFire;
+    iniciativaObject.horaReal = this.regIniciativa.value.horaRealInput;
     
     this.regIniciativa = this.formBuilder.group({
       tituloInput: [iniciativaObject.titulo, Validators.required],
@@ -300,7 +303,6 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       resultValidate = true;
       msj ='Debe completar la información requerida.';
     }
-    debugger;
     if(undefined == iniciativaObject.area || undefined == iniciativaObject.area.descripcion){
       resultValidate = true;
       msj ='Debe completar la información requerida.';

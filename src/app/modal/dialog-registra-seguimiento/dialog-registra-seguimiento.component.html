@@ -127,7 +127,7 @@
                 </div>
                 <div class="col-md-2">
                     <mat-form-field style="font-size: small; width: 100%;">
-                        <input formControlName="horaEstimadaInput" matInput #inputHoras placeholder="Estimado en horas"
+                        <input formControlName="horaEstimadaInput" matInput #inputHoras
                             placeholder="Estimado(horas)"type="number" min="1" max="9999" onPaste="return false"
                             onKeyPress="if(this.value.length==4) return false;" (focusout)="focusOut($event)"
                             id="horas-est" oninput="this.value = Math.trunc(this.value)">
@@ -227,6 +227,14 @@
                 <div class="col-md-2">
                     <mat-form-field style="font-size: small; width: 100%;">
                         <input [formControl]="anexoContactoInput" matInput #inputHoras type="number" placeholder="Anexo">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field style="font-size: small; width: 100%;">
+                        <input formControlName="horaRealInput" matInput #inputHorasReales
+                            placeholder="Horas reales"type="number" min="1" max="9999" onPaste="return false"
+                            onKeyPress="if(this.value.length==4) return false;" (focusout)="focusOut($event)"
+                            oninput="this.value = Math.trunc(this.value)">
                     </mat-form-field>
                 </div>
             </div>

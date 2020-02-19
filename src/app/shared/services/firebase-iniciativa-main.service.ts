@@ -101,6 +101,6 @@ export class FirebaseIniciativaMainService {
   }
 
   getPlanesIniciativaFiltro(campo: string, condicion: string){
-    return this.firestore.collection('iniciativasmain', ref => ref.where(campo, '==', condicion).where('estado.descripcion', 'in', ["ASIGNADO", "EN PROCESO", "TERMINADO", "SUSPENDIDO"]).orderBy('prioridad.codigo')).snapshotChanges();
+    return this.firestore.collection('iniciativasmain', ref => ref.where(campo, '==', condicion).where('estado.descripcion', 'in', ["PLANIFICACION", "DESARROLLO", "QA", "PRODUCCION", "SEGUIMIENTO POST", "SUSPENDIDO", "ANULADO"]).orderBy('prioridad.codigo')).snapshotChanges();
   }
 }

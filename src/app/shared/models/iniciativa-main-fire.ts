@@ -22,6 +22,7 @@ export class IniciativaMainFire {
     tipo: ParametroDetalleFire;
     codigoSVT: number;
     contacto: ContactoFire;
+    horaReal: number;
     recursos: ColaboradorDetalleFire[];
     fechaReg: Date;
     fechaAct: Date;

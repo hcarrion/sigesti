@@ -248,16 +248,22 @@ export class RegistroHorasComponent implements OnInit {
     let listaProy: IniciativaHorasFire[] = [];
     lista.forEach(iniciativaFire => {
           let iniciativaHorasFire = new IniciativaHorasFire();
-          if(undefined != iniciativaFire.recursos){
+          if(undefined != iniciativaFire.recursos && 0 != iniciativaFire.recursos.length){
+            let porcentaje: number = 0;
+            let horasTotales: number = 0;
+            iniciativaFire.recursos.forEach(recurso => {
+              if(undefined != recurso.horasReg && 0 != recurso.horasReg.length){
+                recurso.horasReg.forEach(hora => {
+                  horasTotales = horasTotales + hora.horas;
+                });
+              }
+            });
             iniciativaFire.recursos.forEach(recurso => {
               if(usuario == recurso.codigoUsuario){
                 iniciativaHorasFire.iniciativa = iniciativaFire;
-                let porcentaje: number = 0;
-                let horasTotales: number = 0;
                 let horasFechas: number[] = [];
                 if(undefined != recurso.horasReg && 0 != recurso.horasReg.length){
                   recurso.horasReg.forEach(hora => {
-                    horasTotales = horasTotales + hora.horas;
                     for(let i = 0; i < this.columnasFechTabla.length; i++){
                       let fechaSavedStr = hora.fecha;
                       let fechaSaved = (new Date(fechaSavedStr)).getTime();
@@ -268,10 +274,9 @@ export class RegistroHorasComponent implements OnInit {
                       }
                     }
                   });
-                  porcentaje = (horasTotales * 100)/iniciativaFire.horaEstimada;
-                }else{
-                  porcentaje = 0;
                 }
+                debugger;
+                porcentaje = (horasTotales * 100)/iniciativaFire.horaEstimada;
                 iniciativaHorasFire.avance = porcentaje.toPrecision(3)+"%";
                 iniciativaHorasFire.horasFecha = horasFechas;
                 listaProy.push(iniciativaHorasFire);
