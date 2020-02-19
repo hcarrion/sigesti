@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FirebaseIniciativaService } from '../shared/services/firebase-iniciativa.service';
-import { IniciativaFire } from '../shared/models/iniciativa-fire';
+import { FirebaseIniciativaMainService } from '../shared/services/firebase-iniciativa-main.service';
+import { IniciativaMainFire } from '../shared/models/iniciativa-main-fire';
 import { MatTableDataSource, MatPaginator, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ActividadHorasFire } from '../shared/models/actividad-horas-fire';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/util/date.adapter';
 import { HoraFire } from '../shared/models/hora-fire';
 import Swal from 'sweetalert2';
 import { HoraRow } from '../shared/models/hora-row';
+import { IniciativaHorasFire } from '../shared/models/iniciativa-horas-fire';
 
 @Component({
   selector: 'app-registro-horas',
@@ -26,22 +26,22 @@ export class RegistroHorasComponent implements OnInit {
   habilitar2: boolean;
   habilitar3: boolean;
   public usuario = "";
-  listaAct: ActividadHorasFire[] = [];
-  listaMantenimientoAct: ActividadHorasFire[] = [];
-  listaSoporteAct: ActividadHorasFire[] = [];
-  listaIncidenciaAct: ActividadHorasFire[] = [];
+  listaInic: IniciativaHorasFire[] = [];
+  listaMantenimientoInic: IniciativaHorasFire[] = [];
+  listaSoporteInic: IniciativaHorasFire[] = [];
+  listaIncidenciaInic: IniciativaHorasFire[] = [];
   regHoras: FormGroup;
   
   columnasTabla: string[] = ['codigosvt', 'titulo', 'fechainicio', 'fechafin', 'avance', 'prioridad'];
 
-  columnasFechTabla: string[] = ['06/02/20', '07/02/20', '08/02/20'];
+  columnasFechTabla: string[] = [];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  proyectoIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
-  mantenimientoIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
-  soporteIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
-  incidenciaIniciativas= new MatTableDataSource<ActividadHorasFire>([]);
+  proyectoIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);
+  mantenimientoIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);
+  soporteIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);
+  incidenciaIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);
   loading: boolean;
-  constructor(private firebaseIniciativas: FirebaseIniciativaService,
+  constructor(private firebaseIniciativas: FirebaseIniciativaMainService,
     public datePipe: DatePipe) {
       this.regHoras = new FormGroup({
         estadoHorasSelect: new FormControl(),
@@ -62,7 +62,6 @@ export class RegistroHorasComponent implements OnInit {
   }
 
   InActiva() {
-  
    if (this.habilitar){this.habilitar = false;
    }else {this.habilitar = true;}
   }
@@ -94,7 +93,7 @@ export class RegistroHorasComponent implements OnInit {
    loadColumns(){
      let dateToday = new Date();
      if(1 == dateToday.getDay()){
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       let fechas: string[] = [];
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
@@ -102,64 +101,64 @@ export class RegistroHorasComponent implements OnInit {
      }else if(2 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
      }else if(3 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
-      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM');
+      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yy');
       fechas.push(fechaAnt2Str);
       this.columnasTabla.push(fechaAnt2Str);
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
      }else if(4 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt3 = this.daysSubtraction(dateToday, 3);
-      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM');
+      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM/yy');
       fechas.push(fechaAnt3Str);
       this.columnasTabla.push(fechaAnt3Str);
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
-      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM');
+      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yy');
       fechas.push(fechaAnt2Str);
       this.columnasTabla.push(fechaAnt2Str);
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
      }else if(5 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt4 = this.daysSubtraction(dateToday, 4);
-      let fechaAnt4Str =this.datePipe.transform(fechaAnt4, 'dd/MM');
+      let fechaAnt4Str =this.datePipe.transform(fechaAnt4, 'dd/MM/yy');
       fechas.push(fechaAnt4Str);
       this.columnasTabla.push(fechaAnt4Str);
       let fechaAnt3 = this.daysSubtraction(dateToday, 3);
-      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM');
+      let fechaAnt3Str =this.datePipe.transform(fechaAnt3, 'dd/MM/yy');
       fechas.push(fechaAnt3Str);
       this.columnasTabla.push(fechaAnt3Str);
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
-      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM');
+      let fechaAnt2Str =this.datePipe.transform(fechaAnt2, 'dd/MM/yy');
       fechas.push(fechaAnt2Str);
       this.columnasTabla.push(fechaAnt2Str);
       let fechaAnt1 = this.daysSubtraction(dateToday, 1);
-      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM');
+      let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM');
+      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
@@ -171,13 +170,13 @@ export class RegistroHorasComponent implements OnInit {
     iniciativasRef.subscribe(data => {
       var lista = [];
       data.forEach(dataElement => {
-        let iniciativaObject= dataElement.payload.doc.data() as IniciativaFire;
+        let iniciativaObject= dataElement.payload.doc.data() as IniciativaMainFire;
         let idIniciativa = dataElement.payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
       });
-      this.listaAct = this.getActividades(lista, this.usuario);
-      this.proyectoIniciativas =  new MatTableDataSource(this.listaAct);
+      this.listaInic = this.getIniciativas(lista, this.usuario);
+      this.proyectoIniciativas =  new MatTableDataSource(this.listaInic);
       this.proyectoIniciativas.paginator = this.paginator;
       this.getFechaHoy(this.columnasTabla);
       this.loading = false;
@@ -189,13 +188,13 @@ export class RegistroHorasComponent implements OnInit {
     iniciativasRef.subscribe(data => {
       var lista = [];
       data.forEach(dataElement => {
-        let iniciativaObject= dataElement.payload.doc.data() as IniciativaFire;
+        let iniciativaObject= dataElement.payload.doc.data() as IniciativaMainFire;
         let idIniciativa = dataElement.payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
       });
-      this.listaMantenimientoAct = this.getActividades(lista, this.usuario);
-      this.mantenimientoIniciativas =  new MatTableDataSource(this.listaMantenimientoAct);
+      this.listaMantenimientoInic = this.getIniciativas(lista, this.usuario);
+      this.mantenimientoIniciativas =  new MatTableDataSource(this.listaMantenimientoInic);
       this.mantenimientoIniciativas.paginator = this.paginator;
       this.getFechaHoy(this.columnasTabla);
       this.loading = false;
@@ -207,13 +206,13 @@ export class RegistroHorasComponent implements OnInit {
     iniciativasRef.subscribe(data => {
       var lista = [];
       data.forEach(dataElement => {
-        let iniciativaObject= dataElement.payload.doc.data() as IniciativaFire;
+        let iniciativaObject= dataElement.payload.doc.data() as IniciativaMainFire;
         let idIniciativa = dataElement.payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
       });
-      this.listaSoporteAct = this.getActividades(lista, this.usuario);
-      this.soporteIniciativas =  new MatTableDataSource(this.listaSoporteAct);
+      this.listaSoporteInic = this.getIniciativas(lista, this.usuario);
+      this.soporteIniciativas =  new MatTableDataSource(this.listaSoporteInic);
       this.soporteIniciativas.paginator = this.paginator;
       this.getFechaHoy(this.columnasTabla);
       this.loading = false;
@@ -225,13 +224,13 @@ export class RegistroHorasComponent implements OnInit {
     iniciativasRef.subscribe(data => {
       var lista = [];
       data.forEach(dataElement => {
-        let iniciativaObject= dataElement.payload.doc.data() as IniciativaFire;
+        let iniciativaObject= dataElement.payload.doc.data() as IniciativaMainFire;
         let idIniciativa = dataElement.payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
       });
-      this.listaIncidenciaAct = this.getActividades(lista, this.usuario);
-      this.incidenciaIniciativas =  new MatTableDataSource(this.listaIncidenciaAct);
+      this.listaIncidenciaInic = this.getIniciativas(lista, this.usuario);
+      this.incidenciaIniciativas =  new MatTableDataSource(this.listaIncidenciaInic);
       this.incidenciaIniciativas.paginator = this.paginator;
       this.getFechaHoy(this.columnasTabla);
       this.loading = false;
@@ -245,24 +244,18 @@ export class RegistroHorasComponent implements OnInit {
     this.columnasTabla[itemIndex] = dateTodayStr;*/
   }
 
-  getActividades(lista: IniciativaFire[], usuario: string){
-    let listaActi: ActividadHorasFire[] = [];
+  getIniciativas(lista: IniciativaMainFire[], usuario: string){
+    let listaProy: IniciativaHorasFire[] = [];
     lista.forEach(iniciativaFire => {
-      if(undefined != iniciativaFire.actividad){
-        iniciativaFire.actividad.actividades.forEach(actividadDet => {
-          let actividadHorasFire = new ActividadHorasFire();
-          if(undefined != actividadDet.recursos){
-            actividadDet.recursos.forEach(recurso => {
+          let iniciativaHorasFire = new IniciativaHorasFire();
+          if(undefined != iniciativaFire.recursos){
+            iniciativaFire.recursos.forEach(recurso => {
               if(usuario == recurso.codigoUsuario){
-                actividadHorasFire.iniciativa = iniciativaFire;
-                actividadHorasFire.codigoAct = actividadDet.codigo;
-                actividadHorasFire.tituloAct = actividadDet.titulo;
-                actividadHorasFire.fechaInicioAct = actividadDet.fechaInicio;
-                actividadHorasFire.fechaFinAct = actividadDet.fechaFin;
+                iniciativaHorasFire.iniciativa = iniciativaFire;
                 let porcentaje: number = 0;
                 let horasTotales: number = 0;
                 let horasFechas: number[] = [];
-                if(undefined != recurso.horasReg){
+                if(undefined != recurso.horasReg && 0 != recurso.horasReg.length){
                   recurso.horasReg.forEach(hora => {
                     horasTotales = horasTotales + hora.horas;
                     for(let i = 0; i < this.columnasFechTabla.length; i++){
@@ -275,22 +268,19 @@ export class RegistroHorasComponent implements OnInit {
                       }
                     }
                   });
-                  porcentaje = (horasTotales * 100)/recurso.horasAsig;
+                  porcentaje = (horasTotales * 100)/iniciativaFire.horaEstimada;
                 }else{
                   porcentaje = 0;
                 }
-                debugger;
-                actividadHorasFire.avance = porcentaje.toPrecision(3)+"%";
-                actividadHorasFire.horasFecha = horasFechas;
-                listaActi.push(actividadHorasFire);
+                iniciativaHorasFire.avance = porcentaje.toPrecision(3)+"%";
+                iniciativaHorasFire.horasFecha = horasFechas;
+                listaProy.push(iniciativaHorasFire);
               }
             });
           }
-        });
-      }
+      
     });
-
-    return listaActi;
+    return listaProy;
   }
 
   saveHoras(idTable: string, isUpdate: boolean){
@@ -325,8 +315,6 @@ export class RegistroHorasComponent implements OnInit {
         horaRow.indicadores.forEach(indic => {
           var trObject = tblObject.rows[indic] as HTMLTableRowElement;
           let idIniciativa = trObject.cells[0].id;
-          let codActividadStr = trObject.cells[1].id;
-          let codActividad = Number.parseInt(codActividadStr);
           let numColumns = 6 + this.columnasFechTabla.length;
           let horaFireList: HoraFire[] = [];
           for(let w = 6; w < numColumns; w++){
@@ -341,20 +329,18 @@ export class RegistroHorasComponent implements OnInit {
             horaFireList.push(horaFire);
           }
           let iniciativaRef = this.firebaseIniciativas.getIniciativa2(idIniciativa);
-          let iniciativaFire = new IniciativaFire();
+          let iniciativaFire = new IniciativaMainFire();
           iniciativaRef.forEach(data => {
-            iniciativaFire = data.data() as IniciativaFire;
-            for(let j = 0; j < iniciativaFire.actividad.actividades.length; j++){
-              if(codActividad == iniciativaFire.actividad.actividades[j].codigo){
-                for(let i = 0; i < iniciativaFire.actividad.actividades[j].recursos.length; i++){
-                  if(this.usuario == iniciativaFire.actividad.actividades[j].recursos[i].codigoUsuario){
-                    if(undefined == iniciativaFire.actividad.actividades[j].recursos[i].horasReg){
+            iniciativaFire = data.data() as IniciativaMainFire;
+                for(let i = 0; i < iniciativaFire.recursos.length; i++){
+                  if(this.usuario == iniciativaFire.recursos[i].codigoUsuario){
+                    if(undefined == iniciativaFire.recursos[i].horasReg){
                       for(let x = 0; x < horaFireList.length; x++){
                         horaFireList[x].fechaReg = new Date();
                       }
-                      iniciativaFire.actividad.actividades[j].recursos[i].horasReg = horaFireList;
+                      iniciativaFire.recursos[i].horasReg = horaFireList;
                     }else{
-                      let horaList = iniciativaFire.actividad.actividades[j].recursos[i].horasReg;
+                      let horaList = iniciativaFire.recursos[i].horasReg;
                       horaFireList.forEach(element => {
                         let indexHora = horaList.findIndex(horaFire => {
                           let fechaSavedStr = horaFire.fecha;
@@ -371,13 +357,11 @@ export class RegistroHorasComponent implements OnInit {
                         }
                       });
                     }
-                    let horasAsignadas = iniciativaFire.actividad.actividades[j].recursos[i].horasAsig;
-                    let horasRegList = iniciativaFire.actividad.actividades[j].recursos[i].horasReg;
+                    let horasAsignadas = iniciativaFire.recursos[i].horasAsig;
+                    let horasRegList = iniciativaFire.recursos[i].horasReg;
                     isValidSumHours = this.validarHorasRegistradas(horasAsignadas, horasRegList);
                   }
                 }
-              }
-            }
             this.firebaseIniciativas.updateIniciativa(iniciativaFire).then(
               result => {
               },error => {
@@ -387,14 +371,12 @@ export class RegistroHorasComponent implements OnInit {
         });
       }else{
         let iniciativaRef = this.firebaseIniciativas.getIniciativa2(horaRow.idIniciativa);
-        let iniciativaFire = new IniciativaFire();
+        let iniciativaFire = new IniciativaMainFire();
         iniciativaRef.forEach(data => {
-          iniciativaFire = data.data() as IniciativaFire;
+          iniciativaFire = data.data() as IniciativaMainFire;
           horaRow.indicadores.forEach(indix =>{
             var trObject = tblObject.rows[indix] as HTMLTableRowElement;
             let idIniciativa = trObject.cells[0].id;
-            let codActividadStr = trObject.cells[1].id;
-            let codActividad = Number.parseInt(codActividadStr);
             let numColumns = 6 + this.columnasFechTabla.length;
             let horaFireList: HoraFire[] = [];
             for(let w = 6; w < numColumns; w++){
@@ -409,17 +391,15 @@ export class RegistroHorasComponent implements OnInit {
               horaFireList.push(horaFire);
             }
 
-            for(let j = 0; j < iniciativaFire.actividad.actividades.length; j++){
-              if(codActividad == iniciativaFire.actividad.actividades[j].codigo){
-                for(let i = 0; i < iniciativaFire.actividad.actividades[j].recursos.length; i++){
-                  if(this.usuario == iniciativaFire.actividad.actividades[j].recursos[i].codigoUsuario){
-                    if(undefined == iniciativaFire.actividad.actividades[j].recursos[i].horasReg){
+                for(let i = 0; i < iniciativaFire.recursos.length; i++){
+                  if(this.usuario == iniciativaFire.recursos[i].codigoUsuario){
+                    if(undefined == iniciativaFire.recursos[i].horasReg){
                       for(let x = 0; x < horaFireList.length; x++){
                         horaFireList[x].fechaReg = new Date();
                       }
-                      iniciativaFire.actividad.actividades[j].recursos[i].horasReg = horaFireList;
+                      iniciativaFire.recursos[i].horasReg = horaFireList;
                     }else{
-                      let horaList = iniciativaFire.actividad.actividades[j].recursos[i].horasReg;
+                      let horaList = iniciativaFire.recursos[i].horasReg;
                       horaFireList.forEach(element => {
                         let indexHora = horaList.findIndex(horaFire => {
                           let fechaSavedStr = horaFire.fecha;
@@ -438,8 +418,6 @@ export class RegistroHorasComponent implements OnInit {
                     }
                   }
                 }
-              }
-            }
           });
           this.firebaseIniciativas.updateIniciativa(iniciativaFire).then(
             result => {
@@ -564,12 +542,110 @@ export class RegistroHorasComponent implements OnInit {
     horasReg.forEach(element =>{
       sumaHorasReg = sumaHorasReg + element.horas;
     });
-    debugger;
     if(hAsig >= sumaHorasReg){
       return true;
     }else{
       return false;
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* Versión con actividades */
+  /*
+  getActividades(lista: IniciativaMainFire[], usuario: string){
+    let listaActi: ActividadHorasFire[] = [];
+    lista.forEach(iniciativaFire => {
+      if(undefined != iniciativaFire.actividad){
+        iniciativaFire.actividad.actividades.forEach(actividadDet => {
+          let actividadHorasFire = new ActividadHorasFire();
+          if(undefined != actividadDet.recursos){
+            actividadDet.recursos.forEach(recurso => {
+              if(usuario == recurso.codigoUsuario){
+                actividadHorasFire.iniciativa = iniciativaFire;
+                actividadHorasFire.codigoAct = actividadDet.codigo;
+                actividadHorasFire.tituloAct = actividadDet.titulo;
+                actividadHorasFire.fechaInicioAct = actividadDet.fechaInicio;
+                actividadHorasFire.fechaFinAct = actividadDet.fechaFin;
+                let porcentaje: number = 0;
+                let horasTotales: number = 0;
+                let horasFechas: number[] = [];
+                if(undefined != recurso.horasReg){
+                  recurso.horasReg.forEach(hora => {
+                    horasTotales = horasTotales + hora.horas;
+                    for(let i = 0; i < this.columnasFechTabla.length; i++){
+                      let fechaSavedStr = hora.fecha;
+                      let fechaSaved = (new Date(fechaSavedStr)).getTime();
+                      let fechaColumnarStr = this.getFechWithFormat(this.columnasFechTabla[i]);
+                      let fechaColumna = (new Date(fechaColumnarStr)).getTime();
+                      if(fechaSaved == fechaColumna ){
+                        horasFechas[i] = hora.horas;
+                      }
+                    }
+                  });
+                  porcentaje = (horasTotales * 100)/recurso.horasAsig;
+                }else{
+                  porcentaje = 0;
+                }
+                debugger;
+                actividadHorasFire.avance = porcentaje.toPrecision(3)+"%";
+                actividadHorasFire.horasFecha = horasFechas;
+                listaActi.push(actividadHorasFire);
+              }
+            });
+          }
+        });
+      }
+    });
+
+    return listaActi;
+  }*/
 }
 

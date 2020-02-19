@@ -14,20 +14,24 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-2"><strong style="font-size: small;">N° iniciativa: </strong></div>
                 <div class="col-md-2">
-                    <input formControlName="nIniciativaInputDialog" class="form-control form-control-sm" type="text"
-                        style="font-size: small;" ng-disabled="true" disabled>
+                    <mat-form-field style="font-size: small; width: 100%;">
+                        <input style="background-color: khaki; text-align: center;" readonly="readonly"
+                            formControlName="nIniciativaInputDialog" matInput #inputNumIniciativa
+                            placeholder="N° iniciativa" type="text">
+                    </mat-form-field>
                 </div>
-                <div class="col-md-2"><strong style="font-size: small;">Título: </strong></div>
-                <div class="col-md-6">
-                    <input formControlName="tituloInputDialog" class="form-control form-control-sm" type="text"
-                        style="font-size: small;" ng-disabled="true" disabled>
+                <div class="col-md-10">
+                    <mat-form-field style="font-size: small; width: 100%;">
+                        <input style="background-color: khaki;" readonly="readonly"
+                            formControlName="tituloInputDialog" matInput #inputTituloIniciativa
+                            placeholder="Título" type="text">
+                    </mat-form-field>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <hr style="width:100%;">
+                    <hr style="width:100%; padding: 0; margin: 0;">
                 </div>
             </div>
             <div class="row">
