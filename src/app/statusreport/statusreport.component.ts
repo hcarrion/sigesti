@@ -97,22 +97,32 @@ export class StatusreportComponent implements OnInit {
             this.iniciativa = data.data() as IniciativaMainFire;
             let statusReportRef = this.firebaseStatusReport.getStatusReport(this.idIniciativa);
             statusReportRef.subscribe(data => {
-              data.forEach(element => {
-                this.statusReportFire = element.payload.doc.data() as StatusReportFire;
-                this.statusReportFire.idStatusReport = element.payload.doc.id;
-              });
-            });
-            this.loadData(this.iniciativa);
-            if(undefined != this.statusReportFire){
-              if(undefined == this.statusReportFire.fechaCierre){
-                this.loadStatusReport(this.statusReportFire)
-              }else{
+              if(0 == data.length){
+                this.loadData(this.iniciativa);
                 this.loadStatusReportNew(this.statusReportFire);
+                this.loading = false;
+              }else{
+                data.forEach(element => {
+                  this.statusReportFire = element.payload.doc.data() as StatusReportFire;
+                  this.statusReportFire.idStatusReport = element.payload.doc.id;
+                  this.loadData(this.iniciativa);
+                  if(undefined != this.statusReportFire){
+                    if(undefined == this.statusReportFire.fechaCierre){
+                      this.loadStatusReport(this.statusReportFire)
+                    }else{
+                      this.loadStatusReportNew(this.statusReportFire);
+                    }
+                  }else{
+                    this.loadStatusReportNew(this.statusReportFire);
+                  }
+                  this.loading = false;
+                });
               }
-            }else{
-              this.loadStatusReportNew(this.statusReportFire);
-            }
-            this.loading = false;
+              debugger;
+            });
+            debugger;
+            
+            
           });
   }
 
@@ -153,6 +163,7 @@ export class StatusreportComponent implements OnInit {
 
   loadStatusReportNew(statusReport: StatusReportFire){
     this.statusReportFire = new StatusReportFire;
+    let anioDate = (new Date).getFullYear();
     var currentWeekNumber = require('current-week-number');
     let numberWeek = currentWeekNumber(new Date());
     let startDate = this.getDateOfISOWeek(numberWeek, 2020);
@@ -161,12 +172,15 @@ export class StatusreportComponent implements OnInit {
     let startDateStr = this.datePipe.transform(startDate, 'dd/MM/yy');
     let endDateStr = this.datePipe.transform(endDate, 'dd/MM/yy');
     fechasSpanObj.textContent = 'Del '+startDateStr+' al '+endDateStr;
-    debugger;
+    this.statusReportFire.fechaInicioSemana = startDate;
+    this.statusReportFire.fechaFinSemana = endDate;
+    this.statusReportFire.numeroSemana = numberWeek;
+    this.statusReportFire.anio = anioDate;
   }
 
   saveStatusReport(){
     this.loading = true;
-    let statusReportFire = new StatusReportFire();
+    let statusReportFire = this.statusReportFire;
     /*let actSemanaAnterior = (document.getElementById("editor1")) as HTMLTextAreaElement;
     let actSemanaProxima = (document.getElementById("editor2")) as HTMLTextAreaElement;
     let temasDeciRiesgos = (document.getElementById("editor3")) as HTMLTextAreaElement;*/
