@@ -22,7 +22,7 @@ const routes: Routes =
   { path: 'configuracion', component: ConfiguracionComponent},
   { path: 'registro_contacto', component: RegistroContactoComponent},
   { path: 'dashboard', component: DashboardComponent},
-  { path: 'statusreport', component: StatusreportComponent},
+  { path: 'statusreport/:id', component: StatusreportComponent},
   { path: 'monitorea', component: MonitoreoComponent},
   { path: '**', redirectTo: '/', pathMatch: 'full'},
 ];
