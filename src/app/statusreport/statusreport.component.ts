@@ -156,6 +156,10 @@ export class StatusreportComponent implements OnInit {
   }
 
   loadStatusReport(statusReport: StatusReportFire){
+    let fechasSpanObj = document.getElementById('fechasIniciativaSpan') as HTMLSpanElement;
+    let startDateStr = this.datePipe.transform(statusReport.fechaInicioSemana, 'dd/MM/yy');
+    let endDateStr = this.datePipe.transform(statusReport.fechaFinSemana, 'dd/MM/yy');
+    fechasSpanObj.textContent = 'Del '+startDateStr+' al '+endDateStr;
     this.generateStatusReport.controls.actCompSemAnteAngularEditor.setValue(this.statusReportFire.actSemanaAnterior);
     this.generateStatusReport.controls.actPlanSemProxAngularEditor.setValue(this.statusReportFire.actSemanaProxima);
     this.generateStatusReport.controls.temDeciRiesgosAngularEditor.setValue(this.statusReportFire.temasDecisionesRiesgos);
