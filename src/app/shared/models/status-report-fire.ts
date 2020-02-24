@@ -4,6 +4,11 @@ export class StatusReportFire {
     codigo: number;
     idStatusReport: string;
     idIniciativa: string;
+    numeroSemana: number;
+    anio: number;
+    fechaInicioSemana: Date;
+    fechaFinSemana: Date;
+    fechaCierre: Date;
     actSemanaAnterior: string;
     actSemanaProxima: string;
     temasDecisionesRiesgos: string;

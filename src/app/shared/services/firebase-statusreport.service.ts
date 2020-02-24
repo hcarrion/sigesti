@@ -25,7 +25,7 @@ export class FirebaseStatusreportService {
   }*/
  
   getStatusReport(idIniciativa: string){
-    return this.firestore.collection('statusreports', ref => ref.where('idIniciativa', '==', idIniciativa)).snapshotChanges();
+    return this.firestore.collection('statusreports', ref => ref.where('idIniciativa', '==', idIniciativa).orderBy('numeroSemana', "desc").limit(1)).snapshotChanges();
   }
 
   /*getIniciativa(iniciativaFire: IniciativaFire) {

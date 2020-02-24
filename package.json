@@ -36,6 +36,7 @@
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
     "cors": "^2.8.5",
+    "current-week-number": "^1.0.7",
     "emailjs": "^2.2.0",
     "express": "^4.17.1",
     "fate-editor": "^1.10.2",

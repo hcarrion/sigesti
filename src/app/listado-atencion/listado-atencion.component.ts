@@ -9,6 +9,7 @@ import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seg
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
 import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-lista-evento.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listado-atencion',
@@ -40,7 +41,9 @@ export class ListadoAtencionComponent implements OnInit
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
   loading: boolean;
-  constructor(private matDialog: MatDialog, private firebaseIniciativas: FirebaseIniciativaMainService) {}
+  constructor(private matDialog: MatDialog, 
+    private firebaseIniciativas: FirebaseIniciativaMainService,
+    private router: Router) {}
 
   openDialogRecursos(idIniciativa: string) {
     this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
@@ -169,8 +172,8 @@ export class ListadoAtencionComponent implements OnInit
     /*$("#modalTipoDocumento").modal('hide');*/
   }
   
-  openStatusReport(tipo: Listadoatencionhelp){
-    alert(tipo);
+  openStatusReport(idIniciativa: string){
+    this.router.navigateByUrl('/statusreport/'+idIniciativa);
   }
   
 }
