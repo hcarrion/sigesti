@@ -21,7 +21,7 @@
             <div class="col-md-8">
             </div>
             <div class="col-md-2 align-right-all">
-                <button mat-raised-button class="btn-primary" (click)="saveStatusReport()">
+                <button mat-raised-button class="btn-primary" (click)="saveStatusReport(statusReportFire)">
                     <mat-icon>save</mat-icon>
                     Guardar
                 </button>
@@ -121,7 +121,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <angular-editor formControlName="actCompSemAnteAngularEditor" id="editor1" [config]="editorConfig"></angular-editor>
+                            <angular-editor [(ngModel)]="statusReportFire.actSemanaAnterior" id="editor1" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
                         </td>
                     </tr>
                 </tbody>
@@ -137,7 +137,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <angular-editor formControlName="actPlanSemProxAngularEditor" id="editor2" [config]="editorConfig"></angular-editor>
+                            <angular-editor [(ngModel)]="statusReportFire.actSemanaProxima" id="editor2" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
                         </td>
                     </tr>
                 </tbody>
@@ -153,7 +153,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <angular-editor formControlName="temDeciRiesgosAngularEditor" id="editor3" [config]="editorConfig"></angular-editor>
+                            <angular-editor [(ngModel)]="statusReportFire.temasDecisionesRiesgos" id="editor3" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
                         </td>
                     </tr>
                 </tbody>

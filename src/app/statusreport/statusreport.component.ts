@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientModule} from '@angular/common/http';
-import { AngularEditorConfig } from '@kolkov/angular-editor'; 
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormGroup, FormControl } from '@angular/forms';
 import { StatusReportFire } from '../shared/models/status-report-fire';
 import { FirebaseStatusreportService } from '../shared/services/firebase-statusreport.service';
@@ -27,10 +27,11 @@ export class StatusreportComponent implements OnInit {
   loading: boolean;
   generateStatusReport: FormGroup;
   statusReportFire: StatusReportFire;
+  actSemanaAnteriorStr: string;
   idIniciativa: string;
   iniciativa: IniciativaMainFire = new IniciativaMainFire();
   editorConfig: AngularEditorConfig = {
-    editable: true,
+      editable: true,
       spellcheck: true,
       height: 'auto',
       minHeight: '0',
@@ -40,7 +41,7 @@ export class StatusreportComponent implements OnInit {
       translate: 'yes',
       enableToolbar: true,
       showToolbar: true,
-      placeholder: 'Enter text here...',
+      placeholder: 'Introducir texto aquí...',
       defaultParagraphSeparator: '',
       defaultFontName: '',
       defaultFontSize: '',
@@ -66,10 +67,10 @@ export class StatusreportComponent implements OnInit {
       },
     ],
     uploadUrl: 'assets/images',
-    sanitize: true,
+    sanitize: false,
+    outline: true,
     toolbarPosition: 'top',
     toolbarHiddenButtons: [
-      
       ['insertImage', 'insertVideo']
     ]
 };
@@ -79,7 +80,6 @@ export class StatusreportComponent implements OnInit {
     private firebaseIniciativas: FirebaseIniciativaMainService,
     public datePipe: DatePipe) {
     this.generateStatusReport = new FormGroup({
-      actCompSemAnteAngularEditor: new FormControl(),
       actPlanSemProxAngularEditor: new FormControl(),
       temDeciRiesgosAngularEditor: new FormControl(),
     });
@@ -118,11 +118,7 @@ export class StatusreportComponent implements OnInit {
                   this.loading = false;
                 });
               }
-              debugger;
             });
-            debugger;
-            
-            
           });
   }
 
@@ -160,7 +156,8 @@ export class StatusreportComponent implements OnInit {
     let startDateStr = this.datePipe.transform(statusReport.fechaInicioSemana, 'dd/MM/yy');
     let endDateStr = this.datePipe.transform(statusReport.fechaFinSemana, 'dd/MM/yy');
     fechasSpanObj.textContent = 'Del '+startDateStr+' al '+endDateStr;
-    this.generateStatusReport.controls.actCompSemAnteAngularEditor.setValue(this.statusReportFire.actSemanaAnterior);
+    /*this.generateStatusReport.controls.actCompSemAnteAngularEditor.setValue(this.statusReportFire.actSemanaAnterior);*/
+    this.actSemanaAnteriorStr = this.statusReportFire.actSemanaAnterior;
     this.generateStatusReport.controls.actPlanSemProxAngularEditor.setValue(this.statusReportFire.actSemanaProxima);
     this.generateStatusReport.controls.temDeciRiesgosAngularEditor.setValue(this.statusReportFire.temasDecisionesRiesgos);
   }
@@ -182,15 +179,14 @@ export class StatusreportComponent implements OnInit {
     this.statusReportFire.anio = anioDate;
   }
 
-  saveStatusReport(){
+  saveStatusReport(statusReportF: StatusReportFire){
     this.loading = true;
-    let statusReportFire = this.statusReportFire;
-    /*let actSemanaAnterior = (document.getElementById("editor1")) as HTMLTextAreaElement;
-    let actSemanaProxima = (document.getElementById("editor2")) as HTMLTextAreaElement;
+    let statusReportFire = statusReportF;
+    /*let actSemanaProxima = (document.getElementById("editor2")) as HTMLTextAreaElement;
     let temasDeciRiesgos = (document.getElementById("editor3")) as HTMLTextAreaElement;*/
-    statusReportFire.actSemanaAnterior = this.generateStatusReport.value.actCompSemAnteAngularEditor;
-    statusReportFire.actSemanaProxima = this.generateStatusReport.value.actPlanSemProxAngularEditor;
-    statusReportFire.temasDecisionesRiesgos = this.generateStatusReport.value.temDeciRiesgosAngularEditor;
+    /*statusReportFire.actSemanaAnterior = this.generateStatusReport.value.actCompSemAnteAngularEditor;*/
+    /*statusReportFire.actSemanaProxima = this.generateStatusReport.value.actPlanSemProxAngularEditor;
+    statusReportFire.temasDecisionesRiesgos = this.generateStatusReport.value.temDeciRiesgosAngularEditor;*/
     statusReportFire.idIniciativa = this.idIniciativa;
 
     if(undefined != this.statusReportFire.codigo){

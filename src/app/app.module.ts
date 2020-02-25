@@ -49,7 +49,6 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { MonitoreoComponent } from './monitoreo/monitoreo.component';
 
 
-
 @NgModule({
   declarations: 
   [
@@ -91,7 +90,8 @@ import { MonitoreoComponent } from './monitoreo/monitoreo.component';
     HttpClientModule, 
     AngularEditorModule,
     SelectDropDownModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService, 
     DialogRecursosComponent, CommonModule, DatePipe, ],
