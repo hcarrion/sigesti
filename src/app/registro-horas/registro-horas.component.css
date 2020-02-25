@@ -24,21 +24,16 @@
     background-color: rgba(0,0,0,0.3);
   }
 
-
-
-  table {
-    width: 100%;
-}
-
 .mat-form-field {
   font-size: 14px;
-  width: 95% !important;
-  margin-top: 2%;
-  margin-left: 2%;
+  width: 50% !important;
+  top: 1px;
+  margin-top: 1%;
+  margin-left: 1%;
 }
 
 .highlight{
-  background: #0275d8 !important; 
+  background:  #90c7f7 !important; 
 }
 
 .highlight td{
@@ -48,7 +43,7 @@
 .example-container {
   display: flex;
   flex-direction: column;
-  min-width: 300px;
+  
 }
 
 .example-header {
@@ -77,7 +72,7 @@
     background-color: #eff4fa;
 }
 .encabezado th{
-  color: blue;
+  color: #0d478f;
 }
 th.mat-sort-header-sorted {
   color: black;
@@ -92,3 +87,78 @@ tr.mat-header-row {
 .align-right {
   text-align: right;
 }
+
+.example-container1 {
+  height: 360px;
+  width: 100%;
+  overflow: auto;
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.example-container1::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.example-container1::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+.example-container1::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.example-container1::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.example-container1::-webkit-scrollbar-thumb {
+  background-color: #90c7f7 !important; 
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+.example-container1::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
+/* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+
+.example-container::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.example-container::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+.example-container::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.example-container::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.example-container::-webkit-scrollbar-thumb {
+  background-color: #af0885;
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+.example-container::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
+.example-full-width {
+  width: 100px;
+}
+
+.btn-save{
+ margin-right: 10px;
+}
+
+.titulo {
+  color:  #af0885;
+ }
+ 

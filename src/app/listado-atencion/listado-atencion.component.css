@@ -10,7 +10,7 @@ table {
 }
 
 .highlight{
-  background: #0275d8 !important; 
+  background: #90c7f7 !important; 
 }
 
 .highlight td{
@@ -91,7 +91,6 @@ tr.mat-header-row {
   padding-right: 16%;
 }
 
-
 .example-container1 {
   height: 300px;
   overflow: auto;
@@ -154,4 +153,15 @@ tr.mat-header-row {
 }
 .mat-cell{
   font-size: 12px;
+  max-height: 10px;
+  min-height: 20%;
+  border-bottom: none;
+  padding: 0px 0;
 } 
+.mat-header-cell{
+  font-size: 12px;
+  max-height: 10px;
+  min-height: 10%;
+  border-bottom: none;
+  padding: 0 0;
+}

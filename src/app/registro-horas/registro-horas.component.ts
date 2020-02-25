@@ -239,9 +239,6 @@ export class RegistroHorasComponent implements OnInit {
 
   getFechaHoy(columnas: string[]){
     let dateToday = new Date();
-    /*let dateTodayStr =this.datepipe.transform(dateToday, 'dd/MM/yyyy');
-    let itemIndex = columnas.findIndex(columna => columna == "fechahoy");
-    this.columnasTabla[itemIndex] = dateTodayStr;*/
   }
 
   getIniciativas(lista: IniciativaMainFire[], usuario: string){
@@ -287,6 +284,13 @@ export class RegistroHorasComponent implements OnInit {
     });
     return listaProy;
   }
+
+  saveHorasAll(){
+    this.saveHoras("tableHorasProyecto",true);
+    this.saveHoras("tableHorasMantenimiento",true);
+    this.saveHoras("tableHorasIncidencias",true);
+  }
+
 
   saveHoras(idTable: string, isUpdate: boolean){
     this.loading = true;
