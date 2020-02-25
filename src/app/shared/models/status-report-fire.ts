@@ -12,6 +12,7 @@ export class StatusReportFire {
     actSemanaAnterior: string;
     actSemanaProxima: string;
     temasDecisionesRiesgos: string;
+    lineaBase: string;
     estado: string;
     documentos: StatusReportDocFire[] = [];
     fechaReg: Date;
