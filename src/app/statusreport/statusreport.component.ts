@@ -167,7 +167,7 @@ export class StatusreportComponent implements OnInit {
     let anioDate = (new Date).getFullYear();
     var currentWeekNumber = require('current-week-number');
     let numberWeek = currentWeekNumber(new Date());
-    let startDate = this.getDateOfISOWeek(numberWeek, 2020);
+    let startDate = this.getDateOfISOWeek(numberWeek, anioDate);
     let endDate = this.daysSum(startDate, 4);
     let fechasSpanObj = document.getElementById('fechasIniciativaSpan') as HTMLSpanElement;
     let startDateStr = this.datePipe.transform(startDate, 'dd/MM/yy');
