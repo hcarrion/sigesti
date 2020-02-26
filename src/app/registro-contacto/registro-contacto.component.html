@@ -11,13 +11,10 @@
           </h5>
           <div class="pipeline-settings os-dropdown-trigger">
               <div class="dropdown">
-                  <button mat-button [matMenuTriggerFor]="menu">
-                      Opciones <i class="fas fa-bars"></i>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                      <button mat-menu-item (click)="openDialogNew()">Nuevo</button>
-                      <button mat-menu-item>Imprimir</button>
-                  </mat-menu>        
+                <div class="pipeline-settings os-dropdown-trigger">
+                    <button mat-raised-button type="button" class="btn-primary btn-save" align="right" (click)='openDialogNew()'>
+                      <mat-icon>people</mat-icon> Nuevo </button>
+                  </div>                 
               </div>
           </div>
   

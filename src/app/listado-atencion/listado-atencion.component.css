@@ -1,7 +1,3 @@
-table {
-    width: 100%;
-}
-
 .mat-form-field {
   font-size: 14px;
   width: 95% !important;
@@ -89,9 +85,7 @@ tr.mat-header-row {
   background-color: rgba(0,0,0,0.3);
 }
 
-.padding-icon{
-  padding-right: 16%;
-}
+
 
 .example-container1 {
   height: 320px;
@@ -167,3 +161,4 @@ tr.mat-header-row {
   border-bottom: none;
   padding: 0 0;
 }
+
