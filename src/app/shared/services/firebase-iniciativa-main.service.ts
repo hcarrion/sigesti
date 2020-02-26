@@ -50,9 +50,59 @@ export class FirebaseIniciativaMainService {
     }    
   }
 
-  getIniciativaFiltroMulti(campo: string,condicion: string){
-    return this.firestore.collection('iniciativasmain', ref => ref.where(campo, 'array-contains-any', condicion.toUpperCase)).snapshotChanges();
+  getIniciativaMultiple(campo1: string, condicion1: string, orden: string, menmay: firebase.firestore.OrderByDirection){
+    var ArrBus = new Array;
+    var ArrCamp = new Array;
+    var ArrBus1 = new Array;
+    var cont=0;    
+    var contC=0; 
+    var contCC=0; 
+    if (campo1 != "" && condicion1 != "" && condicion1 != ";") {
+          campo1.split(";").forEach(element => {
+            ArrCamp[cont] = element;
+            cont++;
+          });          
+          condicion1.split(";").forEach(element => {
+              element=element+",";            
+              element.split(",").forEach(element1 => {
+              if (element1!=""){                  
+                  ArrBus1[contCC] = element1;                                    
+                  contCC++;
+              }
+              });
+              ArrBus[contC] = ArrBus1; 
+              contCC=0;
+              contC++            
+          });          
+          switch (campo1.split(";").length-1){
+              case 1:                
+                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).orderBy(orden,menmay)).snapshotChanges();
+                break;
+              case 2:
+                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).orderBy(orden,menmay)).snapshotChanges();
+                break;
+              case 3:
+                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).orderBy(orden,menmay)).snapshotChanges();
+                break;
+              case 4:
+                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).orderBy(orden,menmay)).snapshotChanges();
+                break;
+              case 5:
+                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).where(ArrCamp[4],"in",ArrBus[4]).orderBy(orden,menmay)).snapshotChanges();
+                break;
+              case 6:
+                return this.firestore.collection('iniciiniciativasmainativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).where(ArrCamp[4],"in",ArrBus[4]).where(ArrCamp[5],"in",ArrBus[5]).orderBy(orden,menmay)).snapshotChanges();
+                break;
+              case 7:
+                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[2]).where(ArrCamp[4],"in",ArrBus[4]).where(ArrCamp[5],"in",ArrBus[5]).where(ArrCamp[6],"in",ArrBus[6]).orderBy(orden,menmay)).snapshotChanges();
+                break;
+          }             
+    } 
+    else{
+      return this.firestore.collection('iniciativasmain').snapshotChanges();
+    }    
   }
+
   getIniciativa(iniciativaFire: IniciativaMainFire) {
     return this.firestore.doc('iniciativasmain/'+iniciativaFire.idIniciativa).snapshotChanges();
   }

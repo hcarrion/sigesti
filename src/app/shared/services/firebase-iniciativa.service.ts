@@ -47,7 +47,7 @@ export class FirebaseIniciativaService {
     }    
   }
 
-  getIniciativaMultiple(campo1: string, condicion1: string){
+  getIniciativaMultiple(campo1: string, condicion1: string, orden: string, menmay: firebase.firestore.OrderByDirection){
     var ArrBus = new Array;
     var ArrCamp = new Array;
     var ArrBus1 = new Array;
@@ -73,25 +73,25 @@ export class FirebaseIniciativaService {
           });          
           switch (campo1.split(";").length-1){
               case 1:                
-                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0])).snapshotChanges();
+                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).orderBy(orden,menmay)).snapshotChanges();
                 break;
               case 2:
-                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1])).snapshotChanges();
+                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).orderBy(orden,menmay)).snapshotChanges();
                 break;
               case 3:
-                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2])).snapshotChanges();
+                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).orderBy(orden,menmay)).snapshotChanges();
                 break;
               case 4:
-                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3])).snapshotChanges();
+                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).orderBy(orden,menmay)).snapshotChanges();
                 break;
               case 5:
-                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).where(ArrCamp[4],"in",ArrBus[4])).snapshotChanges();
+                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).where(ArrCamp[4],"in",ArrBus[4]).orderBy(orden,menmay)).snapshotChanges();
                 break;
               case 6:
-                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).where(ArrCamp[4],"in",ArrBus[4]).where(ArrCamp[5],"in",ArrBus[5])).snapshotChanges();
+                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).where(ArrCamp[4],"in",ArrBus[4]).where(ArrCamp[5],"in",ArrBus[5]).orderBy(orden,menmay)).snapshotChanges();
                 break;
               case 7:
-                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[2]).where(ArrCamp[4],"in",ArrBus[4]).where(ArrCamp[5],"in",ArrBus[5]).where(ArrCamp[6],"in",ArrBus[6])).snapshotChanges();
+                return this.firestore.collection('iniciativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[2]).where(ArrCamp[4],"in",ArrBus[4]).where(ArrCamp[5],"in",ArrBus[5]).where(ArrCamp[6],"in",ArrBus[6]).orderBy(orden,menmay)).snapshotChanges();
                 break;
           }             
     } 

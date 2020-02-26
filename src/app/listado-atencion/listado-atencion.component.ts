@@ -10,6 +10,7 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
 import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-lista-evento.component';
 import { Router } from '@angular/router';
+import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-listado-atencion',
@@ -74,13 +75,13 @@ export class ListadoAtencionComponent implements OnInit
   }
   openDialogNew(){
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
-      { width: '2000px', height: '600px', data: '' }
+      { width: '2000px', height: '540px', data: '' }
     );
   }
 
   openDialogEdit(idIniciativa: string){
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
-      { width: '2000px', height: '600px', data: idIniciativa
+      { width: '2000px', height: '540px', data: idIniciativa
       }
     );
   }
@@ -88,7 +89,7 @@ export class ListadoAtencionComponent implements OnInit
   openDialogActivity(idIniciativa: string){
     this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
       { width: '2000px',
-        height: '600px',
+        height: '530px',
         data: idIniciativa
       }
     );

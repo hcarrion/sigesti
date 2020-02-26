@@ -35,6 +35,7 @@ export class RegistroHorasComponent implements OnInit {
   columnasTabla: string[] = ['codigosvt', 'titulo', 'fechainicio', 'fechafin', 'avance', 'prioridad'];
 
   columnasFechTabla: string[] = [];
+  
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   proyectoIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);
   mantenimientoIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);

@@ -1,434 +1,424 @@
-  <mat-card class="example-card">
-    <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Monitor de control de iniciativas </mat-card-title>
-      <mat-card-subtitle>Filtros seleccionables</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        <mat-form-field>
-            <mat-label>Tipo de Reporte</mat-label>
-            <mat-select [formControl]="tiporeporte" multiple (selectionChange)="select(tiporeporte)">
-              <mat-select-trigger>
-                {{tiporeporte.value ? tiporeporte.value[0] : ''}}
-                <span *ngIf="tiporeporte.value?.length > 1" class="example-additional-selection" >
-                  (+{{tiporeporte.value.length - 1}} {{tiporeporte.value?.length === 2 ? 'Otros' : 'Otros'}})
-                </span>
-              </mat-select-trigger>
-              <mat-option *ngFor="let tiporeport of tiporeportelista" [value]="tiporeport">{{tiporeport}}</mat-option>
-            </mat-select>
-          </mat-form-field> 
-
-          <mat-form-field>
-            <mat-label>Tipo de Actividades</mat-label>
-            <mat-select [formControl]="tipoiniciativa" multiple (selectionChange)="select1(tipoiniciativa)">
-              <mat-select-trigger>
-                {{tipoiniciativa.value ? tipoiniciativa.value[0] : ''}}
-                <span *ngIf="tipoiniciativa.value?.length > 1" class="example-additional-selection">
-                  (+{{tipoiniciativa.value.length - 1}} {{tipoiniciativa.value?.length === 2 ? 'Otros' : 'Otros'}})
-                </span>
-              </mat-select-trigger>
-              <mat-option *ngFor="let tipoiniciativas of tipoiniciativalista" [value]="tipoiniciativas">{{tipoiniciativas}}</mat-option>
-            </mat-select>
-          </mat-form-field> 
-
-          <mat-form-field>
-            <mat-label>Nivel de Atencion</mat-label>
-            <mat-select [formControl]="codigosvt" multiple (selectionChange)="select2(codigosvt)">
-              <mat-select-trigger>
-                {{codigosvt.value ? codigosvt.value[0] : ''}}
-                <span *ngIf="codigosvt.value?.length > 1" class="example-additional-selection">
-                  (+{{codigosvt.value.length - 1}} {{codigosvt.value?.length === 2 ? 'Otros' : 'Otros'}})
-                </span>
-              </mat-select-trigger>
-              <mat-option *ngFor="let codigosvtl of codigosvtlista" [value]="codigosvtl">{{codigosvtl}}</mat-option>
-            </mat-select>
-          </mat-form-field> 
-      </p>
-      
-    </mat-card-content>
-
-    <mat-tab-group > 
-        <mat-tab  label = "Detalle de iniciativa x hora en el mes" *ngIf="mostrar1 == 'true'"> 
-            <div class="pipeline-body">
-            <mat-form-field>
-                <input matInput (keyup)="buscarDatos($event.target.value)" placeholder="Buscar">
-            </mat-form-field>
-            <table mat-table [dataSource]="iniciativas" matSort>
+<div class="pipeline white lined-primary">
+    <div class="pipeline-header">
+      <h5 class="pipeline-name">
+          Monitoreo de Horas de Trabajo
+      </h5>   
+    </div>
+ 
+    <mat-form-field>
+        <mat-label>Tipo de Reporte</mat-label>
+        <mat-select [formControl]="tiporeporte" multiple (selectionChange)="select(tiporeporte)">
+          <mat-select-trigger>
+            {{tiporeporte.value ? tiporeporte.value[0] : ''}}
+            <span *ngIf="tiporeporte.value?.length > 1" class="example-additional-selection" >
+              (+{{tiporeporte.value.length - 1}} {{tiporeporte.value?.length === 2 ? 'Otros' : 'Otros'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let tiporeport of tiporeportelista" [value]="tiporeport">{{tiporeport}}</mat-option>
+        </mat-select>
+    </mat-form-field>
     
-                <!-- Position Column -->
-                <ng-container matColumnDef="codigosvt">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> C.SVT/C.TKT </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.codigoSVT}} </td>
-                </ng-container>
+    <mat-form-field>
+        <mat-label>Tipo de Actividades</mat-label>
+        <mat-select [formControl]="tipoiniciativa" multiple (selectionChange)="select1(tipoiniciativa)">
+            <mat-select-trigger>
+            {{tipoiniciativa.value ? tipoiniciativa.value[0] : ''}}
+            <span *ngIf="tipoiniciativa.value?.length > 1" class="example-additional-selection">
+                (+{{tipoiniciativa.value.length - 1}} {{tipoiniciativa.value?.length === 2 ? 'Otros' : 'Otros'}})
+            </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let tipoiniciativas of tipoiniciativalista" [value]="tipoiniciativas">{{tipoiniciativas}}</mat-option>
+        </mat-select>
+    </mat-form-field>
     
-                <!-- Name Column -->
-                <ng-container matColumnDef="titulo">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
-                </ng-container>    
-                
-                <ng-container matColumnDef="01">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 01 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
+    <mat-form-field>
+        <mat-label>Nivel de Atencion</mat-label>
+        <mat-select [formControl]="codigosvt" multiple (selectionChange)="select2(codigosvt)">
+          <mat-select-trigger>
+            {{codigosvt.value ? codigosvt.value[0] : ''}}
+            <span *ngIf="codigosvt.value?.length > 1" class="example-additional-selection">
+              (+{{codigosvt.value.length - 1}} {{codigosvt.value?.length === 2 ? 'Otros' : 'Otros'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let codigosvtl of codigosvtlista" [value]="codigosvtl">{{codigosvtl}}</mat-option>
+        </mat-select>
+    </mat-form-field> 
 
-                <ng-container matColumnDef="02">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 02 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="03">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 03 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="04">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 04 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="05">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 05 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-               
-                <ng-container matColumnDef="06">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 06 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="07">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 07 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="08">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 08 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="09">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 09 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="10">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 10 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="11">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 11 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="12">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 12 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="13">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 13 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="14">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 14 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="15">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 15 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="16">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 16 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="17">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 17 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="18">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 18 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="19">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 19 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="20">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 20 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="21">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 21 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="22">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 22 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="23">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 23 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="24">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 24 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="25">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 25 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="26">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 26 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="27">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 27 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="28">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 28 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="29" *ngIf="this.ultimaDia>=29">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 29 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="30" *ngIf="this.ultimaDia>=30">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 30 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="31" *ngIf="this.ultimaDia>=31">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> 31 </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <ng-container matColumnDef="Total">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> TOTAL </th>
-                    <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-                <tr mat-row *matRowDef="let row; columns: columnasTabla;"
-                    [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-            </table>
     
-            <mat-paginator [pageSizeOptions]="[20, 30, 40, 50, 100]" showFirstLastButtons></mat-paginator>
-        </div> </mat-tab>
-
-        <mat-tab label = "Detalle de personal x hora en el mes" *ngIf="mostrar2 == 'true'">  
-            <div class="pipeline-body">
-                <mat-form-field>
-                    <input matInput (keyup)="buscarDatos($event.target.value)" placeholder="Buscar">
-                </mat-form-field>
-                <table mat-table [dataSource]="iniciativas" matSort>
-        
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="codigosvt">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> USUARIO </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.jefeProyecto.codigoUsuario}} </td>
-                    </ng-container>
-        
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="titulo">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> NOMBRE </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.jefeProyecto.nombres}} </td>
-                    </ng-container>    
+        <mat-tab-group > 
+           
+            <mat-tab  label = "Detalle de iniciativa x hora en el mes" *ngIf="mostrar1 == 'true'">                 
+                    <mat-form-field>
+                        <input matInput (keyup)="buscarDatos($event.target.value)" placeholder="Buscar">
+                    </mat-form-field>
+                    <div class="example-container1 mat-elevation-z8">
+                    <table mat-table [dataSource]="iniciativas" matSort>
+            
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="codigo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> C.SVT/C.TKT </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.codigo}} </td>
+                        </ng-container>
+            
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="titulo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
+                        </ng-container>    
+                        
+                        <ng-container matColumnDef="01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 01 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[1]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 02 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[2]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 03 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[3]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="04">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 04 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[4]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="05">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 05 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[5]}} </td>
+                        </ng-container>
                     
-                    <ng-container matColumnDef="01">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 01 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="06">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 06 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[6]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="02">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 02 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="07">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 07 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[7]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="03">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 03 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="08">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 08 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[8]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="04">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 04 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="09">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 09 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[9]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="05">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 05 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
-                   
-                    <ng-container matColumnDef="06">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 06 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 10 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[10]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="07">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 07 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="11">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 11 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[11]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="08">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 08 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="12">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 12 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[12]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="09">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 09 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="13">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 13 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[13]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="10">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 10 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="14">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 14 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[14]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="11">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 11 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="15">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 15 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[15]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="12">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 12 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="16">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 16 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[16]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="13">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 13 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="17">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 17 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[17]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="14">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 14 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="18">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 18 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[18]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="15">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 15 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="19">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 19 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[19]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="16">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 16 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="20">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 20 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[20]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="17">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 17 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="21">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 21 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[21]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="18">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 18 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="22">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 22 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[22]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="19">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 19 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="23">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 23 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[23]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="20">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 20 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="24">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 24 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[24]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="21">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 21 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="25">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 25 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[25]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="22">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 22 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="26">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 26 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[26]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="23">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 23 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="27">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 27 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[27]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="24">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 24 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="28">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 28 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[28]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="25">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 25 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="29" *ngIf="this.ultimaDia>=29">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 29 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[29]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="26">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 26 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="30" *ngIf="this.ultimaDia>=30">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 30 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[30]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="27">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 27 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="31" *ngIf="this.ultimaDia>=31">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 31 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[31]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="28">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 28 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <ng-container matColumnDef="Total">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> TOTAL </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.total}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="29" *ngIf="this.ultimaDia>=29">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 29 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="columnasTabla;  sticky: true;" class="encabezado"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnasTabla;"
+                            [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
+                    </table>
+                    </div>        
+            </mat-tab>
+             
+            <mat-tab label = "Detalle de personal x hora en el mes" *ngIf="mostrar2 == 'true'">  
+                
+                    <mat-form-field>
+                        <input matInput (keyup)="buscarDatos($event.target.value)" placeholder="Buscar">
+                    </mat-form-field>
+                    <div class="example-container1 mat-elevation-z8">
+                    <table mat-table [dataSource]="iniciativasemp" matSort>
+            
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="codigo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> codigo </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.codigousuario}} </td>
+                        </ng-container>
+            
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="titulo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> NOMBRE </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.titulo}} </td>
+                        </ng-container>    
+                        
+                        <ng-container matColumnDef="01">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 01 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[1]}} </td>
+                        </ng-container>
     
-                    <ng-container matColumnDef="30" *ngIf="this.ultimaDia>=30">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 30 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="31" *ngIf="this.ultimaDia>=31">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> 31 </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Total">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> TOTAL </th>
-                        <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> 0 </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-                    <tr mat-row *matRowDef="let row; columns: columnasTabla;"
-                        [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-                </table>
-        
-                <mat-paginator [pageSizeOptions]="[20, 30, 40, 50, 100]" showFirstLastButtons></mat-paginator>
-            </div> </mat-tab>
-     </mat-tab-group>
-
-   
-    <mat-card-actions>
-      <button mat-button>Buscar</button>
-      <button mat-button>Refrescar</button>
-    </mat-card-actions>
-  </mat-card>
-
-
+                        <ng-container matColumnDef="02">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 02 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[2]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="03">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 03 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[3]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="04">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 04 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[4]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="05">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 05 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[5]}} </td>
+                        </ng-container>
+                    
+                        <ng-container matColumnDef="06">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 06 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[6]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="07">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 07 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[7]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="08">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 08 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[8]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="09">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 09 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[9]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="10">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 10 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[10]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="11">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 11 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[11]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="12">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 12 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[12]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="13">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 13 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[13]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="14">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 14 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[14]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="15">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 15 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[15]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="16">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 16 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[16]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="17">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 17 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[17]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="18">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 18 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[18]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="19">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 19 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[19]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="20">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 20 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[20]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="21">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 21 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[21]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="22">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 22 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[22]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="23">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 23 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[23]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="24">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 24 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[24]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="25">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 25 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[25]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="26">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 26 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[26]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="27">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 27 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[27]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="28">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 28 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[28]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="29" *ngIf="this.ultimaDia>=29">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 29 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[29]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="30" *ngIf="this.ultimaDia>=30">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 30 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[30]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="31" *ngIf="this.ultimaDia>=31">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 31 </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.dias[31]}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="Total">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> TOTAL </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.total}} </td>
+                        </ng-container>
+    
+                        <tr mat-header-row *matHeaderRowDef="columnasTabla; sticky: true;" class="encabezado"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnasTabla;"
+                            [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
+                    </table>
+                    </div> 
+            </mat-tab>
+              
+        </mat-tab-group>
+</div>  

@@ -3,8 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angu
 import { DialogRecursosComponent } from '../modal/dialog-recursos/dialog-recursos.component';
 import { DialogRiesgosComponent } from '../modal/dialog-riesgos/dialog-riesgos.component';
 import { DialogSeguimientoComponent} from "../modal/dialog-seguimiento/dialog-seguimiento.component";
-import { FirebaseIniciativaService } from '../shared/services/firebase-iniciativa.service';
-import { IniciativaFire } from '../shared/models/iniciativa-fire';
+import { FirebaseIniciativaMainService } from '../shared/services/firebase-iniciativa-main.service';
 import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
@@ -12,6 +11,7 @@ import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-
 import { ChartType } from 'chart.js';
 import { MultiDataSet, Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { IniciativaMainFire } from '../shared/models/iniciativa-main-fire';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,14 +21,12 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 export class DashboardComponent implements OnInit 
 {
 
-  
   private intervalUpdate: any = null; 
   public chart: any = null;
   habilitar: boolean;
   selected: boolean;
   nuevo: boolean;
   edit: boolean;
- 
   delete: boolean;
   tabla: any;
   mensajeAccion: string;  
@@ -38,21 +36,21 @@ export class DashboardComponent implements OnInit
   columnasTablaI: string[] = ['codigosvt', 'titulo','fechafin','estado','accion'];
   columnasTablaJ: string[] = ['codigosvt', 'titulo','fechafin','estado','accion'];
   title = "Tablero de Control de las iniciativas";
-  iniciativasR= new MatTableDataSource<IniciativaFire>([]);
-  iniciativas= new MatTableDataSource<IniciativaFire>([]);
-  iniciativas2= new MatTableDataSource<IniciativaFire>([]);
-  iniciativas3= new MatTableDataSource<IniciativaFire>([]);
-  iniciativas4= new MatTableDataSource<IniciativaFire>([]);
+  iniciativasR= new MatTableDataSource<IniciativaMainFire>([]);
+  iniciativas= new MatTableDataSource<IniciativaMainFire>([]);
+  iniciativas2= new MatTableDataSource<IniciativaMainFire>([]);
+  iniciativas3= new MatTableDataSource<IniciativaMainFire>([]);
+  iniciativas4= new MatTableDataSource<IniciativaMainFire>([]);
   
   selectedRowIndex: number = -1;
-  tipoDocumentoData = new MatTableDataSource<IniciativaFire>([]);
-  tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaFire>([]);
+  tipoDocumentoData = new MatTableDataSource<IniciativaMainFire>([]);
+  tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaMainFire>([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   public estado: string="";
-  public tipoDocumento: IniciativaFire[];
-  public tipoDocumentoSeleccionado: IniciativaFire;
+  public tipoDocumento: IniciativaMainFire[];
+  public tipoDocumentoSeleccionado: IniciativaMainFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
   doughnutChartLabels: Label[] =  ['Por Hacer', 'En Progreso', 'QA', 'Cerrado'];
@@ -62,11 +60,9 @@ export class DashboardComponent implements OnInit
   doughnutChartDataM: MultiDataSet = [[0,0,0,0]];
   doughnutChartDataI: MultiDataSet = [[0,0,0,0]];
   doughnutChartType: ChartType = 'doughnut';
-  
-
 
   loading: boolean;
-  constructor(private matDialog: MatDialog, private   firebaseIniciativas: FirebaseIniciativaService) {} 
+  constructor(private matDialog: MatDialog, private   firebaseIniciativas: FirebaseIniciativaMainService) {} 
 
   FiltraCanvas(filterValue: string) {
     this.callIniciativas(filterValue.toUpperCase());    
@@ -76,7 +72,9 @@ export class DashboardComponent implements OnInit
   }
 
   public chartOptions:any = { 
-    responsive: true
+    responsive: true,
+    size: "90",
+    legend: { position: 'right' }
   };
 
 
@@ -99,10 +97,11 @@ export class DashboardComponent implements OnInit
         // Haciendo Asignado y en proceso
         // QA Terminado 
         // Done cerrado, rechazado, suspendido
-        if (label=="Por Hacer"){this.FiltraCanvas("PENDIENTE");this.estado=" - Por Hacer";};
-        if (label=="En Progreso"){this.FiltraCanvas("ASIGNADO,EN PROCESO");this.estado=" - En Progreso";};
-        if (label=="QA"){this.FiltraCanvas("TERMINADO");this.estado=" - En Calidad";};
-        if (label=="Cerrado"){this.FiltraCanvas("CERRADO,SUSPENDIDO,RECHAZADO");this.estado=" - Concluido";};        
+        if (label=="Por Hacer"){this.FiltraCanvas("PLANIFICACION");this.estado=" - Por Hacer";};
+        if (label=="En Progreso"){this.FiltraCanvas("DESARROLLO,SUSPENDIDO");this.estado=" - En Progreso";};
+        if (label=="QA"){this.FiltraCanvas("QA");this.estado=" - En Calidad";};
+        if (label=="En Pase"){this.FiltraCanvas("PRODUCCION,SEGUIMIENTO POST");this.estado=" - En Pase";};
+        if (label=="Cerrado"){this.FiltraCanvas("CERRADO,ANULADO");this.estado=" - Concluido";};        
       } 
      }
      else{
@@ -176,7 +175,7 @@ export class DashboardComponent implements OnInit
      let iniciativasRef = this.firebaseIniciativas.getIniciativas();
      iniciativasRef.subscribe(data => {
        for(var i = 0; i < data.length; i++){                 
-         let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+         let iniciativaObject= data[i].payload.doc.data() as IniciativaMainFire;
          this.alamcena_valor(iniciativaObject.categoria.descripcion.toLowerCase(), iniciativaObject.estado.descripcion.toLowerCase(),
          arrayP, arrayT, arrayM, arrayI) 
        }      
@@ -195,9 +194,7 @@ export class DashboardComponent implements OnInit
     iniciativasRef.subscribe(data => {
       var lista = [];
       for(var i = 0; i < data.length; i++){
-        //lista.push(data[i].payload.doc.data() as IniciativaFire);
-
-        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+        let iniciativaObject= data[i].payload.doc.data() as IniciativaMainFire;
         let idIniciativa = data[i].payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
@@ -237,27 +234,30 @@ export class DashboardComponent implements OnInit
   }
   alamcena_estado(estado, arraypr){
     switch (estado.toUpperCase()) {             
-      case "PENDIENTE":
+      case "PLANIFICACION":
         arraypr[0]++;
         break;
-      case "ASIGNADO":
+      case "DESARROLLO":
         arraypr[1]++;
-        break;
-      case "EN PROCESO":
-        arraypr[1]++;
-        break;
-      case "TERMINADO":
-        arraypr[2]++;
-        break;
-      case "CERRADO":
-        arraypr[3]++;
-        break;
-      case "RECHAZADO":
-        arraypr[3]++;        
         break;
       case "SUSPENDIDO":
-        arraypr[3]++;        
+          arraypr[1]++;
+          break;  
+      case "QA":
+        arraypr[2]++;
         break;
+      case "PRODUCCION":
+        arraypr[3]++;
+        break;
+      case "CERRADO":
+        arraypr[4]++;        
+        break;
+      case "ANULADO":
+        arraypr[4]++;        
+        break;
+      case "SEGUIMIENTO POST":
+        arraypr[3]++;        
+        break; 
       default:
     }    
   }
@@ -270,7 +270,7 @@ export class DashboardComponent implements OnInit
       for(var i = 0; i < data.length; i++){
         //lista.push(data[i].payload.doc.data() as IniciativaFire);
 
-        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+        let iniciativaObject= data[i].payload.doc.data() as IniciativaMainFire;
         let idIniciativa = data[i].payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
@@ -295,7 +295,7 @@ export class DashboardComponent implements OnInit
       var lista = [];
       for(var i = 0; i < data.length; i++){
         //lista.push(data[i].payload.doc.data() as IniciativaFire);
-        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+        let iniciativaObject= data[i].payload.doc.data() as IniciativaMainFire;
         let idIniciativa = data[i].payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
@@ -320,7 +320,7 @@ export class DashboardComponent implements OnInit
       for(var i = 0; i < data.length; i++){
         //lista.push(data[i].payload.doc.data() as IniciativaFire);
 
-        let iniciativaObject= data[i].payload.doc.data() as IniciativaFire;
+        let iniciativaObject= data[i].payload.doc.data() as IniciativaMainFire;
         let idIniciativa = data[i].payload.doc.id;
         iniciativaObject.idIniciativa = idIniciativa;
         lista.push(iniciativaObject);
@@ -389,7 +389,7 @@ export class DashboardComponent implements OnInit
     this.selectedRowIndex = row.numeroIniciativa;
   }
 
-  selectedDocumento(todo: IniciativaFire) {
+  selectedDocumento(todo: IniciativaMainFire) {
     this.InReset();
     this.habilitar = true;
     this.selected = true;

@@ -16,7 +16,9 @@ table {
 .highlight td{
   color: #ffffff !important;
 }
-
+.matDialog .mat-dialog-container{
+  overflow-y: hidden !important;
+}
 .example-container {
   display: flex;
   flex-direction: column;

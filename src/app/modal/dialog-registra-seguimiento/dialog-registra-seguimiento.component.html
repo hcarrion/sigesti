@@ -4,16 +4,17 @@
     <br>
     <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
 </div>
+
+
 <div [formGroup]="regIniciativa">
     <div class="card">
-        <div class="card-header card-header-info">
-            <h4 class="card-title">
+        <div class="card-header card-header-info"  style="height: 50px;">
+            <h6 class="card-title">
                 <p style="color:#3F52B6; text-align: left;">
                     <strong><i class="material-icons">library_add</i> Registro de atención</strong></p>
-            </h4>
+            </h6>
         </div>
-        <div style="align-content: center; vertical-align: middle;">
-        </div>
+       
         <div class="card-content">
             <br>
             <div class="row">
@@ -237,32 +238,26 @@
                             oninput="this.value = Math.trunc(this.value)">
                     </mat-form-field>
                 </div>
+
+                <div class="col-md-2 align-right-all">
+                <button mat-raised-button class="btn-primary" (click)="saveIniciativa(iniciativa)">
+                    <mat-icon>save</mat-icon>
+                    Guardar
+                </button>
+                </div>
+                <div class="col-md-2 align-right-all">
+                <button mat-raised-button class="btn-info" (click)="resetFields()">
+                    <mat-icon>clear</mat-icon>
+                    Limpiar
+                </button>
+                </div>
+                <div class="col-md-2 align-right-all">
+                <button mat-raised-button class="btn-danger" (click)="close()">
+                    <mat-icon>close</mat-icon>
+                    Cerrar
+                </button>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6"></div>
-        <div class="col-md-2 align-right-all">
-            <button mat-raised-button class="btn-primary" (click)="saveIniciativa(iniciativa)">
-                <mat-icon>save</mat-icon>
-                Guardar
-            </button>
-            <!--<button type="button" class="btn btn-primary btn-sm active"
-                (click)='saveIniciativa(iniciativa)'><mat-icon>save</mat-icon>Guardar</button>-->
-        </div>
-        <div class="col-md-2 align-right-all">
-            <button mat-raised-button class="btn-info" (click)="resetFields()">
-                <mat-icon>clear</mat-icon>
-                Limpiar
-            </button>
-            <!--<button type="button" class="btn btn-info btn-sm" (click)="resetFields()">Limpiar</button>-->
-        </div>
-        <div class="col-md-2 align-right-all">
-            <button mat-raised-button class="btn-danger" (click)="close()">
-                <mat-icon>close</mat-icon>
-                Cerrar
-            </button>
-            <!--<button class="btn btn-danger btn-sm" (click)="close()">Cerrar</button>-->
         </div>
     </div>
 </div>
