@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -11,6 +11,8 @@ import { IniciativaMainFire } from '../shared/models/iniciativa-main-fire';
 import { DatePipe } from '@angular/common';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/util/date.adapter';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-statusreport',
@@ -30,6 +32,7 @@ export class StatusreportComponent implements OnInit {
   actSemanaAnteriorStr: string;
   idIniciativa: string;
   iniciativa: IniciativaMainFire = new IniciativaMainFire();
+  @ViewChild('statusReportPdf', {static: false}) statusReportPdf: ElementRef;
   editorConfig: AngularEditorConfig = {
       editable: true,
       spellcheck: true,
@@ -74,6 +77,9 @@ export class StatusreportComponent implements OnInit {
       ['insertImage', 'insertVideo']
     ]
 };
+  headingCss = {
+    'height': '390px'
+  };
 
   constructor(private firebaseStatusReport: FirebaseStatusreportService,
     private route: ActivatedRoute,
@@ -156,10 +162,10 @@ export class StatusreportComponent implements OnInit {
     let startDateStr = this.datePipe.transform(statusReport.fechaInicioSemana, 'dd/MM/yy');
     let endDateStr = this.datePipe.transform(statusReport.fechaFinSemana, 'dd/MM/yy');
     fechasSpanObj.textContent = 'Del '+startDateStr+' al '+endDateStr;
-    /*this.generateStatusReport.controls.actCompSemAnteAngularEditor.setValue(this.statusReportFire.actSemanaAnterior);*/
+    /*this.generateStatusReport.controls.actCompSemAnteAngularEditor.setValue(this.statusReportFire.actSemanaAnterior);
     this.actSemanaAnteriorStr = this.statusReportFire.actSemanaAnterior;
     this.generateStatusReport.controls.actPlanSemProxAngularEditor.setValue(this.statusReportFire.actSemanaProxima);
-    this.generateStatusReport.controls.temDeciRiesgosAngularEditor.setValue(this.statusReportFire.temasDecisionesRiesgos);
+    this.generateStatusReport.controls.temDeciRiesgosAngularEditor.setValue(this.statusReportFire.temasDecisionesRiesgos);*/
   }
 
   loadStatusReportNew(statusReport: StatusReportFire){
@@ -243,5 +249,71 @@ export class StatusreportComponent implements OnInit {
     }else{
       return true;
     }
+  }
+
+  generateAndDownloadPdf(){
+    let generateDate = new Date();
+    let generateDateStr = this.datePipe.transform(generateDate, 'ddMMyyyy');
+    /*const doc = new jsPDF();
+
+    const specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    const statusReportPdf = this.statusReportPdf.nativeElement;
+    var source = document.getElementById('statusReportPdf');
+    doc.fromHTML(source, 15, 15, {
+      width: 190,
+      'elementHandlers': specialElementHandlers
+    });*/
+    /*doc.text(20, 20, 'Michelangelo Antonioni Changana Sosa.');*/
+    /*doc.save('status-report-'+generateDateStr+'.pdf');*/
+    
+    /*let data = document.getElementById('statusReportPdf');  
+        html2canvas(data).then(canvas => {
+          const contentDataURL = canvas.toDataURL('image/png')  
+          let pdf = new jsPDF('l', 'cm', 'a4'); //Generates PDF in landscape mode
+          // let pdf = new jspdf('p', 'cm', 'a4'); Generates PDF in portrait mode
+          pdf.addImage(contentDataURL, 'PNG', 0, 0, 29.7, 21.0);  
+          pdf.save('Filename.pdf');   
+        }); */
+      this.headingCss = {
+        'height': '0px'
+      };
+      window.scroll(0,0);
+      let data = document.getElementById('statusReportPdf') as HTMLElement;
+      //let data = document.body as HTMLElement;
+      debugger;
+      html2canvas(data, {
+        allowTaint: true,
+            useCORS: true,
+            logging: false
+      }).then(canvas => {
+        let HTML_Width = canvas.width;
+        let HTML_Height = canvas.height;
+        let top_left_margin = 15;
+        let PDF_Width = HTML_Width + (top_left_margin * 2);
+        let PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+        let canvas_image_width = HTML_Width;
+        let canvas_image_height = HTML_Height;
+        let totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+        canvas.getContext('2d');
+        let imgData = canvas.toDataURL("image/jpeg", 1.0);
+        let pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+        pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+        for (let i = 1; i <= totalPDFPages; i++) {
+          pdf.addPage([PDF_Width, PDF_Height], 'p');
+          pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+        }
+        pdf.save("HTML-Document.pdf");
+        this.headingCss = {
+          'height': '390px'
+        };
+      });
+      /*var pdf = new jsPDF('p', 'pt', 'a4');
+      pdf.addHTML(document.querySelector('.print'), function() {
+        pdf.save('web.pdf');
+      });*/
   }
 }

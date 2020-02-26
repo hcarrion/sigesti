@@ -18,7 +18,13 @@
             </tbody>
         </table>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-2 align-right-all">
+                <button mat-raised-button class="btn-info" (click)="generateAndDownloadPdf(statusReportPdf)">
+                    <mat-icon>file_download</mat-icon>
+                    Descargar PDF
+                </button>
             </div>
             <div class="col-md-2 align-right-all">
                 <button mat-raised-button class="btn-primary" (click)="saveStatusReport(statusReportFire)">
@@ -34,8 +40,9 @@
             </div>
         </div>
         <br>
-        <div class="panel-body" style="height: 390px !important;">
-            <table class="MsoNormalTable" border="1" cellspacing="0">
+        <div class="panel-body" [ngStyle]="headingCss" >
+            <div id="statusReportPdf" #statusReportPdf>
+            <table class="MsoNormalTable" border="1" cellspacing="0" >
                 <tbody>       
                     <tr>
                         <td width="970" valign="top" colspan="4" style="background: royalblue; color: seashell;">
@@ -47,10 +54,10 @@
                             <p class="MsoNormal" align="right"><b><span>Fecha:</span></b><b><span></span></b></p>
                         </td>
                         <td width="381" valign="top">
-                            <p class="MsoNormal"><span id="fechasIniciativaSpan">Del 28/06/2010 al 02/07/2010</span><span></span></p>
+                            <p class="MsoNormal"><span id="fechasIniciativaSpan"></span><span></span></p>
                         </td>
                         <td width="190" valign="top">
-                            <p class="MsoNormal" align="right"><span>Avance: </span><span></span></p>
+                            <p class="MsoNormal" align="right"><b><span>Avance: </span></b><span></span></p>
                         </td>
                         <td width="190" valign="top">
                             <p class="MsoNormal" align="center" style="background: rgb(236, 238, 122);" ><span id="avanceIniciativaSpan"> 0%</span><span></span></p>
@@ -76,7 +83,7 @@
                     </tr>
                     <tr>
                         <td width="209" valign="top">
-                            <p class="MsoNormal" align="right"><span>Fecha Inicio</span><span></span></p>
+                            <p class="MsoNormal" align="right"><b><span>Fecha Inicio</span></b><span></span></p>
                         </td>
                         <td width="141" valign="top">
                             <p class="MsoNormal" align="center"><span id="fechaInicioIniciativaSpan">0/00/0000</span><span></span></p>
@@ -85,7 +92,7 @@
                             <p class="MsoNormal"><span>&#160;</span></p>
                         </td>
                         <td width="141" valign="top">
-                            <p class="MsoNormal"><span>Fin inicial</span><span></span></p>
+                            <p class="MsoNormal"><b><span>Fin inicial</span></b><span></span></p>
                         </td>
                         <td width="137" valign="top">
                             <p class="MsoNormal"><span id="fechaFinIniciativaSpan">0/00/0000</span><span></span></p>
@@ -93,7 +100,7 @@
                     </tr>
                     <tr>
                         <td width="209" valign="top">
-                            <p class="MsoNormal" align="right"><span>Cambios l&#237;nea base</span><span></span></p>
+                            <p class="MsoNormal" align="right"><b><span>Cambios l&#237;nea base</span></b><span></span></p>
                         </td>
                         <td width="141" valign="top">
                             <p class="MsoNormal" align="center"><span>0</span><span></span></p>
@@ -102,7 +109,7 @@
                             <p class="MsoNormal"><span>&#160;</span></p>
                         </td>
                         <td width="141" valign="top">
-                            <p class="MsoNormal"><span>Fin estimado</span><span></span></p>
+                            <p class="MsoNormal"><b><span>Fin estimado</span></b><span></span></p>
                         </td>
                         <td width="137" valign="top">
                             <p class="MsoNormal"><span id="fechaFinEstimadoIniciativaSpan">0/00/0000</span><span></span></p>
@@ -175,6 +182,8 @@
                 </tbody>
             </table>
             <br>
+            <br>
+            </div>
         </div>
     </div>
 </div>
