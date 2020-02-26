@@ -17,7 +17,7 @@
     <div class="card">
       <div crlass="card-content">
         <h3 class="card-title">Proyectos</h3>          
-        <div class="chart-wrapper">
+        <div class="chart-wrapper pointer">
           <canvas baseChart 
             [data]="doughnutChartDataP"
             [labels]="doughnutChartLabels"
@@ -62,7 +62,7 @@
                       <th mat-header-cell *matHeaderCellDef mat-sort-header align="center"> ACCION </th>
                       <td mat-cell *matCellDef="let tipo" >
                             <p><strong> 
-                              <i class="material-icons link" (click)="openDialogEdit(tipo.idIniciativa)" align="center" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
+                              <i class="material-icons link pointer" (click)="openDialogEdit(tipo.idIniciativa)" align="center" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
                             </strong></p>
                       </td>
               </ng-container>
@@ -78,7 +78,7 @@
     <div class="card">
       <div class="card-content">
         <h2 class="card-title">Mantenimiento</h2>
-        <div class="chart-wrapper">
+        <div class="chart-wrapper pointer">
           <canvas baseChart 
             [data]="doughnutChartDataT"
             [labels]="doughnutChartLabels"
@@ -122,7 +122,7 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header align="center"> ACCION </th>
                 <td mat-cell *matCellDef="let tipo">
                       <p><strong> 
-                        <i class="material-icons link"  (click)="openDialogEdit(tipo.idIniciativa)" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
+                        <i class="material-icons link pointer"  (click)="openDialogEdit(tipo.idIniciativa)" style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
                       </strong></p>
                 </td>
         </ng-container>
@@ -138,7 +138,7 @@
     <div class="card">
       <div class="card-content">
         <h2 class="card-title">Incidencias</h2>
-        <div class="chart-wrapper">
+        <div class="chart-wrapper pointer">
           <canvas baseChart 
             [data]="doughnutChartDataI"
             [labels]="doughnutChartLabels"
@@ -183,7 +183,7 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header align="center"> ACCION </th>
                 <td mat-cell *matCellDef="let tipo">
                       <p><strong> 
-                        <i class="material-icons link" (click)="openDialogEdit(tipo.idIniciativa)"  style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
+                        <i class="material-icons link pointer" (click)="openDialogEdit(tipo.idIniciativa)"  style="text-align: center; color:rgb(222, 236, 22)">event_note</i>                        
                       </strong></p>
                 </td>
         </ng-container>

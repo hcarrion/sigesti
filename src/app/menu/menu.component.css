@@ -13,7 +13,9 @@ margin-top: 1%;
 margin-left: 1%;
 }
 
-
+.pointer{
+  cursor:pointer;
+}
 .example-container {
 display: flex;
 flex-direction: column;

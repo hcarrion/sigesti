@@ -57,6 +57,10 @@
     overflow: auto;
   }
   
+  .pointer{
+    cursor:pointer;
+  }
+
   /* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
   
   .example-container1::-webkit-scrollbar {

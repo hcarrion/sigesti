@@ -132,6 +132,9 @@ label {
   width: 12px;
 }
 
+.pointer{
+  cursor:pointer;
+}
 .mat-card-title {
   color: #0d478f;
 }

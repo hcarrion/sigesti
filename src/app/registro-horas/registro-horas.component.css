@@ -11,7 +11,9 @@
     bottom: 0;
     right: 0;
   }
-  
+  .pointer{
+    cursor:pointer;
+  }
   /* Transparent Overlay */
   .content-load:before {
     content: '';

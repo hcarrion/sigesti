@@ -309,4 +309,9 @@ getFechWithFormat(fechaStr: string){
   let newFechStr = month+"/"+day+"/"+year;
   return newFechStr;
 } 
+
+setMostrarDetalle(codigo: string, dia: string){
+
+}
+
 }
