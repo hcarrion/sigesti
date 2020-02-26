@@ -105,6 +105,7 @@ export class MonitoreoComponent implements OnInit {
 
   async callIniciativas(campo,condicion) {
     this.loading = true;
+    
     let orden: string="codigoSVT";
     let iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple(campo,condicion,orden,"desc");
 
