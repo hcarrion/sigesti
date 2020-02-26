@@ -1,0 +1,27 @@
+$(document).ready(function () {
+    $.fn.mostrar_info = function(txt,t,stick,cookie_es) {
+		/*stick = true; (el notify desaparece solo despues de unos segundos). stick = false; (el notify no desaparece hasta hacer click en la x)*/
+		if(stick==null){stick = true;}
+		if(cookie_es==null){cookie_es = false;}
+		if(t==null){t = '';}
+    	setTimeout(function() {
+    		var alerta;
+    		if(cookie_es){
+    			alerta = $.pnotify({text: txt,styling:'bootstrap', type: t, icon: false, closer_hover: false, sticker: false, history: false,hide:stick, width: "100%", addclass: "box-cookie", stack: {"dir1": "up", "dir2": "left", "push": "bottom", "spacing1": 25, "spacing2": 25}}, "success").click(function(e) {
+				if ($(e.target).is('.ui-pnotify-closer *, .ui-pnotify-sticker *')){return;}
+			});
+    		}else{
+				alerta = $.pnotify({ text: txt,styling:'bootstrap', type: t, icon: false, closer_hover: false, sticker: false, history: false,hide:stick}, "success").click(function(e) {
+				if ($(e.target).is('.ui-pnotify-closer *, .ui-pnotify-sticker *')){return;}
+			});
+			}
+		}, 1000);
+    };
+
+    $("#close_info,#info").click(function(){
+        $("#info").slideUp();
+        setTimeout(function() {
+            $('#info').css('display','none');
+        }, 300);
+    });
+});

@@ -1,0 +1,67 @@
+    $(function(){	
+        /****CORTINA MENU RESPONSIVE****/
+    
+        /*------agrego ícono menu mobile------*/
+        $('body').prepend('<a class="icono_menu icon-menu-mobile"></a>');
+    
+        /*------si no existe .navegacion, lo agrego para que todo funcione------*/
+        if ( $('.navegacion').length == 0 ) {
+            $('.top_menu').wrap('<div class="navegacion"></div>');
+        }
+    
+        /*------al hacer click en el ícono, mostrar menú responsive------*/
+        $('.icon-menu-mobile').click(function (m){
+            m.preventDefault();
+            $('.cortina').fadeIn();
+            // $('.cortina .dropdown-menu').prependTo('.cortina');
+    
+            /*------cerrar menú responsive------*/
+            $('.icon-cross').click(function(){
+                $('.cortina').fadeOut();
+            });
+        });	
+    
+        /*------quito padding a menu en mobile------*/
+        $('.cortina .navbar-collapse').addClass('menu-main').parent().css('width' , '100%');
+    
+    });
+    
+    /*------transition despliege menu logueado------*/
+    $(window).load(function(){
+        $('.cortina .dropdown-toggle').click(function(){
+            $('.cortina .dropdown-menu').slideToggle();
+            $('.cortina .nav-pills').fadeToggle();
+        });
+    
+        if($('.menu-logueado').length == true){ 
+            $('.cortina .menu-sup').addClass('menuLogueado');
+        } else {
+            $('.cortina .menu-sup').removeClass('menuLogueado');
+        }
+    });
+    
+    /*------si la pantalla del dispositivo es mayor a 768px, menu mobile desaparece------*/
+    $(window).resize(function(){
+        if ($(window).width() > 768){ 
+            $('.cortina').hide();
+        }
+    });
+    
+    //clono el menu del topbar
+    $(function(){
+        $('.navbar-collapse .menu-sup').clone().appendTo('.cortina');
+    });	
+
+    //clona el menu de navegación
+    function clonarMenuNavegacion(){
+        $(function(){
+            $('.navegacion .top_menu ul').clone().appendTo('.cortina');
+        });
+    };
+    
+    //agrega un "volver al inicio" en login y registro
+    function agregarVolverInicio(url,text){
+        $(function(){
+            $('.cortina').append('<ul class="nav nav-pills"><li class="back"><a href="'+url+'">'+text+'</a></li></ul>');
+        });
+    };

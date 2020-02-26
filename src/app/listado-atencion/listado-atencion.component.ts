@@ -49,7 +49,7 @@ export class ListadoAtencionComponent implements OnInit
   openDialogRecursos(idIniciativa: string) {
     this.matDialog.open(DialogRecursosComponent, /*dialogConfig,*/
       { width: '1200px',
-        height: '600px',
+        height: '570px',
         data: idIniciativa
       }
     );
