@@ -19,4 +19,5 @@ export class ColaboradorDetalleFire {
     horasAsig: number;
     isAsignado: boolean;
     horasReg: HoraFire[] = [];
+    perfil: string;
 }

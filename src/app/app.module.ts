@@ -47,6 +47,7 @@ import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MonitoreoComponent } from './monitoreo/monitoreo.component';
+import { EmailFireService } from './shared/services/email-fire.service';
 
 
 @NgModule({
@@ -94,7 +95,7 @@ import { MonitoreoComponent } from './monitoreo/monitoreo.component';
     FormsModule
   ],
   providers: [AngularFireStorageModule,AngularFirestore, FirebaseParametroService, 
-    DialogRecursosComponent, CommonModule, DatePipe, ],
+    DialogRecursosComponent, CommonModule, DatePipe, EmailFireService, ],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
   DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent,
   DialogListaEventoComponent, DialogRegistraRecursoEventoComponent, DialogRegistraEventoComponent, MonitoreoComponent],
