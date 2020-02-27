@@ -13,6 +13,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../shared/util/date.adapter';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { EmailFireService } from '../shared/services/email-fire.service';
 
 @Component({
   selector: 'app-statusreport',
@@ -84,7 +85,8 @@ export class StatusreportComponent implements OnInit {
   constructor(private firebaseStatusReport: FirebaseStatusreportService,
     private route: ActivatedRoute,
     private firebaseIniciativas: FirebaseIniciativaMainService,
-    public datePipe: DatePipe) {
+    public datePipe: DatePipe,
+    public emailService: EmailFireService) {
     this.generateStatusReport = new FormGroup({
       actPlanSemProxAngularEditor: new FormControl(),
       temDeciRiesgosAngularEditor: new FormControl(),
@@ -140,13 +142,15 @@ export class StatusreportComponent implements OnInit {
     let porcentajeStr: string;
     let fechaInicioStr: string;
     let fechaFinStr: string;
-    iniciativa.recursos.forEach(recurso => {
-      if(undefined != recurso.horasReg && 0 != recurso.horasReg.length){
-        recurso.horasReg.forEach(hora => {
-          horasTotales = horasTotales + hora.horas;
-        });
-      }
-    });
+    if(undefined != iniciativa.recursos){
+      iniciativa.recursos.forEach(recurso => {
+        if(undefined != recurso.horasReg && 0 != recurso.horasReg.length){
+          recurso.horasReg.forEach(hora => {
+            horasTotales = horasTotales + hora.horas;
+          });
+        }
+      });
+    }
     porcentaje = (horasTotales * 100)/iniciativa.horaEstimada;
     porcentajeStr = porcentaje.toPrecision(3)+"%";
     fechaInicioStr = this.datePipe.transform(new Date(iniciativa.fechaInicio), 'dd/MM/yy');
@@ -315,5 +319,9 @@ export class StatusreportComponent implements OnInit {
       pdf.addHTML(document.querySelector('.print'), function() {
         pdf.save('web.pdf');
       });*/
+  }
+
+  sendEmail(statusReportFire: StatusReportFire){
+    this.emailService.sendEmailStatusReport(statusReportFire);
   }
 }
