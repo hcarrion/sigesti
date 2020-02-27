@@ -47,6 +47,9 @@ import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MonitoreoComponent } from './monitoreo/monitoreo.component';
+import { DialogMonitorRecursoComponent } from './modal/dialog-monitor-recurso/dialog-monitor-recurso.component';
+import { DialogAccesoComponent } from './modal/dialog-acceso/dialog-acceso.component';
+import { UsuarioComponent } from './usuario/usuario.component';
 
 
 @NgModule({
@@ -71,7 +74,10 @@ import { MonitoreoComponent } from './monitoreo/monitoreo.component';
     DialogRegistraRecursoEventoComponent,
     DialogRegistraEventoComponent,
     StatusreportComponent,
-    MonitoreoComponent
+    MonitoreoComponent,
+    DialogMonitorRecursoComponent,
+    DialogAccesoComponent,
+    UsuarioComponent
   ],
   imports: 
   [
@@ -97,7 +103,7 @@ import { MonitoreoComponent } from './monitoreo/monitoreo.component';
     DialogRecursosComponent, CommonModule, DatePipe, ],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
   DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent,
-  DialogListaEventoComponent, DialogRegistraRecursoEventoComponent, DialogRegistraEventoComponent, MonitoreoComponent],
+  DialogListaEventoComponent, DialogRegistraRecursoEventoComponent, DialogRegistraEventoComponent, MonitoreoComponent, DialogMonitorRecursoComponent, DialogAccesoComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {   

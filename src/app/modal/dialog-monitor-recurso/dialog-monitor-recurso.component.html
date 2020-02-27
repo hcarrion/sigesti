@@ -1,0 +1,78 @@
+<div *ngIf="loading" class="content-load">
+    <br>
+    <mat-spinner class="child-load"></mat-spinner>
+    <br>
+    <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+</div>
+<div [formGroup]="regRecursos">
+    <div class="card">
+        <div class="card-header card-header-info"  style="height: 50px;">
+            <h6 class="card-title">
+                <p style="color:#3F52B6; text-align: left;">
+                    <strong><i class="material-icons">people</i> Monitor de Recursos</strong></p>
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <mat-form-field style="font-size: small; width: 100%;">
+                        <input style="background-color: khaki; text-align: center;" readonly="readonly"
+                            formControlName="nIniciativaInputDialog" matInput #inputNumIniciativa
+                            placeholder="N° iniciativa" type="text">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-10">
+                    <mat-form-field style="font-size: small; width: 100%;">
+                        <input style="background-color: khaki;" readonly="readonly"
+                            formControlName="tituloInputDialog" matInput #inputTituloIniciativa
+                            placeholder="Título" type="text">
+                    </mat-form-field>
+                </div>
+            </div>
+         
+            <div class="row">
+                <div class="example-container1 mat-elevation-z8">
+                    <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
+                        <thead>
+                            <tr>
+                                <th class="encabezado" width="20%" style="white-space: normal;">Código</th>
+                                <th class="encabezado" width="50%" style="white-space: normal;">Nombres</th>
+                                <th class="encabezado cell-cabecera-center" width="10%" style="white-space: normal;">%
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let colabDetFire of colaboradorDetFireList" class="tablaRecurso">
+                            <tr style="vertical-align:center !important;" id="{{colabDetFire.codigo}}">
+                                <td class="tabla-center cell-td" width="20%">{{colabDetFire.codigoUsuario}}</td>
+                                <td class="tabla-center cell-td" width="50%">{{colabDetFire.nombres}}</td>
+                                <td class="tabla-center cell-td" width="10%"><input class="widthMax porcentaje"
+                                        type="number" min="1" step="1" max="100" (focusout)="focusOut($event, colabDetFire)"
+                                        ng-model="colabDetFire.porcentaje" style="text-align:center;" onPaste="return false"
+                                        onKeyPress="if(this.value.length==3) return false;"
+                                        value="{{colabDetFire.porcentaje}}" oninput="this.value = Math.trunc(this.value)"></td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                    <label style="color:#3F52B6;"><strong style="font-size: small;">Total horas trabajadas: </strong></label>                    
+                </div>
+                <div class="col-md-2 align-left-all">
+                    <input class="form-control" formControlName="porAsignarLabel" type="text" style="font-size: small;"
+                    ng-disabled="true" disabled>
+                </div>              
+                <div class="col-md-6 align-right-all">
+                    <button mat-raised-button class="btn-danger" (click)="close()">
+                        <mat-icon>close</mat-icon>
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

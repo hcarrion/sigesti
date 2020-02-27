@@ -7,5 +7,6 @@ export class ActividadFireMonitor {
     titulo: string;
     dias: number[] = [];
     total: number;
+    dia: number;
 }
 

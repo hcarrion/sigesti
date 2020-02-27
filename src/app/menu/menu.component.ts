@@ -3,6 +3,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 
 import { map, shareReplay } from 'rxjs/operators';
+import { DialogAccesoComponent } from '../modal/dialog-acceso/dialog-acceso.component';
+import { MatDialog } from '@angular/material';
 
 
 @Component({
@@ -14,7 +16,8 @@ import { map, shareReplay } from 'rxjs/operators';
 export class MenuComponent implements OnDestroy  { 
   mobileQuery: MediaQueryList;
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
-
+  tipomenu: string;
+  pantallaacceso: boolean[]=[];
   fillerContent = Array.from({length: 50}, () =>
       `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -32,7 +35,7 @@ export class MenuComponent implements OnDestroy  {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private matDialog: MatDialog, private breakpointObserver: BreakpointObserver) {}
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
@@ -42,16 +45,74 @@ export class MenuComponent implements OnDestroy  {
   shouldRun = true;
 
   ngOnInit(){
-    localStorage.setItem('indinicio', "true");   	  
+    localStorage.setItem('indinicio', "true");
+    localStorage.setItem("usuario","");
+    localStorage.setItem("nomusu","");
+    localStorage.setItem("cargousu","");
+    this.openDialogRecursos("");   	  
   } 
+
+  openDialogRecursos(idIniciativa: string): void {
+    const dialogRef = this.matDialog.open(DialogAccesoComponent, /*dialogConfig,*/
+      { width: '500px',
+        height: '500px',
+        data: idIniciativa
+      }
+    );
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getperfiles(result);
+    }); 
+
+  }
+
+
 
   readLocalStorageValue(key) {
     let value =   localStorage.getItem(key);
-  
+
     if(value == undefined) {
       value =='false';
     }
     
     return value;
+  }
+
+  getperfiles(perfiles: string){
+    switch (perfiles){
+      case "ADMINISTRADOR": 
+          this.pantallaacceso[1]= true;
+          this.pantallaacceso[2]= true;
+          this.pantallaacceso[3]= true;
+          this.pantallaacceso[4]= true;
+          this.pantallaacceso[5]= true;
+          this.pantallaacceso[6]= true;
+          break;
+      case "COLABORADOR": 
+          this.pantallaacceso[1]= true;
+          this.pantallaacceso[2]= false;
+          this.pantallaacceso[3]= true;
+          this.pantallaacceso[4]= false;
+          this.pantallaacceso[5]= false;
+          this.pantallaacceso[6]= false;
+          break;
+      case "LIDER": 
+          this.pantallaacceso[1]= true;
+          this.pantallaacceso[2]= false;
+          this.pantallaacceso[3]= true;
+          this.pantallaacceso[4]= true;
+          this.pantallaacceso[5]= true;
+          this.pantallaacceso[6]= true;
+          break;
+      case "USUARIO": 
+          this.pantallaacceso[1]= true;
+          this.pantallaacceso[2]= false;
+          this.pantallaacceso[3]= false;
+          this.pantallaacceso[4]= false;
+          this.pantallaacceso[5]= false;
+          this.pantallaacceso[6]= false;
+          break;
+    }
+
   }
 }
