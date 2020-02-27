@@ -13,18 +13,18 @@ margin-top: 1%;
 margin-left: 1%;
 }
 
-.highlight{
-background: #80bcf0 !important; 
+.pointer{
+  cursor:pointer;
 }
-
-.highlight td{
-color: #ffffff !important;
-}
-
 .example-container {
 display: flex;
 flex-direction: column;
 min-width: 300px;
+}
+
+.img-fluid {
+  height: 490px;
+  width: 490px;
 }
 
 .example-header {

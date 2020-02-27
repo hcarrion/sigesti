@@ -1,0 +1,59 @@
+
+@media screen and (max-width: 768px) {
+	.completitud{position: relative;}
+	.icono_menu.icon-menu-mobile{
+		color: #00569C;
+		margin-top: 20px;
+		left: 20px !important;
+		width: 40px !important;
+	}
+	
+	.img-responsive {
+		margin-left: 45px !important;
+	}
+
+
+}
+
+
+
+@media screen and (max-width: 640px) {
+	
+	.navbar-header img {
+		margin-top:32px;
+	}
+	.cortina .menu-sup li {
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	.cortina .nav > li a {
+		margin-left: 0;
+	}
+	.cortina .nav.nav-pills li,.cortina .nav.nav-pills li a:hover,.cortina .nav.nav-pills li a:active {
+		color: #fff;
+		margin-left: 0;
+	}
+
+	.cortina .menu-sup a {
+		height: 30px;
+	}
+
+}
+
+@media screen and (max-width: 420px) {
+	.slider-home-bkg {
+		display: none;
+	}
+	.slides_control {
+		height: 120px !important;
+	}
+	.img-responsive {
+		min-width: 240px !important;
+}
+
+
+		
+}
+
+
+

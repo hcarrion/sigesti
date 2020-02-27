@@ -250,13 +250,15 @@ getIniciativas(lista: IniciativaMainFire[]){
 }
 
 getIniciativasEmp(lista: IniciativaMainFire[]){
-  let listaProy: ActividadFireMonitor[] = [];
+  let listaProy1: ActividadFireMonitor[] = [];
   let empleado: string ="";
+  var arrempresa = new Array();
+  let indice: number = 0;
   lista.forEach(iniciativaFire => {
-        let actividadFireMonitor = new ActividadFireMonitor();
-        if(undefined != iniciativaFire.recursos && 0 != iniciativaFire.recursos.length){
-            actividadFireMonitor.iniciativa = iniciativaFire;
+        if(undefined != iniciativaFire.recursos && 0 != iniciativaFire.recursos.length){            
             iniciativaFire.recursos.forEach(recurso => {
+                let actividadFireMonitor = new ActividadFireMonitor();
+                actividadFireMonitor.iniciativa = iniciativaFire;
                 let dias: number[] = [];
                 let total: number=0;
                 for(var i = 1; i <= this.ultimaDia; i++){
@@ -264,17 +266,40 @@ getIniciativasEmp(lista: IniciativaMainFire[]){
                 }
                 actividadFireMonitor.codigousuario = recurso.codigoUsuario;
                 actividadFireMonitor.titulo = recurso.nombres;
+
                 recurso.horasReg.forEach(horasrec =>{
                      dias[this.datepipe.transform(horasrec.fecha, 'dd')] += horasrec.horas; 
                      total += horasrec.horas;                 
                 });
                 actividadFireMonitor.dias = dias;
                 actividadFireMonitor.total = total;
-                listaProy.push(actividadFireMonitor);
+
+                let existe: boolean = false;
+                for (i=1; i<= listaProy1.length; i++){
+                      if (arrempresa[i]==actividadFireMonitor.codigousuario){
+                         indice = i;
+                         existe =true; 
+                         break;
+                      }
+                }
+                if (!existe){                                  
+                  listaProy1.push(actividadFireMonitor);
+                  arrempresa[listaProy1.length] = actividadFireMonitor.codigousuario;                
+                }else{
+                  listaProy1.forEach(empl=>{
+                    if (empl.codigousuario == actividadFireMonitor.codigousuario){
+                      for(i=1; i<=empl.dias.length-1; i++){
+                        empl.dias[i] += actividadFireMonitor.dias[i];
+                        empl.total += actividadFireMonitor.dias[i];
+                      }
+                    }
+                  })
+                }
             });
+
         }
   });
-  return listaProy;
+  return listaProy1;
 }
 
 getFechWithFormat(fechaStr: string){
@@ -284,4 +309,9 @@ getFechWithFormat(fechaStr: string){
   let newFechStr = month+"/"+day+"/"+year;
   return newFechStr;
 } 
+
+setMostrarDetalle(codigo: string, dia: string){
+
+}
+
 }

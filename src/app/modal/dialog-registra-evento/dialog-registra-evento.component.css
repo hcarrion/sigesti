@@ -9,7 +9,9 @@
   .example-panel-3.mat-select-panel {
     background: rgba(76, 241, 54, 0.5);
   }
-
+  .pointer{
+    cursor:pointer;
+  }
  /* Absolute Center Spinner */
  .content-load {
   position: fixed;

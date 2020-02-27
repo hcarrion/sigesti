@@ -11,7 +11,9 @@
 .tabla-center{
     padding: .1rem;
 }
-
+.pointer{
+    cursor:pointer;
+  }
 .cell-cabecera-center{
     text-align: center;
 }

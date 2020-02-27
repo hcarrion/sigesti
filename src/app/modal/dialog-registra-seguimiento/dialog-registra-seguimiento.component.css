@@ -79,7 +79,9 @@ tr.mat-footer-row, tr.mat-row {
 tr.mat-header-row {
   height: 46px;
 }
-
+.pointer{
+  cursor:pointer;
+}
 /* Absolute Center Spinner */
 .content-load {
   position: fixed;

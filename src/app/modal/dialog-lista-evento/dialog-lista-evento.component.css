@@ -8,7 +8,9 @@ table {
   margin-top: 2%;
   margin-left: 2%;
 }
-
+.pointer{
+  cursor:pointer;
+}
 .highlight{
   background: #0275d8 !important; 
 }

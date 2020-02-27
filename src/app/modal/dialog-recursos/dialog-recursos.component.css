@@ -5,7 +5,7 @@
 .encabezado{
     background-color: #eff4fa;
     font-size: 0.85rem;
-    color: blue;
+    color: #0d478f;
 }
 
 .tabla-center{
@@ -50,3 +50,84 @@
     height: 100%;
     background-color: rgba(0,0,0,0.3);
   }
+
+
+  .example-container1 {
+    height: 200px;
+    overflow: auto;
+  }
+  
+  .pointer{
+    cursor:pointer;
+  }
+
+  /* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+  
+  .example-container1::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+  
+  .example-container1::-webkit-scrollbar:vertical {
+    width:10px;
+  }
+  
+  .example-container1::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+    display: none;
+  } 
+  
+  .example-container1::-webkit-scrollbar:horizontal {
+    height: 10px;
+  }
+  
+  .example-container1::-webkit-scrollbar-thumb {
+    background-color: #0d478f;
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+  }
+  
+  .example-container1::-webkit-scrollbar-track {
+    border-radius: 10px;  
+  }
+  
+  /* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+  
+  .example-container::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+  
+  .example-container::-webkit-scrollbar:vertical {
+    width:10px;
+  }
+  
+  .example-container::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+    display: none;
+  } 
+  
+  .example-container::-webkit-scrollbar:horizontal {
+    height: 10px;
+  }
+  
+  .example-container::-webkit-scrollbar-thumb {
+    background-color: #af0885;
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+  }
+  
+  .example-container::-webkit-scrollbar-track {
+    border-radius: 10px;  
+  }
+  .mat-cell{
+    font-size: 12px;
+    max-height: 10px;
+    min-height: 20%;
+    border-bottom: none;
+    padding: 0px 0;
+  } 
+  .mat-header-cell{
+    font-size: 12px;
+    max-height: 10px;
+    min-height: 10%;
+    border-bottom: none;
+    padding: 0 0;
+  }
+  

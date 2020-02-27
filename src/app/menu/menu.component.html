@@ -5,54 +5,41 @@
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container">
-    <mat-sidenav #snav>
+    <mat-sidenav #snav style="height: 50px;">
       <mat-nav-list>
-        <a mat-list-item [routerLink]="['dashboard']" (click)="snav.toggle()"> 
-          <p style=color:#3F52B6>
-            <strong> 
-              <i class="material-icons md-11" style="vertical-align: middle;" >3d_rotation</i>
-               Dashboard
-            </strong>
-          </p>
-        </a>
-        <a mat-list-item [routerLink]="['listado_atencion']" (click)="snav.toggle()"> 
-          <p style=color:#3F52B6>
-            <strong> 
-              <i class="material-icons md-11" style="vertical-align: middle;" >settings_input_antenna</i>
-               Iniciativa
-            </strong>
-          </p>
-        </a>
-        <a mat-list-item [routerLink]="['registro_contacto']" (click)="snav.toggle()"> 
-          <p style=color:#3F52B6>
-            <strong> 
-              <i class="material-icons md-18" style="vertical-align: middle;">record_voice_overy</i>
-              Registra Contacto
-            </strong>
-          </p>
-        </a>
-        <a mat-list-item [routerLink]="['registro_horas']" (click)="snav.toggle()"> 
-          <p style=color:#3F52B6>
-            <strong> 
-              <i class="material-icons md-18" style="vertical-align: middle;">alarm_on</i>
-               Planificador
-            </strong>
-          </p>  
-        </a>
-        <a mat-list-item [routerLink]="['monitorea']" (click)="snav.toggle()"> 
-          <p style=color:#3F52B6>
-            <strong> 
-              <i class="material-icons md-18" style="vertical-align: middle;">assessment</i>
-               Monitor
-            </strong>
-          </p>  
-        </a>
+        <button mat-menu-item [routerLink]="['listado_atencion']" (click)="snav.toggle()" style=color:#3F52B6>
+          <mat-icon>settings_input_antenna</mat-icon>
+          <span>Iniciativa</span>
+        </button>
+        <button mat-menu-item [routerLink]="['registro_contacto']" (click)="snav.toggle()" style=color:#3F52B6>
+          <mat-icon>record_voice_overy</mat-icon>
+          <span>Contacto</span>
+        </button>
+        <button mat-menu-item [routerLink]="['registro_horas']" (click)="snav.toggle()" style=color:#3F52B6>
+          <mat-icon>alarm_on</mat-icon>
+          <span>Planifica</span>
+        </button>
+        <button mat-menu-item [routerLink]="['dashboard']" (click)="snav.toggle()" style=color:#3F52B6>
+          <mat-icon>3d_rotation</mat-icon>
+          <span>Dashboard</span>
+        </button>
+        <button mat-menu-item [routerLink]="['monitorea']" (click)="snav.toggle()" style=color:#3F52B6>
+          <mat-icon>assessment</mat-icon>
+          <span>Monitor</span>
+        </button>
+      
       </mat-nav-list>
     </mat-sidenav>
 
-    <mat-sidenav-content>
+    <mat-sidenav-content style="height: 100%;">
       
-      <router-outlet></router-outlet>
+      <router-outlet> 
+        <div class="container text-center pb-10;" disabled>
+          <img src="assets\images\fondo8.png" class="img-fluid" *ngIf="readLocalStorageValue('indinicio')== 'true'">
+          </div>
+        
+
+      </router-outlet>
       <div class="container text-center pb-5; ">
         <p style=color:#3F52B6>
           <strong>         
@@ -60,10 +47,7 @@
           </strong>
         </p>  
       </div>
-      <div class="container text-center pb-5;" disabled>
-        <img src="assets\images\fondo8.png" class="img-fluid" *ngIf="readLocalStorageValue('indinicio')== 'true'">
-        </div>
-      
+     
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

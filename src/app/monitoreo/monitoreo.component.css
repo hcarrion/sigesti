@@ -169,6 +169,10 @@ tr.mat-header-row {
   overflow: auto;
 }
 
+
+.pointer{
+  cursor:pointer;
+}
 /* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
 
 .example-container1::-webkit-scrollbar {
@@ -230,6 +234,7 @@ tr.mat-header-row {
   min-height: 20%;
   border-bottom: none;
   padding: 0px 0;
+  cursor: pointer;
 } 
 .mat-header-cell{
   font-size: 12px;
