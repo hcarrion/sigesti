@@ -47,13 +47,10 @@ import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MonitoreoComponent } from './monitoreo/monitoreo.component';
-<<<<<<< HEAD
 import { DialogMonitorRecursoComponent } from './modal/dialog-monitor-recurso/dialog-monitor-recurso.component';
 import { DialogAccesoComponent } from './modal/dialog-acceso/dialog-acceso.component';
 import { UsuarioComponent } from './usuario/usuario.component';
-=======
 import { EmailFireService } from './shared/services/email-fire.service';
->>>>>>> a30f20ef5585625f47d85f827c47bd7f319c20fb
 
 
 @NgModule({
