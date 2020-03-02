@@ -198,7 +198,7 @@ export class StatusreportComponent implements OnInit {
     /*statusReportFire.actSemanaProxima = this.generateStatusReport.value.actPlanSemProxAngularEditor;
     statusReportFire.temasDecisionesRiesgos = this.generateStatusReport.value.temDeciRiesgosAngularEditor;*/
     statusReportFire.idIniciativa = this.idIniciativa;
-
+    statusReportFire.estado = 'ABIERTO';
     if(undefined != this.statusReportFire.codigo){
       statusReportFire.codigo = this.statusReportFire.codigo;
       statusReportFire.idStatusReport = this.statusReportFire.idStatusReport;
@@ -321,7 +321,23 @@ export class StatusreportComponent implements OnInit {
       });*/
   }
 
-  sendEmail(statusReportFire: StatusReportFire){
+  sendEmail(statusReportF: StatusReportFire){
+    this.loading = true;
+    let statusReportFire = statusReportF;
+    statusReportFire.idIniciativa = this.idIniciativa;
+    statusReportFire.estado = 'CERRADO';
+    if(undefined != this.statusReportFire.codigo){
+      statusReportFire.codigo = this.statusReportFire.codigo;
+      statusReportFire.idStatusReport = this.statusReportFire.idStatusReport;
+      this.firebaseStatusReport.updateStatusReport(statusReportFire).then(
+        result => {
+          this.loading = false;
+          Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+        },error => {
+          this.loading = false;
+          Swal.fire('Error!', 'Error al guardar el status report.', 'error');
+        });
+    }
     this.emailService.sendEmailStatusReport(statusReportFire);
   }
 }

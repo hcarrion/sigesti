@@ -71,30 +71,27 @@ export class EmailFireService {
     let email = new EmailSend;
     email.to = 'mixel.cs@gmail.com';
     email.from = 'frommixel.cs@gmail.com';
-    debugger;
+    const formData: FormData = new FormData();
+    formData.append('to', 'mixel.cs@gmail.com');
+    formData.append('from', 'frommixel.cs@gmail.com');
 
     const httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: 'Basic ' + btoa('demo' + ':' + 'secret_demo'),
       'Access-Control-Allow-Origin': 'http://localhost:4200',
-      Authorization: 'Basic ' + btoa('demo' + ':' + 'secret_demo')  
+      'enctype': 'multipart/form-data'
     });
-    this.http.post<any>('https://jsonplaceholder.typicode.com/posts', JSON.stringify(''), {headers:httpHeaders}).subscribe(data => {
+    console.log(JSON.stringify(email));
+    console.log("========================")
+    console.log(email.toString());
+    var body = 'to=mixel.cs@gmail.com&from=frommixel.cs@gmail.com';
+    this.http.post<any>(url, JSON.stringify(email), {headers: httpHeaders}).subscribe(data => {
       debugger;
     });
+    /*this.http.post<any>(url, JSON.stringify(email), {headers:httpHeaders}).subscribe(data => {
+      debugger;
+    });*/
 
     return this.http.post<any>('https://jsonplaceholder.typicode.com/posts', JSON.stringify(''));
   }
-
-  errorHandl(error) {
-    let errorMessage = '';
-    if(error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log(errorMessage);
-    return throwError(errorMessage);
- }
 }

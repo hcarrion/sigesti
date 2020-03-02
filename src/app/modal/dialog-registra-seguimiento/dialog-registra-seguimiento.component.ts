@@ -276,6 +276,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     iniciativaObject.horaReal = this.regIniciativa.value.horaRealInput;
     
     this.regIniciativa = this.formBuilder.group({
+      codigoSVTInput: [iniciativaObject.codigoSVT, Validators.required],
       tituloInput: [iniciativaObject.titulo, Validators.required],
       estadoSelect: [iniciativaObject.estado, Validators.required],
       sumillaInput: [iniciativaObject.sumilla, Validators.required],
@@ -541,7 +542,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
 
 
   /* Add param */
-  saveParametro() {
+  saveParametro1() {
     let paramObject = new ParametroFire();
     paramObject.nombre = "prioridad";
     let paramDetObjectList: Array<ParametroDetalleFire> = [];
@@ -562,13 +563,22 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     this.firebaseParametros.createParameter(paramObject);
   }
 
-
-
-
-
-
-
-
+  saveParametro() {
+    let paramObject = new ParametroFire();
+    paramObject.nombre = "estado-rep";
+    let paramDetObjectList: Array<ParametroDetalleFire> = [];
+    let paramDetObject = new ParametroDetalleFire();
+    paramDetObject.codigo = 1;
+    paramDetObject.descripcion = 'Abierto';
+    paramDetObjectList.push(paramDetObject);
+    let paramDetObject2 = new ParametroDetalleFire();
+    paramDetObject2.codigo = 2;
+    paramDetObject2.descripcion = 'Cerrado';
+    paramDetObjectList.push(paramDetObject2);
+    
+    paramObject.detalle = paramDetObjectList;
+    this.firebaseParametros.createParameter(paramObject);
+  }
 
   /* Add colaborador */
   saveColaborador1() {
