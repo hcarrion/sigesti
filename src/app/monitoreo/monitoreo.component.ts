@@ -18,6 +18,7 @@ import { IniciativaHorasFire } from '../shared/models/iniciativa-horas-fire';
 import { ActividadFireMonitor } from '../shared/models/actividad-fire-monitor';
 import { stringify } from 'querystring';
 import { RecurseVisitor } from '@angular/compiler/src/i18n/i18n_ast';
+import { DialogMonitorRecursoComponent } from '../modal/dialog-monitor-recurso/dialog-monitor-recurso.component';
 
 
 @Component({
@@ -310,8 +311,18 @@ getFechWithFormat(fechaStr: string){
   return newFechStr;
 } 
 
-setMostrarDetalle(codigo: string, dia: string){
+openDialogRecursos(codigo: number, dia: number){
+  let datos: ActividadFireMonitor;
+  datos = new ActividadFireMonitor;
 
+  datos.codigo = codigo;
+  datos.dia = dia;
+  this.matDialog.open(DialogMonitorRecursoComponent, 
+    { width: '1200px',
+      height: '570px',
+      data: datos
+    }
+  );
 }
 
 }

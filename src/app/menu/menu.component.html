@@ -7,27 +7,34 @@
   <mat-sidenav-container class="example-sidenav-container">
     <mat-sidenav #snav style="height: 50px;">
       <mat-nav-list>
-        <button mat-menu-item [routerLink]="['listado_atencion']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[1]" mat-menu-item [routerLink]="['listado_atencion']" (click)="snav.toggle()" style=color:#3F52B6>
           <mat-icon>settings_input_antenna</mat-icon>
           <span>Iniciativa</span>
         </button>
-        <button mat-menu-item [routerLink]="['registro_contacto']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[2]" mat-menu-item [routerLink]="['registro_contacto']" (click)="snav.toggle()" style=color:#3F52B6>
           <mat-icon>record_voice_overy</mat-icon>
           <span>Contacto</span>
         </button>
-        <button mat-menu-item [routerLink]="['registro_horas']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[3]"mat-menu-item [routerLink]="['registro_horas']" (click)="snav.toggle()" style=color:#3F52B6>
           <mat-icon>alarm_on</mat-icon>
           <span>Planifica</span>
         </button>
-        <button mat-menu-item [routerLink]="['dashboard']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[4]" mat-menu-item [routerLink]="['dashboard']" (click)="snav.toggle()" style=color:#3F52B6>
           <mat-icon>3d_rotation</mat-icon>
           <span>Dashboard</span>
         </button>
-        <button mat-menu-item [routerLink]="['monitorea']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[5]" mat-menu-item [routerLink]="['monitorea']" (click)="snav.toggle()" style=color:#3F52B6>
           <mat-icon>assessment</mat-icon>
           <span>Monitor</span>
         </button>
-      
+        <button *ngIf="this.pantallaacceso[6]" mat-menu-item [routerLink]="['usuario']" (click)="snav.toggle()" style=color:#3F52B6>
+          <mat-icon>people</mat-icon>
+          <span>Usuario</span>
+        </button>
+        <button mat-menu-item (click)="snav.toggle()" style=color:#3F52B6>
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Salir</span>
+        </button>
       </mat-nav-list>
     </mat-sidenav>
 

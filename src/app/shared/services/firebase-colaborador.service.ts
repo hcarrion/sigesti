@@ -20,4 +20,11 @@ export class FirebaseColaboradorService {
   getColaboradores() {
     return this.firestore.collection('colaboradores').snapshotChanges();
   }
+  getColaboradoresfiltro(campo: string, condicion: string) {
+    if(campo!=""){
+      return this.firestore.collection('colaboradores').snapshotChanges();
+    }else{
+      return this.firestore.collection('colaboradores',ref => ref.where(campo, '==', condicion)).snapshotChanges();
+    }    
+  }
 }
