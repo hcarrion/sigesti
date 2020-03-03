@@ -11,6 +11,7 @@ import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
 import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-lista-evento.component';
 import { Router } from '@angular/router';
 import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
+import { DialogListadoStatusreportComponent } from '../modal/dialog-listado-statusreport/dialog-listado-statusreport.component';
 
 @Component({
   selector: 'app-listado-atencion',
@@ -24,14 +25,17 @@ export class ListadoAtencionComponent implements OnInit
   nuevo: boolean;
   edit: boolean;
   delete: boolean;
+  perfil: string;
   tabla: any;
   mensajeAccion: string;
   display: boolean = false;
-  columnasTabla: string[] = ['codigosvt', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
+  
+  columnasTabla: string[] = [];
   title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
   iniciativas= new MatTableDataSource<IniciativaMainFire>([]);
   selectedRowIndex: number = -1;
+  public veraccion: boolean;
   tipoDocumentoData = new MatTableDataSource<IniciativaMainFire>([]);
   tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaMainFire>([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
@@ -101,8 +105,17 @@ export class ListadoAtencionComponent implements OnInit
   }
 
   ngOnInit() {
+    this.veraccion = false;
     localStorage.setItem('indinicio',"false");   
     this.callIniciativas();
+    this.perfil = localStorage.getItem("perfil");
+    if (this.perfil!="COLABORADOR"){
+      this.veraccion = true;
+      this.columnasTabla = ['codigosvt', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
+    }else{
+      this.columnasTabla = ['codigosvt', 'titulo','asignacion','fechainicio','fechafin','estado'];
+    }
+
   }
 
   async callIniciativas() {
@@ -174,7 +187,15 @@ export class ListadoAtencionComponent implements OnInit
   }
   
   openStatusReport(idIniciativa: string){
-    this.router.navigateByUrl('/statusreport/'+idIniciativa);
+    let datos: IniciativaMainFire;
+    datos = new IniciativaMainFire;
+    datos.idIniciativa = idIniciativa
+    this.matDialog.open(DialogListadoStatusreportComponent, 
+      { width: '600px',
+        height: '530px',
+        data: datos
+      }
+    );
   }
   
 }

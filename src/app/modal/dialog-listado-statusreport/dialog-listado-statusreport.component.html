@@ -1,0 +1,61 @@
+<div *ngIf="loading" class="content-load">
+    <br>
+    <mat-spinner class="child-load"></mat-spinner>
+    <br>
+    <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+</div>
+<div class="pipeline white lined-primary">
+    <div class="pipeline-header">
+        <h5 class="pipeline-name">
+            Lista de Reportes Semanales
+        </h5>
+        <div class="pipeline-settings os-dropdown-trigger">           
+            <div class="dropdown">
+                <div class="pipeline-settings os-dropdown-trigger">
+                    <button mat-raised-button type="button" class="btn-primary btn-save" align="right" (click)='openDialogNew(this.idIniciativaF)'>
+                        <mat-icon>record_voice_overy</mat-icon> Nuevo</button>
+                </div>
+            </div>               
+        </div>
+    </div>
+    <div class="pipeline-body">
+        <mat-form-field>
+            <input matInput (keyup)="buscarDatos($event.target.value)" placeholder="Buscar">
+        </mat-form-field>
+        <table mat-table [dataSource]="statusReport" matSort>
+            <!-- Position Column -->
+            <ng-container matColumnDef="codigo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO </th>
+                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.codigo}} </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="usuario">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> USUARIO </th>
+                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.usuarioReg}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA </th>
+                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fecharReg}} </td>
+            </ng-container>
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
+                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.estado}} </td>
+            </ng-container>
+           
+            <ng-container matColumnDef="accion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ACCION </th>
+                <td mat-cell *matCellDef="let tipo" style="align-content: center;">
+                    <p style="text-align: center; color:#3F52B6">
+                        <strong>
+                            <i class="material-icons link padding-icon" (click)="openDialogEdit(statusReport.idIniciativa)"
+                                style="text-align: center; color:rgb(236, 150, 22)" matTooltip="Editar">edit</i></strong>
+                    </p>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"
+                [ngClass]="{'highlight': selectedRowIndex == row.codigo}" (click)="highlight(row)"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

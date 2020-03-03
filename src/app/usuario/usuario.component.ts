@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
 import { UsuarioPerfilFireService } from '../shared/models/usuario-perfil-fire.service';
 import { FirebaseColaboradorService } from '../shared/services/firebase-colaborador.service';
+import { ColaboradorFire } from '../shared/models/colaborador-fire';
 
 
 
@@ -21,6 +22,8 @@ export class UsuarioComponent implements OnInit {
   //iniciativas: IniciativaFire[] = [];
   colaborador= new MatTableDataSource<UsuarioPerfilFireService>([]);
   selectedRowIndex: number = -1;
+  public tipoDocumento: UsuarioPerfilFireService[];
+  public tipoDocumentoSeleccionado: UsuarioPerfilFireService;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   loading: boolean;
@@ -76,4 +79,16 @@ export class UsuarioComponent implements OnInit {
    buscarDatos(filterValue: string) {
     this.colaborador.filter = filterValue.trim().toLowerCase();
     }
+    
+  selectedDocumento(todo: ColaboradorFire) {
+    this.InReset();
+  }
+  InReset() {
+  }
+  highlight(row){
+    this.selectedRowIndex = row.usuario;
+  }
+  openDialogNew(){
+   
+  }
 }

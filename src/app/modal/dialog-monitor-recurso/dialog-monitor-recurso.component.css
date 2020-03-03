@@ -53,7 +53,8 @@
 
 
   .example-container1 {
-    height: 300px;
+    height: 200px;
+    width: 900px;
     overflow: auto;
   }
   
@@ -119,7 +120,7 @@
   .mat-cell{
     font-size: 12px;
     max-height: 10px;
-    min-height: 20%;
+    min-height: 10%;
     border-bottom: none;
     padding: 0px 0;
   } 
@@ -130,4 +131,3 @@
     border-bottom: none;
     padding: 0 0;
   }
-  

@@ -58,10 +58,7 @@
                 <ng-container matColumnDef="accion">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header width ="8%"> ACCION </th>
                     <td mat-cell *matCellDef="let tipo">
-                        <p><strong>
-                                <i class="material-icons link padding-icon pointer" (click)="openDialogEdit(tipo.usuario)"
-                                    style="text-align: center; color:rgb(236, 150, 22)" matTooltip="Editar">edit</i>                               
-                            </strong></p>
+                       
                     </td>
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="columnasTabla; sticky: true;" class="encabezado"></tr>

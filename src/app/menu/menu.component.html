@@ -1,33 +1,41 @@
-<div class="example-container"  *ngIf="shouldRun">
+<div class="example-container" *ngIf="shouldRun">
   <mat-toolbar color="primary" class="example-toolbar">
-    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <button mat-icon-button (click)="snav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
     <a class="navbar-brand" href="#"><img class="logo" src="assets/images/logo-blanco.png" alt="" width="270"></a>
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container">
     <mat-sidenav #snav style="height: 50px;">
       <mat-nav-list>
-        <button *ngIf="this.pantallaacceso[1]" mat-menu-item [routerLink]="['listado_atencion']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[1]" mat-menu-item [routerLink]="['listado_atencion']" (click)="snav.toggle()"
+          style=color:#3F52B6>
           <mat-icon>settings_input_antenna</mat-icon>
           <span>Iniciativa</span>
         </button>
-        <button *ngIf="this.pantallaacceso[2]" mat-menu-item [routerLink]="['registro_contacto']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[2]" mat-menu-item [routerLink]="['registro_contacto']"
+          (click)="snav.toggle()" style=color:#3F52B6>
           <mat-icon>record_voice_overy</mat-icon>
           <span>Contacto</span>
         </button>
-        <button *ngIf="this.pantallaacceso[3]"mat-menu-item [routerLink]="['registro_horas']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[3]" mat-menu-item [routerLink]="['registro_horas']" (click)="snav.toggle()"
+          style=color:#3F52B6>
           <mat-icon>alarm_on</mat-icon>
           <span>Planifica</span>
         </button>
-        <button *ngIf="this.pantallaacceso[4]" mat-menu-item [routerLink]="['dashboard']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[4]" mat-menu-item [routerLink]="['dashboard']" (click)="snav.toggle()"
+          style=color:#3F52B6>
           <mat-icon>3d_rotation</mat-icon>
           <span>Dashboard</span>
         </button>
-        <button *ngIf="this.pantallaacceso[5]" mat-menu-item [routerLink]="['monitorea']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[5]" mat-menu-item [routerLink]="['monitorea']" (click)="snav.toggle()"
+          style=color:#3F52B6>
           <mat-icon>assessment</mat-icon>
           <span>Monitor</span>
         </button>
-        <button *ngIf="this.pantallaacceso[6]" mat-menu-item [routerLink]="['usuario']" (click)="snav.toggle()" style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[6]" mat-menu-item [routerLink]="['usuario']" (click)="snav.toggle()"
+          style=color:#3F52B6>
           <mat-icon>people</mat-icon>
           <span>Usuario</span>
         </button>
@@ -39,34 +47,22 @@
     </mat-sidenav>
 
     <mat-sidenav-content style="height: 100%;">
-      
-      <router-outlet> 
+
+      <router-outlet>
         <div class="container text-center pb-10;" disabled>
           <img src="assets\images\fondo8.png" class="img-fluid" *ngIf="readLocalStorageValue('indinicio')== 'true'">
-          </div>
-        
-
+        </div>
       </router-outlet>
       <div class="container text-center pb-5; ">
         <p style=color:#3F52B6>
-          <strong>         
+          <strong>
             El EQUIPO DE SISTEMAS "¡ Un equipo un objetivo... !"
           </strong>
-        </p>  
+        </p>
       </div>
-     
+
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
 
 <div *ngIf="!shouldRun">...</div>
-
-
-
-
-
-
-
-
-
-

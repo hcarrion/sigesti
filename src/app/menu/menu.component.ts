@@ -56,6 +56,7 @@ export class MenuComponent implements OnDestroy  {
     const dialogRef = this.matDialog.open(DialogAccesoComponent, /*dialogConfig,*/
       { width: '500px',
         height: '500px',
+        disableClose: true,
         data: idIniciativa
       }
     );

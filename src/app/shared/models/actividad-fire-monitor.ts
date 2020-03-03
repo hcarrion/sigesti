@@ -8,5 +8,6 @@ export class ActividadFireMonitor {
     dias: number[] = [];
     total: number;
     dia: number;
+    tipo: string;
 }
 

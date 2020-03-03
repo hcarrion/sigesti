@@ -1,0 +1,189 @@
+<div *ngIf="loading" class="content-load">
+    <br>
+    <mat-spinner class="child-load"></mat-spinner>
+    <br>
+    <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+</div>
+<div class="pipeline white lined-primary">
+    <div [formGroup]="generateStatusReport">
+        <table class="MsoNormalTable" border="0" cellspacing="0">
+            <tbody>
+                <tr>          
+                    <td width="60%" valign="top" rowspan="2"  colspan="2" style="text-align: Left; vertical-align:middle ;">
+                    <h4>  <b> STATUS REPORT: 
+                        Reporte de Avances de Incidencias </b>  </h4>
+                    </td>
+                    
+                </tr>       
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-2 align-right-all">
+                <button mat-raised-button class="btn-info" (click)="generateAndDownloadPdf()">
+                    <mat-icon>file_download</mat-icon>
+                    Descargar PDF
+                </button>
+            </div>
+            <div class="col-md-2 align-right-all">
+                <button mat-raised-button class="btn-primary" (click)="saveStatusReport(statusReportFire)">
+                    <mat-icon>save</mat-icon>
+                    Guardar
+                </button>
+            </div>
+            <div class="col-md-2 align-right-all">
+                <button mat-raised-button class="btn-success" (click)="sendEmail(statusReportFire)">
+                    <mat-icon>send</mat-icon>
+                    Enviar y Cerrar
+                </button>
+            </div>
+        </div>
+        <br>
+        <div class="panel-body" [ngStyle]="headingCss" >
+            <div id="statusReportPdf" #statusReportPdf>
+            <table class="MsoNormalTable" border="1" cellspacing="0" >
+                <tbody>       
+                    <tr>
+                        <td width="970" valign="top" colspan="4" style="background: royalblue; color: seashell;">
+                            <p class="MsoNormal" align="center" ><b><span id="tituloIniciativaSpan" >#</span></b><b><span></span></b></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="208" valign="top">
+                            <p class="MsoNormal" align="right"><b><span>Fecha:</span></b><b><span></span></b></p>
+                        </td>
+                        <td width="381" valign="top">
+                            <p class="MsoNormal"><span id="fechasIniciativaSpan"></span><span></span></p>
+                        </td>
+                        <td width="190" valign="top">
+                            <p class="MsoNormal" align="right"><b><span>Avance: </span></b><span></span></p>
+                        </td>
+                        <td width="190" valign="top">
+                            <p class="MsoNormal" align="center" style="background: rgb(236, 238, 122);" ><span id="avanceIniciativaSpan"> 0%</span><span></span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="208" valign="top">
+                            <p class="MsoNormal" align="right"><b><span>Preparada por: </span></b><b><span></span></b></p>
+                        </td>
+                        <td width="762" valign="top" colspan="3">
+                            <p class="MsoNormal"><span>Javier Alvines</span><span></span></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <table class="MsoNormalTable" border="1" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td width="970" valign="top" colspan="5" style="background: royalblue; color: seashell;">
+                            <p class="MsoNormal" align="center"><b><span>Comentarios Generales</span></b><b><span></span></b></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="209" valign="top">
+                            <p class="MsoNormal" align="right"><b><span>Fecha Inicio</span></b><span></span></p>
+                        </td>
+                        <td width="141" valign="top">
+                            <p class="MsoNormal" align="center"><span id="fechaInicioIniciativaSpan">0/00/0000</span><span></span></p>
+                        </td>
+                        <td width="340" valign="top">
+                            <p class="MsoNormal"><span>&#160;</span></p>
+                        </td>
+                        <td width="141" valign="top">
+                            <p class="MsoNormal"><b><span>Fin inicial</span></b><span></span></p>
+                        </td>
+                        <td width="137" valign="top">
+                            <p class="MsoNormal"><span id="fechaFinIniciativaSpan">0/00/0000</span><span></span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="209" valign="top">
+                            <p class="MsoNormal" align="right"><b><span>Cambios l&#237;nea base</span></b><span></span></p>
+                        </td>
+                        <td width="141" valign="top">
+                            <p class="MsoNormal" align="center"><span>0</span><span></span></p>
+                        </td>
+                        <td width="340" valign="top">
+                            <p class="MsoNormal"><span>&#160;</span></p>
+                        </td>
+                        <td width="141" valign="top">
+                            <p class="MsoNormal"><b><span>Fin estimado</span></b><span></span></p>
+                        </td>
+                        <td width="137" valign="top">
+                            <p class="MsoNormal"><span id="fechaFinEstimadoIniciativaSpan">0/00/0000</span><span></span></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <table class="MsoNormalTable" border="1" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td width="970" valign="top" style="background: royalblue; color: seashell;">
+                            <p class="MsoNormal" align="center"><b><span>Actividades completadas semana
+                                        anterior</span></b><b><span></span></b></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <angular-editor [(ngModel)]="statusReportFire.actSemanaAnterior" id="editor1" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <table class="MsoNormalTable" border="1" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td width="970" valign="top" style="background: royalblue; color: seashell;">
+                            <p class="MsoNormal" align="center"><b><span>Actividades planificadas pr&#243;xima
+                                        semana</span></b><b><span></span></b></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <angular-editor [(ngModel)]="statusReportFire.actSemanaProxima" id="editor2" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <table class="MsoNormalTable" border="1" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td width="970" valign="top" style="background: royalblue; color: seashell;">
+                            <p class="MsoNormal" align="center"><b><span>Temas / decisiones / riesgos</span></b><b><span></span></b>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <angular-editor [(ngModel)]="statusReportFire.temasDecisionesRiesgos" id="editor3" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <table class="MsoNormalTable" border="1" cellspacing="0">
+                <tbody>
+                    <tr>
+                        <td width="100%" colspan="6" valign="top" style="background: royalblue; color: seashell;">
+                            <p class="MsoNormal" align="center"><b><span>Actualizaci&#243;n a la l&#237;nea base(alcance, costo,
+                                        plazo)</span></b><b><span></span></b></p>
+                        </td>            
+                    </tr>       
+                    <tr>
+                        <td>
+                            <angular-editor [(ngModel)]="statusReportFire.lineaBase" id="editor4" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <br>
+            </div>
+        </div>
+    </div>
+</div>

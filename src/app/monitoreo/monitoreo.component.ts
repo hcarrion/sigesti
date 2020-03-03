@@ -19,6 +19,7 @@ import { ActividadFireMonitor } from '../shared/models/actividad-fire-monitor';
 import { stringify } from 'querystring';
 import { RecurseVisitor } from '@angular/compiler/src/i18n/i18n_ast';
 import { DialogMonitorRecursoComponent } from '../modal/dialog-monitor-recurso/dialog-monitor-recurso.component';
+import { getMatScrollStrategyAlreadyAttachedError } from '@angular/cdk/overlay/typings/scroll/scroll-strategy';
 
 
 @Component({
@@ -180,12 +181,12 @@ selectedTipoDocumentoHelp(tipo: Listadoatencionhelp){
 }  
 openDialogActivity(iniciativa: IniciativaFire){
   this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
-    { width: '2000px', height: '600px', data: iniciativa}
+    { width: '600px', height: '600px', data: iniciativa}
   );
 }
 openDialogEdit(iniciativa: IniciativaFire){
   this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
-    { width: '2000px',
+    { width: '600px',
       height: '600px',
       data: iniciativa
     }
@@ -238,16 +239,25 @@ getIniciativas(lista: IniciativaMainFire[]){
            
             iniciativaFire.recursos.forEach(recurso => {
                 recurso.horasReg.forEach(horasrec =>{
-                     dias[this.datepipe.transform(horasrec.fecha, 'dd')] += horasrec.horas; 
-                     total += horasrec.horas;                 
+                     if (this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasrec.fecha, 'MM')){                    
+                        let aNumber: number = +(this.datepipe.transform(horasrec.fecha, 'dd'));
+                        dias[aNumber] += horasrec.horas; 
+                        total += horasrec.horas;
+                    }                 
                 });
-            });
+            });                    
             actividadFireMonitor.dias = dias;
             actividadFireMonitor.total = total;
             listaProy.push(actividadFireMonitor);
         }
   });
   return listaProy;
+}
+
+pad(num:number, size:number): string {
+  let s = num+"";
+  while (s.length < size) s = "0" + s;
+  return s;
 }
 
 getIniciativasEmp(lista: IniciativaMainFire[]){
@@ -269,8 +279,11 @@ getIniciativasEmp(lista: IniciativaMainFire[]){
                 actividadFireMonitor.titulo = recurso.nombres;
 
                 recurso.horasReg.forEach(horasrec =>{
-                     dias[this.datepipe.transform(horasrec.fecha, 'dd')] += horasrec.horas; 
+                  if (this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasrec.fecha, 'MM')){
+                     let aNumber: number = +(this.datepipe.transform(horasrec.fecha, 'dd'));
+                     dias[aNumber] += horasrec.horas; 
                      total += horasrec.horas;                 
+                  }
                 });
                 actividadFireMonitor.dias = dias;
                 actividadFireMonitor.total = total;
@@ -311,15 +324,16 @@ getFechWithFormat(fechaStr: string){
   return newFechStr;
 } 
 
-openDialogRecursos(codigo: number, dia: number){
+openDialogRecursos(codigo: number, dia: number,usuario: string, tipo: string){
   let datos: ActividadFireMonitor;
   datos = new ActividadFireMonitor;
-
+  datos.tipo = tipo;
+  datos.codigousuario = usuario;
   datos.codigo = codigo;
   datos.dia = dia;
   this.matDialog.open(DialogMonitorRecursoComponent, 
-    { width: '1200px',
-      height: '570px',
+    { width: '600px',
+      height: '530px',
       data: datos
     }
   );

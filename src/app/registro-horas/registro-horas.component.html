@@ -10,12 +10,12 @@
           <h5 class="pipeline-name">
               Planificacion de Horas
           </h5> 
-          <div class="pipeline-settings os-dropdown-trigger">
+          <div class="pipeline-settings os-dropdown-trigger" *ngIf="this.desactivar">
             <button mat-raised-button type="button" class="btn-primary btn-save" align="right" (click)='saveHorasAll()'>
               <mat-icon>save</mat-icon> Guardar</button>
           </div>
         </div>
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="example-full-width" *ngIf="this.bloquear">
           <mat-label>Ingrese usuario</mat-label>
           <input name="usuario" matInput placeholder="Ingreso de usuario" value="" (change)="onChange($event)"
             oninput="this.value = this.value.toUpperCase()">

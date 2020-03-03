@@ -47,13 +47,12 @@ import { HttpClientModule} from '@angular/common/http';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MonitoreoComponent } from './monitoreo/monitoreo.component';
-<<<<<<< HEAD
 import { DialogMonitorRecursoComponent } from './modal/dialog-monitor-recurso/dialog-monitor-recurso.component';
 import { DialogAccesoComponent } from './modal/dialog-acceso/dialog-acceso.component';
 import { UsuarioComponent } from './usuario/usuario.component';
-=======
 import { EmailFireService } from './shared/services/email-fire.service';
->>>>>>> a30f20ef5585625f47d85f827c47bd7f319c20fb
+import { DialogListadoStatusreportComponent } from './modal/dialog-listado-statusreport/dialog-listado-statusreport.component';
+import { DialogStatusreportComponent } from './modal/dialog-statusreport/dialog-statusreport.component';
 
 
 @NgModule({
@@ -81,7 +80,9 @@ import { EmailFireService } from './shared/services/email-fire.service';
     MonitoreoComponent,
     DialogMonitorRecursoComponent,
     DialogAccesoComponent,
-    UsuarioComponent
+    UsuarioComponent,
+    DialogListadoStatusreportComponent,
+    DialogStatusreportComponent
   ],
   imports: 
   [
@@ -107,7 +108,7 @@ import { EmailFireService } from './shared/services/email-fire.service';
     DialogRecursosComponent, CommonModule, DatePipe, EmailFireService, ],
   entryComponents: [RegistroIniciativaComponent, DialogRecursosComponent, 
   DialogRiesgosComponent, DialogSeguimientoComponent, DialogRiesgosMantenedorComponent, DialogRegistraSeguimientoComponent, RegistroContactoComponent, DialogRegistraContactoComponent,
-  DialogListaEventoComponent, DialogRegistraRecursoEventoComponent, DialogRegistraEventoComponent, MonitoreoComponent, DialogMonitorRecursoComponent, DialogAccesoComponent],
+  DialogListaEventoComponent, DialogRegistraRecursoEventoComponent, DialogRegistraEventoComponent, MonitoreoComponent, DialogMonitorRecursoComponent, DialogAccesoComponent, DialogListadoStatusreportComponent, DialogStatusreportComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {   

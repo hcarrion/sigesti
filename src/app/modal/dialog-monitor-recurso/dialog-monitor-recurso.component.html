@@ -6,11 +6,11 @@
 </div>
 <div [formGroup]="regRecursos">
     <div class="card">
-        <div class="card-header card-header-info"  style="height: 50px;">
+        <div    >
             <h6 class="card-title">
-                <p style="color:#3F52B6; text-align: left;">
-                    <strong><i class="material-icons">people</i> Monitor de Recursos</strong></p>
-            </h6>
+  
+                    <strong style="color:#3F52B6; text-align: left;"><i class="material-icons">people</i> Monitor de Recursos</strong>                                             
+            </h6>            
         </div>
         <div class="card-body">
             <div class="row">
@@ -18,61 +18,85 @@
                     <mat-form-field style="font-size: small; width: 100%;">
                         <input style="background-color: khaki; text-align: center;" readonly="readonly"
                             formControlName="nIniciativaInputDialog" matInput #inputNumIniciativa
-                            placeholder="N° iniciativa" type="text">
+                            value={{this.codigo}}
+                            placeholder="Codigo" type="text">
                     </mat-form-field>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-8">
                     <mat-form-field style="font-size: small; width: 100%;">
                         <input style="background-color: khaki;" readonly="readonly"
                             formControlName="tituloInputDialog" matInput #inputTituloIniciativa
-                            placeholder="Título" type="text">
+                            value={{this.titulo}}
+                            placeholder="Descripcion" type="text">
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2 text-align: center;">
+                    <mat-form-field style="font-size: small; width: 100%;">
+                        <input style="background-color: khaki;" readonly="readonly"
+                            formControlName="diaInputDialog" matInput #inputDia
+                            value={{this.dia}}
+                            placeholder="Dia" type="text">
                     </mat-form-field>
                 </div>
             </div>
          
-            <div class="row">
+            <div class="row" style="width: 500px;">
                 <div class="example-container1 mat-elevation-z8">
-                    <table class="table table-md" style=" margin-bottom: 0px; table-layout: fixed; ">
-                        <thead>
-                            <tr>
-                                <th class="encabezado" width="20%" style="white-space: normal;">Código</th>
-                                <th class="encabezado" width="50%" style="white-space: normal;">Nombres</th>
-                                <th class="encabezado cell-cabecera-center" width="10%" style="white-space: normal;">%
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody *ngFor="let colabDetFire of colaboradorDetFireList" class="tablaRecurso">
-                            <tr style="vertical-align:center !important;" id="{{colabDetFire.codigo}}">
-                                <td class="tabla-center cell-td" width="20%">{{colabDetFire.codigoUsuario}}</td>
-                                <td class="tabla-center cell-td" width="50%">{{colabDetFire.nombres}}</td>
-                                <td class="tabla-center cell-td" width="10%"><input class="widthMax porcentaje"
-                                        type="number" min="1" step="1" max="100" (focusout)="focusOut($event, colabDetFire)"
-                                        ng-model="colabDetFire.porcentaje" style="text-align:center;" onPaste="return false"
-                                        onKeyPress="if(this.value.length==3) return false;"
-                                        value="{{colabDetFire.porcentaje}}" oninput="this.value = Math.trunc(this.value)"></td>
-                                
-                            </tr>
-                        </tbody>
+                    <table mat-table [dataSource]="colaborador" matSort style="width: 500px;">
+        
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="codigo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header width ="20%" > CODIGO </th>
+                            <td style="height: 10px;" mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.codigo}} </td>
+                        </ng-container>
+                
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="nombres">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header width ="60%"> {{this.coltitulo}} </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.nombres}} </td>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="horas">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header width ="20%"> HORAS </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.horas}}
+                            </td>
+                        </ng-container>
+                                       
+                        <tr mat-header-row *matHeaderRowDef="columnas; sticky: true;" class="encabezado"></tr>
+                        <tr mat-row *matRowDef="let row; columns: columnas;"
+                            [ngClass]="{'highlight': selectedRowIndex == row.codigo}" (click)="highlight(row)"></tr>
                     </table>
+                </div> 
+                
+                <div class="card-header card-header-info"  style="height: 115px; width: 100%;" align="center">
+                    <table>
+                        <tr>
+                            <td><strong style="color:#3F52B6; text-align: left; font-size: small;"><p style="height: 10px;">Total horas programadas: </p></strong></td>
+                            <td><strong style="color:#3F52B6; text-align: center; font-size: small;"><p style="height: 10px;">{{this.totalHoras}}</p></strong></td>
+                            <td rowspan="4" width=10% align="center"> 
+                                <button mat-raised-button class="btn-danger" style="height: 35px;" (click)="close()" align="center">
+                                    <mat-icon>close</mat-icon>
+                                    Cerrar
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>                                                    
+                            <td><strong style="color:#3F52B6; text-align: left; font-size: small;"><p style="height: 10px;">Total horas Acumuladas: </p></strong></td>
+                            <td><strong style="color:#3F52B6; text-align: center; font-size: small;"><p style="height: 10px;">{{this.totalacu}}</p></strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:#3F52B6; text-align: left; font-size: small;"><p style="height: 10px;">Total horas realizadas: </p></strong></td>                        
+                            <td><strong style="color:#3F52B6; text-align: center; font-size: small;"><p style="height: 10px;">{{this.total}}</p></strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong style="color:rgb(182, 63, 63); text-align: left; font-size: small;"><p style="height: 10px;">Total % Avances: </p></strong></td>                    
+                            <td><strong style="color:rgb(182, 63, 63); text-align: center; font-size: small;"><p style="height: 10px;">{{this.avances}}</p></strong></td>                            
+                        </tr>                                                                                  
+                    </table>
+                 
+                   
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-4">
-                    <label style="color:#3F52B6;"><strong style="font-size: small;">Total horas trabajadas: </strong></label>                    
-                </div>
-                <div class="col-md-2 align-left-all">
-                    <input class="form-control" formControlName="porAsignarLabel" type="text" style="font-size: small;"
-                    ng-disabled="true" disabled>
-                </div>              
-                <div class="col-md-6 align-right-all">
-                    <button mat-raised-button class="btn-danger" (click)="close()">
-                        <mat-icon>close</mat-icon>
-                        Cerrar
-                    </button>
-                </div>
-            </div>
+            </div>           
         </div>
-    </div>
-    
+    </div>   
 </div>

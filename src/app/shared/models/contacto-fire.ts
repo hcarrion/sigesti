@@ -9,4 +9,5 @@ export class ContactoFire {
     telefono: number;
     anexo: number;
     correo: string;
+    horas: number;
 }

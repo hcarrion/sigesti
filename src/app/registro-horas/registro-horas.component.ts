@@ -25,7 +25,9 @@ export class RegistroHorasComponent implements OnInit {
   habilitar1: boolean;
   habilitar2: boolean;
   habilitar3: boolean;
+  desactivar: boolean;
   public usuario = "";
+  bloquear: boolean;
   listaInic: IniciativaHorasFire[] = [];
   listaMantenimientoInic: IniciativaHorasFire[] = [];
   listaSoporteInic: IniciativaHorasFire[] = [];
@@ -53,6 +55,13 @@ export class RegistroHorasComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.desactivar = true;
+    this.usuario = localStorage.getItem("usuario");
+    if (localStorage.getItem("perfil")!="COLABORADOR"){
+      this.bloquear = true;
+    }else{
+      this.bloquear = false;
+    }
     localStorage.setItem('indinicio',"false");   
     this.loading = true;
     this.loadColumns();
@@ -69,6 +78,11 @@ export class RegistroHorasComponent implements OnInit {
  
   public onChange(valor){
     this.usuario = (event.target as HTMLInputElement).value;
+    if(localStorage.getItem("perfil")=="LIDER"&&localStorage.getItem("usuario")!=this.usuario){
+      this.desactivar = false;
+    }else{
+      this.desactivar = true;
+    }
     this.getProyectoIniciativas();
     this.getMantenimientoIniciativas();
     this.getSoporteIniciativas();
@@ -76,7 +90,6 @@ export class RegistroHorasComponent implements OnInit {
   }
 
   InActiva1() {
- 
     if (this.habilitar1){this.habilitar1 = false;
     }else {this.habilitar1 = true;}
    }

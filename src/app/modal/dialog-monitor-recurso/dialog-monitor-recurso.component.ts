@@ -12,8 +12,12 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { MatSelect } from '@angular/material/select';
 import Swal from 'sweetalert2';
-import { NgStyle } from '@angular/common';
+import { NgStyle, DatePipe } from '@angular/common';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { IniciativaFire } from 'src/app/shared/models/iniciativa-fire';
+import { UsuarioPerfilFireService } from 'src/app/shared/models/usuario-perfil-fire.service';
+import { ContactoFire } from 'src/app/shared/models/contacto-fire';
+import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-dialog-monitor-recurso',
@@ -22,10 +26,21 @@ import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 })
 export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
   regRecursos: FormGroup;
+  ultimaDia: number;
   iniciativa= new MatTableDataSource<IniciativaMainFire>([]);
   codigoSVT: number;
-  colaboradores: ColaboradorFire = new ColaboradorFire();
+  titulo: string;
+  tipo: string;
+  avances: string;
+  coltitulo: string;
+  totalHoras: number;
+  usuario: string;
+  totalacu: number;
+  codigo: string;
+  total: number;
+  colaboradores: ContactoFire = new ContactoFire();
   dia: number;
+  columnas: string[] = ['codigo', 'nombres','horas'];
   public lista = [] as IniciativaMainFire[];
   public colaboradorCtrl: FormControl = new FormControl();
   public colaboradorFilterCtrl: FormControl = new FormControl();
@@ -35,12 +50,18 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
 
   colaboradorDetFireList: ColaboradorDetalleFire[] = [];
   loading: boolean;
+  colaborador= new MatTableDataSource<ContactoFire>([]);
+  iniciativas= new MatTableDataSource<IniciativaMainFire>([]);
+  paginator: MatPaginator;
+  sort: MatSort;
   constructor(public dialogRef: MatDialogRef<DialogMonitorRecursoComponent>, 
-    private firebaseColaboradores: FirebaseColaboradorService,
+    private firebaseColaboradores: FirebaseColaboradorService,public datepipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public datafire:  any,
     private firebaseIniciativas: FirebaseIniciativaMainService) {
+      this.tipo = datafire.tipo;
       this.codigoSVT = datafire.codigo;
       this.dia = datafire.dia;
+      this.usuario = datafire.codigousuario;
       this.regRecursos = new FormGroup({
         tituloInputDialog: new FormControl(),
         codigoInputDialog: new FormControl(),
@@ -52,86 +73,154 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
  
+  ultimoDiaMes(fecha){    
+    let arrayFecha = fecha.split('-');
+    let fechaUltimo = new Date(arrayFecha[0], arrayFecha[1]);      
+    fechaUltimo.setDate(fechaUltimo.getDate() - 1);    
+    return fechaUltimo.getDate();
+  } 
 
   ngOnInit() {
-    this.callColaboradores();
+    let latest_date =new Date();
+    let f =this.datepipe.transform(latest_date, 'yyyy-MM-dd');
+    this.ultimaDia = +this.ultimoDiaMes(f);
+    if (this.tipo=="USUARIO"){
+      this.coltitulo ="NOMBRES DEL RECURSO";
+      this.callColaboradores();
+    }else{
+      this.coltitulo ="DETALLE DE LA INICIATIVA";
+      this.calliniciativas();
+    }
   }
 
-    callColaboradores() {
+  callColaboradores() {
     this.loading = true;
-    let colaboradoresRef = this.firebaseColaboradores.getColaboradores();
+    var datos = []; 
+    this.total=0;
+    this.totalHoras= 0;
+    this.totalacu=0;
+    this.avances="";
+    let codigosvt: string = ""+this.codigoSVT;
+    // ----
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaFiltro("codigoSVT", codigosvt,"","");
+    iniciativasRef.subscribe(data => {
+        data.forEach(element => {
+          let iniciativaobj= element.payload.doc.data() as IniciativaMainFire;
+          this.codigo = ''+iniciativaobj.codigoSVT;
+          this.titulo = iniciativaobj.titulo; 
+          this.totalHoras = iniciativaobj.horaReal;
+          iniciativaobj.recursos.forEach(colaboradorobj=>{
+            
+              let usuariosvc = new ContactoFire;
+              usuariosvc.codigo = "";
+              usuariosvc.nombres = "";
+              usuariosvc.horas=0;
 
-    colaboradoresRef.subscribe(data => {data.forEach(colabObj => {
-        let colabObject= colabObj.payload.doc.data() as ColaboradorFire;
-        let colabs = colabObject.colaboradores.sort((n1,n2) => {
-          if (n1.nombres > n2.nombres){
-              return 1;
-          }
-          if (n1.nombres < n2.nombres){
-              return -1;
-          }
-          return 0;
-        });
-        colabObject.colaboradores = colabs;
-        this.colaboradores =  colabObject;
-        let datos: string = ""+this.codigoSVT;
-        alert(this.codigoSVT);
-        if(0 != this.codigoSVT){
-          let iniciativaRef = this.firebaseIniciativas.getIniciativaFiltro("codigoSVT",datos,"","");
-          
-          (this.codigoSVT);
-          iniciativaRef.forEach(data => {
-            for(var i = 0; i < data.length; i++){
-              this.lista.push(data[i].payload.doc.data() as IniciativaMainFire);
-            }
-            this.iniciativa =  new MatTableDataSource(this.lista);            
-            this.loadData(this.lista);
-            this.activeSelect(this.colaboradores.colaboradores);
-            this.updatePorcentajePorAsignar();
-            this.loading = false;
+              usuariosvc.codigo = colaboradorobj.codigoUsuario;
+              usuariosvc.nombres = colaboradorobj.nombres;
+              let i: number=0;
+              colaboradorobj.horasReg.forEach(horasreg=>{      
+                if (this.dia==99){
+                  for(i=1; i<=this.ultimaDia; i++){                    
+                    if (this.pad(i,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
+                      usuariosvc.horas += horasreg.horas;
+                      this.total+=usuariosvc.horas;
+                    }                                             
+                  }
+                  this.totalacu += horasreg.horas;
+                }else{
+                  if (this.pad(this.dia,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
+                    usuariosvc.horas += horasreg.horas;
+                    this.total+=usuariosvc.horas;
+                  } else{
+                    this.totalacu += horasreg.horas;
+                  }  
+                }      
+              });              
+              this.totalacu = this.totalacu - usuariosvc.horas;
+              datos.push(usuariosvc);
           });
-        }else{
-          this.loadData(this.lista);
+          this.avances = Math.round(((this.total+this.totalacu)/this.totalHoras * 100)) + '%'
+          this.colaborador =  new MatTableDataSource(datos);
+          this.colaborador.paginator = this.paginator;
+          this.colaborador.sort = this.sort;    
           this.loading = false;
-        }
+        });
       });
-    });
+    
+    this.loading = false;
   }
 
-  loadData(lista: IniciativaMainFire[]){
-    lista.forEach(element=>{
-      alert(element.codigoSVT);
-      this.regRecursos.controls.tituloInputDialog.setValue(element.titulo);
-      //this.regRecursos.controls.nIniciativaInputDialog.setValue(element.codigoSVT.toString());
-      this.colaboradorDetFireList = element.recursos;
-    })
-  }
+  calliniciativas() {
+    this.loading = true;
+    var datos = []; 
+    this.total=0;
+    this.totalHoras= 0;
+    this.totalacu=0;
+    this.avances="";
+    let codigosvt: string = ""+this.codigoSVT;
+    // ----
+    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    iniciativasRef.subscribe(data => {
+        data.forEach(element => {
+          let iniciativaobj= element.payload.doc.data() as IniciativaMainFire;
+          this.codigo = this.usuario;
+          if (this.dia==99){
+            this.totalHoras = 9*this.ultimaDia;
+          }else{
+            this.totalHoras = 9;
+          }
+          iniciativaobj.recursos.forEach(colaboradorobj=>{            
+              let usuariosvc = new ContactoFire;
+              
+              if (colaboradorobj.codigoUsuario == this.usuario){
+                  this.titulo = colaboradorobj.nombres; 
+                  usuariosvc.codigo = "";
+                  usuariosvc.nombres = "";
+                  usuariosvc.horas=0;
 
-  activeSelect(colaboradorDetList: ColaboradorDetalleFire[]){
-    this.colaboradorCtrl.setValue(colaboradorDetList);
-    this.filteredColaboradores.next(colaboradorDetList.slice());
-    this.colaboradorFilterCtrl.valueChanges
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.filterBanks();
+                  usuariosvc.codigo = ''+iniciativaobj.codigoSVT;
+                  usuariosvc.nombres = iniciativaobj.titulo;
+                  let i: number=0;
+                  colaboradorobj.horasReg.forEach(horasreg=>{      
+                    if (this.dia==99){
+                      for(i=1; i<=this.ultimaDia; i++){
+                        if (this.pad(i,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
+                          usuariosvc.horas += horasreg.horas;
+                          this.total+=usuariosvc.horas;
+                        }   
+                      }
+                      this.totalacu += horasreg.horas;
+                    }else{
+                      if (this.pad(this.dia,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
+                        usuariosvc.horas += horasreg.horas;
+                        this.total+=usuariosvc.horas;
+                      }else{
+                        this.totalacu += horasreg.horas;
+                      }     
+                    }      
+                  });
+                  this.totalacu = this.totalacu - usuariosvc.horas;
+                  datos.push(usuariosvc);      
+              }        
+              
+          });
+          this.avances = Math.round(((this.total)/this.totalHoras * 100)) + '%'
+          this.colaborador =  new MatTableDataSource(datos);
+          this.colaborador.paginator = this.paginator;
+          this.colaborador.sort = this.sort;    
+          this.loading = false;
+        });
       });
+    
+    this.loading = false;
   }
 
-  protected filterBanks() {
-    if (!this.colaboradores.colaboradores) {
-      return;
-    }
-    let search = this.colaboradorFilterCtrl.value;
-    if (!search) {
-      this.filteredColaboradores.next(this.colaboradores.colaboradores.slice());
-      this.agregarTablaRecursos(this.colaboradorCtrl.value);
-      return;
-    } else {
-      search = search.toLowerCase();
-    }
-    this.filteredColaboradores.next(
-      this.colaboradores.colaboradores.filter(colaborador => colaborador.nombres.toLowerCase().indexOf(search) > -1)
-    );
+
+  pad(num:number, size:number): string {
+    let s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
   }
 
   ngOnDestroy() {
@@ -139,74 +228,5 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
     this._onDestroy.complete();
   }
 
-  agregarTablaRecursos(colaboradorDetFire: ColaboradorDetalleFire){
-    if(undefined == this.colaboradorDetFireList){
-      this.colaboradorDetFireList = [];
-      this.colaboradorDetFireList.push(colaboradorDetFire);
-      this.updatePorcentajePorAsignar();
-    }else{
-      let isExists = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario == colaboradorDetFire.codigoUsuario).length > 0;
-      if(!isExists){
-        this.colaboradorDetFireList.push(colaboradorDetFire);
-        this.updatePorcentajePorAsignar();
-      }   
-    }
-  }
-
-  eliminarRecursoTabla(colaboradorDetFire: ColaboradorDetalleFire){
-    this.colaboradorDetFireList = this.colaboradorDetFireList.filter(colabDetFire => colabDetFire.codigoUsuario !== colaboradorDetFire.codigoUsuario); 
-    this.updatePorcentajePorAsignar();
-  }
-
-    focusOut(event: any, colaboradorDetFire: ColaboradorDetalleFire){
-    var trObject = (document.getElementById(String(colaboradorDetFire.codigo))) as HTMLTableRowElement;
-    let inputObject = trObject.cells[2].children[0] as HTMLInputElement;
-    let valuePorcen = inputObject.value;
-    colaboradorDetFire.porcentaje = Number(valuePorcen);
-    this.updateColaboradorDetList(colaboradorDetFire);
-    this.updatePorcentajePorAsignar();
-    
-  }
-
-  updateColaboradorDetList(colaboDetFire: ColaboradorDetalleFire){
-    let itemIndex = this.colaboradorDetFireList.findIndex(item => item.codigoUsuario == colaboDetFire.codigoUsuario);
-    this.colaboradorDetFireList[itemIndex] = colaboDetFire;
-  }
-
-  validarPorcentajes(colabDetFireList: ColaboradorDetalleFire[]){
-    let isValid = false;
-    let sumatotal = this.sumaTotalPorcentaje(colabDetFireList);
-    
-    if(100 >= sumatotal){
-      isValid = true;
-    }
-    return isValid;
-  }
-
-  sumaTotalPorcentaje(colabDetFireList: ColaboradorDetalleFire[]){
-    let sumatotal: number = 0;
-    if(undefined != colabDetFireList && 0 != colabDetFireList.length){
-      colabDetFireList.forEach(element => {
-        let valuePorcentaje = element.porcentaje;
-        if(undefined != valuePorcentaje){
-          sumatotal = sumatotal/colabDetFireList.length;
-        }
-      });
-    }else{
-      sumatotal = -1;
-    }
-
-    return sumatotal;
-  }
-
-  updatePorcentajePorAsignar(){
-    if(-1 == this.sumaTotalPorcentaje(this.colaboradorDetFireList)){
-      this.regRecursos.controls.porAsignarLabel.setValue("");
-    }else{
-      let diferencia = 100 - this.sumaTotalPorcentaje(this.colaboradorDetFireList);
-      let textoDiferencia = diferencia;
-      this.regRecursos.controls.porAsignarLabel.setValue(textoDiferencia);
-    }
-  }
-
+  
 }
