@@ -24,10 +24,12 @@ export class FirebaseStatusreportService {
     return this.firestore.collection('iniciativas').snapshotChanges();
   }*/
  
-  getStatusReport(idIniciativa: string){
+  /*getStatusReport(idIniciativa: string){
     return this.firestore.collection('statusreports', ref => ref.where('idIniciativa', '==', idIniciativa).orderBy('numeroSemana', "desc").limit(1)).snapshotChanges();
+  }*/
+  getStatusReport(idIniciativa: string){
+    return this.firestore.collection('statusreports', ref => ref.where('idIniciativa', '==', idIniciativa).orderBy('numeroSemana', "desc")).snapshotChanges();
   }
-
   /*getIniciativa(iniciativaFire: IniciativaFire) {
     return this.firestore.doc('iniciativas/'+iniciativaFire.idIniciativa).snapshotChanges();
   }

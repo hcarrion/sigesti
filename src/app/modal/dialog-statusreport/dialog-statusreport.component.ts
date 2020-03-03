@@ -28,10 +28,12 @@ import { EmailFireService } from '../../shared/services/email-fire.service';
 export class DialogStatusreportComponent implements OnInit {
   htmlContent='';
   loading: boolean;
+  codigo: number;
   generateStatusReport: FormGroup;
   statusReportFire: StatusReportFire;
   actSemanaAnteriorStr: string;
   idIniciativa: string;
+  esnuevo: boolean;
   iniciativa: IniciativaMainFire = new IniciativaMainFire();
   @ViewChild('statusReportPdf', {static: false}) statusReportPdf: ElementRef;
   editorConfig: AngularEditorConfig = {
@@ -89,6 +91,8 @@ export class DialogStatusreportComponent implements OnInit {
     public emailService: EmailFireService,
     @Inject(MAT_DIALOG_DATA) public datafire:  any) {
       this.idIniciativa = datafire.idIniciativa;
+      this.codigo = datafire.codigo
+      this.esnuevo = datafire.esnuevo;
       this.generateStatusReport = new FormGroup({
       actPlanSemProxAngularEditor: new FormControl(),
       temDeciRiesgosAngularEditor: new FormControl(),
@@ -97,7 +101,7 @@ export class DialogStatusreportComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.callIniciativa(this.idIniciativa);
+    this.callIniciativa(this.idIniciativa);   
   }
 
   callIniciativa(idInic: String){
@@ -106,11 +110,11 @@ export class DialogStatusreportComponent implements OnInit {
             this.iniciativa = data.data() as IniciativaMainFire;
             let statusReportRef = this.firebaseStatusReport.getStatusReport(this.idIniciativa);
             statusReportRef.subscribe(data => {
-              if(0 == data.length){
+              if(this.esnuevo){
                 this.loadData(this.iniciativa);
                 this.loadStatusReportNew(this.statusReportFire);
                 this.loading = false;
-              }else{
+              }else{  
                 data.forEach(element => {
                   this.statusReportFire = element.payload.doc.data() as StatusReportFire;
                   this.statusReportFire.idStatusReport = element.payload.doc.id;
@@ -167,11 +171,7 @@ export class DialogStatusreportComponent implements OnInit {
     let startDateStr = this.datePipe.transform(statusReport.fechaInicioSemana, 'dd/MM/yy');
     let endDateStr = this.datePipe.transform(statusReport.fechaFinSemana, 'dd/MM/yy');
     fechasSpanObj.textContent = 'Del '+startDateStr+' al '+endDateStr;
-    /*this.generateStatusReport.controls.actCompSemAnteAngularEditor.setValue(this.statusReportFire.actSemanaAnterior);
-    this.actSemanaAnteriorStr = this.statusReportFire.actSemanaAnterior;
-    this.generateStatusReport.controls.actPlanSemProxAngularEditor.setValue(this.statusReportFire.actSemanaProxima);
-    this.generateStatusReport.controls.temDeciRiesgosAngularEditor.setValue(this.statusReportFire.temasDecisionesRiesgos);*/
-  }
+   }
 
   loadStatusReportNew(statusReport: StatusReportFire){
     this.statusReportFire = new StatusReportFire;
@@ -193,16 +193,21 @@ export class DialogStatusreportComponent implements OnInit {
   saveStatusReport(statusReportF: StatusReportFire){
     this.loading = true;
     let statusReportFire = statusReportF;
-    /*let actSemanaProxima = (document.getElementById("editor2")) as HTMLTextAreaElement;
-    let temasDeciRiesgos = (document.getElementById("editor3")) as HTMLTextAreaElement;*/
-    /*statusReportFire.actSemanaAnterior = this.generateStatusReport.value.actCompSemAnteAngularEditor;*/
-    /*statusReportFire.actSemanaProxima = this.generateStatusReport.value.actPlanSemProxAngularEditor;
-    statusReportFire.temasDecisionesRiesgos = this.generateStatusReport.value.temDeciRiesgosAngularEditor;*/
     statusReportFire.idIniciativa = this.idIniciativa;
-
-    if(undefined != this.statusReportFire.codigo){
+    if (this.esnuevo){
+      statusReportFire.estado = 'ABIERTO';
+    }else{
+      statusReportFire.estado = 'MODIFICADO';
+    }
+    
+    statusReportFire.fechaReg = this.datePipe.transform(Date(), 'yyyy-MM-dd ');
+    statusReportFire.usuarioAct = localStorage.getItem("usuario");
+    statusReportFire.usuarioReg = localStorage.getItem("usuario");
+    if(!this.esnuevo){
+      alert(this.statusReportFire.codigo);
       statusReportFire.codigo = this.statusReportFire.codigo;
       statusReportFire.idStatusReport = this.statusReportFire.idStatusReport;
+      
       this.firebaseStatusReport.updateStatusReport(statusReportFire).then(
         result => {
           this.loading = false;
@@ -212,6 +217,7 @@ export class DialogStatusreportComponent implements OnInit {
           Swal.fire('Error!', 'Error al guardar el status report.', 'error');
         });
     }else{
+      alert("pase aqui");
       this.firebaseStatusReport.createStatusReport(statusReportFire).then(
         result => {
           this.loading = false;
@@ -259,36 +265,11 @@ export class DialogStatusreportComponent implements OnInit {
   generateAndDownloadPdf(){
     let generateDate = new Date();
     let generateDateStr = this.datePipe.transform(generateDate, 'ddMMyyyy');
-    /*const doc = new jsPDF();
-
-    const specialElementHandlers = {
-      '#editor': function (element, renderer) {
-        return true;
-      }
-    };
-    const statusReportPdf = this.statusReportPdf.nativeElement;
-    var source = document.getElementById('statusReportPdf');
-    doc.fromHTML(source, 15, 15, {
-      width: 190,
-      'elementHandlers': specialElementHandlers
-    });*/
-    /*doc.text(20, 20, 'Michelangelo Antonioni Changana Sosa.');*/
-    /*doc.save('status-report-'+generateDateStr+'.pdf');*/
-    
-    /*let data = document.getElementById('statusReportPdf');  
-        html2canvas(data).then(canvas => {
-          const contentDataURL = canvas.toDataURL('image/png')  
-          let pdf = new jsPDF('l', 'cm', 'a4'); //Generates PDF in landscape mode
-          // let pdf = new jspdf('p', 'cm', 'a4'); Generates PDF in portrait mode
-          pdf.addImage(contentDataURL, 'PNG', 0, 0, 29.7, 21.0);  
-          pdf.save('Filename.pdf');   
-        }); */
       this.headingCss = {
         'height': '0px'
       };
       window.scroll(0,0);
       let data = document.getElementById('statusReportPdf') as HTMLElement;
-      //let data = document.body as HTMLElement;
       debugger;
       html2canvas(data, {
         allowTaint: true,
@@ -316,10 +297,6 @@ export class DialogStatusreportComponent implements OnInit {
           'height': '390px'
         };
       });
-      /*var pdf = new jsPDF('p', 'pt', 'a4');
-      pdf.addHTML(document.querySelector('.print'), function() {
-        pdf.save('web.pdf');
-      });*/
   }
 
   sendEmail(statusReportFire: StatusReportFire){

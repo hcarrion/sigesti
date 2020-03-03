@@ -11,6 +11,7 @@ import { StatusReportFire } from 'src/app/shared/models/status-report-fire';
 import { FirebaseStatusreportService } from 'src/app/shared/services/firebase-statusreport.service';
 import { StatusreportComponent } from 'src/app/statusreport/statusreport.component';
 import { IniciativaMainFire } from 'src/app/shared/models/iniciativa-main-fire';
+import { StatusReportDocFire } from 'src/app/shared/models/status-report-doc-fire';
 
 @Component({
   selector: 'app-dialog-listado-statusreport',
@@ -25,7 +26,7 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
   tabla: any;
   mensajeAccion: string;
   display: boolean = false;
-  columnasTabla: string[] = ['codigo', 'fecha','usuario','estado'];
+  columnasTabla: string[] = ['codigo', 'fecha','usuario','estado','accion'];
   //iniciativas: IniciativaFire[] = [];
   actividades= new MatTableDataSource<ActividadDetalleFire>([]);
   selectedRowIndex: number = -1;
@@ -42,6 +43,7 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
 
   loading: boolean;
   constructor(private matDialog: MatDialog, 
+    public dialogRef: MatDialogRef<DialogListadoStatusreportComponent>,
     private firebaseIniciativas: FirebaseIniciativaService,
     private firebaseStatusReport: FirebaseStatusreportService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -49,10 +51,12 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
     }
 
 
-  openDialogEdit(idIniciativaFire: string, actividadDetalleFire: ActividadDetalleFire){
-    let iniciativaDetFire = new IniciativaDetalleFire();
+  openDialogEdit(codigo: number, idIniciativaFire: string){
+    let actividadDetalleFire = new ActividadDetalleFire();
+    let iniciativaDetFire = new StatusReportFire();
     iniciativaDetFire.idIniciativa = idIniciativaFire;
-    iniciativaDetFire.actividadDetalle = actividadDetalleFire;
+    iniciativaDetFire.codigo = codigo;
+    iniciativaDetFire.esnuevo = false;
     this.matDialog.open(DialogStatusreportComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '600px',
@@ -63,8 +67,10 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
 
   openDialogNew(idIniciativaFire: string){
     let actividadDetalleFire = new ActividadDetalleFire();
-    let iniciativaDetFire = new IniciativaMainFire ();
+    let iniciativaDetFire = new StatusReportFire ();
     iniciativaDetFire.idIniciativa = idIniciativaFire;
+    iniciativaDetFire.codigo = 0
+    iniciativaDetFire.esnuevo = true;
     this.matDialog.open(DialogStatusreportComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '600px',
@@ -83,19 +89,22 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
   }
 
   callIniciativa(){
+    this.loading = true;
    let datos = [];
             let statusReportRef = this.firebaseStatusReport.getStatusReport(this.idIniciativaF);
-            statusReportRef.subscribe(data => {  
-              let statusrpt = new StatusReportFire           
-                data.forEach(element => {
-                  let statusReportFire = element.payload.doc.data() as StatusReportFire;
+            statusReportRef.forEach(data=> {
+                data.forEach(element => {                 
+                  let statusrpt = new StatusReportFire    
+                  let statusReportFire = element.payload.doc.data() as StatusReportFire;            
                   statusReportFire.idStatusReport = element.payload.doc.id;
+                  alert(statusReportFire.codigo);
+                  alert(this.idIniciativaF);
                   statusrpt.codigo = statusReportFire.codigo  
                   statusrpt.fechaReg = statusReportFire.fechaReg;
                   statusrpt.usuarioReg = statusReportFire.usuarioReg;
-                  statusrpt.estado =statusReportFire.estado;
+                  statusrpt.estado =statusReportFire.estado;              
                   datos.push(statusrpt);                                       
-                  this.loading = false;
+                  
                 });
                 this.statusReport =  new MatTableDataSource(datos);
                 this.statusReport.paginator = this.paginator;
@@ -143,6 +152,8 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
     this.selected = false;
     this.display = false;
   }
-
+  closeDialogNew(){
+    this.dialogRef.close();
+  }
  
 }

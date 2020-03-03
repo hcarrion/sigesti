@@ -14,9 +14,10 @@ export class StatusReportFire {
     temasDecisionesRiesgos: string;
     lineaBase: string;
     estado: string;
-    documentos: StatusReportDocFire[] = [];
-    fechaReg: Date;
-    fechaAct: Date;
+    fechaReg: string;
+    fechaAct: string;
     usuarioReg: string;
     usuarioAct: string;
+    documentos: StatusReportDocFire[] = [];
+    esnuevo: boolean;
 }

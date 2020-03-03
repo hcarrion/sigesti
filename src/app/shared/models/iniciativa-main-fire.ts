@@ -28,4 +28,5 @@ export class IniciativaMainFire {
     fechaAct: Date;
     usuarioReg: string;
     usuarioAct: string;
+    esnuevo: boolean;
 }

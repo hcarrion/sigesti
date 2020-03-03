@@ -191,8 +191,8 @@ export class ListadoAtencionComponent implements OnInit
     datos = new IniciativaMainFire;
     datos.idIniciativa = idIniciativa
     this.matDialog.open(DialogListadoStatusreportComponent, 
-      { width: '600px',
-        height: '530px',
+      { width: '800px',
+        height: '500px',
         data: datos
       }
     );

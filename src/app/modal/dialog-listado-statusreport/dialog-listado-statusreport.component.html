@@ -9,13 +9,13 @@
         <h5 class="pipeline-name">
             Lista de Reportes Semanales
         </h5>
-        <div class="pipeline-settings os-dropdown-trigger">           
+        <div class="pipeline-settings os-dropdown-trigger"> 
             <div class="dropdown">
                 <div class="pipeline-settings os-dropdown-trigger">
                     <button mat-raised-button type="button" class="btn-primary btn-save" align="right" (click)='openDialogNew(this.idIniciativaF)'>
-                        <mat-icon>record_voice_overy</mat-icon> Nuevo</button>
+                        <mat-icon>record_voice_overy</mat-icon> Nuevo</button>                      
                 </div>
-            </div>               
+            </div>
         </div>
     </div>
     <div class="pipeline-body">
@@ -35,7 +35,7 @@
             </ng-container>
             <ng-container matColumnDef="fecha">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> FECHA </th>
-                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fecharReg}} </td>
+                <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.fechaReg}} </td>
             </ng-container>
             <ng-container matColumnDef="estado">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ESTADO </th>
@@ -47,7 +47,7 @@
                 <td mat-cell *matCellDef="let tipo" style="align-content: center;">
                     <p style="text-align: center; color:#3F52B6">
                         <strong>
-                            <i class="material-icons link padding-icon" (click)="openDialogEdit(statusReport.idIniciativa)"
+                            <i class="material-icons link padding-icon" (click)="openDialogEdit(tipo.codigo, this.idIniciativaF)"
                                 style="text-align: center; color:rgb(236, 150, 22)" matTooltip="Editar">edit</i></strong>
                     </p>
                 </td>
@@ -57,5 +57,14 @@
                 [ngClass]="{'highlight': selectedRowIndex == row.codigo}" (click)="highlight(row)"></tr>
         </table>
         <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+    </div>
+    
+</div>
+<div class="pipeline-settings os-dropdown-trigger"> 
+    <div class="dropdown align-right-all">
+        <div class="pipeline-settings os-dropdown-trigger">            
+            <button mat-raised-button type="button" style="background: red;" class="btn-primary btn-save" align="right" (click)='closeDialogNew()'>
+                    <mat-icon>closed</mat-icon> Cerrar</button>    
+        </div>
     </div>
 </div>
