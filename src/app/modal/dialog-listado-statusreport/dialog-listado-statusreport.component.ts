@@ -51,12 +51,13 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
     }
 
 
-  openDialogEdit(codigo: number, idIniciativaFire: string){
+  openDialogEdit(codigo: number, idIniciativaFire: string, estado: string){
     let actividadDetalleFire = new ActividadDetalleFire();
     let iniciativaDetFire = new StatusReportFire();
     iniciativaDetFire.idIniciativa = idIniciativaFire;
     iniciativaDetFire.codigo = codigo;
     iniciativaDetFire.esnuevo = false;
+    iniciativaDetFire.estado = estado; 
     this.matDialog.open(DialogStatusreportComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '500px',
@@ -71,6 +72,7 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
     iniciativaDetFire.idIniciativa = idIniciativaFire;
     iniciativaDetFire.codigo = 0
     iniciativaDetFire.esnuevo = true;
+    iniciativaDetFire.estado = ""
     this.matDialog.open(DialogStatusreportComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '500px',

@@ -13,9 +13,9 @@
                     <h3>  <b> Reporte de Avances </b>  </h3>
                     </td>
                     <td align="right">                                               
-                            <button mat-raised-button class="btn-info" (click)="generateAndDownloadPdf()"><mat-icon>file_download</mat-icon>Descargar PDF</button>
-                            <button mat-raised-button class="btn-primary" (click)="saveStatusReport(statusReportFire)"><mat-icon>save</mat-icon>Guardar</button>
-                            <button mat-raised-button class="btn-success" (click)="sendEmail(statusReportFire)"><mat-icon>send</mat-icon>Enviar y Finalizar</button>
+                            <button mat-raised-button class="btn-info" (click)="generateAndDownloadPdf()" *ngIf="this.activapdf"><mat-icon>file_download</mat-icon>Descargar PDF</button>
+                            <button mat-raised-button class="btn-primary" (click)="saveStatusReport(statusReportFire)" *ngIf="this.desactivatodo"><mat-icon>save</mat-icon>Guardar</button>
+                            <button mat-raised-button class="btn-success" (click)="enviacierrar(statusReportFire)" *ngIf="this.desactivatodo"><mat-icon>send</mat-icon>Enviar y Finalizar</button>
                             <button mat-raised-button class="btn-danger" (click)="cierra()"><mat-icon>closed</mat-icon>Cerrar</button>                
                     </td>
                     
@@ -112,7 +112,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <angular-editor [(ngModel)]="statusReportFire.actSemanaAnterior" id="editor1" [config]="editorConfig" [ngModelOptions]="{standalone: true}" (click)="habilita()"></angular-editor>
+                            <angular-editor [(ngModel)]="statusReportFire.actSemanaAnterior" id="editor1" [config]="editorConfig" [ngModelOptions]="{standalone: true}" (click)="habilita()" onfocusout="this.deshabilita()"></angular-editor>
                         </td>
                     </tr>
                 </tbody>

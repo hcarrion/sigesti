@@ -30,6 +30,9 @@ export class DialogStatusreportComponent implements OnInit {
   htmlContent='';
   loading: boolean;
   codigo: number;
+  estado: string;
+  activapdf: boolean;
+  desactivatodo = true; 
   nombreusuario = localStorage.getItem("nomusu");
   generateStatusReport: FormGroup;
   statusReportFire: StatusReportFire;
@@ -96,6 +99,7 @@ export class DialogStatusreportComponent implements OnInit {
       this.idIniciativa = datafire.idIniciativa;
       this.codigo = datafire.codigo
       this.esnuevo = datafire.esnuevo;
+      this.estado = datafire.estado;
       this.generateStatusReport = new FormGroup({
       actPlanSemProxAngularEditor: new FormControl(),
       temDeciRiesgosAngularEditor: new FormControl(),
@@ -103,6 +107,17 @@ export class DialogStatusreportComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.estado =="CERRADO"){
+      this.desactivatodo = false;  
+    }else{
+      this.desactivatodo = true; 
+    }
+
+    if (this.esnuevo){
+      this.activapdf = false; 
+    }else{
+      this.activapdf = true; 
+    }
     this.loading = true;
     this.callIniciativa(this.idIniciativa);   
   }
@@ -176,7 +191,56 @@ export class DialogStatusreportComponent implements OnInit {
     let endDateStr = this.datePipe.transform(statusReport.fechaFinSemana, 'dd/MM/yy');
     fechasSpanObj.textContent = 'Del '+startDateStr+' al '+endDateStr;
    }
+   deshabilita(){
+    this.activapdf = false;
+    this.editorConfig = {
+      editable: true,
+      spellcheck: true,
+      height: 'auto',
+      minHeight: '0',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: false,
+      placeholder: 'Introducir texto aquí...',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+      fonts: [
+        {class: 'arial', name: 'Arial'},
+        {class: 'times-new-roman', name: 'Times New Roman'},
+        {class: 'calibri', name: 'Calibri'},
+        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      ],
+      customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    uploadUrl: 'assets/images',
+    sanitize: false,
+    outline: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['insertImage', 'insertVideo']
+    ]
+  };
+  this.activapdf = true;
+   }
    habilita(){
+      this.activapdf = false;
       this.editorConfig = {
         editable: true,
         spellcheck: true,
@@ -240,15 +304,19 @@ export class DialogStatusreportComponent implements OnInit {
   }
 
   saveStatusReport(statusReportF: StatusReportFire){
+    if (this.esnuevo){
+      this.graba(statusReportF,"ABIERTO")
+    }else{
+      this.graba(statusReportF,"MODIFICADO")
+    } 
+  }
+   
+  graba(statusReportF: StatusReportFire,estado: string){
+    this.deshabilita();
     this.loading = true;
     let statusReportFire = statusReportF;
     statusReportFire.idIniciativa = this.idIniciativa;
-    if (this.esnuevo){
-      statusReportFire.estado = 'ABIERTO';
-    }else{
-      statusReportFire.estado = 'MODIFICADO';
-    }
-    
+    statusReportFire.estado = estado.toUpperCase();
     statusReportFire.fechaReg = this.datePipe.transform(Date(), 'yyyy-MM-dd ');
     statusReportFire.usuarioAct = localStorage.getItem("usuario");
     statusReportFire.usuarioReg = localStorage.getItem("usuario");
@@ -259,18 +327,15 @@ export class DialogStatusreportComponent implements OnInit {
         result => {
           this.loading = false;
           Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
-          this.dialogRef.close();
         },error => {
           this.loading = false;
           Swal.fire('Error!', 'Error al guardar el status report.', 'error');
         });
     }else{  
-      alert("pase aqui");
       this.firebaseStatusReport.createStatusReport(statusReportFire).then(
         result => {
           this.loading = false;
-          Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
-          this.dialogRef.close();
+          Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success'); 
         },error => {
           this.loading = false;
           Swal.fire('Error!', 'Error al guardar el status report.', 'error');
@@ -391,7 +456,17 @@ export class DialogStatusreportComponent implements OnInit {
         };
       });
   }
-
+  enviacierrar(statusReportF: StatusReportFire){
+    this.loading = true;
+    if (this.activapdf){
+      this.graba(statusReportF,"CERRADO");   
+      this.desactivatodo = false;         
+    }else
+    {
+      Swal.fire('Error!', 'Error al cerrar al cerrar reporte debe guardar los cambios relaizados.', 'error');
+    }
+    this.loading = false;
+  }
   sendEmail(statusReportFire: StatusReportFire){
     this.emailService.sendEmailStatusReport(statusReportFire);
   }
