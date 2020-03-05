@@ -59,7 +59,7 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
     iniciativaDetFire.esnuevo = false;
     this.matDialog.open(DialogStatusreportComponent, /*dialogConfig,*/
       { width: '2000px',
-        height: '600px',
+        height: '500px',
         data: iniciativaDetFire
       }
     );
@@ -73,7 +73,7 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
     iniciativaDetFire.esnuevo = true;
     this.matDialog.open(DialogStatusreportComponent, /*dialogConfig,*/
       { width: '2000px',
-        height: '600px',
+        height: '500px',
         data: iniciativaDetFire
       }
     );
@@ -93,12 +93,11 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
    let datos = [];
             let statusReportRef = this.firebaseStatusReport.getStatusReport(this.idIniciativaF);
             statusReportRef.forEach(data=> {
+
                 data.forEach(element => {                 
                   let statusrpt = new StatusReportFire    
                   let statusReportFire = element.payload.doc.data() as StatusReportFire;            
-                  statusReportFire.idStatusReport = element.payload.doc.id;
-                  alert(statusReportFire.codigo);
-                  alert(this.idIniciativaF);
+                  statusReportFire.idStatusReport = element.payload.doc.id;                
                   statusrpt.codigo = statusReportFire.codigo  
                   statusrpt.fechaReg = statusReportFire.fechaReg;
                   statusrpt.usuarioReg = statusReportFire.usuarioReg;

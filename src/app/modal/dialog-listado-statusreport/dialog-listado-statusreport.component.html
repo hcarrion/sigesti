@@ -18,10 +18,12 @@
             </div>
         </div>
     </div>
+    
     <div class="pipeline-body">
         <mat-form-field>
             <input matInput (keyup)="buscarDatos($event.target.value)" placeholder="Buscar">
         </mat-form-field>
+        <div class="example-container1 mat-elevation-z8">
         <table mat-table [dataSource]="statusReport" matSort>
             <!-- Position Column -->
             <ng-container matColumnDef="codigo">
@@ -52,11 +54,12 @@
                     </p>
                 </td>
             </ng-container>
-            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla; sticky: true;" class="encabezado"></tr>
             <tr mat-row *matRowDef="let row; columns: columnasTabla;"
                 [ngClass]="{'highlight': selectedRowIndex == row.codigo}" (click)="highlight(row)"></tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+        </div>
+    
     </div>
     
 </div>

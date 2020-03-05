@@ -30,6 +30,9 @@ export class FirebaseStatusreportService {
   getStatusReport(idIniciativa: string){
     return this.firestore.collection('statusreports', ref => ref.where('idIniciativa', '==', idIniciativa).orderBy('numeroSemana', "desc")).snapshotChanges();
   }
+  getStatusReportFiltro(idIniciativa: string,campo: string, condicion: number){
+    return this.firestore.collection('statusreports', ref => ref.where('idIniciativa', '==', idIniciativa).where(campo, '==', condicion).orderBy('numeroSemana', "desc")).snapshotChanges();
+  }
   /*getIniciativa(iniciativaFire: IniciativaFire) {
     return this.firestore.doc('iniciativas/'+iniciativaFire.idIniciativa).snapshotChanges();
   }

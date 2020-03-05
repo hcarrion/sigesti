@@ -9,38 +9,22 @@
         <table class="MsoNormalTable" border="0" cellspacing="0">
             <tbody>
                 <tr>          
-                    <td width="60%" valign="top" rowspan="2"  colspan="2" style="text-align: Left; vertical-align:middle ;">
-                    <h4>  <b> STATUS REPORT: 
-                        Reporte de Avances de Incidencias </b>  </h4>
+                    <td valign="top" style="text-align: Left; vertical-align:middle ;">
+                    <h3>  <b> Reporte de Avances </b>  </h3>
+                    </td>
+                    <td align="right">                                               
+                            <button mat-raised-button class="btn-info" (click)="generateAndDownloadPdf()"><mat-icon>file_download</mat-icon>Descargar PDF</button>
+                            <button mat-raised-button class="btn-primary" (click)="saveStatusReport(statusReportFire)"><mat-icon>save</mat-icon>Guardar</button>
+                            <button mat-raised-button class="btn-success" (click)="sendEmail(statusReportFire)"><mat-icon>send</mat-icon>Enviar y Finalizar</button>
+                            <button mat-raised-button class="btn-danger" (click)="cierra()"><mat-icon>closed</mat-icon>Cerrar</button>                
                     </td>
                     
-                </tr>       
+                </tr>
             </tbody>
         </table>
-        <div class="row">
-            <div class="col-md-6">
-            </div>
-            <div class="col-md-2 align-right-all">
-                <button mat-raised-button class="btn-info" (click)="generateAndDownloadPdf()">
-                    <mat-icon>file_download</mat-icon>
-                    Descargar PDF
-                </button>
-            </div>
-            <div class="col-md-2 align-right-all">
-                <button mat-raised-button class="btn-primary" (click)="saveStatusReport(statusReportFire)">
-                    <mat-icon>save</mat-icon>
-                    Guardar
-                </button>
-            </div>
-            <div class="col-md-2 align-right-all">
-                <button mat-raised-button class="btn-success" (click)="sendEmail(statusReportFire)">
-                    <mat-icon>send</mat-icon>
-                    Enviar y Cerrar
-                </button>
-            </div>
-        </div>
-        <br>
-        <div class="panel-body" [ngStyle]="headingCss" >
+       
+      
+        <div class="example-container1 mat-elevation-z8" [ngStyle]="headingCss">
             <div id="statusReportPdf" #statusReportPdf>
             <table class="MsoNormalTable" border="1" cellspacing="0" >
                 <tbody>       
@@ -68,7 +52,7 @@
                             <p class="MsoNormal" align="right"><b><span>Preparada por: </span></b><b><span></span></b></p>
                         </td>
                         <td width="762" valign="top" colspan="3">
-                            <p class="MsoNormal"><span>Javier Alvines</span><span></span></p>
+                            <p class="MsoNormal"><span>{{this.nombreusuario}}</span><span></span></p>
                         </td>
                     </tr>
                 </tbody>
@@ -128,7 +112,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <angular-editor [(ngModel)]="statusReportFire.actSemanaAnterior" id="editor1" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
+                            <angular-editor [(ngModel)]="statusReportFire.actSemanaAnterior" id="editor1" [config]="editorConfig" [ngModelOptions]="{standalone: true}" (click)="habilita()"></angular-editor>
                         </td>
                     </tr>
                 </tbody>
@@ -144,7 +128,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <angular-editor [(ngModel)]="statusReportFire.actSemanaProxima" id="editor2" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
+                            <angular-editor [(ngModel)]="statusReportFire.actSemanaProxima" id="editor2" [config]="editorConfig" [ngModelOptions]="{standalone: true}" (click)="habilita()"></angular-editor>
                         </td>
                     </tr>
                 </tbody>
@@ -160,7 +144,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <angular-editor [(ngModel)]="statusReportFire.temasDecisionesRiesgos" id="editor3" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
+                            <angular-editor [(ngModel)]="statusReportFire.temasDecisionesRiesgos" id="editor3" [config]="editorConfig" [ngModelOptions]="{standalone: true}" (click)="habilita()"></angular-editor>
                         </td>
                     </tr>
                 </tbody>
@@ -176,7 +160,7 @@
                     </tr>       
                     <tr>
                         <td>
-                            <angular-editor [(ngModel)]="statusReportFire.lineaBase" id="editor4" [config]="editorConfig" [ngModelOptions]="{standalone: true}"></angular-editor>
+                            <angular-editor [(ngModel)]="statusReportFire.lineaBase" id="editor4" [config]="editorConfig" [ngModelOptions]="{standalone: true}" (click)="habilita()"></angular-editor>
                         </td>
                     </tr>
                 </tbody>

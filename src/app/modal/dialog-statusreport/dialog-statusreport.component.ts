@@ -9,11 +9,12 @@ import { ActivatedRoute } from '@angular/router';
 import { FirebaseIniciativaMainService } from '../../shared/services/firebase-iniciativa-main.service';
 import { IniciativaMainFire } from '../../shared/models/iniciativa-main-fire';
 import { DatePipe } from '@angular/common';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DIALOG_DATA } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { AppDateAdapter, APP_DATE_FORMATS } from '../../shared/util/date.adapter';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { EmailFireService } from '../../shared/services/email-fire.service';
+import { getMatScrollStrategyAlreadyAttachedError } from '@angular/cdk/overlay/typings/scroll/scroll-strategy';
 
 @Component({
   selector: 'app-dialog-statusreport',
@@ -29,6 +30,7 @@ export class DialogStatusreportComponent implements OnInit {
   htmlContent='';
   loading: boolean;
   codigo: number;
+  nombreusuario = localStorage.getItem("nomusu");
   generateStatusReport: FormGroup;
   statusReportFire: StatusReportFire;
   actSemanaAnteriorStr: string;
@@ -46,7 +48,7 @@ export class DialogStatusreportComponent implements OnInit {
       minWidth: '0',
       translate: 'yes',
       enableToolbar: true,
-      showToolbar: true,
+      showToolbar: false,
       placeholder: 'Introducir texto aquí...',
       defaultParagraphSeparator: '',
       defaultFontName: '',
@@ -89,6 +91,7 @@ export class DialogStatusreportComponent implements OnInit {
     private firebaseIniciativas: FirebaseIniciativaMainService,
     public datePipe: DatePipe,
     public emailService: EmailFireService,
+    public dialogRef: MatDialogRef<DialogStatusreportComponent>,
     @Inject(MAT_DIALOG_DATA) public datafire:  any) {
       this.idIniciativa = datafire.idIniciativa;
       this.codigo = datafire.codigo
@@ -108,16 +111,16 @@ export class DialogStatusreportComponent implements OnInit {
     let iniciativaRef = this.firebaseIniciativas.getIniciativa2(this.idIniciativa);
           iniciativaRef.forEach(data => {
             this.iniciativa = data.data() as IniciativaMainFire;
-            let statusReportRef = this.firebaseStatusReport.getStatusReport(this.idIniciativa);
+            let statusReportRef = this.firebaseStatusReport.getStatusReportFiltro(this.idIniciativa,"codigo",this.codigo);
             statusReportRef.subscribe(data => {
-              if(this.esnuevo){
+              if(this.esnuevo){               
                 this.loadData(this.iniciativa);
                 this.loadStatusReportNew(this.statusReportFire);
                 this.loading = false;
-              }else{  
+              }else{    
                 data.forEach(element => {
                   this.statusReportFire = element.payload.doc.data() as StatusReportFire;
-                  this.statusReportFire.idStatusReport = element.payload.doc.id;
+                  this.statusReportFire.idStatusReport = element.payload.doc.id;                  
                   this.loadData(this.iniciativa);
                   if(undefined != this.statusReportFire){
                     if(undefined == this.statusReportFire.fechaCierre){
@@ -164,6 +167,7 @@ export class DialogStatusreportComponent implements OnInit {
     fechaInicioSpanObj.textContent = fechaInicioStr;
     fechaFinSpanObj.textContent = fechaFinStr;
     fechaFinEstimadoSpanObj.textContent = fechaFinStr;
+    
   }
 
   loadStatusReport(statusReport: StatusReportFire){
@@ -172,7 +176,52 @@ export class DialogStatusreportComponent implements OnInit {
     let endDateStr = this.datePipe.transform(statusReport.fechaFinSemana, 'dd/MM/yy');
     fechasSpanObj.textContent = 'Del '+startDateStr+' al '+endDateStr;
    }
-
+   habilita(){
+      this.editorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: 'auto',
+        minHeight: '0',
+        maxHeight: 'auto',
+        width: 'auto',
+        minWidth: '0',
+        translate: 'yes',
+        enableToolbar: true,
+        showToolbar: true,
+        placeholder: 'Introducir texto aquí...',
+        defaultParagraphSeparator: '',
+        defaultFontName: '',
+        defaultFontSize: '',
+        fonts: [
+          {class: 'arial', name: 'Arial'},
+          {class: 'times-new-roman', name: 'Times New Roman'},
+          {class: 'calibri', name: 'Calibri'},
+          {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+        ],
+        customClasses: [
+        {
+          name: 'quote',
+          class: 'quote',
+        },
+        {
+          name: 'redText',
+          class: 'redText'
+        },
+        {
+          name: 'titleText',
+          class: 'titleText',
+          tag: 'h1',
+        },
+      ],
+      uploadUrl: 'assets/images',
+      sanitize: false,
+      outline: true,
+      toolbarPosition: 'top',
+      toolbarHiddenButtons: [
+        ['insertImage', 'insertVideo']
+      ]
+    };
+  }
   loadStatusReportNew(statusReport: StatusReportFire){
     this.statusReportFire = new StatusReportFire;
     let anioDate = (new Date).getFullYear();
@@ -204,24 +253,24 @@ export class DialogStatusreportComponent implements OnInit {
     statusReportFire.usuarioAct = localStorage.getItem("usuario");
     statusReportFire.usuarioReg = localStorage.getItem("usuario");
     if(!this.esnuevo){
-      alert(this.statusReportFire.codigo);
       statusReportFire.codigo = this.statusReportFire.codigo;
       statusReportFire.idStatusReport = this.statusReportFire.idStatusReport;
-      
       this.firebaseStatusReport.updateStatusReport(statusReportFire).then(
         result => {
           this.loading = false;
           Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+          this.dialogRef.close();
         },error => {
           this.loading = false;
           Swal.fire('Error!', 'Error al guardar el status report.', 'error');
         });
-    }else{
+    }else{  
       alert("pase aqui");
       this.firebaseStatusReport.createStatusReport(statusReportFire).then(
         result => {
           this.loading = false;
           Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+          this.dialogRef.close();
         },error => {
           this.loading = false;
           Swal.fire('Error!', 'Error al guardar el status report.', 'error');
@@ -263,6 +312,50 @@ export class DialogStatusreportComponent implements OnInit {
   }
 
   generateAndDownloadPdf(){
+    this.editorConfig = {
+          editable: true,
+          spellcheck: true,
+          height: 'auto',
+          minHeight: '0',
+          maxHeight: 'auto',
+          width: 'auto',
+          minWidth: '0',
+          translate: 'yes',
+          enableToolbar: true,
+          showToolbar: false,
+          placeholder: 'Introducir texto aquí...',
+          defaultParagraphSeparator: '',
+          defaultFontName: '',
+          defaultFontSize: '',
+          fonts: [
+            {class: 'arial', name: 'Arial'},
+            {class: 'times-new-roman', name: 'Times New Roman'},
+            {class: 'calibri', name: 'Calibri'},
+            {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+          ],
+          customClasses: [
+          {
+            name: 'quote',
+            class: 'quote',
+          },
+          {
+            name: 'redText',
+            class: 'redText'
+          },
+          {
+            name: 'titleText',
+            class: 'titleText',
+            tag: 'h1',
+          },
+        ],
+        uploadUrl: 'assets/images',
+        sanitize: false,
+        outline: true,
+        toolbarPosition: 'top',
+        toolbarHiddenButtons: [
+          ['insertImage', 'insertVideo']
+        ]
+      };
     let generateDate = new Date();
     let generateDateStr = this.datePipe.transform(generateDate, 'ddMMyyyy');
       this.headingCss = {
@@ -301,5 +394,8 @@ export class DialogStatusreportComponent implements OnInit {
 
   sendEmail(statusReportFire: StatusReportFire){
     this.emailService.sendEmailStatusReport(statusReportFire);
+  }
+  cierra(){
+    this.dialogRef.close();
   }
 }

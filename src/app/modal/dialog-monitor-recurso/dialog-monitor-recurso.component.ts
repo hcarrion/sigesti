@@ -29,6 +29,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
   ultimaDia: number;
   iniciativa= new MatTableDataSource<IniciativaMainFire>([]);
   codigoSVT: number;
+  selectedRowIndex = -1;
   titulo: string;
   tipo: string;
   avances: string;
@@ -149,6 +150,12 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
       });
     
     this.loading = false;
+  }
+  selectedDocumento(todo: IniciativaFire) {
+   
+  }
+  highlight(row){
+    
   }
 
   calliniciativas() {
