@@ -58,12 +58,16 @@ export class DialogListadoStatusreportComponent implements OnInit {habilitar: bo
     iniciativaDetFire.codigo = codigo;
     iniciativaDetFire.esnuevo = false;
     iniciativaDetFire.estado = estado; 
-    this.matDialog.open(DialogStatusreportComponent, /*dialogConfig,*/
+    const dialogRef = this.matDialog.open(DialogStatusreportComponent, /*dialogConfig,*/
       { width: '2000px',
         height: '500px',
         data: iniciativaDetFire
       }
     );
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.callIniciativa();
+    }); 
   }
 
   openDialogNew(idIniciativaFire: string){
