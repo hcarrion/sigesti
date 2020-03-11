@@ -56,14 +56,14 @@
             
                         <!-- Position Column -->
                         <ng-container matColumnDef="codigo">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> C.SVT/C.TKT </th>
-                            <td mat-cell *matCellDef="let tipo"> {{tipo.codigo}} </td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> SVT/TKT </th>
+                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.codigo,99,'','USUARIO')"> {{tipo.codigo}} </td>
                         </ng-container>
             
                         <!-- Name Column -->
                         <ng-container matColumnDef="titulo">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                            <td mat-cell *matCellDef="let tipo"> {{tipo.titulo}} </td>
+                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.codigo,99,'','USUARIO')"> {{tipo.titulo}} </td>
                         </ng-container>    
                         
                         <ng-container matColumnDef="01">
@@ -223,7 +223,7 @@
     
                         <ng-container matColumnDef="Total" >
                             <th mat-header-cell *matHeaderCellDef mat-sort-heade  align="center" style="color: crimson;"> <b>TOTAL</b> </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.codigo,99,'','USUARIO')" align="center" style="color: crimson;"><b>{{tipo.total}} </b></td>
+                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.codigo,99,'','USUARIO')" align="center" style="color: crimson;"><b>{{tipo.totalhoras}} </b></td>
                         </ng-container>
     
                         <tr mat-header-row *matHeaderRowDef="columnasTabla;  sticky: true;" class="encabezado"></tr>
@@ -236,7 +236,7 @@
             <mat-tab label = "Detalle de personal x hora en el mes" *ngIf="mostrar2 == 'true'">  
                 
                     <mat-form-field>
-                        <input matInput (keyup)="buscarDatos($event.target.value)" placeholder="Buscar">
+                        <input matInput (keyup)="buscarDatoemp($event.target.value)" placeholder="Buscar">
                     </mat-form-field>
                     <div class="example-container1 mat-elevation-z8">
                     <table mat-table [dataSource]="iniciativasemp" matSort>
@@ -244,13 +244,13 @@
                         <!-- Position Column -->
                         <ng-container matColumnDef="codigo">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> CODIGO </th>
-                            <td mat-cell *matCellDef="let tipo"> {{tipo.codigousuario}} </td>
+                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(0,99,tipo.codigousuario,'INICIATIVAS')"> {{tipo.codigousuario}} </td>
                         </ng-container>
             
                         <!-- Name Column -->
                         <ng-container matColumnDef="titulo">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> NOMBRE </th>
-                            <td mat-cell *matCellDef="let tipo"> {{tipo.titulo}} </td>
+                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(0,99,tipo.codigousuario,'INICIATIVAS')"> {{tipo.titulo}} </td>
                         </ng-container>    
                         
                         <ng-container matColumnDef="01">

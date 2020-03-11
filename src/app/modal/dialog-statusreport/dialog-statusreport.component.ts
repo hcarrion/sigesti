@@ -460,7 +460,9 @@ export class DialogStatusreportComponent implements OnInit {
     this.loading = true;
     if (this.activapdf){
       this.graba(statusReportF,"CERRADO");   
-      this.desactivatodo = false;         
+      this.sendEmail(statusReportF);
+      this.desactivatodo = false;    
+           
     }else
     {
       Swal.fire('Error!', 'Error al cerrar al cerrar reporte debe guardar los cambios relaizados.', 'error');

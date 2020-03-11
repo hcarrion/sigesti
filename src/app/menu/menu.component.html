@@ -4,6 +4,7 @@
       <mat-icon>menu</mat-icon>
     </button>
     <a class="navbar-brand" href="#"><img class="logo" src="assets/images/logo-blanco.png" alt="" width="270"></a>
+    <a style="font-size: xx-small;" align="right">USUARIO: {{this.usuario}} / PERFIL: {{this.perfil}} </a>
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container">
@@ -34,12 +35,17 @@
           <mat-icon>assessment</mat-icon>
           <span>Monitor</span>
         </button>
-        <button *ngIf="this.pantallaacceso[6]" mat-menu-item [routerLink]="['usuario']" (click)="snav.toggle()"
+        <button *ngIf="this.pantallaacceso[6]" mat-menu-item [routerLink]="['reporteavances']" (click)="snav.toggle()"
+          style=color:#3F52B6>
+          <mat-icon>assessment</mat-icon>
+          <span>Reporte de Avances</span>
+        </button>
+        <button *ngIf="this.pantallaacceso[7]" mat-menu-item [routerLink]="['usuario']" (click)="snav.toggle()"
           style=color:#3F52B6>
           <mat-icon>people</mat-icon>
           <span>Usuario</span>
         </button>
-        <button mat-menu-item (click)="snav.toggle()" style=color:#3F52B6>
+        <button mat-menu-item [routerLink]="['**']" (click)="snav.toggle()" style=color:#3F52B6>
           <mat-icon>exit_to_app</mat-icon>
           <span>Salir</span>
         </button>

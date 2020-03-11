@@ -16,11 +16,11 @@
           </div>
         </div>
         <mat-form-field class="example-full-width" *ngIf="this.bloquear">
-          <mat-label>Ingrese usuario</mat-label>
-          <input name="usuario" matInput placeholder="Ingreso de usuario" value="" (change)="onChange($event)"
-            oninput="this.value = this.value.toUpperCase()">
+          <mat-label>Ingrese usuario y Horas </mat-label>
+          <input name="usuario" matInput placeholder="Ingreso de usuario" value="{{this.usuario}}" width="50px" (change)="onChange($event)"
+            oninput="this.value = this.value.toUpperCase()">          
         </mat-form-field>
-    
+
     <div class="example-container1 mat-elevation-z8">
     <mat-label class="titulo" >Proyecto(s)</mat-label>
     <table mat-table [dataSource]="proyectoIniciativas" matSort id="tableHorasProyecto">

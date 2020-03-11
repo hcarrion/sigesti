@@ -57,8 +57,11 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   @ViewChild('singleSelect', { static: true }) singleSelect: MatSelect;
   protected _onDestroy = new Subject<void>();
   public usuarioProcesosCtrl: FormControl = new FormControl();
+  public usuarioSolicitanteCtrl: FormControl = new FormControl();
   public usuarioProcesosFilterCtrl: FormControl = new FormControl();
+  public usuarioSolicitanteFilterCtrl: FormControl = new FormControl();
   public filteredUsuarioProcesos: ReplaySubject<ColaboradorDetalleFire[]> = new ReplaySubject<ColaboradorDetalleFire[]>(1);
+  public filteredUsuarioSolicitante: ReplaySubject<ColaboradorDetalleFire[]> = new ReplaySubject<ColaboradorDetalleFire[]>(1);
   public areaCtrl: FormControl = new FormControl();
   public areaFilterCtrl: FormControl = new FormControl();
   public filteredArea: ReplaySubject<ParametroDetalleFire[]> = new ReplaySubject<ParametroDetalleFire[]>(1);
@@ -75,10 +78,10 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
       const currentDay = new Date().getDate();
-      this.minDate = new Date();
-      this.maxDate = new Date(currentYear, 11, 31);
-      this.minDateFin = new Date(currentYear, currentMonth, currentDay +1);
-      this.maxDateFin = new Date(currentYear, 11, 31);
+      this.minDate = new Date(currentYear-2, 1, 1);
+      this.maxDate = new Date(currentYear+1, 11, 31);
+      this.minDateFin = new Date(currentYear-2, 1, 1);
+      this.maxDateFin = new Date(currentYear+1, 11, 31);
       this.regIniciativa = new FormGroup({
         estadoSelect: new FormControl(),
         tipoSelect: new FormControl(),
@@ -232,6 +235,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     this.jefeProyectoCtrl.setValue("");
     this.regIniciativa.controls.sumillaInput.reset();
     this.usuarioProcesosCtrl.setValue("");
+    this.usuarioSolicitanteCtrl.setValue("");
     this.regIniciativa.controls.objPrincipalTextArea.reset();
     this.regIniciativa.controls.objSecundarioTextArea.reset();
     this.regIniciativa.controls.fechaInicioInput.reset();
@@ -274,7 +278,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
     iniciativaObject.tipo = this.regIniciativa.value.tipoSelect as ParametroDetalleFire;
     iniciativaObject.contacto = this.regIniciativa.value.contactoSelect as ContactoFire;
     iniciativaObject.horaReal = this.regIniciativa.value.horaRealInput;
-    
+    iniciativaObject.usuarioSolicitante = this.usuarioSolicitanteCtrl.value as ColaboradorDetalleFire;
     this.regIniciativa = this.formBuilder.group({
       codigoSVTInput: [iniciativaObject.codigoSVT, Validators.required],
       tituloInput: [iniciativaObject.titulo, Validators.required],
@@ -433,8 +437,10 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   activeSelect(colaboradorDetList: ColaboradorDetalleFire[]){
     this.jefeProyectoCtrl.setValue(colaboradorDetList);
     this.usuarioProcesosCtrl.setValue(colaboradorDetList);
+    this.usuarioSolicitanteCtrl.setValue(colaboradorDetList);
     this.filteredJefeProyecto.next(colaboradorDetList.slice());
     this.filteredUsuarioProcesos.next(colaboradorDetList.slice());
+    this.filteredUsuarioSolicitante.next(colaboradorDetList.slice());
     this.jefeProyectoFilterCtrl.valueChanges
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
@@ -444,6 +450,11 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.filterUsuarioProcesos();
+      });
+    this.usuarioSolicitanteFilterCtrl.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.filterUsuarioSolicitante();
       });
   }
 
@@ -475,6 +486,21 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       search = search.toLowerCase();
     }
     this.filteredUsuarioProcesos.next(
+      this.colaboradores.colaboradores.filter(colaborador => colaborador.nombres.toLowerCase().indexOf(search) > -1)
+    );
+  }
+  protected filterUsuarioSolicitante() {
+    if (!this.colaboradores.colaboradores) {
+      return;
+    }
+    let search = this.usuarioSolicitanteFilterCtrl.value;
+    if (!search) {
+      this.filteredUsuarioSolicitante.next(this.colaboradores.colaboradores.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredUsuarioSolicitante.next(
       this.colaboradores.colaboradores.filter(colaborador => colaborador.nombres.toLowerCase().indexOf(search) > -1)
     );
   }

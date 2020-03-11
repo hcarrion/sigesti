@@ -124,24 +124,22 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
                 if (this.dia==99){
                   for(i=1; i<=this.ultimaDia; i++){                    
                     if (this.pad(i,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
-                      usuariosvc.horas += horasreg.horas;
-                      this.total+=usuariosvc.horas;
+                      usuariosvc.horas = 0;
+                      this.total+=horasreg.horas;
                     }                                             
                   }
                   this.totalacu += horasreg.horas;
                 }else{
+                  this.totalacu += horasreg.horas;
                   if (this.pad(this.dia,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
                     usuariosvc.horas += horasreg.horas;
                     this.total+=usuariosvc.horas;
-                  } else{
-                    this.totalacu += horasreg.horas;
-                  }  
+                  } 
                 }      
-              });              
-              this.totalacu = this.totalacu - usuariosvc.horas;
+              });              ;
               datos.push(usuariosvc);
           });
-          this.avances = Math.round(((this.total+this.totalacu)/this.totalHoras * 100)) + '%'
+          this.avances = Math.round(((this.totalacu/this.totalHoras) * 100)) + '%'
           this.colaborador =  new MatTableDataSource(datos);
           this.colaborador.paginator = this.paginator;
           this.colaborador.sort = this.sort;    
@@ -161,10 +159,10 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
   calliniciativas() {
     this.loading = true;
     var datos = []; 
-    this.total=0;
-    this.totalHoras= 0;
-    this.totalacu=0;
-    this.avances="";
+    let total=0;
+    let totalHoras= 0;
+    let totalacu=0;
+    let avances="";
     let codigosvt: string = ""+this.codigoSVT;
     // ----
     let iniciativasRef = this.firebaseIniciativas.getIniciativas();
@@ -173,13 +171,12 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
           let iniciativaobj= element.payload.doc.data() as IniciativaMainFire;
           this.codigo = this.usuario;
           if (this.dia==99){
-            this.totalHoras = 9*this.ultimaDia;
+            totalHoras = 9*this.ultimaDia;
           }else{
-            this.totalHoras = 9;
+            totalHoras = 9*this.ultimaDia;
           }
           iniciativaobj.recursos.forEach(colaboradorobj=>{            
               let usuariosvc = new ContactoFire;
-              
               if (colaboradorobj.codigoUsuario == this.usuario){
                   this.titulo = colaboradorobj.nombres; 
                   usuariosvc.codigo = "";
@@ -193,26 +190,27 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
                     if (this.dia==99){
                       for(i=1; i<=this.ultimaDia; i++){
                         if (this.pad(i,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
-                          usuariosvc.horas += horasreg.horas;
-                          this.total+=usuariosvc.horas;
+                          usuariosvc.horas = 0;
+                          total+=horasreg.horas;
                         }   
                       }
-                      this.totalacu += horasreg.horas;
+                      totalacu += horasreg.horas;
                     }else{
+                      totalacu += horasreg.horas;
                       if (this.pad(this.dia,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
-                        usuariosvc.horas += horasreg.horas;
-                        this.total+=usuariosvc.horas;
-                      }else{
-                        this.totalacu += horasreg.horas;
-                      }     
+                        usuariosvc.horas += horasreg.horas;                       
+                        total+=usuariosvc.horas;
+                      }
                     }      
-                  });
-                  this.totalacu = this.totalacu - usuariosvc.horas;
+                  });                
                   datos.push(usuariosvc);      
               }        
               
           });
-          this.avances = Math.round(((this.total)/this.totalHoras * 100)) + '%'
+          this.totalacu = totalacu;
+          this.total = total;
+          this.totalHoras = totalHoras;           
+          this.avances = Math.round(((totalacu/totalHoras) * 100)) + '%'
           this.colaborador =  new MatTableDataSource(datos);
           this.colaborador.paginator = this.paginator;
           this.colaborador.sort = this.sort;    

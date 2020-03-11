@@ -99,8 +99,8 @@ export class DashboardComponent implements OnInit
         // Done cerrado, rechazado, suspendido
         if (label=="Por Hacer"){this.FiltraCanvas("PLANIFICACION");this.estado=" - Por Hacer";};
         if (label=="En Progreso"){this.FiltraCanvas("DESARROLLO,SUSPENDIDO");this.estado=" - En Progreso";};
-        if (label=="QA"){this.FiltraCanvas("QA");this.estado=" - En Calidad";};
-        if (label=="En Pase"){this.FiltraCanvas("PRODUCCION,SEGUIMIENTO POST");this.estado=" - En Pase";};
+        if (label=="QA"){this.FiltraCanvas("QA,SEGUIMIENTO POST");this.estado=" - En Calidad";};
+        if (label=="En Pase"){this.FiltraCanvas("PRODUCCION");this.estado=" - En Pase";};
         if (label=="Cerrado"){this.FiltraCanvas("CERRADO,ANULADO");this.estado=" - Concluido";};        
       } 
      }
@@ -256,7 +256,7 @@ export class DashboardComponent implements OnInit
         arraypr[4]++;        
         break;
       case "SEGUIMIENTO POST":
-        arraypr[3]++;        
+        arraypr[2]++;        
         break; 
       default:
     }    

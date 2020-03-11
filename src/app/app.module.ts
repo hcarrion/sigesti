@@ -53,6 +53,7 @@ import { UsuarioComponent } from './usuario/usuario.component';
 import { EmailFireService } from './shared/services/email-fire.service';
 import { DialogListadoStatusreportComponent } from './modal/dialog-listado-statusreport/dialog-listado-statusreport.component';
 import { DialogStatusreportComponent } from './modal/dialog-statusreport/dialog-statusreport.component';
+import { ReporteavancesComponent } from './reporteavances/reporteavances.component';
 
 
 @NgModule({
@@ -82,7 +83,8 @@ import { DialogStatusreportComponent } from './modal/dialog-statusreport/dialog-
     DialogAccesoComponent,
     UsuarioComponent,
     DialogListadoStatusreportComponent,
-    DialogStatusreportComponent
+    DialogStatusreportComponent,
+    ReporteavancesComponent
   ],
   imports: 
   [

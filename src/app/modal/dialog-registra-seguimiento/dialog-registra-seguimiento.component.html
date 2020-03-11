@@ -238,7 +238,22 @@
                             oninput="this.value = Math.trunc(this.value)">
                     </mat-form-field>
                 </div>
-
+                <div class="col-md-6">
+                    <mat-form-field style="font-size: small; width: 100%; display:block;">
+                        <mat-select [formControl]="usuarioSolicitanteCtrl" placeholder="Usuario Solicitante"
+                            #singleSelect style="font-size: small;" [(ngModel)]="iniciativa.usuarioSolicitante" [compareWith]="compareItems">
+                            <mat-option>
+                                <ngx-mat-select-search [formControl]="usuarioSolicitanteFilterCtrl"
+                                    placeholderLabel="Buscar usuario solicitante..."
+                                    noEntriesFoundLabel="'No se encontraron usuarios solicitante coincidentes'">
+                                </ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let colaboradorlet of filteredUsuarioSolicitante | async" [value]="colaboradorlet">
+                                {{colaboradorlet.nombres}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <div class="col-md-2 align-right-all">
                 <button mat-raised-button class="btn-primary" (click)="saveIniciativa(iniciativa)">
                     <mat-icon>save</mat-icon>

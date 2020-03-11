@@ -195,7 +195,9 @@ openDialogEdit(iniciativa: IniciativaFire){
 buscarDatos(filterValue: string) {
   this.iniciativas.filter = filterValue.trim().toLowerCase();
 }
-
+buscarDatoemp(filterValue: string) {
+  this.iniciativasemp.filter = filterValue.trim().toLowerCase();
+}
 select1(plan)
 {
   this.TipoActividad=plan.value;
@@ -248,6 +250,7 @@ getIniciativas(lista: IniciativaMainFire[]){
             });                    
             actividadFireMonitor.dias = dias;
             actividadFireMonitor.total = total;
+            actividadFireMonitor.totalhoras = '' + total + '/' + iniciativaFire.horaReal;
             listaProy.push(actividadFireMonitor);
         }
   });
@@ -286,7 +289,7 @@ getIniciativasEmp(lista: IniciativaMainFire[]){
                   }
                 });
                 actividadFireMonitor.dias = dias;
-                actividadFireMonitor.total = total;
+                actividadFireMonitor.total = total;                
 
                 let existe: boolean = false;
                 for (i=1; i<= listaProy1.length; i++){

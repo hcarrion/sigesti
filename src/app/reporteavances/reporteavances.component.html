@@ -1,0 +1,199 @@
+<div class="pipeline white lined-primary" style="height:450px;">
+    <div class="pipeline-header">
+      <h5 class="pipeline-name">
+         Reporte de Avances
+      </h5>   
+    </div>
+ 
+    <mat-form-field>
+        <mat-label>Tipo de Actividades</mat-label>
+        <mat-select [formControl]="tipoiniciativa" multiple (selectionChange)="select1(tipoiniciativa)">
+            <mat-select-trigger>
+            {{tipoiniciativa.value ? tipoiniciativa.value[0] : ''}}
+            <span *ngIf="tipoiniciativa.value?.length > 1" class="example-additional-selection">
+                (+{{tipoiniciativa.value.length - 1}} {{tipoiniciativa.value?.length === 2 ? 'Otros' : 'Otros'}})
+            </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let tipoiniciativas of tipoiniciativalista" [value]="tipoiniciativas">{{tipoiniciativas}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field>
+        <mat-label>Estado</mat-label>
+        <mat-select [formControl]="tiporeporte" multiple (selectionChange)="select2(tiporeporte)">
+          <mat-select-trigger>
+            {{tiporeporte.value ? tiporeporte.value[0] : ''}}
+            <span *ngIf="tiporeporte.value?.length > 1" class="example-additional-selection">
+              (+{{tiporeporte.value.length - 1}} {{tiporeporte.value?.length === 2 ? 'Otros' : 'Otros'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let tiporeportelistas of tiporeportelista" [value]="tiporeportelistas">{{tiporeportelistas}}</mat-option>
+        </mat-select>
+    </mat-form-field> 
+
+    <div class="example-container1 mat-elevation-z8"> 
+    <table class="titulo">
+        <tr>
+            <td>
+                Financiaria Confianza BBVA
+            </td>
+            <td>
+               
+            </td>
+            <td>
+                Fecha: {{this.fecha | date:'dd-MM-yyyy'}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Usuario: {{this.nombreusuario}}
+            </td>
+            <td>
+                
+            </td>
+            <td>
+                Hora: {{this.hora | date:'hh:mm:ss'}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+               
+            </td>
+            <td style="font-size: large;">
+                <strong><u>Reporte de Avances</u></strong>
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+    </table>
+    <table>  
+        <tr>
+            <td load><strong><u>PROYECTO</u></strong></td>
+        </tr>  
+        <tr>       
+            <td width=5%><strong><u>SVT</u></strong></td>
+            <td width=55%><strong><u>DESCRIPCION</u></strong></td>
+            <td width=10%><strong><u>F.INICIO</u></strong></td>
+            <td width=10%><strong><u>F.FIN</u></strong></td>
+            <td width=10%><strong><u>% AVANCE</u></strong></td>
+            <td width=10%><strong><u>HORAS</u></strong></td>
+        </tr>  
+        <ng-container *ngFor="let item of iniciativas.data">                        
+            <tr *ngIf="item.tipo=='PROYECTO'" >            
+                <td>{{item.codigoSVT}}</td>
+                <td>{{item.titulo}}</td>
+                <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
+                <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
+                <td>{{item.avances}}</td>
+                <td>{{item.horasavance}}</td>
+            </tr>
+            <tr *ngIf="item.tipo=='PROYECTO'">            
+                <td></td>
+                <td><strong><u>ASIGNADO</u></strong></td>
+                <td></td>
+                <td></td>
+                <td><strong><u>% ASIGNADO</u></strong></td>
+                <td><strong><u>HORAS</u></strong></td>
+            </tr>
+                <ng-container *ngFor="let itemd of iniciativasemp.data"> 
+                <tr *ngIf="item.tipo=='PROYECTO'&&item.tipo==itemd.tipo&&item.codigoSVT==itemd.codigoSVT">           
+                    <td></td>
+                    <td>{{itemd.titulo}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{itemd.porcentaje}}</td>
+                    <td>{{itemd.total}}</td>
+                </tr>
+            </ng-container>  
+        </ng-container>                      
+        <tr>            
+            <td colspan="6">_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
+        </tr>
+        <tr>
+            <td load><strong><u>MANTENIMIENTO</u></strong></td>
+        </tr>  
+        <tr>       
+            <td width=5%><strong><u>SVT</u></strong></td>
+            <td width=55%><strong><u>DESCRIPCION</u></strong></td>
+            <td width=10%><strong><u>F.INICIO</u></strong></td>
+            <td width=10%><strong><u>F.FIN</u></strong></td>
+            <td width=10%><strong><u>% AVANCE</u></strong></td>
+            <td width=10%><strong><u>HORAS</u></strong></td>
+        </tr>  
+        <ng-container *ngFor="let item of iniciativas.data">                        
+            <tr *ngIf="item.tipo=='MANTENIMIENTO'" >            
+                <td>{{item.codigoSVT}}</td>
+                <td>{{item.titulo}}</td>
+                <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
+                <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
+                <td>{{item.avances}}</td>
+                <td>{{item.horasavance}}</td>
+            </tr>
+            <tr *ngIf="item.tipo=='MANTENIMIENTO'">            
+                <td></td>
+                <td><strong><u>ASIGNADO</u></strong></td>
+                <td></td>
+                <td></td>
+                <td><strong><u>% ASIGNADO</u></strong></td>
+                <td><strong><u>HORAS</u></strong></td>
+            </tr>
+                <ng-container *ngFor="let itemd of iniciativasemp.data"> 
+                <tr *ngIf="item.tipo=='MANTENIMIENTO'&&item.tipo==itemd.tipo&&item.codigoSVT==itemd.codigoSVT">           
+                    <td></td>
+                    <td>{{itemd.titulo}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{itemd.porcentaje}}</td>
+                    <td>{{itemd.total}}</td>
+                </tr>
+            </ng-container>  
+        </ng-container>                      
+        <tr>            
+            <td colspan="6">_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
+        </tr>
+        <tr>
+            <td load><strong><u>INCIDENCIA</u></strong></td>
+        </tr>  
+        <tr>       
+            <td width=5%><strong><u>TICKET</u></strong></td>
+            <td width=55%><strong><u>DESCRIPCION</u></strong></td>
+            <td width=10%><strong><u>F.INICIO</u></strong></td>
+            <td width=10%><strong><u>F.FIN</u></strong></td>
+            <td width=10%><strong><u>% AVANCE</u></strong></td>
+            <td width=10%><strong><u>HORAS</u></strong></td>
+        </tr>  
+        <ng-container *ngFor="let item of iniciativas.data">                        
+            <tr *ngIf="item.tipo=='INCIDENCIA'" >            
+                <td>{{item.codigoSVT}}</td>
+                <td>{{item.titulo}}</td>
+                <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
+                <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
+                <td>{{item.avances}}</td>
+                <td>{{item.horasavance}}</td>
+            </tr>
+            <tr *ngIf="item.tipo=='INCIDENCIA'">            
+                <td></td>
+                <td><strong><u>ASIGNADO</u></strong></td>
+                <td></td>
+                <td></td>
+                <td><strong><u>% ASIGNADO</u></strong></td>
+                <td><strong><u>HORAS</u></strong></td>
+            </tr>
+                <ng-container *ngFor="let itemd of iniciativasemp.data"> 
+                <tr *ngIf="item.tipo=='INCIDENCIA'&&item.tipo==itemd.tipo&&item.codigoSVT==itemd.codigoSVT">           
+                    <td></td>
+                    <td>{{itemd.titulo}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{itemd.porcentaje}}</td>
+                    <td>{{itemd.total}}</td>
+                </tr>
+            </ng-container>  
+        </ng-container>                      
+        <tr>            
+            <td colspan="6">_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
+        </tr>
+    </table>   
+    </div> 
+</div>  

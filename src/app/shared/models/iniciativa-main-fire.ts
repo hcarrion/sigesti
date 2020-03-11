@@ -29,4 +29,5 @@ export class IniciativaMainFire {
     usuarioReg: string;
     usuarioAct: string;
     esnuevo: boolean;
+    usuarioSolicitante: ColaboradorDetalleFire;
 }

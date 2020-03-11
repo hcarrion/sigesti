@@ -15,6 +15,8 @@ import { MatDialog } from '@angular/material';
 
 export class MenuComponent implements OnDestroy  { 
   mobileQuery: MediaQueryList;
+  usuario: string;
+  perfil: string;
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
   tipomenu: string;
   pantallaacceso: boolean[]=[];
@@ -63,6 +65,8 @@ export class MenuComponent implements OnDestroy  {
 
     dialogRef.afterClosed().subscribe(result => {
       this.getperfiles(result);
+      this.usuario = localStorage.getItem("usuario") + "-" + localStorage.getItem("nomusu");
+      this.perfil =  localStorage.getItem("perfil");
     }); 
 
   }

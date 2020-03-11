@@ -69,8 +69,8 @@ export class EmailFireService {
     let serviceMain = '/sendMail';
     let url = this.urlMain+serviceMain;
     let email = new EmailSend;
-    email.to = 'mixel.cs@gmail.com';
-    email.from = 'frommixel.cs@gmail.com';
+    email.to = 'harry.carrion@confianza.com';
+    email.from = 'harry.carrion@confianza.com';
     const formData: FormData = new FormData();
     formData.append('to', 'mixel.cs@gmail.com');
     formData.append('from', 'frommixel.cs@gmail.com');

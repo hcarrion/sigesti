@@ -26,6 +26,7 @@ export class RegistroHorasComponent implements OnInit {
   habilitar2: boolean;
   habilitar3: boolean;
   desactivar: boolean;
+  horasing: number = 0;
   public usuario = "";
   bloquear: boolean;
   listaInic: IniciativaHorasFire[] = [];
@@ -89,6 +90,7 @@ export class RegistroHorasComponent implements OnInit {
     this.getIncidenciaIniciativas();
   }
 
+
   InActiva1() {
     if (this.habilitar1){this.habilitar1 = false;
     }else {this.habilitar1 = true;}
@@ -104,8 +106,22 @@ export class RegistroHorasComponent implements OnInit {
     }else {this.habilitar3 = true;}
    }
 
-   loadColumns(){
+   sumarDias(fecha, dias){
+    fecha.setDate(fecha.getDate() + dias);
+    return fecha;
+  }
+  restaDias(fecha, dias){
+    fecha.setDate(fecha.getDate() - dias);
+    return fecha;
+  }
+
+  loadColumns(){
      let dateToday = new Date();
+     dateToday = this.restaDias(dateToday,3);
+     if (this.horasing!=0){
+        dateToday = this.restaDias(dateToday,this.horasing)
+     }
+     
      if(1 == dateToday.getDay()){
       let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       let fechas: string[] = [];
