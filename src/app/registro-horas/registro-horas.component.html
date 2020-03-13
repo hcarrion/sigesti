@@ -15,11 +15,24 @@
               <mat-icon>save</mat-icon> Guardar</button>
           </div>
         </div>
-        <mat-form-field class="example-full-width" *ngIf="this.bloquear">
-          <mat-label>Ingrese usuario y Horas </mat-label>
-          <input name="usuario" matInput placeholder="Ingreso de usuario" value="{{this.usuario}}" width="50px" (change)="onChange($event)"
-            oninput="this.value = this.value.toUpperCase()">          
-        </mat-form-field>
+        <table>
+          <tr>
+            <td><mat-form-field style="font-size: small; width: 100%;" *ngIf="this.bloquear">
+              <mat-label>Ingrese usuario </mat-label>
+              <input name="usuario" matInput placeholder="Ingreso de usuario" value="{{this.usuario}}" width="50px" (change)="onChange($event)"
+                oninput="this.value = this.value.toUpperCase()">          
+            </mat-form-field></td>
+            
+            <td><mat-form-field hintLabel="Max 3 numeros" style="font-size: small; width: 100%;">
+                <input formControlName="horasAsigActividadInput" type="number" step="1" matInput
+                  #inputHoras maxlength="3" placeholder="Ingrese cantidad de dias" id="horas" (change)="onChangeFecha($event)" value="{{this.fechaInputSelect}}"
+                  min="1" max="999" onPaste="return false" onKeyPress="if(this.value.length==3) return false;"
+                   oninput="this.value = Math.trunc(this.value)">
+                </mat-form-field></td>
+            <td width=60%></td>
+          </tr>
+        </table>  
+
 
     <div class="example-container1 mat-elevation-z8">
     <mat-label class="titulo" >Proyecto(s)</mat-label>

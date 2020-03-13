@@ -111,9 +111,9 @@ export class ListadoAtencionComponent implements OnInit
     this.perfil = localStorage.getItem("perfil");
     if (this.perfil!="COLABORADOR"){
       this.veraccion = true;
-      this.columnasTabla = ['codigosvt', 'titulo','asignacion','fechainicio','fechafin','estado','accion'];
+      this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accion'];
     }else{
-      this.columnasTabla = ['codigosvt', 'titulo','asignacion','fechainicio','fechafin','estado'];
+      this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado'];
     }
 
   }

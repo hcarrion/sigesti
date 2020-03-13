@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
@@ -32,6 +32,7 @@ export class MonitoreoComponent implements OnInit {
   selected: boolean;
   nuevo: boolean;
   edit: boolean;
+  loadGroup: FormGroup;
   delete: boolean;
   tabla: any;
   mensajeAccion: string;
@@ -53,6 +54,8 @@ export class MonitoreoComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   
+
+  
   public tipoDocumento: IniciativaMainFire[];
   public tipoDocumentoSeleccionado: IniciativaMainFire;
   public TipoDocumenetHelp: Listadoatencionhelp[];
@@ -61,6 +64,7 @@ export class MonitoreoComponent implements OnInit {
   public NivelAtencion: string;
 
   loading: boolean;
+  
   
   tiporeporte = new FormControl();
   tipoiniciativa = new FormControl();
@@ -106,6 +110,10 @@ export class MonitoreoComponent implements OnInit {
   } 
 
   async callIniciativas(campo,condicion) {
+    this.loadGroup = new FormGroup({
+      fechaFinActividadInput: new FormControl()
+    });
+
     this.loading = true;
     
     let orden: string="codigoSVT";

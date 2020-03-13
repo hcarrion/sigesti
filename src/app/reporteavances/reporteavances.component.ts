@@ -6,6 +6,11 @@ import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { FirebaseIniciativaMainService } from '../shared/services/firebase-iniciativa-main.service';
 import { IniciativaFire } from '../shared/models/iniciativa-fire';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { platformBrowser } from '@angular/platform-browser';
+
 @Pipe({
   name: 'ReporteavancesComponent'
 })
@@ -18,8 +23,14 @@ export class ReporteavancesComponent implements OnInit { habilitar: boolean;
   selected: boolean;
   nuevo: boolean;
   edit: boolean;
+  campos: string;
   delete: boolean;
   tabla: any;
+  categoriaSel: string="";
+  camposcat: string="";
+  estadoSel: string="";
+  camposest: string=""
+  condicion: string;
   nombreusuario: string;
   fecha: string=Date(); 
   hora: string=Date(); 
@@ -54,10 +65,59 @@ export class ReporteavancesComponent implements OnInit { habilitar: boolean;
   tiporeporte = new FormControl();
   tipoiniciativa = new FormControl();
   codigosvt = new FormControl();
-  tiporeportelista: string[] = ['POR HACER', 'EN PROGRESO','QA','CERRADO' ];
+  tiporeportelista: string[] = ['PLANIFICACION','DESARROLLO','SUSPENDIDO','QA','SEGUIMIENTO POST','PRODUCCION','CERRADO','ANULADO'];
   tipoiniciativalista: string[] = ['PROYECTO', 'MANTENIMIENTO','SOPORTE','INCIDENCIA'];
   i: number;
-  constructor(private matDialog: MatDialog,public datepipe: DatePipe, private firebaseIniciativas: FirebaseIniciativaMainService) {}
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Introducir texto aquí...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      {class: 'arial', name: 'Arial'},
+      {class: 'times-new-roman', name: 'Times New Roman'},
+      {class: 'calibri', name: 'Calibri'},
+      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+    ],
+    customClasses: [
+    {
+      name: 'quote',
+      class: 'quote',
+    },
+    {
+      name: 'redText',
+      class: 'redText'
+    },
+    {
+      name: 'titleText',
+      class: 'titleText',
+      tag: 'h1',
+    },
+  ],
+  uploadUrl: 'assets/images',
+  sanitize: false,
+  outline: true,
+  toolbarPosition: 'top',
+  toolbarHiddenButtons: [
+    ['insertImage', 'insertVideo']
+  ]
+};
+headingCss = {
+  'height': '390px'
+};
+
+  constructor(private matDialog: MatDialog,public datepipe: DatePipe,public datePipe: DatePipe, private firebaseIniciativas: FirebaseIniciativaMainService) {}
 
   ngOnInit() {
     localStorage.setItem('indinicio',"false");       
@@ -77,13 +137,14 @@ export class ReporteavancesComponent implements OnInit { habilitar: boolean;
   } 
 
   async callIniciativas(campo,condicion) {    
-    this.ObtienexTipo();
+    this.ObtienexTipo(campo,condicion);
   }
 
-  ObtienexTipo(){
+  ObtienexTipo(campo,condicion){
     this.loading = true;
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
-
+    let orden: string="codigoSVT";
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple(campo,condicion,orden,"desc");   
+    
     iniciativasRef.subscribe(data => {
       var lista = [];           
       for(var i = 0; i < data.length; i++){
@@ -190,23 +251,43 @@ InReset() {
 }
 
 buscarDatos(filterValue: string) {
-
-  alert(filterValue);
   this.iniciativas.filter = filterValue.trim().toLowerCase();
 }
 
 
-select1(plan)
-{
-  this.TipoActividad=plan.value;
-  this.callIniciativas("categoria.descripcion;",this.TipoActividad + ";");
+select1(plan){
+  let valores = plan.value;
+ 
+  if (valores==""){
+    this.categoriaSel="";
+    this.camposcat ="";
+  }else{
+    this.categoriaSel=plan.value+";";
+    this.camposcat ="categoria.descripcion;";
+  }
+
+  this.condicion = this.categoriaSel + this.estadoSel;
+  this.campos =  this.camposcat + this.camposest;
+
+  this.callIniciativas(this.campos,this.condicion);
 }
 
-select2(plan)
-{
-  this.NivelAtencion=plan.value;
-  this.callIniciativas("prioridad.descripcion;",plan.value+";");
-  alert(plan.value);
+select2(plan){
+  let valores = plan.value;
+
+  if (valores==""){
+    this.estadoSel ="";
+    this.camposest ="";
+  }else{
+    this.estadoSel =plan.value+";";
+    this.camposest ="estado.descripcion;";
+  }
+  
+
+  this.condicion = this.categoriaSel + this.estadoSel;
+  this.campos =  this.camposcat + this.camposest;
+ 
+  this.callIniciativas(this.campos,this.condicion);
 }
 
 select(plan)
@@ -265,5 +346,86 @@ getFechWithFormat(fechaStr: string){
   let newFechStr = month+"/"+day+"/"+year;
   return newFechStr;
 } 
+
+generateAndDownloadPdf(){
+  this.editorConfig = {
+        editable: true,
+        spellcheck: true,
+        height: 'auto',
+        minHeight: '0',
+        maxHeight: 'auto',
+        width: 'auto',
+        minWidth: '0',
+        translate: 'yes',
+        enableToolbar: true,
+        showToolbar: false,
+        placeholder: 'Introducir texto aquí...',
+        defaultParagraphSeparator: '',
+        defaultFontName: '',
+        defaultFontSize: '',
+        fonts: [
+          {class: 'arial', name: 'Arial'},
+          {class: 'times-new-roman', name: 'Times New Roman'},
+          {class: 'calibri', name: 'Calibri'},
+          {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+        ],
+        customClasses: [
+        {
+          name: 'quote',
+          class: 'quote',
+        },
+        {
+          name: 'redText',
+          class: 'redText'
+        },
+        {
+          name: 'titleText',
+          class: 'titleText',
+          tag: 'h1',
+        },
+      ],
+      uploadUrl: 'assets/images',
+      sanitize: false,
+      outline: true,
+      toolbarPosition: 'top',
+      toolbarHiddenButtons: [
+        ['insertImage', 'insertVideo']
+      ]
+    };
+  let generateDate = new Date();
+  let generateDateStr = this.datePipe.transform(generateDate, 'ddMMyyyy');
+    this.headingCss = {
+      'height': '0px'
+    };
+    window.scroll(0,0);
+    let data = document.getElementById('statusReportPdf') as HTMLElement;
+    debugger;
+    html2canvas(data, {
+      allowTaint: true,
+          useCORS: true,
+          logging: false
+    }).then(canvas => {
+      let HTML_Width = canvas.width;
+      let HTML_Height = canvas.height;
+      let top_left_margin = 15;
+      let PDF_Width = HTML_Width + (top_left_margin * 2);
+      let PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+      let canvas_image_width = HTML_Width;
+      let canvas_image_height = HTML_Height;
+      let totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+      canvas.getContext('2d');
+      let imgData = canvas.toDataURL("image/jpeg", 1.0);
+      let pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+      for (let i = 1; i <= totalPDFPages; i++) {
+        pdf.addPage([PDF_Width, PDF_Height], 'p');
+        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+      }
+      pdf.save("ReporteAvances.pdf");
+      this.headingCss = {
+        'height': '390px'
+      };
+    });
+}
 
 }

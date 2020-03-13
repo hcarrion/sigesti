@@ -79,7 +79,7 @@ export class FirebaseIniciativaMainService {
                 return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).orderBy(orden,menmay)).snapshotChanges();
                 break;
               case 2:
-                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).orderBy(orden,menmay)).snapshotChanges();
+                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).orderBy(orden,menmay)).snapshotChanges();                                
                 break;
               case 3:
                 return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).orderBy(orden,menmay)).snapshotChanges();
@@ -91,7 +91,7 @@ export class FirebaseIniciativaMainService {
                 return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).where(ArrCamp[4],"in",ArrBus[4]).orderBy(orden,menmay)).snapshotChanges();
                 break;
               case 6:
-                return this.firestore.collection('iniciiniciativasmainativas', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).where(ArrCamp[4],"in",ArrBus[4]).where(ArrCamp[5],"in",ArrBus[5]).orderBy(orden,menmay)).snapshotChanges();
+                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[3]).where(ArrCamp[4],"in",ArrBus[4]).where(ArrCamp[5],"in",ArrBus[5]).orderBy(orden,menmay)).snapshotChanges();
                 break;
               case 7:
                 return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).where(ArrCamp[2],"in",ArrBus[2]).where(ArrCamp[3],"in",ArrBus[2]).where(ArrCamp[4],"in",ArrBus[4]).where(ArrCamp[5],"in",ArrBus[5]).where(ArrCamp[6],"in",ArrBus[6]).orderBy(orden,menmay)).snapshotChanges();

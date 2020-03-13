@@ -92,6 +92,7 @@ export class MenuComponent implements OnDestroy  {
           this.pantallaacceso[4]= true;
           this.pantallaacceso[5]= true;
           this.pantallaacceso[6]= true;
+          this.pantallaacceso[7]= true;
           break;
       case "COLABORADOR": 
           this.pantallaacceso[1]= true;
@@ -100,6 +101,7 @@ export class MenuComponent implements OnDestroy  {
           this.pantallaacceso[4]= false;
           this.pantallaacceso[5]= false;
           this.pantallaacceso[6]= false;
+          this.pantallaacceso[7]= true;
           break;
       case "LIDER": 
           this.pantallaacceso[1]= true;
@@ -108,6 +110,7 @@ export class MenuComponent implements OnDestroy  {
           this.pantallaacceso[4]= true;
           this.pantallaacceso[5]= true;
           this.pantallaacceso[6]= true;
+          this.pantallaacceso[8]= false;
           break;
       case "USUARIO": 
           this.pantallaacceso[1]= true;
@@ -116,6 +119,7 @@ export class MenuComponent implements OnDestroy  {
           this.pantallaacceso[4]= false;
           this.pantallaacceso[5]= false;
           this.pantallaacceso[6]= false;
+          this.pantallaacceso[7]= false;
           break;
     }
 

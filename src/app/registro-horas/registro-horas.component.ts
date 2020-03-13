@@ -20,13 +20,21 @@ import { IniciativaHorasFire } from '../shared/models/iniciativa-horas-fire';
     {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
     }]
 })
-export class RegistroHorasComponent implements OnInit {
+export class RegistroHorasComponent implements OnInit {  
   habilitar: boolean;
   habilitar1: boolean;
   habilitar2: boolean;
   habilitar3: boolean;
   desactivar: boolean;
   horasing: number = 0;
+  fechaInputSelect: number=5;
+  currentYear = new Date().getFullYear();
+  currentMonth = new Date().getMonth();
+  currentDay = new Date().getDate();
+  minDate: Date;
+  maxDate: Date;
+  minDateFin: Date;
+  maxDateFin: Date;
   public usuario = "";
   bloquear: boolean;
   listaInic: IniciativaHorasFire[] = [];
@@ -51,16 +59,22 @@ export class RegistroHorasComponent implements OnInit {
         estadoHorasSelect: new FormControl(),
         estadoHorasMantSelect: new FormControl(),
         estadoHorasSoporteSelect: new FormControl(),
-        estadoHorasIncidenciaSelect: new FormControl()
+        estadoHorasIncidenciaSelect: new FormControl(),
+        fechaInputSelect: new FormControl()
       });
     }
 
   ngOnInit() {
+   
+    this.minDate = new Date();
+    this.maxDate = new Date(this.currentYear, 11, 31);
+    this.minDateFin = new Date(this.currentYear, this.currentMonth, this.currentDay +1);
+    this.maxDateFin = new Date(this.currentYear, 11, 31);
     this.desactivar = true;
     this.usuario = localStorage.getItem("usuario");
     if (localStorage.getItem("perfil")!="COLABORADOR"){
       this.bloquear = true;
-    }else{
+    }else{  
       this.bloquear = false;
     }
     localStorage.setItem('indinicio',"false");   
@@ -77,7 +91,7 @@ export class RegistroHorasComponent implements OnInit {
    }else {this.habilitar = true;}
   }
  
-  public onChange(valor){
+  onChange(valor){
     this.usuario = (event.target as HTMLInputElement).value;
     if(localStorage.getItem("perfil")=="LIDER"&&localStorage.getItem("usuario")!=this.usuario){
       this.desactivar = false;
@@ -90,6 +104,20 @@ export class RegistroHorasComponent implements OnInit {
     this.getIncidenciaIniciativas();
   }
 
+  onChangeFecha(valor){
+    this.fechaInputSelect = +(event.target as HTMLInputElement).value;
+    if(localStorage.getItem("perfil")=="LIDER"&&localStorage.getItem("usuario")!=this.usuario){
+      this.desactivar = false;
+    }else{
+      this.desactivar = true;
+    }
+    this.loadColumns();
+    this.getProyectoIniciativas();
+    this.getMantenimientoIniciativas();
+    this.getSoporteIniciativas();
+    this.getIncidenciaIniciativas();
+  }
+  
 
   InActiva1() {
     if (this.habilitar1){this.habilitar1 = false;
@@ -117,11 +145,22 @@ export class RegistroHorasComponent implements OnInit {
 
   loadColumns(){
      let dateToday = new Date();
-     dateToday = this.restaDias(dateToday,3);
-     if (this.horasing!=0){
-        dateToday = this.restaDias(dateToday,this.horasing)
+     var d = this.fechaInputSelect; 
+     this.columnasTabla = ['codigosvt', 'titulo', 'fechainicio', 'fechafin', 'avance', 'prioridad'];
+     this.columnasFechTabla  = [];
+      let i: number = 0;
+      let fechas: string[] = [];
+     for(i=1; i<=d;i++){
+        let dateadd = this.daysSubtraction(dateToday,d-i);
+        let dateTodayStr =this.datePipe.transform(dateadd, 'dd/MM/yy');
+        fechas.push(dateTodayStr);
+        this.columnasFechTabla = fechas;
+        this.columnasTabla.push(dateTodayStr);
      }
-     
+      
+/*
+
+
      if(1 == dateToday.getDay()){
       let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
       let fechas: string[] = [];
@@ -134,10 +173,10 @@ export class RegistroHorasComponent implements OnInit {
       let fechaAnt1Str =this.datePipe.transform(fechaAnt1, 'dd/MM/yy');
       fechas.push(fechaAnt1Str);
       this.columnasTabla.push(fechaAnt1Str);
-      let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
-      fechas.push(dateTodayStr);
-      this.columnasFechTabla = fechas;
-      this.columnasTabla.push(dateTodayStr);
+        let dateTodayStr =this.datePipe.transform(dateToday, 'dd/MM/yy');
+        fechas.push(dateTodayStr);
+        this.columnasFechTabla = fechas;
+        this.columnasTabla.push(dateTodayStr);
      }else if(3 == dateToday.getDay()){
       let fechas: string[] = [];
       let fechaAnt2 = this.daysSubtraction(dateToday, 2);
@@ -192,7 +231,7 @@ export class RegistroHorasComponent implements OnInit {
       fechas.push(dateTodayStr);
       this.columnasFechTabla = fechas;
       this.columnasTabla.push(dateTodayStr);
-     }
+     }*/
    }
    
    async getProyectoIniciativas() {

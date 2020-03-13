@@ -20,6 +20,7 @@
         name="usuario"
         placeholder="usuario"
         ng-model="email"
+        oninput="this.value = this.value.toUpperCase()"
         ng-model-options="{updateOn: 'blur'}"
         #usuario
         required>

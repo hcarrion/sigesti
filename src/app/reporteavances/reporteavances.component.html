@@ -31,9 +31,20 @@
         </mat-select>
     </mat-form-field> 
 
+        <button mat-raised-button class="btn-info" (click)="generateAndDownloadPdf()">
+            <mat-icon>file_download</mat-icon>
+            PDF
+        </button>
+  
     <div class="example-container1 mat-elevation-z8"> 
+        <div class="panel-body" [ngStyle]="headingCss" >
+            <div id="statusReportPdf" #statusReportPdf>
     <table class="titulo">
         <tr>
+          
+            <td width="3%">
+                
+            </td>
             <td>
                 Financiaria Confianza BBVA
             </td>
@@ -45,6 +56,7 @@
             </td>
         </tr>
         <tr>
+            <td width="3%"></td>
             <td>
                 Usuario: {{this.nombreusuario}}
             </td>
@@ -56,6 +68,7 @@
             </td>
         </tr>
         <tr>
+            <td width="3%"></td>
             <td>
                
             </td>
@@ -69,26 +82,32 @@
     </table>
     <table>  
         <tr>
+            <td>
+                
+            </td>
             <td load><strong><u>PROYECTO</u></strong></td>
         </tr>  
-        <tr>       
+        <tr>    
+            <td width=3%>   </td>  
             <td width=5%><strong><u>SVT</u></strong></td>
-            <td width=55%><strong><u>DESCRIPCION</u></strong></td>
+            <td width=52%><strong><u>DESCRIPCION</u></strong></td>
             <td width=10%><strong><u>F.INICIO</u></strong></td>
             <td width=10%><strong><u>F.FIN</u></strong></td>
             <td width=10%><strong><u>% AVANCE</u></strong></td>
             <td width=10%><strong><u>HORAS</u></strong></td>
         </tr>  
         <ng-container *ngFor="let item of iniciativas.data">                        
-            <tr *ngIf="item.tipo=='PROYECTO'" >            
+            <tr *ngIf="item.tipo=='PROYECTO'" >
+                <td></td>              
                 <td>{{item.codigoSVT}}</td>
-                <td>{{item.titulo}}</td>
+                <td><strong>{{item.titulo}}</strong></td>
                 <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
                 <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
                 <td>{{item.avances}}</td>
                 <td>{{item.horasavance}}</td>
             </tr>
-            <tr *ngIf="item.tipo=='PROYECTO'">            
+            <tr *ngIf="item.tipo=='PROYECTO'">   
+                <td></td>           
                 <td></td>
                 <td><strong><u>ASIGNADO</u></strong></td>
                 <td></td>
@@ -98,6 +117,7 @@
             </tr>
                 <ng-container *ngFor="let itemd of iniciativasemp.data"> 
                 <tr *ngIf="item.tipo=='PROYECTO'&&item.tipo==itemd.tipo&&item.codigoSVT==itemd.codigoSVT">           
+                    <td></td>  
                     <td></td>
                     <td>{{itemd.titulo}}</td>
                     <td></td>
@@ -108,29 +128,33 @@
             </ng-container>  
         </ng-container>                      
         <tr>            
-            <td colspan="6">_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
+            <td colspan="7">______________________________________________________________________________________________________________________________________________________________________________________________</td>          
         </tr>
         <tr>
+            <td></td>  
             <td load><strong><u>MANTENIMIENTO</u></strong></td>
         </tr>  
         <tr>       
+            <td width=3%>   </td>   
             <td width=5%><strong><u>SVT</u></strong></td>
-            <td width=55%><strong><u>DESCRIPCION</u></strong></td>
+            <td width=52%><strong><u>DESCRIPCION</u></strong></td>
             <td width=10%><strong><u>F.INICIO</u></strong></td>
             <td width=10%><strong><u>F.FIN</u></strong></td>
             <td width=10%><strong><u>% AVANCE</u></strong></td>
             <td width=10%><strong><u>HORAS</u></strong></td>
         </tr>  
         <ng-container *ngFor="let item of iniciativas.data">                        
-            <tr *ngIf="item.tipo=='MANTENIMIENTO'" >            
+            <tr *ngIf="item.tipo=='MANTENIMIENTO'" >    
+                <td></td>          
                 <td>{{item.codigoSVT}}</td>
-                <td>{{item.titulo}}</td>
+                <td><strong>{{item.titulo}}</strong></td>
                 <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
                 <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
                 <td>{{item.avances}}</td>
                 <td>{{item.horasavance}}</td>
             </tr>
-            <tr *ngIf="item.tipo=='MANTENIMIENTO'">            
+            <tr *ngIf="item.tipo=='MANTENIMIENTO'"> 
+                <td></td>             
                 <td></td>
                 <td><strong><u>ASIGNADO</u></strong></td>
                 <td></td>
@@ -139,7 +163,9 @@
                 <td><strong><u>HORAS</u></strong></td>
             </tr>
                 <ng-container *ngFor="let itemd of iniciativasemp.data"> 
+                    
                 <tr *ngIf="item.tipo=='MANTENIMIENTO'&&item.tipo==itemd.tipo&&item.codigoSVT==itemd.codigoSVT">           
+                    <td></td>  
                     <td></td>
                     <td>{{itemd.titulo}}</td>
                     <td></td>
@@ -150,12 +176,14 @@
             </ng-container>  
         </ng-container>                      
         <tr>            
-            <td colspan="6">_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
+            <td colspan="7">______________________________________________________________________________________________________________________________________________________________________________________________</td>          
         </tr>
         <tr>
+            <td></td>  
             <td load><strong><u>INCIDENCIA</u></strong></td>
         </tr>  
         <tr>       
+            <td width=3%>   </td>
             <td width=5%><strong><u>TICKET</u></strong></td>
             <td width=55%><strong><u>DESCRIPCION</u></strong></td>
             <td width=10%><strong><u>F.INICIO</u></strong></td>
@@ -164,15 +192,17 @@
             <td width=10%><strong><u>HORAS</u></strong></td>
         </tr>  
         <ng-container *ngFor="let item of iniciativas.data">                        
-            <tr *ngIf="item.tipo=='INCIDENCIA'" >            
+            <tr *ngIf="item.tipo=='INCIDENCIA'" >  
+                <td></td>          
                 <td>{{item.codigoSVT}}</td>
-                <td>{{item.titulo}}</td>
+                <td><strong>{{item.titulo}}</strong></td>
                 <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
                 <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
                 <td>{{item.avances}}</td>
                 <td>{{item.horasavance}}</td>
             </tr>
-            <tr *ngIf="item.tipo=='INCIDENCIA'">            
+            <tr *ngIf="item.tipo=='INCIDENCIA'">   
+                <td></td>           
                 <td></td>
                 <td><strong><u>ASIGNADO</u></strong></td>
                 <td></td>
@@ -182,6 +212,7 @@
             </tr>
                 <ng-container *ngFor="let itemd of iniciativasemp.data"> 
                 <tr *ngIf="item.tipo=='INCIDENCIA'&&item.tipo==itemd.tipo&&item.codigoSVT==itemd.codigoSVT">           
+                    <td></td>  
                     <td></td>
                     <td>{{itemd.titulo}}</td>
                     <td></td>
@@ -192,8 +223,10 @@
             </ng-container>  
         </ng-container>                      
         <tr>            
-            <td colspan="6">_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
+            <td colspan="7">______________________________________________________________________________________________________________________________________________________________________________________________</td>          
         </tr>
     </table>   
+             </div> 
+        </div> 
     </div> 
 </div>  
