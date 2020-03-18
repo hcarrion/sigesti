@@ -233,7 +233,7 @@
                 <div class="col-md-2">
                     <mat-form-field style="font-size: small; width: 100%;">
                         <input formControlName="horaRealInput" matInput #inputHorasReales
-                            placeholder="Horas reales"type="number" min="1" max="9999" onPaste="return false"
+                            placeholder="Horas Planificadas"type="number" min="1" max="9999" onPaste="return false"
                             onKeyPress="if(this.value.length==4) return false;" (focusout)="focusOut($event)"
                             oninput="this.value = Math.trunc(this.value)">
                     </mat-form-field>

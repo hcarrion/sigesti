@@ -3,8 +3,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angu
 import { DialogRecursosComponent } from '../../modal/dialog-recursos/dialog-recursos.component';
 import { DialogRiesgosComponent } from '../../modal/dialog-riesgos/dialog-riesgos.component';
 import { DialogSeguimientoComponent} from "../../modal/dialog-seguimiento/dialog-seguimiento.component";
-import { FirebaseIniciativaService } from '../../shared/services/firebase-iniciativa.service';
-import { IniciativaFire } from '../../shared/models/iniciativa-fire';
 import { DialogRegistraSeguimientoComponent } from '../../modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { DialogRegistraEventoComponent } from '../dialog-registra-evento/dialog-registra-evento.component';
@@ -12,6 +10,9 @@ import { DialogRegistraRecursoEventoComponent } from '../dialog-registra-recurso
 import { ActividadDetalleFire } from 'src/app/shared/models/actividad-detalle-fire';
 import { ActividadFire } from 'src/app/shared/models/actividad-fire';
 import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-fire';
+import { FirebaseIniciativaMainService } from 'src/app/shared/services/firebase-iniciativa-main.service';
+import { FormGroup, FormControl } from '@angular/forms';
+import { IniciativaMainFire } from 'src/app/shared/models/iniciativa-main-fire';
 
 
 @Component({
@@ -20,6 +21,7 @@ import { IniciativaDetalleFire } from 'src/app/shared/models/iniciativa-detalle-
   styleUrls: ['./dialog-lista-evento.component.css']
 })
 export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
+  regRecursos: FormGroup;
   selected: boolean;
   nuevo: boolean;
   edit: boolean;
@@ -31,23 +33,29 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
   //iniciativas: IniciativaFire[] = [];
   actividades= new MatTableDataSource<ActividadDetalleFire>([]);
   selectedRowIndex: number = -1;
-  tipoDocumentoData = new MatTableDataSource<IniciativaFire>([]);
-  tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaFire>([]);
+  tipoDocumentoData = new MatTableDataSource<IniciativaMainFire>([]);
+  tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaMainFire>([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   
-  public tipoDocumento: IniciativaFire[];
-  public tipoDocumentoSeleccionado: IniciativaFire;
-  iniciativa: IniciativaFire = new IniciativaFire();
+  public tipoDocumento: IniciativaMainFire[];
+  public tipoDocumentoSeleccionado: IniciativaMainFire;
+  iniciativa: IniciativaMainFire = new IniciativaMainFire();
   idIniciativaF: string;
   actividadesDetFire: ActividadDetalleFire[] = [];
 
   loading: boolean;
+
   constructor(private matDialog: MatDialog, 
-    private firebaseIniciativas: FirebaseIniciativaService,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private firebaseIniciativas: FirebaseIniciativaMainService) {
       this.idIniciativaF = data;
-    }
+      this.regRecursos = new FormGroup({
+        tituloInputDialog: new FormControl(),
+        nIniciativaInputDialog: new FormControl(),
+        porAsignarLabel: new FormControl()
+      })
+  }
 
   openDialogRecurso(idIniciativaFire: string, actividadDetalleFire: ActividadDetalleFire) {
     let iniciativaDetFire = new IniciativaDetalleFire();
@@ -101,13 +109,15 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
     iniciativaRef.subscribe(data => {
       var lista = [];
         //lista.push(data[i].payload.doc.data() as IniciativaFire);
-        let iniciativaObject= data.payload.data() as IniciativaFire;
+        let iniciativaObject= data.payload.data() as IniciativaMainFire;
         let idIniciativa = data.payload.id;
         iniciativaObject.idIniciativa = idIniciativa;
         this.iniciativa = iniciativaObject;
         if(undefined != this.iniciativa.actividad){
-          lista = this.iniciativa.actividad.actividades;
-          this.actividadesDetFire = this.iniciativa.actividad.actividades;
+          this.iniciativa.actividad.forEach(ele=>{
+
+          });
+         // this.actividadesDetFire = this.iniciativa;
         }
       
       this.actividades =  new MatTableDataSource(lista);
@@ -140,7 +150,7 @@ export class DialogListaEventoComponent implements OnInit {habilitar: boolean;
     this.selectedRowIndex = row.numeroIniciativa;
   }
 
-  selectedDocumento(todo: IniciativaFire) {
+  selectedDocumento(todo: IniciativaMainFire) {
     this.InReset();
     this.habilitar = true;
     this.selected = true;

@@ -201,6 +201,45 @@ export class DialogRegistraRecursoEventoComponent implements OnInit {
     }
   }
 
+  guardarRecursosMASIVOS(recuColabDetFireList: ColaboradorDetalleFire[]){
+    this.loading = true;
+    let resultValidate = false;
+    if(undefined != recuColabDetFireList && 0 != recuColabDetFireList.length){
+      resultValidate = this.validarHoras(recuColabDetFireList);
+      
+      if(!resultValidate){
+        this.loading = false;
+        Swal.fire('Advertencia!', 'Las horas asignados deben sumar '+this.actividadDet.horaAsignada+'.', 'warning');
+      }else{
+        if("PENDIENTE" == this.actividadDet.estado.descripcion){
+          this.estado.forEach(element =>{
+            if("ASIGNADO" == element.descripcion){
+              this.iniciativa.estado = element;
+              this.actividadDet.estado = element;
+            }
+          });
+        }
+        this.actividadDet.recursos = recuColabDetFireList;
+        let activityList = this.iniciativa.actividad.actividades;
+        let itemActividadIndex = activityList.findIndex(item => item.codigo == this.actividadDet.codigo);
+        activityList[itemActividadIndex] = this.actividadDet;
+        this.iniciativa.actividad.actividades = activityList;
+        this.iniciativa.recursos = this.recursosIniciativaFireListR;
+        this.firebaseIniciativas.updateIniciativa(this.iniciativa).then(
+          result => {
+            this.loading = false;
+            Swal.fire('Guardado!', 'Se ha guardado correctamente.', 'success');
+            this.close();
+          },error => {
+            Swal.fire('Error!', 'Error al guardar los recursos de la actividad.', 'error');
+          });
+      }
+    }else{
+      this.loading = false;
+      Swal.fire('Advertencia!', 'Debe seleccionar recurso para la actividad.', 'warning');
+    }
+  }
+
   focusOut(event: any, colaboradorDetFire: ColaboradorDetalleFire){
     var trObject = (document.getElementById(String(colaboradorDetFire.codigo))) as HTMLTableRowElement;
     let inputObject = trObject.cells[4].children[0] as HTMLInputElement;

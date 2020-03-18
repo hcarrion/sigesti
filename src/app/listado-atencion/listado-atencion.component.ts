@@ -92,9 +92,7 @@ export class ListadoAtencionComponent implements OnInit
 
   openDialogActivity(idIniciativa: string){
     this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
-      { width: '2000px',
-        height: '530px',
-        data: idIniciativa
+      { width: '2000px',height: '530px', data: idIniciativa
       }
     );
   }
@@ -113,15 +111,20 @@ export class ListadoAtencionComponent implements OnInit
       this.veraccion = true;
       this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accion'];
     }else{
-      this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado'];
+      this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accionini'];
     }
 
   }
 
   async callIniciativas() {
     this.loading = true;
+    let iniciativasRef: any;
+    if (localStorage.getItem("perfil")=="LIDER" ) {
+      iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple("categoria.descripcion;","PROYECTO,MANTENIMIENTO,INCIDENCIA,SOPORTE;","codigoSVT","desc");
+    }else{
+      iniciativasRef = this.firebaseIniciativas.getIniciativas();
+    }
     
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
     iniciativasRef.subscribe(data => {
       var lista = [];
       for(var i = 0; i < data.length; i++){

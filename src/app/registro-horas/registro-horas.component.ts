@@ -44,6 +44,8 @@ export class RegistroHorasComponent implements OnInit {
   regHoras: FormGroup;
   
   columnasTabla: string[] = ['codigosvt', 'titulo', 'fechainicio', 'fechafin', 'avance', 'prioridad'];
+  
+
 
   columnasFechTabla: string[] = [];
   
@@ -52,6 +54,8 @@ export class RegistroHorasComponent implements OnInit {
   mantenimientoIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);
   soporteIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);
   incidenciaIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);
+  esfuerzoIniciativas= new MatTableDataSource<IniciativaHorasFire>([]);
+
   loading: boolean;
   constructor(private firebaseIniciativas: FirebaseIniciativaMainService,
     public datePipe: DatePipe) {
@@ -84,6 +88,7 @@ export class RegistroHorasComponent implements OnInit {
     this.getMantenimientoIniciativas();
     this.getSoporteIniciativas();
     this.getIncidenciaIniciativas();
+    this.getEsfuerzocontinuoIniciativas();
   }
 
   InActiva() {
@@ -102,6 +107,7 @@ export class RegistroHorasComponent implements OnInit {
     this.getMantenimientoIniciativas();
     this.getSoporteIniciativas();
     this.getIncidenciaIniciativas();
+    this.getEsfuerzocontinuoIniciativas();
   }
 
   onChangeFecha(valor){
@@ -116,6 +122,7 @@ export class RegistroHorasComponent implements OnInit {
     this.getMantenimientoIniciativas();
     this.getSoporteIniciativas();
     this.getIncidenciaIniciativas();
+    this.getEsfuerzocontinuoIniciativas();
   }
   
 
@@ -305,7 +312,23 @@ export class RegistroHorasComponent implements OnInit {
       this.loading = false;
     });
   }
-
+  async getEsfuerzocontinuoIniciativas() {
+    let esfuerzoRef = this.firebaseIniciativas.getPlanesIniciativaFiltro("categoria.descripcion","ESFUERZO CONTINUO");
+    esfuerzoRef.subscribe(data => {
+      var lista = [];
+      data.forEach(dataElement => {
+        let iniciativaObject= dataElement.payload.doc.data() as IniciativaMainFire;
+        let idIniciativa = dataElement.payload.doc.id;
+        iniciativaObject.idIniciativa = idIniciativa;
+        lista.push(iniciativaObject);
+      });
+      this.listaIncidenciaInic = this.getIniciativas(lista, this.usuario);
+      this.esfuerzoIniciativas =  new MatTableDataSource(this.listaIncidenciaInic);
+      this.esfuerzoIniciativas.paginator = this.paginator;
+      this.getFechaHoy(this.columnasTabla);
+      this.loading = false;
+    });
+  }
   getFechaHoy(columnas: string[]){
     let dateToday = new Date();
   }
@@ -341,7 +364,6 @@ export class RegistroHorasComponent implements OnInit {
                     }
                   });
                 }
-                debugger;
                 porcentaje = (horasTotales * 100)/iniciativaFire.horaEstimada;
                 iniciativaHorasFire.avance = porcentaje.toPrecision(3)+"%";
                 iniciativaHorasFire.horasFecha = horasFechas;
@@ -349,7 +371,6 @@ export class RegistroHorasComponent implements OnInit {
               }
             });
           }
-      
     });
     return listaProy;
   }
@@ -358,6 +379,8 @@ export class RegistroHorasComponent implements OnInit {
     this.saveHoras("tableHorasProyecto",true);
     this.saveHoras("tableHorasMantenimiento",true);
     this.saveHoras("tableHorasIncidencias",true);
+    this.saveHoras("tableHorasSoporte",true);
+    this.saveHoras("tableHorasEsfuerzo",true);
   }
 
 

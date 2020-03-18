@@ -17,5 +17,6 @@ export class ActividadFireMonitor {
     tipo: string;
     codigoSVT: number;
     porcentaje: string;
+    estado: string;
 }
 

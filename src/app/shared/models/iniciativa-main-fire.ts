@@ -1,6 +1,7 @@
 import { ParametroDetalleFire } from './parametro-detalle-fire';
 import { ColaboradorDetalleFire } from './colaborador-detalle-fire';
 import { ContactoFire } from './contacto-fire';
+import { EventoDetalleFire } from './evento-detalle-fire';
 
 export class IniciativaMainFire {
     idIniciativa: string;
@@ -29,5 +30,6 @@ export class IniciativaMainFire {
     usuarioReg: string;
     usuarioAct: string;
     esnuevo: boolean;
+    actividad: EventoDetalleFire[];
     usuarioSolicitante: ColaboradorDetalleFire;
 }

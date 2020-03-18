@@ -27,7 +27,7 @@
         
                 <!-- Position Column -->
                 <ng-container matColumnDef="codigosvt">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header >N° SVT/TICKET </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header >SVT/TICKET </th>
                     <td mat-cell *matCellDef="let tipo" (click)="selectedDocumento(tipo)"> {{tipo.codigoSVT}} </td>
                 </ng-container>
         
@@ -67,17 +67,17 @@
                 </ng-container>
                 
                 <ng-container matColumnDef="accion" *ngIf="this.veraccion">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header width ="8%"> ACCION </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header width ="10%"> ACCION </th>
                     <td mat-cell *matCellDef="let tipo">
                         <p><strong>
                                 <i class="material-icons link padding-icon pointer" (click)="openDialogEdit(tipo.idIniciativa)"
                                     style="text-align: center; color:rgb(236, 150, 22)" matTooltip="Editar">edit</i>
                                 <i class="material-icons link padding-icon pointer" (click)="openDialogRecursos(tipo.idIniciativa)"
                                     matTooltip="Recursos">people</i>
-                                <!--<i class="material-icons link padding-icon" (click)="openDialogActivity(tipo.idIniciativa)"
+                                <i class="material-icons link padding-icon" (click)="openDialogActivity(tipo.idIniciativa)"
                                     style="text-align: center; color:rgb(43, 41, 160)"
                                     matTooltip="Actividades">assignment</i>
-                                <i class="material-icons link padding-icon" (click)="openDialog2()"
+                                <!---<i class="material-icons link padding-icon" (click)="openDialog2()"
                                     style="text-align: center; color:rgb(182, 63, 63)"
                                     matTooltip="Riesgos">notification_important</i>
                                 <i class="material-icons link padding-icon" (click)="openDialog3()"
@@ -88,6 +88,18 @@
                             </strong></p>
                     </td>
                 </ng-container>
+
+                <ng-container matColumnDef="accionini" *ngIf="!this.veraccion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header width ="10%"> ACCION </th>
+                    <td mat-cell *matCellDef="let tipo">
+                        <p><strong>                              
+                                <i class="material-icons link pointer" (click)="openStatusReport(tipo.idIniciativa)"
+                                style="text-align: center; color:rgb(82, 185, 211)"
+                                matTooltip="Status Report">report</i>
+                            </strong></p>
+                    </td>
+                </ng-container>
+
                 <tr mat-header-row *matHeaderRowDef="columnasTabla; sticky: true;" class="encabezado"></tr>
                 <tr mat-row *matRowDef="let row; columns: columnasTabla;"
                     [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>

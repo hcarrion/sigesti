@@ -6,7 +6,6 @@ import { map, shareReplay } from 'rxjs/operators';
 import { DialogAccesoComponent } from '../modal/dialog-acceso/dialog-acceso.component';
 import { MatDialog } from '@angular/material';
 
-
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',

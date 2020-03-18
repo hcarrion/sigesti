@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Pipe } from '@angular/core';
 import { IniciativaMainFire } from '../shared/models/iniciativa-main-fire';
 import { ActividadFireMonitor } from '../shared/models/actividad-fire-monitor';
-import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatCheckboxChange } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { FirebaseIniciativaMainService } from '../shared/services/firebase-iniciativa-main.service';
@@ -26,6 +26,7 @@ export class ReporteavancesComponent implements OnInit { habilitar: boolean;
   campos: string;
   delete: boolean;
   tabla: any;
+  muestrahoras: boolean=false;
   categoriaSel: string="";
   camposcat: string="";
   estadoSel: string="";
@@ -179,7 +180,7 @@ headingCss = {
                   actividadFireMonitor.titulo = recurso.nombres;
                   actividadFireMonitor.tipo = iniciativaFire.categoria.descripcion
                   actividadFireMonitor.codigoSVT = iniciativaFire.codigoSVT;
-
+                  actividadFireMonitor.estado = iniciativaFire.estado.descripcion;
   
                   recurso.horasReg.forEach(horasrec =>{                   
                        total += horasrec.horas;                 
@@ -282,7 +283,8 @@ select2(plan){
     this.estadoSel =plan.value+";";
     this.camposest ="estado.descripcion;";
   }
-  
+
+ 
 
   this.condicion = this.categoriaSel + this.estadoSel;
   this.campos =  this.camposcat + this.camposest;
@@ -290,6 +292,15 @@ select2(plan){
   this.callIniciativas(this.campos,this.condicion);
 }
 
+select3(event): void {
+  if (event){
+    this.muestrahoras = true;
+  }else{
+    this.muestrahoras = false;
+  }
+  
+}
+  
 select(plan)
 {
   this.mostrar1= "false";
@@ -317,7 +328,7 @@ getIniciativas(lista: IniciativaMainFire[]){
             actividadFireMonitor.titulo = iniciativaFire.titulo;
             actividadFireMonitor.fechainicio = ''+iniciativaFire.fechaInicio;
             actividadFireMonitor.fechafin = ''+iniciativaFire.fechaFin;
-
+            actividadFireMonitor.estado = iniciativaFire.estado.descripcion;
             iniciativaFire.recursos.forEach(recurso => {
                 recurso.horasReg.forEach(horasrec =>{                     
                         total += horasrec.horas;                                    
