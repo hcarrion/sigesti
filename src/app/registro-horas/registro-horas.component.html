@@ -24,7 +24,7 @@
             </mat-form-field></td>
             
             <td><mat-form-field hintLabel="Max 3 numeros" style="font-size: small; width: 100%;">
-                <input formControlName="horasAsigActividadInput" type="number" step="1" matInput
+                <input formControlName="horasAsigActividadInput" type="number" step="1" matInput                
                   #inputHoras maxlength="3" placeholder="Ingrese cantidad de dias" id="horas" (change)="onChangeFecha($event)" value="{{this.fechaInputSelect}}"          
                   min="1" max="999" onPaste="return false" onKeyPress="if(this.value.length==3) return false;"
                    oninput="this.value = Math.trunc(this.value)">
@@ -68,7 +68,8 @@
         <ng-container>
           <td mat-cell *matCellDef="let element">   
               <input #inputHoras  
-              type="number" step="1" min="1" max="14" readonly
+              readonly="{{element.sololectura[i]}}"
+              type="number" step="1" min="1" max="14" 
               onPaste="return false" onKeyPress="if(this.value.length==2) return false;" 
               oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
               style="text-align: center; width: 50px;"  class="pointer"/>               
@@ -115,7 +116,7 @@
                 readonly="{{element.sololectura[i]}}"
                 onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
                 oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
-                style="text-align: center; width: 50px;" class="pointer"> 
+                style="text-align: center; width: 50px;" class="pointer">                 
           </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>

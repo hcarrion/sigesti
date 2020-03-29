@@ -36,6 +36,7 @@ export class RegistroHorasComponent implements OnInit {
   maxDate: Date;
   minDateFin: Date;
   maxDateFin: Date;
+  FechaHoy: Date = new Date();
   public usuario = "";
   bloquear: boolean;
   listaInic: IniciativaHorasFire[] = [];
@@ -366,20 +367,17 @@ export class RegistroHorasComponent implements OnInit {
                       let fechaColumnarStr = this.getFechWithFormat(this.columnasFechTabla[i]);
                       let fechaColumna = (new Date(fechaColumnarStr)).getTime();
 
-                      let f1 =this.datePipe.transform(fechaSaved, 'yyyyMMdd');
+                      let f1 =this.datePipe.transform(this.FechaHoy, 'yyyyMMdd');
                       let f2 =this.datePipe.transform(fechaini, 'yyyyMMdd');
-                      let f3 =this.datePipe.transform(fechaColumna, 'yyyyMMdd');
-                      
-                      if (iniciativaFire.estado.descripcion!='CERRADO') {
+                      if (iniciativaFire.estado.descripcion!='CERRADO'){ 
                           if (f2<=f1){
                             sololectura[i]="";
                           }else{
                             sololectura[i] = "readonly";
                           }
-                        } else {
-                          sololectura[i] = "readonly";
+                        }else{
+                          sololectura[i] = "";
                         }
-
                       if(fechaSaved == fechaColumna ){
                         horasFechas[i] = hora.horas;
                       }
