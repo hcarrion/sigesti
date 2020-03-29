@@ -62,6 +62,7 @@ export class DashboardComponent implements OnInit
   doughnutChartType: ChartType = 'doughnut';
 
   loading: boolean;
+
   constructor(private matDialog: MatDialog, private   firebaseIniciativas: FirebaseIniciativaMainService) {} 
 
   FiltraCanvas(filterValue: string) {
@@ -96,7 +97,7 @@ export class DashboardComponent implements OnInit
         // Por hacer Pendiente
         // Haciendo Asignado y en proceso
         // QA Terminado 
-        // Done cerrado, rechazado, suspendido
+        // Done cerrado, rechazado, suspendido  
         if (label=="Por Hacer"){this.FiltraCanvas("PLANIFICACION");this.estado=" - Por Hacer";};
         if (label=="En Progreso"){this.FiltraCanvas("DESARROLLO,SUSPENDIDO");this.estado=" - En Progreso";};
         if (label=="QA"){this.FiltraCanvas("QA,SEGUIMIENTO POST");this.estado=" - En Calidad";};
@@ -141,6 +142,7 @@ export class DashboardComponent implements OnInit
   }
 
   openDialogEdit(idIniciativa: string){
+    localStorage.setItem("eventoiniciativa","false");
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
       { width: '2000px', height: '600px',data: idIniciativa }
     );
@@ -151,35 +153,37 @@ export class DashboardComponent implements OnInit
     var arrayM= new Array();
     var arrayI= new Array();
 
-    arrayP[0]= 0;
-    arrayP[1]= 0;
-    arrayP[2]= 0;
-    arrayP[3]= 0;
-
-    arrayT[0]= 0;
-    arrayT[1]= 0;
-    arrayT[2]= 0;
-    arrayT[3]= 0;
-    
-    arrayM[0]= 0;
-    arrayM[1]= 0;
-    arrayM[2]= 0;
-    arrayM[3]= 0;
-
-    arrayI[0]= 0;
-    arrayI[1]= 0;
-    arrayI[2]= 0;
-    arrayI[3]= 0;
-
+  
     this.loading = true;    
      let iniciativasRef = this.firebaseIniciativas.getIniciativas();
      iniciativasRef.subscribe(data => {
+      arrayP[0]= 0;
+      arrayP[1]= 0;
+      arrayP[2]= 0;
+      arrayP[3]= 0;
+  
+      arrayT[0]= 0;
+      arrayT[1]= 0;
+      arrayT[2]= 0;
+      arrayT[3]= 0;
+      
+      arrayM[0]= 0;
+      arrayM[1]= 0;
+      arrayM[2]= 0;
+      arrayM[3]= 0;
+  
+      arrayI[0]= 0;
+      arrayI[1]= 0;
+      arrayI[2]= 0;
+      arrayI[3]= 0;
+  
        for(var i = 0; i < data.length; i++){                 
          let iniciativaObject= data[i].payload.doc.data() as IniciativaMainFire;
-         this.alamcena_valor(iniciativaObject.categoria.descripcion.toLowerCase(), iniciativaObject.estado.descripcion.toLowerCase(),
-         arrayP, arrayT, arrayM, arrayI) 
+         if(undefined!=iniciativaObject.categoria) {
+            this.alamcena_valor(iniciativaObject.categoria.descripcion.toLowerCase(), iniciativaObject.estado.descripcion.toLowerCase(),
+            arrayP, arrayT, arrayM, arrayI) 
+        }
        }      
-       //doughnutChartData:  [ [arrayP[0], arrayP[1], arrayP[2], arrayP[3]] ];
        
        this.doughnutChartDataP= arrayP;
        this.doughnutChartDataT= arrayT;
@@ -203,11 +207,12 @@ export class DashboardComponent implements OnInit
       this.iniciativas =  new MatTableDataSource(lista);
       this.iniciativas.paginator = this.paginator;
       this.iniciativas.sort = this.sort;
-      this.InicializaDatosBusqueda();
+     // this.InicializaDatosBusqueda();
       this.loading = false; 
       
     });
   }
+  
   tipobusqueda(valor: string, filtro1: string, filtro2: string)  {
     if (valor.trim()==""){
       return this.firebaseIniciativas.getIniciativaFiltro("categoria.descripcion",filtro1,"","");
@@ -250,10 +255,10 @@ export class DashboardComponent implements OnInit
         arraypr[3]++;
         break;
       case "CERRADO":
-        arraypr[4]++;        
+        arraypr[3]++;        
         break;
       case "ANULADO":
-        arraypr[4]++;        
+        arraypr[3]++;        
         break;
       case "SEGUIMIENTO POST":
         arraypr[2]++;        
@@ -279,7 +284,7 @@ export class DashboardComponent implements OnInit
       this.iniciativas2 =  new MatTableDataSource(lista);
       this.iniciativas2.paginator = this.paginator;
       this.iniciativas2.sort = this.sort;
-      this.InicializaDatosBusqueda2();
+   //   this.InicializaDatosBusqueda2();
       this.loading = false;
      
       
@@ -304,7 +309,7 @@ export class DashboardComponent implements OnInit
       this.iniciativas3 =  new MatTableDataSource(lista);
       this.iniciativas3.paginator = this.paginator;
       this.iniciativas3.sort = this.sort;
-      this.InicializaDatosBusqueda3();
+  //    this.InicializaDatosBusqueda3();
       this.loading = false;
      
       
@@ -329,14 +334,14 @@ export class DashboardComponent implements OnInit
       this.iniciativas4 =  new MatTableDataSource(lista);
       this.iniciativas4.paginator = this.paginator;
       this.iniciativas4.sort = this.sort;
-      this.InicializaDatosBusqueda4();
+    //  this.InicializaDatosBusqueda4();
       this.loading = false;
      
       
     });
   }
 
-  InicializaDatosBusqueda(){
+/*  InicializaDatosBusqueda(){
      // Inicializa los datos de busqueda
      this.iniciativas.filterPredicate = (data, filter) => {
       const dataStr = data.codigoSVT + data.numeroIniciativa + data.categoria.descripcion +  data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
@@ -367,7 +372,7 @@ export class DashboardComponent implements OnInit
    return dataStr.toUpperCase().indexOf(filter) != -1;       
     }
   }
-
+*/
   buscarDatos(filterValue: string) {
     this.iniciativas.filter = filterValue.trim().toUpperCase();
   }
@@ -412,6 +417,6 @@ export class DashboardComponent implements OnInit
     this.TipoDocumenetHelpSeleccionado = tipo;
     this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
-  }  
-
+  }
+  
 }

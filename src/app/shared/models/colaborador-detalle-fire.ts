@@ -20,4 +20,7 @@ export class ColaboradorDetalleFire {
     isAsignado: boolean;
     horasReg: HoraFire[] = [];
     perfil: string;
+    // Poniendo Datos de Resumen Calculado 
+    HorasTrabajadas: number;    // calcula las horas de trabajo realizado 
+    sporcentaje: string; 
 }

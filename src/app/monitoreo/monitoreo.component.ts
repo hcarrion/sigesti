@@ -78,14 +78,14 @@ export class MonitoreoComponent implements OnInit {
 
   ngOnInit() {
     localStorage.setItem('indinicio',"false");   
-   
-
+    
     let latest_date =new Date();
     let f =this.datepipe.transform(latest_date, 'yyyy-MM-dd');
     this.ultimaDia = +this.ultimoDiaMes(f);
 
     this.callIniciativas("","");
-   
+    
+
     switch (this.ultimaDia) {
       case 29:
         this.columnasTabla = ['codigo', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','Total'];
@@ -142,16 +142,17 @@ export class MonitoreoComponent implements OnInit {
     
     });
     this.InicializaDatosBusqueda();
+    
     this.loading = false;
   }
   InicializaDatosBusqueda(){
     // Inicializa los datos de busqueda
     this.iniciativas.filterPredicate = (data, filter) => {
-     const dataStr = data.codigo + data.titulo;
+     const dataStr = data.codigo + data.titulo + data.usuarioLider;
      return dataStr.toLowerCase().indexOf(filter) != -1;       
    }
    this.iniciativasemp.filterPredicate = (data, filter) => {
-    const dataStr = data.codigousuario + data.titulo;
+    const dataStr = data.codigousuario + data.titulo + data.usuarioLider;
     return dataStr.toLowerCase().indexOf(filter) != -1;       
   }
  }
@@ -210,13 +211,22 @@ select1(plan)
 {
   this.TipoActividad=plan.value;
   this.callIniciativas("categoria.descripcion;",this.TipoActividad + ";");
+  if (localStorage.getItem("PERFIL")!="ADMINISTRADOR"){
+    this.buscarDatos(localStorage.getItem("usuario"));
+    this.buscarDatoemp(localStorage.getItem("usuario"));
+    alert("busca aqui");
+  }
 }
 
 select2(plan)
 {
   this.NivelAtencion=plan.value;
   this.callIniciativas("prioridad.descripcion;",plan.value+";");
-  alert(plan.value);
+  if (localStorage.getItem("PERFIL")!="ADMINISTRADOR"){
+    this.buscarDatos(localStorage.getItem("usuario"));
+    this.buscarDatoemp(localStorage.getItem("usuario"));
+    alert("busca aqui");
+  }
 }
 
 select(plan)
@@ -237,16 +247,16 @@ getIniciativas(lista: IniciativaMainFire[]){
   lista.forEach(iniciativaFire => {
         let actividadFireMonitor = new ActividadFireMonitor();
         if(undefined != iniciativaFire.recursos && 0 != iniciativaFire.recursos.length){
-         
-            actividadFireMonitor.iniciativa = iniciativaFire;
+            actividadFireMonitor.iniciativa = iniciativaFire;            
             let dias: number[] = [];
             let total: number=0;
             for(var i = 1; i <= this.ultimaDia; i++){
               dias[i]=0;
             }
+            actividadFireMonitor.iniciativa = iniciativaFire
             actividadFireMonitor.codigo = iniciativaFire.codigoSVT;
             actividadFireMonitor.titulo = iniciativaFire.titulo;
-           
+            actividadFireMonitor.usuarioLider = iniciativaFire.jefeProyecto.nombres;
             iniciativaFire.recursos.forEach(recurso => {
                 recurso.horasReg.forEach(horasrec =>{
                      if (this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasrec.fecha, 'MM')){                    
@@ -288,6 +298,7 @@ getIniciativasEmp(lista: IniciativaMainFire[]){
                 }
                 actividadFireMonitor.codigousuario = recurso.codigoUsuario;
                 actividadFireMonitor.titulo = recurso.nombres;
+                actividadFireMonitor.usuarioLider = iniciativaFire.jefeProyecto.nombres;
 
                 recurso.horasReg.forEach(horasrec =>{
                   if (this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasrec.fecha, 'MM')){
@@ -335,13 +346,14 @@ getFechWithFormat(fechaStr: string){
   return newFechStr;
 } 
 
-openDialogRecursos(codigo: number, dia: number,usuario: string, tipo: string){
+openDialogRecursos(iniciativafire: IniciativaMainFire, codigo: number, dia: number,usuario: string, tipo: string){
   let datos: ActividadFireMonitor;
   datos = new ActividadFireMonitor;
   datos.tipo = tipo;
   datos.codigousuario = usuario;
   datos.codigo = codigo;
   datos.dia = dia;
+  datos.iniciativa = iniciativafire;
   this.matDialog.open(DialogMonitorRecursoComponent, 
     { width: '600px',
       height: '530px',

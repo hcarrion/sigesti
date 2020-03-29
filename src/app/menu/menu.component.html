@@ -40,13 +40,12 @@
           <mat-icon>assessment</mat-icon>
           <span>Reporte de Avances</span>
         </button>
-        <button *ngIf="this.pantallaacceso[7]" mat-menu-item [routerLink]="['usuario']" (click)="snav.toggle()"
-          style=color:#3F52B6>
+        <button *ngIf="this.pantallaacceso[7]" mat-menu-item [routerLink]="['usuario']" (click)="snav.toggle()" style=color:#3F52B6>
           <mat-icon>people</mat-icon>
           <span>Usuario</span>
         </button>
-        <button mat-menu-item [routerLink]="['**']" (click)="snav.toggle()" style=color:#3F52B6>
-          <mat-icon>exit_to_app</mat-icon>
+        <button mat-menu-item [routerLink]="['#']" (click)="snav.toggle(); openDialogRecursos('')" style=color:#3F52B6>
+          <mat-icon>closed</mat-icon>
           <span>Salir</span>
         </button>
       </mat-nav-list>

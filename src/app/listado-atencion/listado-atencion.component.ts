@@ -12,6 +12,10 @@ import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-
 import { Router } from '@angular/router';
 import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
 import { DialogListadoStatusreportComponent } from '../modal/dialog-listado-statusreport/dialog-listado-statusreport.component';
+import { DATABASE_URL } from '@angular/fire';
+import { convertMetaToOutput } from '@angular/compiler/src/render3/util';
+import { IncidenciasListaFire } from '../shared/models/incidencias-lista-fire';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-listado-atencion',
@@ -21,6 +25,7 @@ import { DialogListadoStatusreportComponent } from '../modal/dialog-listado-stat
 export class ListadoAtencionComponent implements OnInit 
 {
   habilitar: boolean;
+  usuario: string;
   selected: boolean;
   nuevo: boolean;
   edit: boolean;
@@ -33,7 +38,9 @@ export class ListadoAtencionComponent implements OnInit
   columnasTabla: string[] = [];
   title = "Example Angular 8 Material Dialog";
   //iniciativas: IniciativaFire[] = [];
-  iniciativas= new MatTableDataSource<IniciativaMainFire>([]);
+  //iniciativas= new MatTableDataSource<IniciativaMainFire>([]);
+  iniciativas=new MatTableDataSource<IncidenciasListaFire>([]);
+  //listainiciativas = new MatTableDataSource<IncidenciasListaFire>([]);
   selectedRowIndex: number = -1;
   public veraccion: boolean;
   tipoDocumentoData = new MatTableDataSource<IniciativaMainFire>([]);
@@ -78,12 +85,14 @@ export class ListadoAtencionComponent implements OnInit
       );
   }
   openDialogNew(){
+    localStorage.setItem("eventoiniciativa","true");
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
       { width: '2000px', height: '580px', data: '' }
     );
   }
 
   openDialogEdit(idIniciativa: string){
+    localStorage.setItem("eventoiniciativa","true");
     this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
       { width: '2000px', height: '580px', data: idIniciativa
       }
@@ -103,51 +112,76 @@ export class ListadoAtencionComponent implements OnInit
   }
 
   ngOnInit() {
+    localStorage.setItem('indinicio', "false");
     this.veraccion = false;
+    this.usuario = localStorage.getItem("usuario"); 
     localStorage.setItem('indinicio',"false");   
     this.callIniciativas();
     this.perfil = localStorage.getItem("perfil");
-    if (this.perfil!="COLABORADOR"){
-      this.veraccion = true;
-      this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accion'];
+    if (this.perfil=="USUARIO"){                      
+        this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accionini'];  
     }else{
-      this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accionini'];
+        this.veraccion = true;
+        this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accion'];
     }
-
   }
 
   async callIniciativas() {
     this.loading = true;
     let iniciativasRef: any;
-    if (localStorage.getItem("perfil")=="LIDER" ) {
-      iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple("categoria.descripcion;","PROYECTO,MANTENIMIENTO,INCIDENCIA,SOPORTE;","codigoSVT","desc");
-    }else{
-      iniciativasRef = this.firebaseIniciativas.getIniciativas();
+
+    if (localStorage.getItem("perfil")=="ADMINISTRADOR") {
+        iniciativasRef = this.firebaseIniciativas.getIniciativas();        
+    }else{      
+        iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple("categoria.descripcion;","PROYECTO,MANTENIMIENTO,INCIDENCIA,SOPORTE;","codigoSVT","asc");          
     }
-    
+
+conecta:
     iniciativasRef.subscribe(data => {
       var lista = [];
-      for(var i = 0; i < data.length; i++){
-        //lista.push(data[i].payload.doc.data() as IniciativaFire);
-        let iniciativaObject= data[i].payload.doc.data() as IniciativaMainFire;
-        let idIniciativa = data[i].payload.doc.id;
-        iniciativaObject.idIniciativa = idIniciativa;
-        lista.push(iniciativaObject);
-      }
-      this.iniciativas =  new MatTableDataSource(lista);
-      this.iniciativas.paginator = this.paginator;
-      this.iniciativas.sort = this.sort;
-      this.InicializaDatosBusqueda();
-      this.loading = false;
-     
-      
+      data.forEach(element=>{
+        let iniciativa = element.payload.doc.data() as IniciativaMainFire;
+          let iniciativaObject = new  IncidenciasListaFire;
+          if (undefined!=iniciativa.categoria){
+            iniciativaObject.categoria = iniciativa.categoria.descripcion;  
+          }else{
+            conecta: 
+            iniciativaObject.categoria = "";
+          }
+          if (undefined!=iniciativa.jefeProyecto){
+            iniciativaObject.lider = iniciativa.jefeProyecto.nombres;  
+          }else{
+            iniciativaObject.lider = "";
+          }
+          if (undefined!=iniciativa.estado){
+            iniciativaObject.estado = iniciativa.estado.descripcion;  
+          }else{
+            iniciativaObject.estado = "";
+          }
+          iniciativaObject.fechaInicio = iniciativa.fechaInicio;
+          iniciativaObject.fechaFin = iniciativa.fechaFin;
+          iniciativaObject.idIniciativa = element.payload.doc.id;
+          iniciativaObject.codigoSVT = iniciativa.codigoSVT;
+          iniciativaObject.titulo = iniciativa.titulo;
+          
+          lista.push(iniciativaObject);  
+        });
+        
+        this.iniciativas =  new MatTableDataSource(lista);
+        this.iniciativas.paginator = this.paginator;
+        this.iniciativas.sort = this.sort;
+        this.InicializaDatosBusqueda();
+        this.loading = false;
+        if (localStorage.getItem("perfil")!="ADMINISTRADOR" ) {        
+          this.buscarDatos(this.usuario);
+        } 
     });
   }
 
   InicializaDatosBusqueda(){
      // Inicializa los datos de busqueda
      this.iniciativas.filterPredicate = (data, filter) => {
-      const dataStr = data.codigoSVT + data.numeroIniciativa + data.titulo + data.jefeProyecto.nombres + data.estado.descripcion + data.fechaInicio  + data.fechaFin + data.prioridad.descripcion;
+      const dataStr = data.codigoSVT  + data.titulo + data.lider + data.estado + data.fechaInicio  + data.fechaFin + data.categoria;
       return dataStr.toLowerCase().indexOf(filter) != -1;       
     }
   }
@@ -161,7 +195,7 @@ export class ListadoAtencionComponent implements OnInit
   }
 
   highlight(row){
-    this.selectedRowIndex = row.numeroIniciativa;
+    this.selectedRowIndex = row.idIniciativa;
   }
 
   selectedDocumento(todo: IniciativaMainFire) {
@@ -185,7 +219,7 @@ export class ListadoAtencionComponent implements OnInit
 
   selectedTipoDocumentoHelp(tipo: Listadoatencionhelp){
     this.TipoDocumenetHelpSeleccionado = tipo;
-    this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
+    //this.tipoDocumentoSeleccionado.idIniciativa = this.TipoDocumenetHelpSeleccionado.idIniciativa;
     /*$("#modalTipoDocumento").modal('hide');*/
   }
   
@@ -200,5 +234,5 @@ export class ListadoAtencionComponent implements OnInit
       }
     );
   }
-  
+ 
 }

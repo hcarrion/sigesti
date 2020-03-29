@@ -14,7 +14,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <mat-form-field style="font-size: small; width: 100%;">
                         <input style="background-color: khaki; text-align: center;" readonly="readonly"
                             formControlName="nIniciativaInputDialog" matInput #inputNumIniciativa
@@ -22,7 +22,7 @@
                             placeholder="Codigo" type="text">
                     </mat-form-field>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <mat-form-field style="font-size: small; width: 100%;">
                         <input style="background-color: khaki;" readonly="readonly"
                             formControlName="tituloInputDialog" matInput #inputTituloIniciativa
@@ -71,7 +71,7 @@
                 <div class="card-header card-header-info"  style="height: 115px; width: 100%;" align="center">
                     <table>
                         <tr>
-                            <td><strong style="color:#3F52B6; text-align: left; font-size: small;"><p style="height: 10px;">Total horas programadas: </p></strong></td>
+                            <td><strong style="color:#3F52B6; text-align: left; font-size: small;"><p style="height: 10px;">Total horas Planificadas: </p></strong></td>
                             <td><strong style="color:#3F52B6; text-align: center; font-size: small;"><p style="height: 10px;">{{this.totalHoras}}</p></strong></td>
                             <td rowspan="4" width=10% align="center"> 
                                 <button mat-raised-button class="btn-danger" style="height: 35px;" (click)="close()" align="center">
@@ -81,15 +81,15 @@
                             </td>
                         </tr>
                         <tr>                                                    
-                            <td><strong style="color:#3F52B6; text-align: left; font-size: small;"><p style="height: 10px;">Total horas Acumuladas: </p></strong></td>
+                            <td><strong style="color:#3F52B6; text-align: left; font-size: small;"><p style="height: 10px;">Total horas Trabajadas al {{this.fechahoy | date:'dd/MM/yyyy'}}: </p></strong></td>
                             <td><strong style="color:#3F52B6; text-align: center; font-size: small;"><p style="height: 10px;">{{this.totalacu}}</p></strong></td>
                         </tr>
                         <tr>
-                            <td><strong style="color:#3F52B6; text-align: left; font-size: small;"><p style="height: 10px;">Total horas realizadas: </p></strong></td>                        
+                            <td><strong style="color:#3F52B6; text-align: left; font-size: small;"><p style="height: 10px;">Total horas Trabajadas en el dia: </p></strong></td>                        
                             <td><strong style="color:#3F52B6; text-align: center; font-size: small;"><p style="height: 10px;">{{this.total}}</p></strong></td>
                         </tr>
                         <tr>
-                            <td><strong style="color:rgb(182, 63, 63); text-align: left; font-size: small;"><p style="height: 10px;">Total % Avances: </p></strong></td>                    
+                            <td><strong style="color:rgb(182, 63, 63); text-align: left; font-size: small;"><p style="height: 10px;">Procentaje de avance del Proyecto al {{this.fechahoy | date:'dd/MM/yyyy'}}: </p></strong></td>                    
                             <td><strong style="color:rgb(182, 63, 63); text-align: center; font-size: small;"><p style="height: 10px;">{{this.avances}}</p></strong></td>                            
                         </tr>                                                                                  
                     </table>

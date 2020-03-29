@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, OnDestroy, AbstractType } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { IniciativaMainFire } from 'src/app/shared/models/iniciativa-main-fire';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -18,6 +18,7 @@ import { IniciativaFire } from 'src/app/shared/models/iniciativa-fire';
 import { UsuarioPerfilFireService } from 'src/app/shared/models/usuario-perfil-fire.service';
 import { ContactoFire } from 'src/app/shared/models/contacto-fire';
 import { timingSafeEqual } from 'crypto';
+import { ActividadFireMonitor } from 'src/app/shared/models/actividad-fire-monitor';
 
 @Component({
   selector: 'app-dialog-monitor-recurso',
@@ -28,7 +29,9 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
   regRecursos: FormGroup;
   ultimaDia: number;
   iniciativa= new MatTableDataSource<IniciativaMainFire>([]);
+  idinicitiva: string;
   codigoSVT: number;
+  fechahoy: Date = new Date();
   selectedRowIndex = -1;
   titulo: string;
   tipo: string;
@@ -36,6 +39,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
   coltitulo: string;
   totalHoras: number;
   usuario: string;
+  codigoUsuario: string="";
   totalacu: number;
   codigo: string;
   total: number;
@@ -57,12 +61,13 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
   sort: MatSort;
   constructor(public dialogRef: MatDialogRef<DialogMonitorRecursoComponent>, 
     private firebaseColaboradores: FirebaseColaboradorService,public datepipe: DatePipe,
-    @Inject(MAT_DIALOG_DATA) public datafire:  any,
+    @Inject(MAT_DIALOG_DATA) public datafire:  ActividadFireMonitor,
     private firebaseIniciativas: FirebaseIniciativaMainService) {
+      this.idinicitiva = datafire.iniciativa.idIniciativa;
       this.tipo = datafire.tipo;
       this.codigoSVT = datafire.codigo;
       this.dia = datafire.dia;
-      this.usuario = datafire.codigousuario;
+      this.codigoUsuario = datafire.codigousuario;
       this.regRecursos = new FormGroup({
         tituloInputDialog: new FormControl(),
         codigoInputDialog: new FormControl(),
@@ -90,6 +95,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
       this.callColaboradores();
     }else{
       this.coltitulo ="DETALLE DE LA INICIATIVA";
+      this.codigo = this.codigoUsuario;
       this.calliniciativas();
     }
   }
@@ -103,10 +109,9 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
     this.avances="";
     let codigosvt: string = ""+this.codigoSVT;
     // ----
-    let iniciativasRef = this.firebaseIniciativas.getIniciativaFiltro("codigoSVT", codigosvt,"","");
-    iniciativasRef.subscribe(data => {
-        data.forEach(element => {
-          let iniciativaobj= element.payload.doc.data() as IniciativaMainFire;
+    let iniciativasRef = this.firebaseIniciativas.getIniciativa2(this.idinicitiva);
+    iniciativasRef.forEach(data => {
+      let iniciativaobj = data.data() as IniciativaMainFire;        
           this.codigo = ''+iniciativaobj.codigoSVT;
           this.titulo = iniciativaobj.titulo; 
           this.totalHoras = iniciativaobj.horaReal;
@@ -145,8 +150,6 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
           this.colaborador.sort = this.sort;    
           this.loading = false;
         });
-      });
-    
     this.loading = false;
   }
   selectedDocumento(todo: IniciativaFire) {
@@ -158,66 +161,63 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
 
   calliniciativas() {
     this.loading = true;
-    var datos = []; 
+    var datoslist = []; 
     let total=0;
     let totalHoras= 0;
     let totalacu=0;
     let avances="";
-    let codigosvt: string = ""+this.codigoSVT;
     // ----
-    let iniciativasRef = this.firebaseIniciativas.getIniciativas();
-    iniciativasRef.subscribe(data => {
-        data.forEach(element => {
-          let iniciativaobj= element.payload.doc.data() as IniciativaMainFire;
-          this.codigo = this.usuario;
-          if (this.dia==99){
-            totalHoras = 9*this.ultimaDia;
-          }else{
-            totalHoras = 9*this.ultimaDia;
-          }
-          iniciativaobj.recursos.forEach(colaboradorobj=>{            
-              let usuariosvc = new ContactoFire;
-              if (colaboradorobj.codigoUsuario == this.usuario){
-                  this.titulo = colaboradorobj.nombres; 
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple("","","codigoSVT","desc");
+    iniciativasRef.forEach(elem=>{
+      elem.forEach(datos=>{
+        let iniciativaobj= datos.payload.doc.data() as IniciativaMainFire;
+        this.codigo = this.codigoUsuario;
+        if (this.dia==99){totalHoras = 9*this.ultimaDia;}
+        else{totalHoras = 9*this.ultimaDia;}   
+        if (undefined!=iniciativaobj.recursos&&iniciativaobj.recursos.length>0){
+            iniciativaobj.recursos.forEach(colaborador=>{
+              if (colaborador.codigoUsuario==this.codigo){
+                  let usuariosvc = new ContactoFire;
+                  this.titulo = colaborador.nombres; 
                   usuariosvc.codigo = "";
                   usuariosvc.nombres = "";
                   usuariosvc.horas=0;
-
                   usuariosvc.codigo = ''+iniciativaobj.codigoSVT;
                   usuariosvc.nombres = iniciativaobj.titulo;
                   let i: number=0;
-                  colaboradorobj.horasReg.forEach(horasreg=>{      
-                    if (this.dia==99){
-                      for(i=1; i<=this.ultimaDia; i++){
-                        if (this.pad(i,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
-                          usuariosvc.horas = 0;
-                          total+=horasreg.horas;
-                        }   
-                      }
-                      totalacu += horasreg.horas;
-                    }else{
-                      totalacu += horasreg.horas;
-                      if (this.pad(this.dia,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
-                        usuariosvc.horas += horasreg.horas;                       
-                        total+=usuariosvc.horas;
-                      }
-                    }      
-                  });                
-                  datos.push(usuariosvc);      
-              }        
-              
-          });
-          this.totalacu = totalacu;
-          this.total = total;
-          this.totalHoras = totalHoras;           
-          this.avances = Math.round(((totalacu/totalHoras) * 100)) + '%'
-          this.colaborador =  new MatTableDataSource(datos);
-          this.colaborador.paginator = this.paginator;
-          this.colaborador.sort = this.sort;    
-          this.loading = false;
-        });
+                  if(undefined!=colaborador.horasReg&&colaborador.horasReg.length>0){
+                      colaborador.horasReg.forEach(horasingreso=>{
+                        if (this.dia==99){
+                          for(i=1; i<=this.ultimaDia; i++){
+                            if (this.pad(i,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasingreso.fecha, 'dd/MM')){
+                              usuariosvc.horas = 0;
+                              total+=horasingreso.horas;
+                                }   
+                              }
+                              totalacu += horasingreso.horas;
+                        }else{
+                              totalacu += horasingreso.horas;
+                              if (this.pad(this.dia,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasingreso.fecha, 'dd/MM')){
+                                usuariosvc.horas += horasingreso.horas;                       
+                                total+=usuariosvc.horas;
+                              }
+                        }
+                      });
+                  }
+                  datoslist.push(usuariosvc);      
+                }
+                this.totalacu = totalacu;
+                this.total = total;
+                this.totalHoras = totalHoras;           
+                this.avances = Math.round(((totalacu/totalHoras) * 100)) + '%'
+                this.colaborador =  new MatTableDataSource(datoslist);
+                this.colaborador.paginator = this.paginator;
+                this.colaborador.sort = this.sort;    
+                this.loading = false;
+            });
+        };
       });
-    
+    });    
     this.loading = false;
   }
 
@@ -232,6 +232,4 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
     this._onDestroy.next();
     this._onDestroy.complete();
   }
-
-  
 }

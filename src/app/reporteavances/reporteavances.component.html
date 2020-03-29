@@ -1,3 +1,9 @@
+<div *ngIf="loading" class="content-load">
+    <br>
+    <mat-spinner class="child-load"></mat-spinner>
+    <br>
+    <mat-label class="child-load"><strong>Cargando... </strong></mat-label>
+</div>
 <div class="pipeline white lined-primary" style="height:450px;">
     <div class="pipeline-header">
         <h5 class="pipeline-name">
@@ -8,7 +14,17 @@
                 <div class="pipeline-settings os-dropdown-trigger">
                     <button mat-raised-button class="btn-info" (click)="generateAndDownloadPdf()">
                         <mat-icon>file_download</mat-icon>
-                        Descargar PDF
+                        PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="pipeline-settings os-dropdown-trigger">
+            <div class="dropdown">
+                <div class="pipeline-settings os-dropdown-trigger">
+                    <button mat-raised-button class="btn-info" (click)="exportToExcel()">
+                        <mat-icon>file_download</mat-icon>
+                        Excel
                     </button>
                 </div>               
             </div>
@@ -49,12 +65,11 @@
 
     <table class="titulo">
         <tr>
-          
             <td width="3%">
                 
             </td>
             <td>
-                Financiaria Confianza BBVA
+                Financiera Confianza BBVA
             </td>
             <td>
                
@@ -88,16 +103,76 @@
             </td>
         </tr>
     </table>
-    <table>  
+    <table #epltable>  
         <tr>            
-            <td colspan="8">______________________________________________________________________________________________________________________________________________________________________________________________</td>          
+            <td colspan="8">________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
         </tr>
+
         <tr>
             <td *ngIf="!this.muestrahoras"></td>
             <td>
                 
             </td>
             <td load><strong><u>PROYECTO</u></strong></td>
+        </tr>
+          
+        <tr>    
+            <td *ngIf="!this.muestrahoras"></td>
+            <td width=3%>   </td>  
+            <td width=5%><strong><u>SVT</u></strong></td>
+            <td width=42%><strong><u>DESCRIPCION</u></strong></td>
+            <td width=10%><strong><u>ESTADO</u></strong></td>
+            <td width=10%><strong><u>F.INICIO</u></strong></td>
+            <td width=10%><strong><u>F.FIN</u></strong></td>
+            <td width=10% align="center"><strong><u>% AVANCE</u></strong></td>
+            <td width=10% align="center" *ngIf="this.muestrahoras"><strong><u>HORAS</u></strong></td>
+        </tr>          
+        <ng-container *ngFor="let item of iniciativas.data">
+            <ng-container *ngIf="buscarDatos('PROYECTO')&&item.tipo=='PROYECTO'">    
+                <tr>                        
+                    <td *ngIf="!this.muestrahoras"></td>
+                    <td></td>              
+                    <td>{{item.codigoSVT}}</td>
+                    <td><strong>{{item.titulo}}</strong></td>
+                    <td>{{item.estado}}</td>
+                    <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
+                    <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
+                    <td align="center">{{item.avances}}</td>
+                    <td align="center" *ngIf="this.muestrahoras">{{item.horasavance}}</td>
+                </tr>
+                <tr>   
+                    <td *ngIf="!this.muestrahoras"></td>
+                    <td></td>           
+                    <td></td>
+                    <td><strong><u>ASIGNADO</u></strong></td>
+                    <td></td>
+                    <td></td>
+                    <td align="center"><strong><u>% ASIGNADO</u></strong></td>
+                    <td align="center"><strong><u>HORAS</u></strong></td>
+                </tr>
+                <ng-container *ngFor="let itemd of item.asignado">
+                    <tr>           
+                        <td *ngIf="!this.muestrahoras"></td>
+                        <td></td>  
+                        <td></td>
+                        <td>{{itemd.nombres}}</td>
+                        <td></td>
+                        <td></td>
+                        <td align="center">{{itemd.sporcentaje}}</td>
+                        <td align="center">{{itemd.HorasTrabajadas}}</td>
+                    </tr>              
+                </ng-container>
+            </ng-container>  
+        </ng-container>                      
+        <tr>            
+            <td colspan="8">________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
+        </tr>
+        <tr>
+            <td *ngIf="!this.muestrahoras"></td>
+            <td>
+                
+            </td>
+            <td load><strong><u>MANTENIMIENTO</u></strong></td>
         </tr>  
         <tr>    
             <td *ngIf="!this.muestrahoras"></td>
@@ -109,53 +184,58 @@
             <td width=10%><strong><u>F.FIN</u></strong></td>
             <td width=10% align="center"><strong><u>% AVANCE</u></strong></td>
             <td width=10% align="center" *ngIf="this.muestrahoras"><strong><u>HORAS</u></strong></td>
-        </tr>  
-        <ng-container *ngFor="let item of iniciativas.data">                        
-            <tr *ngIf="item.tipo=='PROYECTO'" >
-                <td *ngIf="!this.muestrahoras"></td>
-                <td></td>              
-                <td>{{item.codigoSVT}}</td>
-                <td><strong>{{item.titulo}}</strong></td>
-                <td>{{item.estado}}</td>
-                <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
-                <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
-                <td align="center">{{item.avances}}</td>
-                <td align="center" *ngIf="this.muestrahoras">{{item.horasavance}}</td>
-            </tr>
-            <tr *ngIf="item.tipo=='PROYECTO'">   
-                <td *ngIf="!this.muestrahoras"></td>
-                <td></td>           
-                <td></td>
-                <td><strong><u>ASIGNADO</u></strong></td>
-                <td></td>
-                <td></td>
-                <td align="center"><strong><u>% ASIGNADO</u></strong></td>
-                <td align="center"><strong><u>HORAS</u></strong></td>
-            </tr>
-                <ng-container *ngFor="let itemd of iniciativasemp.data"> 
-                <tr *ngIf="item.tipo=='PROYECTO'&&item.tipo==itemd.tipo&&item.codigoSVT==itemd.codigoSVT">           
+        </tr>          
+        <ng-container *ngFor="let item of iniciativas.data">
+            <ng-container *ngIf="buscarDatos('MANTENIMIENTO')&&item.tipo=='MANTENIMIENTO'">                        
+                <tr>
                     <td *ngIf="!this.muestrahoras"></td>
-                    <td></td>  
-                    <td></td>
-                    <td>{{itemd.titulo}}</td>
-                    <td></td>
-                    <td></td>
-                    <td align="center">{{itemd.porcentaje}}</td>
-                    <td align="center">{{itemd.total}}</td>
+                    <td></td>              
+                    <td>{{item.codigoSVT}}</td>
+                    <td><strong>{{item.titulo}}</strong></td>
+                    <td>{{item.estado}}</td>
+                    <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
+                    <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
+                    <td align="center">{{item.avances}}</td>
+                    <td align="center" *ngIf="this.muestrahoras">{{item.horasavance}}</td>
                 </tr>
-            </ng-container>  
+                <tr>   
+                    <td *ngIf="!this.muestrahoras"></td>
+                    <td></td>           
+                    <td></td>
+                    <td><strong><u>ASIGNADO</u></strong></td>
+                    <td></td>
+                    <td></td>
+                    <td align="center"><strong><u>% ASIGNADO</u></strong></td>
+                    <td align="center"><strong><u>HORAS</u></strong></td>
+                </tr>
+                <ng-container *ngFor="let itemd of item.asignado">
+                    <tr>           
+                        <td *ngIf="!this.muestrahoras"></td>
+                        <td></td>  
+                        <td></td>
+                        <td>{{itemd.nombres}}</td>
+                        <td></td>
+                        <td></td>
+                        <td align="center">{{itemd.sporcentaje}}</td>
+                        <td align="center">{{itemd.HorasTrabajadas}}</td>
+                    </tr>
+                </ng-container>  
+            </ng-container>
         </ng-container>                      
         <tr>            
-            <td colspan="8">______________________________________________________________________________________________________________________________________________________________________________________________</td>          
+            <td colspan="8">________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
         </tr>
+        
         <tr>
             <td *ngIf="!this.muestrahoras"></td>
-            <td></td>  
-            <td load><strong><u>MANTENIMIENTO</u></strong></td>
+            <td>
+                
+            </td>
+            <td load><strong><u>SOPORTE</u></strong></td>
         </tr>  
-        <tr>       
+        <tr>    
             <td *ngIf="!this.muestrahoras"></td>
-            <td width=3%>   </td>   
+            <td width=3%>   </td>  
             <td width=5%><strong><u>SVT</u></strong></td>
             <td width=42%><strong><u>DESCRIPCION</u></strong></td>
             <td width=10%><strong><u>ESTADO</u></strong></td>
@@ -163,100 +243,107 @@
             <td width=10%><strong><u>F.FIN</u></strong></td>
             <td width=10% align="center"><strong><u>% AVANCE</u></strong></td>
             <td width=10% align="center" *ngIf="this.muestrahoras"><strong><u>HORAS</u></strong></td>
-        </tr>  
-        <ng-container *ngFor="let item of iniciativas.data">                        
-            <tr *ngIf="item.tipo=='MANTENIMIENTO'" >  
-                <td *ngIf="!this.muestrahoras"></td>  
-                <td></td>          
-                <td>{{item.codigoSVT}}</td>
-                <td><strong>{{item.titulo}}</strong></td>
-                <td>{{item.estado}}</td>
-                <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
-                <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
-                <td align="center">{{item.avances}}</td>
-                <td align="center" *ngIf="this.muestrahoras">{{item.horasavance}}</td>
-            </tr>
-            <tr *ngIf="item.tipo=='MANTENIMIENTO'"> 
-                <td *ngIf="!this.muestrahoras"></td>
-                <td></td>             
-                <td></td>
-                <td><strong><u>ASIGNADO</u></strong></td>
-                <td></td>
-                <td></td>
-                <td align="center"><strong><u>% ASIGNADO</u></strong></td>
-                <td align="center"><strong><u>HORAS</u></strong></td>
-            </tr>
-                <ng-container *ngFor="let itemd of iniciativasemp.data"> 
-                    
-                <tr *ngIf="item.tipo=='MANTENIMIENTO'&&item.tipo==itemd.tipo&&item.codigoSVT==itemd.codigoSVT">           
+        </tr>          
+        <ng-container *ngFor="let item of iniciativas.data">
+            <ng-container *ngIf="buscarDatos('SOPORTE')&&item.tipo=='SOPORTE'">                        
+                <tr>
                     <td *ngIf="!this.muestrahoras"></td>
-                    <td></td>  
-                    <td></td>
-                    <td>{{itemd.titulo}}</td>
-                    <td></td>
-                    <td></td>
-                    <td align="center">{{itemd.porcentaje}}</td>
-                    <td align="center">{{itemd.total}}</td>
+                    <td></td>              
+                    <td>{{item.codigoSVT}}</td>
+                    <td><strong>{{item.titulo}}</strong></td>
+                    <td>{{item.estado}}</td>
+                    <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
+                    <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
+                    <td align="center">{{item.avances}}</td>
+                    <td align="center" *ngIf="this.muestrahoras">{{item.horasavance}}</td>
                 </tr>
-            </ng-container>  
+                <tr>   
+                    <td *ngIf="!this.muestrahoras"></td>
+                    <td></td>           
+                    <td></td>
+                    <td><strong><u>ASIGNADO</u></strong></td>
+                    <td></td>
+                    <td></td>
+                    <td align="center"><strong><u>% ASIGNADO</u></strong></td>
+                    <td align="center"><strong><u>HORAS</u></strong></td>
+                </tr>
+                <ng-container *ngFor="let itemd of item.asignado">
+                    <tr>           
+                        <td *ngIf="!this.muestrahoras"></td>
+                        <td></td>  
+                        <td></td>
+                        <td>{{itemd.nombres}}</td>
+                        <td></td>
+                        <td></td>
+                        <td align="center">{{itemd.sporcentaje}}</td>
+                        <td align="center">{{itemd.HorasTrabajadas}}</td>
+                    </tr>
+                </ng-container>  
+            </ng-container>
         </ng-container>                      
         <tr>            
-            <td colspan="8">______________________________________________________________________________________________________________________________________________________________________________________________</td>          
+            <td colspan="8">________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
         </tr>
+
         <tr>
             <td *ngIf="!this.muestrahoras"></td>
-            <td></td>  
+            <td>
+                
+            </td>
             <td load><strong><u>INCIDENCIA</u></strong></td>
         </tr>  
-        <tr>       
+        <tr>    
             <td *ngIf="!this.muestrahoras"></td>
-            <td width=3%>   </td>
-            <td width=5%><strong><u>TICKET</u></strong></td>
-            <td width=45%><strong><u>DESCRIPCION</u></strong></td>
+            <td width=3%>   </td>  
+            <td width=5%><strong><u>SVT</u></strong></td>
+            <td width=42%><strong><u>DESCRIPCION</u></strong></td>
             <td width=10%><strong><u>ESTADO</u></strong></td>
             <td width=10%><strong><u>F.INICIO</u></strong></td>
             <td width=10%><strong><u>F.FIN</u></strong></td>
             <td width=10% align="center"><strong><u>% AVANCE</u></strong></td>
             <td width=10% align="center" *ngIf="this.muestrahoras"><strong><u>HORAS</u></strong></td>
-        </tr>  
+        </tr>          
         <ng-container *ngFor="let item of iniciativas.data">                        
-            <tr *ngIf="item.tipo=='INCIDENCIA'" >  
-                <td *ngIf="!this.muestrahoras"></td>
-                <td></td>          
-                <td>{{item.codigoSVT}}</td>
-                <td><strong>{{item.titulo}}</strong></td>
-                <td>{{item.estado}}</td>
-                <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
-                <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
-                <td align="center">{{item.avances}}</td>
-                <td align="center" *ngIf="this.muestrahoras">{{item.horasavance}}</td>
-            </tr>
-            <tr *ngIf="item.tipo=='INCIDENCIA'">   
-                <td *ngIf="!this.muestrahoras"></td>
-                <td></td>           
-                <td></td>
-                <td><strong><u>ASIGNADO</u></strong></td>
-                <td></td>
-                <td></td>
-                <td align="center"><strong><u>% ASIGNADO</u></strong></td>
-                <td align="center"><strong><u>HORAS</u></strong></td>
-            </tr>
-                <ng-container *ngFor="let itemd of iniciativasemp.data"> 
-                <tr *ngIf="item.tipo=='INCIDENCIA'&&item.tipo==itemd.tipo&&item.codigoSVT==itemd.codigoSVT">           
+            <ng-container *ngIf="buscarDatos('INCIDENCIA')&&item.tipo=='INCIDENCIA'">
+                <tr>
                     <td *ngIf="!this.muestrahoras"></td>
-                    <td></td>  
-                    <td></td>
-                    <td>{{itemd.titulo}}</td>
-                    <td></td>
-                    <td></td>
-                    <td align="center">{{itemd.porcentaje}}</td>
-                    <td align="center">{{itemd.total}}</td> 
+                    <td></td>              
+                    <td>{{item.codigoSVT}}</td>
+                    <td><strong>{{item.titulo}}</strong></td>
+                    <td>{{item.estado}}</td>
+                    <td>{{item.fechainicio | date:'dd-MM-yyyy'}}</td>
+                    <td>{{item.fechafin | date:'dd-MM-yyyy'}}</td>
+                    <td align="center">{{item.avances}}</td>
+                    <td align="center" *ngIf="this.muestrahoras">{{item.horasavance}}</td>
                 </tr>
-            </ng-container>  
+                <tr>   
+                    <td *ngIf="!this.muestrahoras"></td>
+                    <td></td>           
+                    <td></td>
+                    <td><strong><u>ASIGNADO</u></strong></td>
+                    <td></td>
+                    <td></td>
+                    <td align="center"><strong><u>% ASIGNADO</u></strong></td>
+                    <td align="center"><strong><u>HORAS</u></strong></td>
+                </tr>
+                <ng-container *ngFor="let itemd of item.asignado">
+                    <tr>            
+                        <td *ngIf="!this.muestrahoras"></td>
+                        <td></td>  
+                        <td></td>
+                        <td>{{itemd.nombres}}</td>
+                        <td></td>
+                        <td></td>
+                        <td align="center">{{itemd.sporcentaje}}</td>
+                        <td align="center">{{itemd.HorasTrabajadas}}</td>
+                    </tr>
+                </ng-container>  
+            </ng-container>
         </ng-container>                      
         <tr>            
-            <td colspan="8">______________________________________________________________________________________________________________________________________________________________________________________________</td>          
+            <td colspan="8">________________________________________________________________________________________________________________________________________________________________________________________________________________</td>          
         </tr>
+
     </table>   
              </div> 
         </div> 

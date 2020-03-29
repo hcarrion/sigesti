@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Pipe } from '@angular/core';
+import { Component, OnInit, ViewChild, Pipe, ElementRef } from '@angular/core';
 import { IniciativaMainFire } from '../shared/models/iniciativa-main-fire';
 import { ActividadFireMonitor } from '../shared/models/actividad-fire-monitor';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatCheckboxChange } from '@angular/material';
@@ -10,6 +10,10 @@ import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { platformBrowser } from '@angular/platform-browser';
+import { element } from 'protractor';
+import { ColaboradorDetalleFire } from '../shared/models/colaborador-detalle-fire';
+import * as xlsx from 'xlsx';
+import { CdkStepperNext } from '@angular/cdk/stepper';
 
 @Pipe({
   name: 'ReporteavancesComponent'
@@ -55,6 +59,7 @@ export class ReporteavancesComponent implements OnInit { habilitar: boolean;
   tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaMainFire>([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('epltable', { static: false }) epltable: ElementRef;
   
   public tipoDocumento: IniciativaMainFire[];
   public tipoDocumentoSeleccionado: IniciativaMainFire;
@@ -126,8 +131,7 @@ headingCss = {
     let latest_date =new Date();
     let f =this.datepipe.transform(latest_date, 'yyyy-MM-dd');
     this.ultimaDia = +this.ultimoDiaMes(f);
-
-    this.callIniciativas("","");
+    this.generareportetotal("categoria.descripcion;","PROYECTO,MANTENIMIENTO,SOPORTE,INCIDENCIA;");
   } 
 
   ultimoDiaMes(fecha){    
@@ -137,88 +141,75 @@ headingCss = {
     return fechaUltimo.getDate();
   } 
 
-  async callIniciativas(campo,condicion) {    
-    this.ObtienexTipo(campo,condicion);
-  }
-
-  ObtienexTipo(campo,condicion){
+  generareportetotal(campo,condicion){
+    let listaProy: ActividadFireMonitor[] = [];
+    let detalleProy: ColaboradorDetalleFire[] =[];
+    let ArrDatos: string[]
+    let ContCampo: number=0;
+    let cadena: string;
+    let existe: boolean=false;
     this.loading = true;
-    let orden: string="codigoSVT";
-    let iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple(campo,condicion,orden,"desc");   
-    
+    let orden: string="categoria.descripcion";
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple(campo,condicion,"codigoSVT","asc");   
     iniciativasRef.subscribe(data => {
-      var lista = [];           
-      for(var i = 0; i < data.length; i++){
-        lista.push(data[i].payload.doc.data() as IniciativaMainFire);        
-      }      
-      this.listaInic = this.getIniciativas(lista);
-      this.iniciativas =  new MatTableDataSource(this.listaInic);  
-      let listaemp = this.getIniciativasEmp(lista);
-      this.iniciativasemp =  new MatTableDataSource(listaemp);  
-      this.InicializaDatosBusqueda(this.iniciativas);
-      this.loading = false;      
-    });
-  }
-
-
-  getIniciativasEmp(lista: IniciativaMainFire[]){
-    let listaProy1: ActividadFireMonitor[] = [];
-    let empleado: string ="";
-    var arrempresa = new Array();
-    let indice: number = 0;
-    lista.forEach(iniciativaFire => {
-          if(undefined != iniciativaFire.recursos && 0 != iniciativaFire.recursos.length){            
-              iniciativaFire.recursos.forEach(recurso => {
-                  let actividadFireMonitor = new ActividadFireMonitor();
-                  actividadFireMonitor.iniciativa = iniciativaFire;
-                  let dias: number[] = [];
-                  let total: number=0;
-                  for(var i = 1; i <= this.ultimaDia; i++){
-                    dias[i]=0;
-                  }
-                  actividadFireMonitor.codigousuario = recurso.codigoUsuario;
-                  actividadFireMonitor.titulo = recurso.nombres;
-                  actividadFireMonitor.tipo = iniciativaFire.categoria.descripcion
-                  actividadFireMonitor.codigoSVT = iniciativaFire.codigoSVT;
-                  actividadFireMonitor.estado = iniciativaFire.estado.descripcion;
-  
-                  recurso.horasReg.forEach(horasrec =>{                   
-                       total += horasrec.horas;                 
-                  });                
-                  actividadFireMonitor.total = total;                
-                  actividadFireMonitor.porcentaje = ''+recurso.porcentaje+'%';
-                  
-                  let existe: boolean = false;
-                  for (i=1; i<= listaProy1.length; i++){
-                        if (arrempresa[i]==actividadFireMonitor.codigousuario){
-                           indice = i;
-                           existe =true; 
-                           break;
-                        }
-                  }
-                  if (!existe){                                  
-                    listaProy1.push(actividadFireMonitor);
-                    arrempresa[listaProy1.length] = actividadFireMonitor.codigousuario;                
-                  }else{
-                    listaProy1.forEach(empl=>{
-                      if (empl.codigousuario == actividadFireMonitor.codigousuario){
-                        for(i=1; i<=empl.dias.length-1; i++){
-                          empl.dias[i] += actividadFireMonitor.dias[i];
-                          empl.total += actividadFireMonitor.dias[i];
-                        }
-                      }
-                    })
-                  }
-              });
-  
+      for(var i=0; i<=data.length-1; i++){
+      //data.forEach(ele=>{
+        let iniciativa = data[i].payload.doc.data() as IniciativaMainFire;
+        if(undefined!=iniciativa.jefeProyecto){
+          if (localStorage.getItem("perfil")!="ADMINISTRADOR"){
+            if(iniciativa.jefeProyecto.codigoUsuario!=localStorage.getItem("usuario")){
+               continue; 
+            }
           }
-    });
-    return listaProy1;
-  }
-  InicializaDatosBusqueda(objiniciativa){
+        }
+
+
+        let actividadFireMonitor = new ActividadFireMonitor();
+        // poniendo la cabecera del los proyectos, tareas, soporte, etc...
+        actividadFireMonitor.iniciativa = iniciativa;
+        actividadFireMonitor.codigo = iniciativa.numeroIniciativa;
+        actividadFireMonitor.estado = iniciativa.estado.descripcion;
+        actividadFireMonitor.codigoSVT = iniciativa.codigoSVT;
+        actividadFireMonitor.titulo = iniciativa.titulo;
+        actividadFireMonitor.horas = iniciativa.horaReal;
+        actividadFireMonitor.fechainicio = iniciativa.fechaInicio;
+        actividadFireMonitor.fechafin = iniciativa.fechaFin;
+        actividadFireMonitor.horastrabajadas = 0;
+        actividadFireMonitor.avances = '0%'
+        actividadFireMonitor.horasavance = '0/'+actividadFireMonitor.horas;
+        actividadFireMonitor.tipo = iniciativa.categoria.descripcion;
+        actividadFireMonitor.asignado = iniciativa.recursos;
+        //Establecemos la suma de todos los datos segun los recursos
+        if (undefined!=actividadFireMonitor.asignado){
+          actividadFireMonitor.asignado.forEach(recursos=>{
+              recursos.HorasTrabajadas =0; 
+              recursos.sporcentaje = ''+recursos.porcentaje+'%';
+              recursos.horasReg.forEach(hora=>{
+                if (hora.horas>0){
+                  recursos.HorasTrabajadas += hora.horas;
+                  recursos.sporcentaje = ''+recursos.porcentaje+'%';
+                  actividadFireMonitor.horastrabajadas += hora.horas;
+                }
+              })
+          })
+          actividadFireMonitor.avances=""+Math.round(actividadFireMonitor.horastrabajadas/actividadFireMonitor.horas*100)+'%';
+          actividadFireMonitor.horasavance=""+actividadFireMonitor.horastrabajadas + '/'+actividadFireMonitor.horas;  
+        } else{
+          actividadFireMonitor.horastrabajadas = 0;  
+        }
+        listaProy.push(actividadFireMonitor);
+      };              
+      this.iniciativas =  new MatTableDataSource(listaProy);
+      this.loading = false;
+      this.loading = false;
+    }); 
+    
+}
+
+InicializaDatosBusqueda(objiniciativa){
     // Inicializa los datos de busqueda
     objiniciativa.filterPredicate = (data, filter) => {
-     const dataStr = data.codigo + data.titulo;
+     const dataStr = data.tipo + data.codigoSVT;
      return dataStr.toLowerCase().indexOf(filter) != -1;       
    }
   }
@@ -253,6 +244,12 @@ InReset() {
 
 buscarDatos(filterValue: string) {
   this.iniciativas.filter = filterValue.trim().toLowerCase();
+  if (this.iniciativas.filter.length>0) {
+    return true;
+  }else{
+    return false;
+  }
+  
 }
 
 
@@ -270,7 +267,7 @@ select1(plan){
   this.condicion = this.categoriaSel + this.estadoSel;
   this.campos =  this.camposcat + this.camposest;
 
-  this.callIniciativas(this.campos,this.condicion);
+  this.generareportetotal(this.campos,this.condicion);
 }
 
 select2(plan){
@@ -289,7 +286,7 @@ select2(plan){
   this.condicion = this.categoriaSel + this.estadoSel;
   this.campos =  this.camposcat + this.camposest;
  
-  this.callIniciativas(this.campos,this.condicion);
+  this.generareportetotal(this.campos,this.condicion);
 }
 
 select3(event): void {
@@ -313,35 +310,6 @@ select(plan)
     }
 }
 
-
-getIniciativas(lista: IniciativaMainFire[]){
-  let listaProy: ActividadFireMonitor[] = [];
-  lista.forEach(iniciativaFire => {
-        let actividadFireMonitor = new ActividadFireMonitor();
-        if(undefined != iniciativaFire.recursos && 0 != iniciativaFire.recursos.length){
-         
-            actividadFireMonitor.iniciativa = iniciativaFire;           
-            let total: number=0;
-            let porc: number=0;            
-            actividadFireMonitor.tipo = iniciativaFire.categoria.descripcion;
-            actividadFireMonitor.codigoSVT = iniciativaFire.codigoSVT;
-            actividadFireMonitor.titulo = iniciativaFire.titulo;
-            actividadFireMonitor.fechainicio = ''+iniciativaFire.fechaInicio;
-            actividadFireMonitor.fechafin = ''+iniciativaFire.fechaFin;
-            actividadFireMonitor.estado = iniciativaFire.estado.descripcion;
-            iniciativaFire.recursos.forEach(recurso => {
-                recurso.horasReg.forEach(horasrec =>{                     
-                        total += horasrec.horas;                                    
-                });
-            });  
-            actividadFireMonitor.avances =  ''  + Math.round( ( (total / iniciativaFire.horaReal) * 100 ))  + '%'         
-            actividadFireMonitor.horasavance = '' + total + '/' + iniciativaFire.horaReal;
-            actividadFireMonitor.total = total;
-            listaProy.push(actividadFireMonitor);
-        }
-  });
-  return listaProy;
-}
 
 pad(num:number, size:number): string {
   let s = num+"";
@@ -438,5 +406,11 @@ generateAndDownloadPdf(){
       };
     });
 }
-
+exportToExcel() {
+  const ws: xlsx.WorkSheet =   
+  xlsx.utils.table_to_sheet(this.epltable.nativeElement);
+  const wb: xlsx.WorkBook = xlsx.utils.book_new();
+  xlsx.utils.book_append_sheet(wb, ws, 'Sheet1');
+  xlsx.writeFile(wb, 'epltable.xlsx');
+ }
 }

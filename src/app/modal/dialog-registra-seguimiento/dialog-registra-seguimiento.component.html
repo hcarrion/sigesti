@@ -56,7 +56,7 @@
                 <div class="col-md-6">
                     <mat-form-field style="font-size: small; width: 100%;">
                         <textarea formControlName="sumillaInput" matInput #inputSumilla maxlength="120"
-                            placeholder="Sumilla" id="sumilla" cdkAutosizeMinRows="1"
+                            placeholder="Datos adicionales" id="sumilla" cdkAutosizeMinRows="1"
                             oninput="this.value = this.value.toUpperCase()"></textarea>
                         <mat-hint align="end">{{inputSumilla.value?.length || 0}}/120</mat-hint>
                     </mat-form-field>
@@ -155,7 +155,7 @@
                 </div>
                 <div class="col-md-2">
                     <mat-form-field style="font-size: small; width: 100%;">
-                        <mat-select formControlName="clasificacionSelect" placeholder="Clasificación"
+                        <mat-select formControlName="clasificacionSelect" placeholder="Tipo de Atencion"
                             [compareWith]="compareItems" [(ngModel)]="iniciativa.clasificacion">
                             <mat-option *ngFor="let clasificacionlet of clasificacion.detalle"
                                 [value]="clasificacionlet">
@@ -178,7 +178,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <mat-form-field style="font-size: small; width: 100%;">
-                        <mat-select formControlName="tipoSelect" placeholder="Tipo"
+                        <mat-select formControlName="tipoSelect" placeholder="Origen del Cambio"
                             [compareWith]="compareItems" [(ngModel)]="iniciativa.tipo">
                             <mat-option *ngFor="let tipolet of tipo.detalle" [value]="tipolet">
                                 {{tipolet.descripcion}}
@@ -254,13 +254,13 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="col-md-2 align-right-all">
+                <div class="col-md-2 align-right-all" *ngIf="evento=='true'">
                 <button mat-raised-button class="btn-primary" (click)="saveIniciativa(iniciativa)">
                     <mat-icon>save</mat-icon>
                     Guardar
                 </button>
                 </div>
-                <div class="col-md-2 align-right-all">
+                <div class="col-md-2 align-right-all" *ngIf="evento=='true'">
                 <button mat-raised-button class="btn-info" (click)="resetFields()">
                     <mat-icon>clear</mat-icon>
                     Limpiar

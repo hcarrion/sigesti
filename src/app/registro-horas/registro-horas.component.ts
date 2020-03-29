@@ -25,6 +25,7 @@ export class RegistroHorasComponent implements OnInit {
   habilitar1: boolean;
   habilitar2: boolean;
   habilitar3: boolean;
+  sololectura: string="";
   desactivar: boolean;
   horasing: number = 0;
   fechaInputSelect: number=5;
@@ -96,6 +97,10 @@ export class RegistroHorasComponent implements OnInit {
    }else {this.habilitar = true;}
   }
  
+  activar(datos: string){
+    return true;
+  }
+  
   onChange(valor){
     this.usuario = (event.target as HTMLInputElement).value;
     if(localStorage.getItem("perfil")=="LIDER"&&localStorage.getItem("usuario")!=this.usuario){
@@ -351,13 +356,30 @@ export class RegistroHorasComponent implements OnInit {
               if(usuario == recurso.codigoUsuario){
                 iniciativaHorasFire.iniciativa = iniciativaFire;
                 let horasFechas: number[] = [];
+                let sololectura: string[] = [];
                 if(undefined != recurso.horasReg && 0 != recurso.horasReg.length){
                   recurso.horasReg.forEach(hora => {
                     for(let i = 0; i < this.columnasFechTabla.length; i++){
                       let fechaSavedStr = hora.fecha;
                       let fechaSaved = (new Date(fechaSavedStr)).getTime();
+                      let fechaini = (new Date(iniciativaFire.fechaInicio)).getTime();
                       let fechaColumnarStr = this.getFechWithFormat(this.columnasFechTabla[i]);
                       let fechaColumna = (new Date(fechaColumnarStr)).getTime();
+
+                      let f1 =this.datePipe.transform(fechaSaved, 'yyyyMMdd');
+                      let f2 =this.datePipe.transform(fechaini, 'yyyyMMdd');
+                      let f3 =this.datePipe.transform(fechaColumna, 'yyyyMMdd');
+                      
+                      if (iniciativaFire.estado.descripcion!='CERRADO') {
+                          if (f2<=f1){
+                            sololectura[i]="";
+                          }else{
+                            sololectura[i] = "readonly";
+                          }
+                        } else {
+                          sololectura[i] = "readonly";
+                        }
+
                       if(fechaSaved == fechaColumna ){
                         horasFechas[i] = hora.horas;
                       }
@@ -367,6 +389,7 @@ export class RegistroHorasComponent implements OnInit {
                 porcentaje = (horasTotales * 100)/iniciativaFire.horaEstimada;
                 iniciativaHorasFire.avance = porcentaje.toPrecision(3)+"%";
                 iniciativaHorasFire.horasFecha = horasFechas;
+                iniciativaHorasFire.sololectura = sololectura;
                 listaProy.push(iniciativaHorasFire);
               }
             });
@@ -374,7 +397,7 @@ export class RegistroHorasComponent implements OnInit {
     });
     return listaProy;
   }
-
+  
   saveHorasAll(){
     this.saveHoras("tableHorasProyecto",true);
     this.saveHoras("tableHorasMantenimiento",true);
@@ -382,7 +405,6 @@ export class RegistroHorasComponent implements OnInit {
     this.saveHoras("tableHorasSoporte",true);
     this.saveHoras("tableHorasEsfuerzo",true);
   }
-
 
   saveHoras(idTable: string, isUpdate: boolean){
     this.loading = true;
@@ -649,104 +671,5 @@ export class RegistroHorasComponent implements OnInit {
       return false;
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /* Versión con actividades */
-  /*
-  getActividades(lista: IniciativaMainFire[], usuario: string){
-    let listaActi: ActividadHorasFire[] = [];
-    lista.forEach(iniciativaFire => {
-      if(undefined != iniciativaFire.actividad){
-        iniciativaFire.actividad.actividades.forEach(actividadDet => {
-          let actividadHorasFire = new ActividadHorasFire();
-          if(undefined != actividadDet.recursos){
-            actividadDet.recursos.forEach(recurso => {
-              if(usuario == recurso.codigoUsuario){
-                actividadHorasFire.iniciativa = iniciativaFire;
-                actividadHorasFire.codigoAct = actividadDet.codigo;
-                actividadHorasFire.tituloAct = actividadDet.titulo;
-                actividadHorasFire.fechaInicioAct = actividadDet.fechaInicio;
-                actividadHorasFire.fechaFinAct = actividadDet.fechaFin;
-                let porcentaje: number = 0;
-                let horasTotales: number = 0;
-                let horasFechas: number[] = [];
-                if(undefined != recurso.horasReg){
-                  recurso.horasReg.forEach(hora => {
-                    horasTotales = horasTotales + hora.horas;
-                    for(let i = 0; i < this.columnasFechTabla.length; i++){
-                      let fechaSavedStr = hora.fecha;
-                      let fechaSaved = (new Date(fechaSavedStr)).getTime();
-                      let fechaColumnarStr = this.getFechWithFormat(this.columnasFechTabla[i]);
-                      let fechaColumna = (new Date(fechaColumnarStr)).getTime();
-                      if(fechaSaved == fechaColumna ){
-                        horasFechas[i] = hora.horas;
-                      }
-                    }
-                  });
-                  porcentaje = (horasTotales * 100)/recurso.horasAsig;
-                }else{
-                  porcentaje = 0;
-                }
-                debugger;
-                actividadHorasFire.avance = porcentaje.toPrecision(3)+"%";
-                actividadHorasFire.horasFecha = horasFechas;
-                listaActi.push(actividadHorasFire);
-              }
-            });
-          }
-        });
-      }
-    });
-
-    return listaActi;
-  }*/
 }
 

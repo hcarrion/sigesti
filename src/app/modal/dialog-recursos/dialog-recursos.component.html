@@ -45,7 +45,7 @@
                                     noEntriesFoundLabel="'No se encontraron recursos coincidentes'">
                                 </ngx-mat-select-search>
                             </mat-option>
-                            <mat-option *ngFor="let colaborador of filteredColaboradores | async" [value]="colaborador"
+                            <mat-option *ngFor="let colaborador of filteredColaboradores | async" 
                                 (click)="agregarTablaRecursos(colaborador)">
                                 {{colaborador.nombres}}
                             </mat-option>

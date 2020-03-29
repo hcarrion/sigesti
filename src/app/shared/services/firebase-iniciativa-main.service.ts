@@ -75,8 +75,12 @@ export class FirebaseIniciativaMainService {
               contC++            
           });          
           switch (campo1.split(";").length-1){
-              case 1:                
-                return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).orderBy(orden,menmay)).snapshotChanges();
+              case 1:
+                if (orden=="codigoSVT"){
+                  return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).orderBy(orden,menmay)).snapshotChanges();
+                }else{
+                  return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).orderBy(orden,menmay).orderBy("codigoSVT",menmay)).snapshotChanges();
+                }                
                 break;
               case 2:
                 return this.firestore.collection('iniciativasmain', ref => ref.where(ArrCamp[0],"in",ArrBus[0]).where(ArrCamp[1],"in",ArrBus[1]).orderBy(orden,menmay)).snapshotChanges();                                
@@ -99,7 +103,7 @@ export class FirebaseIniciativaMainService {
           }             
     } 
     else{
-      return this.firestore.collection('iniciativasmain').snapshotChanges();
+      return this.firestore.collection('iniciativasmain', ref => ref.orderBy("codigoSVT",menmay)).snapshotChanges();
     }    
   }
 
@@ -111,6 +115,13 @@ export class FirebaseIniciativaMainService {
     return this.firestore.collection('iniciativasmain').doc(idIniciativa).get();
   }
 
+  getIniciativa4(idIniciativa: string) {
+    return this.firestore.collection('iniciativasmain').doc(idIniciativa).snapshotChanges();
+  }
+
+  getIniciativa5(idIniciativa: string) {
+    return this.firestore.collection('iniciativasmain').snapshotChanges();
+  }
   getIniciativa3(idIniciativa: string) {
     return this.firestore.doc('iniciativasmain/'+idIniciativa).snapshotChanges();
   }

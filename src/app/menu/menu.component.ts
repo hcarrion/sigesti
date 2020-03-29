@@ -54,6 +54,7 @@ export class MenuComponent implements OnDestroy  {
   } 
 
   openDialogRecursos(idIniciativa: string): void {
+    localStorage.setItem('indinicio', "true");      
     const dialogRef = this.matDialog.open(DialogAccesoComponent, /*dialogConfig,*/
       { width: '500px',
         height: '500px',
@@ -66,6 +67,7 @@ export class MenuComponent implements OnDestroy  {
       this.getperfiles(result);
       this.usuario = localStorage.getItem("usuario") + "-" + localStorage.getItem("nomusu");
       this.perfil =  localStorage.getItem("perfil");
+      localStorage.setItem('indinicio', "true");
     }); 
 
   }
@@ -92,6 +94,7 @@ export class MenuComponent implements OnDestroy  {
           this.pantallaacceso[5]= true;
           this.pantallaacceso[6]= true;
           this.pantallaacceso[7]= true;
+          this.pantallaacceso[8]= true;
           break;
       case "COLABORADOR": 
           this.pantallaacceso[1]= true;
@@ -101,15 +104,17 @@ export class MenuComponent implements OnDestroy  {
           this.pantallaacceso[5]= false;
           this.pantallaacceso[6]= false;
           this.pantallaacceso[7]= true;
+          this.pantallaacceso[8]= false;
           break;
       case "LIDER": 
-          this.pantallaacceso[1]= true;
-          this.pantallaacceso[2]= false;
-          this.pantallaacceso[3]= true;
-          this.pantallaacceso[4]= true;
-          this.pantallaacceso[5]= true;
-          this.pantallaacceso[6]= true;
-          this.pantallaacceso[8]= false;
+          this.pantallaacceso[1]= true; // iniciatva
+          this.pantallaacceso[2]= false; // Contacto
+          this.pantallaacceso[3]= true; // control de Horas
+          this.pantallaacceso[4]= false; // Dashboard
+          this.pantallaacceso[5]= false; // Monitor
+          this.pantallaacceso[6]= true; // Reporte de Avances
+          this.pantallaacceso[7]= false; // Usuario
+          this.pantallaacceso[8]= true;
           break;
       case "USUARIO": 
           this.pantallaacceso[1]= true;

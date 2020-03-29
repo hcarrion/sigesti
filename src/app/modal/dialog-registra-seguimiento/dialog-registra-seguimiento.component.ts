@@ -28,6 +28,7 @@ import { FirebaseIniciativaMainService } from 'src/app/shared/services/firebase-
 
 export class DialogRegistraSeguimientoComponent implements OnInit {
 
+  evento: string =  localStorage.getItem("eventoiniciativa");
   regIniciativa: FormGroup;
   submitted = false;
   estado: ParametroFire = new ParametroFire();
@@ -65,7 +66,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   public areaCtrl: FormControl = new FormControl();
   public areaFilterCtrl: FormControl = new FormControl();
   public filteredArea: ReplaySubject<ParametroDetalleFire[]> = new ReplaySubject<ParametroDetalleFire[]>(1);
-  
+
   constructor(public dialogRef: MatDialogRef<DialogRegistraSeguimientoComponent>, 
     private _ngZone: NgZone, private firestoreService: FirestoreService, 
     private formBuilder: FormBuilder, 
@@ -207,7 +208,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
           this.iniciativa.estado = element;
         }
       });
-      this.regIniciativa.controls.estadoSelect.disable();
+      //this.regIniciativa.controls.estadoSelect.disable();
     }
   }
 
@@ -283,9 +284,9 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       codigoSVTInput: [iniciativaObject.codigoSVT, Validators.required],
       tituloInput: [iniciativaObject.titulo, Validators.required],
       estadoSelect: [iniciativaObject.estado, Validators.required],
-      sumillaInput: [iniciativaObject.sumilla, Validators.required],
+      //sumillaInput: [iniciativaObject.sumilla, Validators.required],
       objPrincipalTextArea: [iniciativaObject.objetivoPrincipal, Validators.required],
-      objSecundarioTextArea: [iniciativaObject.objetivoSecundario, Validators.required],
+      //objSecundarioTextArea: [iniciativaObject.objetivoSecundario, Validators.required],
       fechaInicioInput: [iniciativaObject.fechaInicio, Validators.required],
       horaEstimadaInput: [iniciativaObject.horaEstimada, Validators.required],
       fechaFinInput: [iniciativaObject.fechaFin, Validators.required],
@@ -300,9 +301,18 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       this.submitted = true;
       resultValidate = true;
     }
+
+    if(iniciativaObject.horaEstimada>0){
+      iniciativaObject.horaReal= iniciativaObject.horaEstimada;
+    }
+
     if(undefined == iniciativaObject.jefeProyecto || undefined == iniciativaObject.jefeProyecto.codigo){
-      resultValidate = true;
-      msj ='Debe completar la información requerida.';
+      if(iniciativaObject.categoria.descripcion=='PROYECTO'){
+        resultValidate = true;
+        msj ='Debe completar la información requerida.';  
+      }else{
+        resultValidate = false;  
+      }
     }
     if(undefined == iniciativaObject.usuarioProcesos || undefined == iniciativaObject.usuarioProcesos.codigo){
       resultValidate = true;
@@ -379,6 +389,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
   }
 
   focusOut(event: any){
+    /*
     let trObject = (document.getElementById("horas-est")) as HTMLInputElement;
     let fechaInicio = this.regIniciativa.value.fechaInicioInput;
     let numHoras = trObject.value;
@@ -398,7 +409,7 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
         let fechaFin = fechaInicio;
         this.regIniciativa.controls.fechaFinInput.setValue(fechaFin);
       }
-    }
+    }*/
   }
 
   daysSum(fechaI: Date, numDias: number){
@@ -530,42 +541,6 @@ export class DialogRegistraSeguimientoComponent implements OnInit {
       this.area.detalle.filter(element => element.descripcion.toLowerCase().indexOf(search) > -1)
     );
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   /* Add param */
   saveParametro1() {
