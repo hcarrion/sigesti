@@ -456,6 +456,8 @@ export class DialogStatusreportComponent implements OnInit {
         };
       });
   }
+
+  
   enviacierrar(statusReportF: StatusReportFire){
     this.loading = true;
     if (this.activapdf){

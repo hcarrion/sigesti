@@ -1,0 +1,15 @@
+/*------paginador responsive------*/
+
+$(window).resize(function(){
+ if ($(window).width() <= 480){ 
+ 	$('#nextPageEmpresa').html('>');
+ 	$('#prevPageEmpresa').html('<');
+
+ } 
+
+ else{
+ 	$('#nextPageEmpresa').html('Siguiente');
+ 	$('#prevPageEmpresa').html('Anterior');
+ }
+
+});
