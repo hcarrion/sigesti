@@ -3,7 +3,7 @@
     font-size: 0.75em;
   }
   .example-card {
-      vertical-align: middle;
+    vertical-align: middle;
     max-width: 100%;
   }
   
@@ -69,7 +69,7 @@ tr.mat-footer-row, tr.mat-row {
   height: 38px;
 }
 tr.mat-header-row {
-  height: 46px;
+  height: 10px;
 }
 
 /* Absolute Center Spinner */
@@ -93,12 +93,38 @@ tr.mat-header-row {
 }
 
 .example-header {
-  min-height: 64px;
-  padding: 8px 24px 0;
+  min-height: 10px;
+  padding: 8px 10px 0;
 }
 
+.mat-tab-label{
+  color:white;
+  min-width: 25px !important;
+  padding: 2px;
+  background-color:transparent;
+  color:white;
+  font-weight: auto;
+  height: 22px; 
+  padding: 0 20px;
+  cursor: pointer;
+  box-sizing: border-box;
+  opacity: .4;
+  min-width: 160px;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  position: relative;
+  font-size: 08px;
+}
+
+.mat-tab-label-content{
+  height: 22px;
+  font-size: 8px;
+}
 .mat-form-field {
-  font-size: 10px;
+  font-size: 8px;
   width: 10%;
 }
 
@@ -128,11 +154,14 @@ th.mat-sort-header-sorted {
   color: black;
 }
 tr.mat-footer-row, tr.mat-row {
-  height: 38px;
+  height: 10px;
+  font-size: 05px;
 }
 tr.mat-header-row {
-  height: 46px;
+  height: 10px;
+  font-size: 05px;
 }
+
 
 /* Absolute Center Spinner */
 .content-load {
@@ -165,7 +194,7 @@ tr.mat-header-row {
 }
 
 .example-container1 {
-  height: 260px;
+  height: 350px;
   overflow: auto;
 }
 
@@ -229,17 +258,32 @@ tr.mat-header-row {
   border-radius: 10px;  
 }
 .mat-cell{
-  font-size: 12px;
-  max-height: 10px;
+  font-size: 08px;
+  max-height: 12px;
   min-height: 20%;
   border-bottom: none;
-  padding: 0px 0;
+  padding: 0px 8px;
   cursor: pointer;
 } 
 .mat-header-cell{
-  font-size: 12px;
-  max-height: 10px;
-  min-height: 10%;
+  font-size: 08px;
+  max-height: 12px;
+  min-height: 12%;
   border-bottom: none;
   padding: 0 0;
+}
+
+mat-tab-label {
+  height: 29px;
+  padding: 0px 10px;
+  cursor: pointer;
+  box-sizing: border-box;
+  opacity: .6;
+  min-width: 160px;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  position: relative;
 }

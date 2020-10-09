@@ -1,0 +1,393 @@
+<div class="card" style="background-color: #F4F3EF; margin-bottom: 0px;">
+    <div class="card-header card-header-primary">
+        <h6 >DASHBOARD</h6>
+    </div>
+    <div class="example-container1 mat-elevation-z8">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="card-ini card-stats">
+                        <div class="card-body" style="padding: 5px 10px 5px 10px;">
+                            <div class="row">
+                                <div class="col-md-4" align="left" style=" display: flex;
+                                align-items: center; padding-left: 5px;">
+                                    <mat-icon class="icon-big blue-icon">date_range</mat-icon>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="number">
+                                        <p class="card-category">Año</p>
+                                        <p class="card-title2">{{anio}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card-ini card-stats">
+                        <div class="card-body" style="padding: 5px 10px 5px 10px;">
+                            <div class="row">
+                                <div class="col-md-4" align="left" style=" display: flex;
+                                align-items: center; padding-left: 5px;">
+                                    <mat-icon class="icon-big yellow-icon">language</mat-icon>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="number">
+                                        <p class="card-category">Atenciones</p>
+                                        <p class="card-title2">{{totalatenciones}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="card-ini card-stats">
+                        <div class="card-body" style="padding: 5px 10px 5px 10px;">
+                            <div class="row">
+                                <div class="col-md-4" align="left" style=" display: flex;
+                                align-items: center; padding-left: 5px;">
+                                    <mat-icon class="icon-big green-icon">assignment_ind</mat-icon>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="number">
+                                        <p class="card-category">Horas trabajadas</p>
+                                        <p class="card-title2">{{totalhorastrabajadas}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-ini card-stats">
+                        <div class="card-body" style="padding: 5px 15px 5px 15px;">
+                            <div class="row">
+                                <div class="col-md-4" align="left" style=" display: flex;
+                                align-items: center; padding-left: 5px;">
+                                    <mat-icon class="icon-big red-icon">warning</mat-icon>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="number">
+                                        <p class="card-category">Atenciones Fuera de Fecha</p>
+                                        <p class="card-title2">{{totalatencionesfuerafecha}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card-ini card-stats">
+                        <div class="card-body" style="padding: 5px 15px 5px 15px;">
+                            <div class="row">
+                                <div class="col-md-4" align="left" style=" display: flex;
+                                align-items: center;">
+                                    <mat-icon class="icon-big ment-icon">star</mat-icon>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="number">
+                                        <p class="card-category">Puesta en Producción</p>
+                                        <p class="card-title2">{{totalproduccion}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-card">
+                <div class="card-header col-md-12">
+                    <h5 class="card-title3">Atenciones a la Fecha</h5>
+                </div>
+                <div class="col-md-12">
+                    <mat-table [dataSource]="lstAtencionesMesDetalle">
+                        <ng-container matColumnDef="descripcion">
+                            <mat-header-cell *matHeaderCellDef>
+                                <mat-label>
+                                    CATEGORÍA
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.descripcion}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesEnero">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    ENE
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesEnero}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesFebrero">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    FEB
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesFebrero}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesMarzo">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    MAR
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesMarzo}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesAbril">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    ABR
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesAbril}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesMayo">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    MAY
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesMayo}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesJunio">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    JUN
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesJunio}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesJulio">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    JUL
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesJulio}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesAgosto">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    AGO
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesAgosto}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesSeptiembre">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    SEP
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesSeptiembre}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesOctubre">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    OCT
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesOctubre}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesNoviembre">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    NOV
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesNoviembre}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesDiciembre">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    DIC
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesDiciembre}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-ini">
+                        <div class="card-body">
+                            <div class="chart-wrapper">
+                                <div class="fixed-height-chart">
+                                    <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels"
+                                        [options]="lineChartOptions" [legend]="lineChartLegend" [chartType]="lineChartType"
+                                        [plugins]="lineChartPlugins">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-card">
+                <div class="card-header col-md-12">
+                    <h5 class="card-title3">Horas Consumidas por Mes</h5>
+                </div>
+                <div class="col-md-12">
+                    <mat-table [dataSource]="lstHorasConsumidasDetalle">
+                        <ng-container matColumnDef="descripcion">
+                            <mat-header-cell *matHeaderCellDef>
+                                <mat-label>
+                                    CATEGORÍA
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.descripcion}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesEnero">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    ENE
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesEnero}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesFebrero">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    FEB
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesFebrero}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesMarzo">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    MAR
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesMarzo}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesAbril">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    ABR
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesAbril}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesMayo">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    MAY
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesMayo}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesJunio">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    JUN
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesJunio}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesJulio">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    JUL
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesJulio}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesAgosto">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    AGO
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesAgosto}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesSeptiembre">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    SEP
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesSeptiembre}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesOctubre">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    OCT
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesOctubre}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesNoviembre">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    NOV
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesNoviembre}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mesDiciembre">
+                            <mat-header-cell *matHeaderCellDef class="align-center">
+                                <mat-label>
+                                    DIC
+                                </mat-label>
+                            </mat-header-cell>
+                            <mat-cell class="align-right" *matCellDef="let row"> {{row.mesDiciembre}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-ini">
+                        <div class="card-body">
+                            <div class="chart-wrapper">
+                                <div class="fixed-height-chart">
+                                    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                                        [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+                                        [chartType]="barChartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

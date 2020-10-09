@@ -119,10 +119,10 @@ export class ListadoAtencionComponent implements OnInit
     this.callIniciativas();
     this.perfil = localStorage.getItem("perfil");
     if (this.perfil=="USUARIO"){                      
-        this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accionini'];  
+        this.columnasTabla = ['codigoSVT', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accionini'];  
     }else{
         this.veraccion = true;
-        this.columnasTabla = ['codigosvt', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accion'];
+        this.columnasTabla = ['codigoSVT', 'titulo','categoria','asignacion','fechainicio','fechafin','estado','accion'];
     }
   }
 
@@ -163,7 +163,7 @@ conecta:
           iniciativaObject.idIniciativa = element.payload.doc.id;
           iniciativaObject.codigoSVT = iniciativa.codigoSVT;
           iniciativaObject.titulo = iniciativa.titulo;
-          
+          if(iniciativaObject.codigoSVT>0) 
           lista.push(iniciativaObject);  
         });
         

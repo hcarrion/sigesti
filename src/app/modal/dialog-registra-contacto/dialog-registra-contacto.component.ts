@@ -184,16 +184,6 @@ export class DialogRegistraContactoComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-
-  
-
-
   /* Add parameter */
   saveParametro() {
     let paramObject = new ParametroFire();

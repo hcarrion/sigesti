@@ -54,7 +54,7 @@ import { EmailFireService } from './shared/services/email-fire.service';
 import { DialogListadoStatusreportComponent } from './modal/dialog-listado-statusreport/dialog-listado-statusreport.component';
 import { DialogStatusreportComponent } from './modal/dialog-statusreport/dialog-statusreport.component';
 import { ReporteavancesComponent } from './reporteavances/reporteavances.component';
-
+import { TableroComponent } from './tablero/tablero.component';
 
 @NgModule({
   declarations: 
@@ -84,7 +84,8 @@ import { ReporteavancesComponent } from './reporteavances/reporteavances.compone
     UsuarioComponent,
     DialogListadoStatusreportComponent,
     DialogStatusreportComponent,
-    ReporteavancesComponent
+    ReporteavancesComponent,
+    TableroComponent
   ],
   imports: 
   [

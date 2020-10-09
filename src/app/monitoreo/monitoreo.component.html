@@ -1,243 +1,254 @@
-<div class="pipeline white lined-primary" style="height:450px;">
+<div class="pipeline white lined-primary" style="height:auto;">
     <div class="pipeline-header">
-      <h5 class="pipeline-name">
+      <h6 class="pipeline-name">
           Monitoreo de Horas de Trabajo
-      </h5>   
+      </h6>
+       
+        <mat-form-field align="left">
+            <mat-label>Tipo de Reporte</mat-label>
+            <mat-select [formControl]="tiporeporte" multiple (selectionChange)="select(tiporeporte)">
+            <mat-select-trigger>
+                {{tiporeporte.value ? tiporeporte.value[0] : ''}}
+                <span *ngIf="tiporeporte.value?.length > 1" class="example-additional-selection" >
+                (+{{tiporeporte.value.length - 1}} {{tiporeporte.value?.length === 2 ? 'Otros' : 'Otros'}})
+                </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let tiporeport of tiporeportelista" [value]="tiporeport">{{tiporeport}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field>
+            <mat-label>Tipo de Actividades</mat-label>
+            <mat-select [formControl]="tipoiniciativa" multiple (selectionChange)="select1(tipoiniciativa)">
+                <mat-select-trigger>
+                {{tipoiniciativa.value ? tipoiniciativa.value[0] : ''}}
+                <span *ngIf="tipoiniciativa.value?.length > 1" class="example-additional-selection">
+                    (+{{tipoiniciativa.value.length - 1}} {{tipoiniciativa.value?.length === 2 ? 'Otros' : 'Otros'}})
+                </span>
+                </mat-select-trigger>
+                <mat-option *ngFor="let tipoiniciativas of tipoiniciativalista" [value]="tipoiniciativas">{{tipoiniciativas}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field>
+            <mat-label>Nivel de Atencion</mat-label>
+            <mat-select [formControl]="codigosvt" multiple (selectionChange)="select2(codigosvt)">
+            <mat-select-trigger>
+                {{codigosvt.value ? codigosvt.value[0] : ''}}
+                <span *ngIf="codigosvt.value?.length > 1" class="example-additional-selection">
+                (+{{codigosvt.value.length - 1}} {{codigosvt.value?.length === 2 ? 'Otros' : 'Otros'}})
+                </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let codigosvtl of codigosvtlista" [value]="codigosvtl">{{codigosvtl}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field>
+            <input formControlName="fechaInputSelect" matInput [matDatepicker]="picker3"
+                readonly
+                placeholder="Selecciona Fecha de Corte" [min]="minDateFin" [max]="maxDateFin"
+                (dateInput)="changeFechFin('input', $event)" (dateChange)="changeFechFin('change', $event)">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field *ngIf="mostrarb1 == 'true'">
+            <input matInput (keyup)="buscarDatos($event.target.value)" placeholder="Buscar contenido de requerimientos">
+        </mat-form-field>
+        &nbsp;
+        <mat-form-field *ngIf="mostrarb2 == 'true'">
+            <input matInput (keyup)="buscarDatoemp($event.target.value)" placeholder="Buscar contenido del personal">
+        </mat-form-field>
+        &nbsp;
     </div>
  
-    <mat-form-field>
-        <mat-label>Tipo de Reporte</mat-label>
-        <mat-select [formControl]="tiporeporte" multiple (selectionChange)="select(tiporeporte)">
-          <mat-select-trigger>
-            {{tiporeporte.value ? tiporeporte.value[0] : ''}}
-            <span *ngIf="tiporeporte.value?.length > 1" class="example-additional-selection" >
-              (+{{tiporeporte.value.length - 1}} {{tiporeporte.value?.length === 2 ? 'Otros' : 'Otros'}})
-            </span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let tiporeport of tiporeportelista" [value]="tiporeport">{{tiporeport}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-    
-    <mat-form-field>
-        <mat-label>Tipo de Actividades</mat-label>
-        <mat-select [formControl]="tipoiniciativa" multiple (selectionChange)="select1(tipoiniciativa)">
-            <mat-select-trigger>
-            {{tipoiniciativa.value ? tipoiniciativa.value[0] : ''}}
-            <span *ngIf="tipoiniciativa.value?.length > 1" class="example-additional-selection">
-                (+{{tipoiniciativa.value.length - 1}} {{tipoiniciativa.value?.length === 2 ? 'Otros' : 'Otros'}})
-            </span>
-            </mat-select-trigger>
-            <mat-option *ngFor="let tipoiniciativas of tipoiniciativalista" [value]="tipoiniciativas">{{tipoiniciativas}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-    
-    <mat-form-field>
-        <mat-label>Nivel de Atencion</mat-label>
-        <mat-select [formControl]="codigosvt" multiple (selectionChange)="select2(codigosvt)">
-          <mat-select-trigger>
-            {{codigosvt.value ? codigosvt.value[0] : ''}}
-            <span *ngIf="codigosvt.value?.length > 1" class="example-additional-selection">
-              (+{{codigosvt.value.length - 1}} {{codigosvt.value?.length === 2 ? 'Otros' : 'Otros'}})
-            </span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let codigosvtl of codigosvtlista" [value]="codigosvtl">{{codigosvtl}}</mat-option>
-        </mat-select>
-    </mat-form-field> 
-
-    
-        <mat-tab-group > 
-           
-            <mat-tab  label = "Detalle de iniciativa x hora en el mes" *ngIf="mostrar1 == 'true'">                 
-                    <mat-form-field>
-                        <input matInput (keyup)="buscarDatos($event.target.value)" placeholder="Buscar">
-                    </mat-form-field>
-                    <div class="example-container1 mat-elevation-z8">
-                    <table mat-table [dataSource]="iniciativas" matSort>
-            
-                        <!-- Position Column -->
-                        <ng-container matColumnDef="codigo">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> SVT/TKT </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,99,'','USUARIO')"> {{tipo.codigo}} </td>
-                        </ng-container>
-            
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="titulo">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo,99,'','USUARIO')"> {{tipo.titulo}} </td>
-                        </ng-container>    
+   
+    <mat-tab-group (selectedTabChange)="cambiotab($event)">  
+            <mat-tab label = "Detalle de requerimientos por hora en el mes" *ngIf="mostrar1 == 'true'">                 
+                    <div class="mat-tab-label" class="example-container1 mat-elevation-z8">
+                        <table mat-table [dataSource]="iniciativas" multiTemplateDataRows matSort>                
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="codigo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> SVT/TKT </th>
+                                <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,99,'','USUARIO')"> {{tipo.codigo}} </td>
+                            </ng-container>
+                
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="titulo">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> TITULO </th>
+                                <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo,99,'','USUARIO')"> {{tipo.titulo}} </td>
+                            </ng-container>    
+                            
+                            <ng-container matColumnDef="01">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 01 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo,1,'','USUARIO')" class="pointer"> {{tipo.dias[1]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="02">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 02 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,2,'','USUARIO')" class="pointer"> {{tipo.dias[2]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="03">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 03 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,3,'','USUARIO')" class="pointer"> {{tipo.dias[3]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="04">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 04 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,4,'','USUARIO')" class="pointer"> {{tipo.dias[4]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="05">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 05 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,5,'','USUARIO')" class="pointer"> {{tipo.dias[5]}} </td>
+                            </ng-container>
                         
-                        <ng-container matColumnDef="01">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 01 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,1,'','USUARIO')" class="pointer"> {{tipo.dias[1]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="02">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 02 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,2,'','USUARIO')" class="pointer"> {{tipo.dias[2]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="03">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 03 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,3,'','USUARIO')" class="pointer"> {{tipo.dias[3]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="04">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 04 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,4,'','USUARIO')" class="pointer"> {{tipo.dias[4]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="05">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 05 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,5,'','USUARIO')" class="pointer"> {{tipo.dias[5]}} </td>
-                        </ng-container>
-                    
-                        <ng-container matColumnDef="06">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 06 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,6,'','USUARIO')" class="pointer"> {{tipo.dias[6]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="07">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 07 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,7,'','USUARIO')" class="pointer"> {{tipo.dias[7]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="08">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 08 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,8,'','USUARIO')" class="pointer"> {{tipo.dias[8]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="09">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 09 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,9,'','USUARIO')" class="pointer"> {{tipo.dias[9]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="10">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 10 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,10,'','USUARIO')" class="pointer"> {{tipo.dias[10]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="11">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 11 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,11,'','USUARIO')" class="pointer"> {{tipo.dias[11]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="12">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 12 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,12,'','USUARIO')" class="pointer"> {{tipo.dias[12]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="13">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 13 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,13,'','USUARIO')" class="pointer"> {{tipo.dias[13]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="14">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 14 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,14,'','USUARIO')" class="pointer"> {{tipo.dias[14]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="15">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 15 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,15,'','USUARIO')" class="pointer"> {{tipo.dias[15]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="16">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 16 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,16,'','USUARIO')" class="pointer"> {{tipo.dias[16]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="17">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 17 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,17,'','USUARIO')" class="pointer"> {{tipo.dias[17]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="18">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 18 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,18,'','USUARIO')" class="pointer"> {{tipo.dias[18]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="19">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 19 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,19,'','USUARIO')" class="pointer"> {{tipo.dias[19]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="20">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 20 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,20,'','USUARIO')" class="pointer"> {{tipo.dias[20]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="21">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 21 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,21,'','USUARIO')" class="pointer"> {{tipo.dias[21]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="22">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 22 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,22,'','USUARIO')" class="pointer"> {{tipo.dias[22]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="23">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 23 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,23,'','USUARIO')" class="pointer"> {{tipo.dias[23]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="24">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 24 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,24,'','USUARIO')"> {{tipo.dias[24]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="25">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 25 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,25,'','USUARIO')"> {{tipo.dias[25]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="26">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 26 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,26,'','USUARIO')"> {{tipo.dias[26]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="27">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 27 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,27,'','USUARIO')"> {{tipo.dias[27]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="28">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 28 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,28,'','USUARIO')"> {{tipo.dias[28]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="29" *ngIf="this.ultimaDia>=29">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 29 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,29,'','USUARIO')"> {{tipo.dias[29]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="30" *ngIf="this.ultimaDia>=30">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 30 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,30,'','USUARIO')"> {{tipo.dias[30]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="31" *ngIf="this.ultimaDia>=31">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> 31 </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,31,'','USUARIO')"> {{tipo.dias[31]}} </td>
-                        </ng-container>
-    
-                        <ng-container matColumnDef="Total" >
-                            <th mat-header-cell *matHeaderCellDef mat-sort-heade  align="center" style="color: crimson;"> <b>TOTAL</b> </th>
-                            <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,99,'','USUARIO')" align="center" style="color: crimson;"><b>{{tipo.totalhoras}} </b></td>
-                        </ng-container>
-    
-                        <tr mat-header-row *matHeaderRowDef="columnasTabla;  sticky: true;" class="encabezado"></tr>
-                        <tr mat-row *matRowDef="let row; columns: columnasTabla;"
-                            [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
-                    </table>
+                            <ng-container matColumnDef="06">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 06 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,6,'','USUARIO')" class="pointer"> {{tipo.dias[6]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="07">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 07 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,7,'','USUARIO')" class="pointer"> {{tipo.dias[7]}} </td>
+                            </ng-container>
+        
+                            <ng-container align="center"  matColumnDef="08">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 08 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,8,'','USUARIO')" class="pointer"> {{tipo.dias[8]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="09">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 09 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,9,'','USUARIO')" class="pointer"> {{tipo.dias[9]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="10">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 10 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,10,'','USUARIO')" class="pointer"> {{tipo.dias[10]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="11">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 11 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,11,'','USUARIO')" class="pointer"> {{tipo.dias[11]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="12">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 12 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,12,'','USUARIO')" class="pointer"> {{tipo.dias[12]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="13">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 13 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,13,'','USUARIO')" class="pointer"> {{tipo.dias[13]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="14">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 14 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,14,'','USUARIO')" class="pointer"> {{tipo.dias[14]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="15">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 15 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,15,'','USUARIO')" class="pointer"> {{tipo.dias[15]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="16">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 16 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,16,'','USUARIO')" class="pointer"> {{tipo.dias[16]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="17">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 17 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,17,'','USUARIO')" class="pointer"> {{tipo.dias[17]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="18">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 18 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,18,'','USUARIO')" class="pointer"> {{tipo.dias[18]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="19">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 19 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,19,'','USUARIO')" class="pointer"> {{tipo.dias[19]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="20">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 20 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,20,'','USUARIO')" class="pointer"> {{tipo.dias[20]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="21">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 21 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,21,'','USUARIO')" class="pointer"> {{tipo.dias[21]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="22">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 22 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,22,'','USUARIO')" class="pointer"> {{tipo.dias[22]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="23">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 23 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,23,'','USUARIO')" class="pointer"> {{tipo.dias[23]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="24">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 24 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,24,'','USUARIO')"> {{tipo.dias[24]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="25">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 25 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,25,'','USUARIO')"> {{tipo.dias[25]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="26">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 26 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,26,'','USUARIO')"> {{tipo.dias[26]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="27">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 27 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,27,'','USUARIO')"> {{tipo.dias[27]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="28">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 28 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,28,'','USUARIO')"> {{tipo.dias[28]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="29" *ngIf="this.ultimaDia>=29">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 29 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,29,'','USUARIO')"> {{tipo.dias[29]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="30" *ngIf="this.ultimaDia>=30">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 30 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,30,'','USUARIO')"> {{tipo.dias[30]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="31" *ngIf="this.ultimaDia>=31">
+                                <th mat-header-cell align="center" *matHeaderCellDef > 31 </th>
+                                <td mat-cell align="center" *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,31,'','USUARIO')"> {{tipo.dias[31]}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="Total" >
+                                <th mat-header-cell *matHeaderCellDef  align="center" style="color: crimson;"> <b>TOTAL</b> </th>
+                                <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa, tipo.codigo ,99,'','USUARIO')" align="center" style="color: crimson;"><b>{{tipo.totalhoras}} </b></td>
+                            </ng-container>
+        
+                            <tr mat-header-row *matHeaderRowDef="columnasTabla;  sticky: true;" class="encabezado"></tr>
+                            <tr mat-row *matRowDef="let row; columns: columnasTabla;"
+                                [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
+                        </table>
                     </div>        
             </mat-tab>
              
-            <mat-tab label = "Detalle de personal x hora en el mes" *ngIf="mostrar2 == 'true'">  
+            <mat-tab label = "Detalle del personal por hora en el mes" *ngIf="mostrar2 == 'true'">  
                 
-                    <mat-form-field>
-                        <input matInput (keyup)="buscarDatoemp($event.target.value)" placeholder="Buscar">
-                    </mat-form-field>
+                    
                     <div class="example-container1 mat-elevation-z8">
                     <table mat-table [dataSource]="iniciativasemp" matSort>
             
@@ -409,7 +420,7 @@
                         </ng-container>
     
                         <ng-container matColumnDef="Total" >
-                            <th mat-header-cell *matHeaderCellDef mat-sort-heade  align="center" style="color: crimson;"> <b>TOTAL</b> </th>
+                            <th mat-header-cell *matHeaderCellDef  align="center" style="color: crimson;"> <b>TOTAL</b> </th>
                             <td mat-cell *matCellDef="let tipo" (click)="openDialogRecursos(tipo.iniciativa,0,99,tipo.codigousuario,'INICIATIVAS')" align="center" style="color: crimson;"><b>{{tipo.total}} </b></td>
                         </ng-container>
     
@@ -418,7 +429,6 @@
                             [ngClass]="{'highlight': selectedRowIndex == row.numeroIniciativa}" (click)="highlight(row)"></tr>
                     </table>
                     </div> 
-            </mat-tab>
-              
-        </mat-tab-group>
+            </mat-tab>          
+    </mat-tab-group>
 </div>  

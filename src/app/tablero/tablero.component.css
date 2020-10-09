@@ -1,0 +1,228 @@
+.card-header {
+    padding: 0.75rem 1.25rem 0rem;
+  }
+  
+  .align-center{
+      text-align: center;
+      justify-content: center;
+    }
+  
+  .align-right{
+      justify-content: flex-end;
+      padding-right: 15px;
+    }
+  
+  .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: -15px;
+      margin-left: -15px;
+  }
+  
+  .row-card {
+      display: flex;
+      flex-wrap: wrap;
+      border: 1px solid #eeeeee;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      box-shadow: 0 6px 10px -4px rgba(0,0,0,0.15);
+      background-color: #fff;
+      color: #252422;
+      position: relative;
+  }
+  
+  .card-ini {
+      border: 1px solid #eeeeee;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      box-shadow: 0 6px 10px -4px rgba(0,0,0,0.15);
+      background-color: #fff;
+      color: #252422;
+      position: relative;
+  }
+  
+  .card-stats .icon-big {
+      font-size: 6em;
+      min-height: 64px;
+  }
+  
+  .card-stats .card-body .numbers {
+      text-align: right;
+      font-size: 2em;
+  }
+  
+  .card-stats .card-body .numbers .card-category {
+      color: #9a9a9a;
+      font-size: 16px;
+      line-height: 1.4em;
+  }
+  
+  .card-stats .card-body .numbers p {
+      margin-bottom: 0;
+  }
+  
+  .card-category, .category {
+      font-weight: 400;
+      color: #9a9a9a;
+      font-size: 1em;
+  }
+  .card-title2 {    
+      font-weight: 400;
+      color: #252422;
+      font-size: 2.2em;
+  }
+  
+  .card-title3 {    
+      font-weight: 400;
+      color: #252422;
+      font-size: 1.5em;
+  }
+  
+  .fixed-height-chart{
+    height: 400px !important;
+  }
+  .yellow-icon {
+      color: #fbc658;
+  }
+  
+  .green-icon{
+      color: #6bd098;
+  }
+  
+  .red-icon{
+      color: #ef8157;
+  }
+  
+  .ment-icon{
+      color: #51cbce;
+  }
+  
+  .blue-icon{
+      color: #0070C0;
+  }
+  
+  .mat-table {
+      overflow: auto;
+      max-height: 600px;
+      max-width: 100%;
+    }
+    
+    .mat-table {
+      background-color: rgba(255, 255, 255, 0.959);
+      height : 100%;
+      overflow: auto;   
+      width: 100%;
+    }
+    
+    .mat-header-row {
+      min-height: 20px;
+    }
+    
+    .mat-row, .mat-header-row {
+      width: 100%;
+    }
+    
+    .mat-cell{
+      font-size: 12px;
+      font-family: Verdana,Sans-Serif;
+      vertical-align: middle;
+    }
+    
+    .mat-header-cell {
+      font-size: 12px;
+      font-family: Verdana,Sans-Serif;
+      vertical-align: middle; 
+      text-align: left;
+    }
+  
+    .mat-column-descripcion {
+      flex: 0 0 22%;
+    }
+  
+    .mat-column-mesEnero {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesFebrero {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesMarzo {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesAbril {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesMayo {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesJunio {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesJulio {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesAgosto {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesSeptiembre {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesOctubre {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesNoviembre {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-column-mesDiciembre {
+      flex: 0 0 6.5%;
+    }
+  
+    .mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type{
+      padding-left: 0px;
+    }
+
+    .example-container1 {
+        height: 83vh;
+        width: auto;
+        overflow: auto;
+      }
+      
+      /* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
+      
+      .example-container1::-webkit-scrollbar {
+        -webkit-appearance: none;
+      }
+      
+      .example-container1::-webkit-scrollbar:vertical {
+        width:10px;
+      }
+      
+      .example-container1::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+        display: none;
+      } 
+      
+      .example-container1::-webkit-scrollbar:horizontal {
+        height: 10px;
+      }
+      
+      .example-container1::-webkit-scrollbar-thumb {
+        background-color: #3f51b5 !important; 
+        border-radius: 20px;
+        border: 2px solid #f1f2f3;
+      }
+      
+      .example-container1::-webkit-scrollbar-track {
+        border-radius: 10px;  
+      }
+      

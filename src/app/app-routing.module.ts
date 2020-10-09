@@ -15,6 +15,7 @@ import { MonitoreoComponent } from './monitoreo/monitoreo.component';
 import { UsuarioPerfilFireService } from './shared/models/usuario-perfil-fire.service';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { ReporteavancesComponent } from './reporteavances/reporteavances.component';
+import { TableroComponent } from './tablero/tablero.component';
 
 
 const routes: Routes = 
@@ -26,6 +27,7 @@ const routes: Routes =
   { path: 'configuracion', component: ConfiguracionComponent},
   { path: 'registro_contacto', component: RegistroContactoComponent},
   { path: 'dashboard', component: DashboardComponent},
+  { path: 'tablero', component: TableroComponent},
   { path: 'statusreport/:id', component: StatusreportComponent},
   { path: 'monitorea', component: MonitoreoComponent},
   { path: 'reporteavances', component: ReporteavancesComponent},

@@ -9,7 +9,7 @@ import { DialogSeguimientoComponent} from "../modal/dialog-seguimiento/dialog-se
 import { FirebaseIniciativaMainService } from '../shared/services/firebase-iniciativa-main.service';
 import { IniciativaFire } from '../shared/models/iniciativa-fire';
 import { DialogRegistraSeguimientoComponent } from '../modal/dialog-registra-seguimiento/dialog-registra-seguimiento.component';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatDatepickerInputEvent } from '@angular/material';
 import { Listadoatencionhelp } from '../shared/models/listadoatencionhelp';
 import { DialogListaEventoComponent } from '../modal/dialog-lista-evento/dialog-lista-evento.component';
 import { DatePipe } from '@angular/common';
@@ -53,7 +53,12 @@ export class MonitoreoComponent implements OnInit {
   tipoDocumentoDataBuscar = new MatTableDataSource<IniciativaMainFire>([]);
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  
+  minDate: Date;
+  maxDate: Date;
+  minDateFin: Date;
+  maxDateFin: Date;
+  FechaHoy: Date = new Date();
+    
 
   
   public tipoDocumento: IniciativaMainFire[];
@@ -62,6 +67,8 @@ export class MonitoreoComponent implements OnInit {
   public TipoDocumenetHelpSeleccionado: Listadoatencionhelp;
   public TipoActividad: string;
   public NivelAtencion: string;
+  public mostrarb1: string = 'false';
+  public mostrarb2: string = 'false';
 
   loading: boolean;
   
@@ -77,15 +84,15 @@ export class MonitoreoComponent implements OnInit {
   constructor(private matDialog: MatDialog,public datepipe: DatePipe, private firebaseIniciativas: FirebaseIniciativaMainService) {}
 
   ngOnInit() {
-    localStorage.setItem('indinicio',"false");   
-    
-    let latest_date =new Date();
+    localStorage.setItem('indinicio',"false");
+    this.FechaHoy = new Date();
+    this.cargainiciativas(this.FechaHoy);       
+  } 
+
+  cargainiciativas(latest_date: Date){
     let f =this.datepipe.transform(latest_date, 'yyyy-MM-dd');
     this.ultimaDia = +this.ultimoDiaMes(f);
-
     this.callIniciativas("","");
-    
-
     switch (this.ultimaDia) {
       case 29:
         this.columnasTabla = ['codigo', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','Total'];
@@ -100,7 +107,7 @@ export class MonitoreoComponent implements OnInit {
         this.columnasTabla1 = ['codigo', 'titulo','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','Total'];
         break;
     }
-  } 
+  }
 
   ultimoDiaMes(fecha){    
     let arrayFecha = fecha.split('-');
@@ -109,7 +116,7 @@ export class MonitoreoComponent implements OnInit {
     return fechaUltimo.getDate();
   } 
 
-  async callIniciativas(campo,condicion) {
+async callIniciativas(campo,condicion) {
     this.loadGroup = new FormGroup({
       fechaFinActividadInput: new FormControl()
     });
@@ -117,7 +124,7 @@ export class MonitoreoComponent implements OnInit {
     this.loading = true;
     
     let orden: string="codigoSVT";
-    let iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple(campo,condicion,orden,"desc");
+    let iniciativasRef = this.firebaseIniciativas.getIniciativaMultiple(campo,condicion,orden,"asc");
 
     iniciativasRef.subscribe(data => {
       var lista = [];      
@@ -144,8 +151,9 @@ export class MonitoreoComponent implements OnInit {
     this.InicializaDatosBusqueda();
     
     this.loading = false;
-  }
-  InicializaDatosBusqueda(){
+}
+
+InicializaDatosBusqueda(){
     // Inicializa los datos de busqueda
     this.iniciativas.filterPredicate = (data, filter) => {
      const dataStr = data.codigo + data.titulo + data.usuarioLider;
@@ -155,11 +163,13 @@ export class MonitoreoComponent implements OnInit {
     const dataStr = data.codigousuario + data.titulo + data.usuarioLider;
     return dataStr.toLowerCase().indexOf(filter) != -1;       
   }
- }
+}
+
 diasDelMesYAñoActual() {
 	var fecha = new Date();
 	return new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDate();
 }
+
 highlight(row){
   this.selectedRowIndex = row.numeroIniciativa;
 }
@@ -187,12 +197,14 @@ selectedTipoDocumentoHelp(tipo: Listadoatencionhelp){
   this.TipoDocumenetHelpSeleccionado = tipo;
   this.tipoDocumentoSeleccionado.numeroIniciativa = this.TipoDocumenetHelpSeleccionado.numeroIniciativa;
   /*$("#modalTipoDocumento").modal('hide');*/
-}  
+}
+
 openDialogActivity(iniciativa: IniciativaFire){
   this.matDialog.open(DialogListaEventoComponent, /*dialogConfig,*/
     { width: '600px', height: '600px', data: iniciativa}
   );
 }
+
 openDialogEdit(iniciativa: IniciativaFire){
   this.matDialog.open(DialogRegistraSeguimientoComponent, /*dialogConfig,*/
     { width: '600px',
@@ -201,12 +213,15 @@ openDialogEdit(iniciativa: IniciativaFire){
     }
   );
 }
+
 buscarDatos(filterValue: string) {
   this.iniciativas.filter = filterValue.trim().toLowerCase();
 }
+
 buscarDatoemp(filterValue: string) {
   this.iniciativasemp.filter = filterValue.trim().toLowerCase();
 }
+
 select1(plan)
 {
   this.TipoActividad=plan.value;
@@ -241,6 +256,21 @@ select(plan)
     }
 }
 
+cambiotab($event){
+  this.mostrarb1='false';
+  this.mostrarb2='false';
+  if ($event.index==0)
+    this.mostrarb1='true';
+  else
+    this.mostrarb2= 'true';
+}
+
+changeFechFin(type: string, event: MatDatepickerInputEvent<Date>) {
+  if (type=='change') {
+      this.FechaHoy = new Date(event.value);
+      this.cargainiciativas(this.FechaHoy);
+    }
+}
 
 getIniciativas(lista: IniciativaMainFire[]){
   let listaProy: ActividadFireMonitor[] = [];
@@ -259,7 +289,7 @@ getIniciativas(lista: IniciativaMainFire[]){
             actividadFireMonitor.usuarioLider = iniciativaFire.jefeProyecto.nombres;
             iniciativaFire.recursos.forEach(recurso => {
                 recurso.horasReg.forEach(horasrec =>{
-                     if (this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasrec.fecha, 'MM')){                    
+                     if (this.datepipe.transform(this.FechaHoy, 'MM') == this.datepipe.transform(horasrec.fecha, 'MM')){                    
                         let aNumber: number = +(this.datepipe.transform(horasrec.fecha, 'dd'));
                         dias[aNumber] += horasrec.horas; 
                         total += horasrec.horas;
@@ -301,7 +331,7 @@ getIniciativasEmp(lista: IniciativaMainFire[]){
                 actividadFireMonitor.usuarioLider = iniciativaFire.jefeProyecto.nombres;
 
                 recurso.horasReg.forEach(horasrec =>{
-                  if (this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasrec.fecha, 'MM')){
+                  if (this.datepipe.transform(this.FechaHoy, 'MM') == this.datepipe.transform(horasrec.fecha, 'MM')){
                      let aNumber: number = +(this.datepipe.transform(horasrec.fecha, 'dd'));
                      dias[aNumber] += horasrec.horas; 
                      total += horasrec.horas;                 
@@ -353,6 +383,7 @@ openDialogRecursos(iniciativafire: IniciativaMainFire, codigo: number, dia: numb
   datos.codigousuario = usuario;
   datos.codigo = codigo;
   datos.dia = dia;
+  datos.fechainicio = this.FechaHoy;
   datos.iniciativa = iniciativafire;
   this.matDialog.open(DialogMonitorRecursoComponent, 
     { width: '600px',

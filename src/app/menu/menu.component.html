@@ -25,7 +25,7 @@
           <mat-icon>alarm_on</mat-icon>
           <span>Control de Horas</span>
         </button>
-        <button *ngIf="this.pantallaacceso[4]" mat-menu-item [routerLink]="['dashboard']" (click)="snav.toggle()"
+        <button *ngIf="this.pantallaacceso[4]" mat-menu-item [routerLink]="['tablero']" (click)="snav.toggle()"
           style=color:#3F52B6>
           <mat-icon>3d_rotation</mat-icon>
           <span>Dashboard</span>
@@ -58,6 +58,7 @@
           <img src="assets\images\fondo8.png" class="img-fluid" *ngIf="readLocalStorageValue('indinicio')== 'true'">
         </div>
       </router-outlet>
+
       <div class="container text-center pb-5; ">
         <p style=color:#3F52B6>
           <strong>

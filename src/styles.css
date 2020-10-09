@@ -4,10 +4,24 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .number-align{
-
     text-align: right;
 }
 
 .align-right-all{
     text-align: right !important;
 }
+.mat-cell{
+    font-size: 09px;
+    max-height: 08px;
+    min-height: 10%;
+    border-bottom: none;
+    padding: 1.3px 0;
+  } 
+  .mat-header-cell{
+    font-size: 09px;
+    max-height: 10px;
+    min-height: 10%;
+    border-bottom: none;
+    padding: 1.3px 0;
+  }
+  

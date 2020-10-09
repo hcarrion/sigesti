@@ -6,36 +6,39 @@
 </div>
 <div [formGroup]="regRecursos">
     <div class="card">
-        <div    >
+        <div>
             <h6 class="card-title">
-  
-                    <strong style="color:#3F52B6; text-align: left;"><i class="material-icons">people</i> Monitor de Recursos</strong>                                             
+                    <strong style="color:#3F52B6; text-align: left;">
+                    <i class="material-icons">people</i> Monitor de Recursos</strong>                                             
             </h6>            
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-3">
                     <mat-form-field style="font-size: small; width: 100%;">
-                        <input style="background-color: khaki; text-align: center;" readonly="readonly"
-                            formControlName="nIniciativaInputDialog" matInput #inputNumIniciativa
-                            value={{this.codigo}}
-                            placeholder="Codigo" type="text">
+                        <input style="background-color: khaki; text-align: center;" 
+                               readonly="readonly"
+                               formControlName="nIniciativaInputDialog" matInput #inputNumIniciativa
+                               value={{this.codigo}}
+                               placeholder="Codigo" type="text">
                     </mat-form-field>
                 </div>
                 <div class="col-md-7">
                     <mat-form-field style="font-size: small; width: 100%;">
-                        <input style="background-color: khaki;" readonly="readonly"
-                            formControlName="tituloInputDialog" matInput #inputTituloIniciativa
-                            value={{this.titulo}}
-                            placeholder="Descripcion" type="text">
+                        <input style="background-color: khaki;" 
+                               readonly="readonly"
+                               formControlName="tituloInputDialog" matInput #inputTituloIniciativa
+                               value={{this.titulo}}
+                               placeholder="Descripcion" type="text">
                     </mat-form-field>
                 </div>
                 <div class="col-md-2 text-align: center;">
                     <mat-form-field style="font-size: small; width: 100%;">
-                        <input style="background-color: khaki;" readonly="readonly"
-                            formControlName="diaInputDialog" matInput #inputDia
-                            value={{this.dia}}
-                            placeholder="Dia" type="text">
+                        <input style="background-color: khaki;" 
+                               readonly="readonly"
+                               formControlName="diaInputDialog" matInput #inputDia
+                               value={{this.dia}}
+                               placeholder="Dia" type="text">
                     </mat-form-field>
                 </div>
             </div>

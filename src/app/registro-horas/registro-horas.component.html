@@ -7,249 +7,293 @@
 
 <div class="pipeline white lined-primary">
         <div class="pipeline-header">
-          <h5 class="pipeline-name">
-              Control de Horas
-          </h5> 
-          <div class="pipeline-settings os-dropdown-trigger" *ngIf="this.desactivar">
-            <button mat-raised-button type="button" class="btn-primary btn-save" align="right" (click)='saveHorasAll()'>
-              <mat-icon>save</mat-icon> Guardar</button>
-          </div>
-        </div>
-        <table>
-          <tr>
-            <td><mat-form-field style="font-size: small; width: 100%;" *ngIf="this.bloquear">
+          <h5 class="pipeline-name">Control de Horas</h5>
+          <div>
+            <mat-form-field *ngIf="this.bloquear">
               <mat-label>Ingrese usuario </mat-label>
               <input name="usuario" matInput placeholder="Ingreso de usuario" value="{{this.usuario}}" width="50px" (change)="onChange($event)"
                 oninput="this.value = this.value.toUpperCase()">          
-            </mat-form-field></td>
+            </mat-form-field>
+
+            <mat-form-field>
+              <input formControlName="fechaInputSelect" matInput [matDatepicker]="picker3"
+                     readonly
+                     placeholder="Selecciona Fecha de Corte" [min]="minDateFin" [max]="maxDateFin"
+                     (dateChange)="changeFechFin('change', $event)">
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+
+              <label><mat-icon style="font-size: 08px; color:green;">brightness_1</mat-icon> En Proceso</label>       
+              <label><mat-icon style="font-size: 08px; color:#3f51b5;">brightness_1</mat-icon> En Produccion</label>
+
+            <mat-form-field style="visibility: hidden;" hintLabel="Max 3 numeros">
+              <input formControlName="horasAsigActividadInput" type="number" step="1" matInput                
+                #inputHoras maxlength="3" placeholder="Ingrese cantidad de dias" id="horas" (change)="onChangeFecha($event)" value="{{this.fechaInputSelect}}"          
+                min="1" max="999" onPaste="return false" onKeyPress="if(this.value.length==3) return false;"
+                oninput="this.value = Math.trunc(this.value)">
+            </mat-form-field>
+          </div>
+          <div class="pipeline-settings os-dropdown-trigger" *ngIf="this.desactivar">
+            <button mat-raised-button type="button" class="btn-primary btn-save" align="right" (click)='saveHorasAll()'>
+              <mat-icon class="icoboton">save</mat-icon> Guardar</button>
+          </div>
+        </div>
+          
             
-            <td><mat-form-field hintLabel="Max 3 numeros" style="font-size: small; width: 100%;">
-                <input formControlName="horasAsigActividadInput" type="number" step="1" matInput                
-                  #inputHoras maxlength="3" placeholder="Ingrese cantidad de dias" id="horas" (change)="onChangeFecha($event)" value="{{this.fechaInputSelect}}"          
-                  min="1" max="999" onPaste="return false" onKeyPress="if(this.value.length==3) return false;"
-                   oninput="this.value = Math.trunc(this.value)">
-                </mat-form-field></td>
-            <td width=60%></td>
-          </tr>
-        </table>  
+           
+<table width=100% style="height: '100%';">
+  <tr>
+    <td width=100%>
 
-
-    <div class="example-container1 mat-elevation-z8">
-    <mat-label class="titulo" >Proyecto(s)</mat-label>
-    <table mat-table [dataSource]="proyectoIniciativas" matSort id="tableHorasProyecto">
-      <ng-container matColumnDef="codigosvt">
-        <th mat-header-cell *matHeaderCellDef width ="10%"> N° SVT/TICKET </th>
-        <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
-        </td>
-      </ng-container>
-      <!-- Name Column -->
-      <ng-container matColumnDef="titulo">
-        <th mat-header-cell *matHeaderCellDef> TITULO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.titulo}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechainicio">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA INICIO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechafin">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA FIN </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="avance">
-        <th mat-header-cell *matHeaderCellDef width ="6%"> AVANCE </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
-      </ng-container>
-      <ng-container matColumnDef="prioridad">
-        <th mat-header-cell *matHeaderCellDef width ="7%"> ESTADO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.estado.descripcion}} </td>
-      </ng-container>
-      <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-        <th mat-header-cell *matHeaderCellDef width ="5%">{{columnName}}</th>
-        <ng-container>
-          <td mat-cell *matCellDef="let element">   
-              <input #inputHoras  
-              readonly="{{element.sololectura[i]}}"
-              type="number" step="1" min="1" max="14" 
-              onPaste="return false" onKeyPress="if(this.value.length==2) return false;" 
-              oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
-              style="text-align: center; width: 50px;"  class="pointer"/>               
-          </td>            
+      <!-- Titulo de las columnas  -->
+      <table mat-table style="width: '100%';" [dataSource]="proyectoIniciativas" matSort id="tabletitulo">
+        <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnTitulo; let i = index">
+          <th mat-header-cell *matHeaderCellDef width={{columnAncho[i]}}>{{columnName}}</th>        
         </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnTitulo" class="encabezado"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnTitulo;"></tr>
+      </table> 
+      
+      <div class="example-container1 mat-elevation-z8">
 
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-      <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
-    </table> 
+          <!-- Ingreso de Horas por categoria-->      
+          <mat-label class="titulo pointer"  (click)="cambia('Proyecto',this.signoP)" *ngIf="this.verProyecto === 'true'">{{signoP}} Proyecto(s)</mat-label>
+          <table onload="onload();" mat-table [dataSource]="proyectoIniciativas" matSort id="tableHorasProyecto" *ngIf="this.verProyecto === 'true'">
+            <ng-container matColumnDef="codigosvt">
+              <th mat-header-cell *matHeaderCellDef width ="11%" style="visibility: hidden;" > N° SVT/TICKET </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}" width ="11%">             
+                <mat-icon style="font-size: 10px;"  [ngStyle]="tipo.iniciativa.estado.descripcion=='PRODUCCION' && {'color':'blue'} || {'color': 'green'}">brightness_1</mat-icon>
+                {{tipo.iniciativa.codigoSVT}}
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef style="visibility: hidden;" width ="18%"> TITULO </th>
+              <td mat-cell *matCellDef="let tipo" width ="18%"> {{tipo.iniciativa.titulo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechainicio">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > FECHA INICIO </th>
+              <td mat-cell *matCellDef="let tipo" width ="6%"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechafin">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > FECHA FIN </th>
+              <td mat-cell *matCellDef="let tipo" width ="6%"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="avance">
+              <th mat-header-cell *matHeaderCellDef width ="5%" style="visibility: hidden;" > AVANCE </th>
+              <td mat-cell *matCellDef="let tipo" width ="5%"> {{tipo.avance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prioridad">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > ETAPA </th>
+              <td mat-cell *matCellDef="let tipo" width ="6%"> {{tipo.iniciativa.estado.descripcion}} </td>
+            </ng-container>
+            <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
+              <th mat-header-cell *matHeaderCellDef width ="4%" style="visibility: hidden;" align="center">{{columnName}}</th>        
+                <td mat-cell *matCellDef="let element" width ="4%" align="center">
+                    <input #inputHoras type="number" step="1" min="1" max="14"
+                      readonly="{{element.sololectura[i]}}" (change)="this.valida(true,i,'tableHorasProyecto')"
+                      onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
+                      oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
+                      style="text-align: center; width: 30px;" class="pointer">                 
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table> 
 
-    <mat-label class="titulo">Mantenimiento(s)</mat-label>
-    <table mat-table [dataSource]="mantenimientoIniciativas" matSort id="tableHorasMantenimiento">
-      <ng-container matColumnDef="codigosvt">
-        <th mat-header-cell *matHeaderCellDef width ="10%"> N° SVT/TICKET </th>
-        <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
-        </td>
-      </ng-container>
-      <!-- Name Column -->
-      <ng-container matColumnDef="titulo">
-        <th mat-header-cell *matHeaderCellDef> TITULO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.titulo}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechainicio">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA INICIO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechafin">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA FIN </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="avance">
-        <th mat-header-cell *matHeaderCellDef width ="6%"> AVANCE </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
-      </ng-container>
-      <ng-container matColumnDef="prioridad">
-        <th mat-header-cell *matHeaderCellDef width ="7%"> ESTADO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.estado.descripcion}} </td>
-      </ng-container>
-      <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-        <th mat-header-cell *matHeaderCellDef width ="5%">{{columnName}}</th>        
-          <td mat-cell *matCellDef="let element">
-              <input #inputHoras type="number" step="1" min="1" max="14"
-                readonly="{{element.sololectura[i]}}"
-                onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
-                oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
-                style="text-align: center; width: 50px;" class="pointer">                 
-          </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-      <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
-    </table> 
+          <mat-label class="titulo pointer" (click)="cambia('Mantenimiento',this.signoM)" *ngIf="this.verMantenimiento === 'true'">{{signoM}} Mantenimiento(s)</mat-label>
+          <table mat-table [dataSource]="mantenimientoIniciativas" matSort id="tableHorasMantenimiento" *ngIf="this.verMantenimiento === 'true'">                   
+            <ng-container matColumnDef="codigosvt">
+              <th mat-header-cell *matHeaderCellDef width ="11%" style="visibility: hidden;" > N° SVT/TICKET </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}">             
+                <mat-icon style="font-size: 10px;"  [ngStyle]="tipo.iniciativa.estado.descripcion=='PRODUCCION' && {'color':'blue'} || {'color': 'green'}">brightness_1</mat-icon>
+                {{tipo.iniciativa.codigoSVT}}
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef style="visibility: hidden;" width ="18%"> TITULO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.titulo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechainicio">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > FECHA INICIO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechafin">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > FECHA FIN </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="avance">
+              <th mat-header-cell *matHeaderCellDef width ="5%" style="visibility: hidden;" > AVANCE </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prioridad">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > ETAPA </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.estado.descripcion}} </td>
+            </ng-container>
+            <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
+              <th mat-header-cell *matHeaderCellDef width ="4%" align="center" style="visibility: hidden;" >{{columnName}}</th>        
+                <td mat-cell *matCellDef="let element" align="center">
+                    <input #inputHoras type="number" step="1" min="1" max="14" maxlength="2"
+                      readonly="{{element.sololectura[i]}}" (change)="this.valida(true,i,'tableHorasMantenimiento')"
+                      onPaste="return false" onKeyCode="validacionMax(event)"
+                      oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
+                      style="text-align: center; width: 34px;" class="pointer">                 
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table> 
 
-    <mat-label class="titulo">Incidencia(s)</mat-label>
-    <table mat-table [dataSource]="incidenciaIniciativas" matSort id="tableHorasIncidencias">
-      <ng-container matColumnDef="codigosvt">
-        <th mat-header-cell *matHeaderCellDef width ="10%"> N° SVT/TICKET </th>
-        <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
-        </td>
-      </ng-container>
-      <!-- Name Column -->
-      <ng-container matColumnDef="titulo">
-        <th mat-header-cell *matHeaderCellDef> TITULO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.titulo}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechainicio">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA INICIO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechafin">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA FIN </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="avance">
-        <th mat-header-cell *matHeaderCellDef width ="6%"> AVANCE </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
-      </ng-container>
-      <ng-container matColumnDef="prioridad">
-        <th mat-header-cell *matHeaderCellDef width ="7%"> ESTADO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.estado.descripcion}} </td>
-      </ng-container>
-      <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-        <th mat-header-cell *matHeaderCellDef width ="5%">{{columnName}}</th>
-        <ng-container>
-          <td mat-cell *matCellDef="let element">
-              <input #inputHoras type="number" step="1" min="1" max="14"
-              readonly="{{element.sololectura[i]}}"
-              onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
-              oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
-              style="text-align: center; width: 50px;" class="pointer"> </td>
-        </ng-container>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-      <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
-    </table> 
+          <mat-label class="titulo pointer" (click)="cambia('Incidencia',this.signoI)" *ngIf="this.verIncidencia === 'true'">{{signoI}} Incidencia(s)</mat-label>
+          <table mat-table [dataSource]="incidenciaIniciativas" matSort id="tableHorasIncidencias" *ngIf="this.verIncidencia === 'true'">
+            <ng-container matColumnDef="codigosvt">
+              <th mat-header-cell *matHeaderCellDef width ="11%" style="visibility: hidden;" > N° SVT/TICKET </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}" >             
+                <mat-icon style="font-size: 10px;"  [ngStyle]="tipo.iniciativa.estado.descripcion=='PRODUCCION' && {'color':'blue'} || {'color': 'green'}">brightness_1</mat-icon>
+                {{tipo.iniciativa.codigoSVT}}
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef style="visibility: hidden;" width ="18%"> TITULO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.titulo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechainicio">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > FECHA INICIO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechafin">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" >  FECHA FIN </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="avance">
+              <th mat-header-cell *matHeaderCellDef width ="5%" style="visibility: hidden;" > AVANCE </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prioridad">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > ETAPA </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.estado.descripcion}} </td>
+            </ng-container>
+            <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
+              <th mat-header-cell *matHeaderCellDef width ="4%" align="center" style="visibility: hidden;" >{{columnName}}</th>
+              <ng-container>
+                <td mat-cell *matCellDef="let element" align="center">
+                    <input #inputHoras type="number" step="1" min="1" max="14"
+                    readonly="{{element.sololectura[i]}}" (change)="this.valida(true,i,'tableHorasIncidencias')"
+                    onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
+                    oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
+                    style="text-align: center; width: 34px;" class="pointer"> </td>
+              </ng-container>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table> 
 
-    <mat-label class="titulo">Soporte(s)</mat-label>
-    <table mat-table [dataSource]="soporteIniciativas" matSort id="tableHorasSoporte">
-      <ng-container matColumnDef="codigosvt">
-        <th mat-header-cell *matHeaderCellDef width ="10%"> N° SVT/TICKET </th>
-        <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
-        </td>
-      </ng-container>
-      <!-- Name Column -->
-      <ng-container matColumnDef="titulo">
-        <th mat-header-cell *matHeaderCellDef> TITULO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.titulo}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechainicio">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA INICIO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechafin">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA FIN </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="avance">
-        <th mat-header-cell *matHeaderCellDef width ="6%"> AVANCE </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
-      </ng-container>
-      <ng-container matColumnDef="prioridad">
-        <th mat-header-cell *matHeaderCellDef width ="7%"> ESTADO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.estado.descripcion}} </td>
-      </ng-container>
-      <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-        <th mat-header-cell *matHeaderCellDef width ="5%">{{columnName}}</th>
-        <ng-container>
-          <td mat-cell *matCellDef="let element">
-            <input #inputHoras type="number" step="1" min="1" max="14"
-              readonly="{{element.sololectura[i]}}"
-              onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
-              oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
-              style="text-align: center; width: 50px;" class="pointer"> </td>
-        </ng-container>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-      <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
-    </table>
+          <mat-label class="titulo pointer" (click)="cambia('Soporte',this.signoS)" *ngIf="this.verSoporte === 'true'">{{signoS}} Soporte(s)</mat-label>      
+          <table mat-table [dataSource]="soporteIniciativas" matSort id="tableHorasSoporte" *ngIf="this.verSoporte === 'true'">
+            <ng-container matColumnDef="codigosvt">
+              <th mat-header-cell *matHeaderCellDef width ="11%" style="visibility: hidden;" > N° SVT/TICKET </th>          
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}">             
+                <mat-icon style="font-size: 10px;"  [ngStyle]="tipo.iniciativa.estado.descripcion=='PRODUCCION' && {'color':'blue'} || {'color': 'green'}">brightness_1</mat-icon>
+                {{tipo.iniciativa.codigoSVT}}
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef style="visibility: hidden;" width ="18%"> TITULO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.titulo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechainicio" >
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > FECHA INICIO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechafin">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > FECHA FIN </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="avance">
+              <th mat-header-cell *matHeaderCellDef width ="5%" style="visibility: hidden;" > AVANCE </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prioridad">
+              <th mat-header-cell *matHeaderCellDef width ="6%" style="visibility: hidden;" > ETAPA </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.estado.descripcion}} </td>
+            </ng-container>
+            <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
+              <th mat-header-cell *matHeaderCellDef width ="4%" align="center" style="visibility: hidden;" >{{columnName}}</th>
+              <ng-container>
+                <td mat-cell *matCellDef="let element" align="center">
+                  <input #inputHoras type="number" step="1" min="1" max="14"
+                    readonly="{{element.sololectura[i]}}" (change)="this.valida(true,i,'tableHorasSoporte')"
+                    onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
+                    oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
+                    style="text-align: center; width: 34px;" class="pointer"> </td>
+              </ng-container>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table>
+          
+          <mat-label onload="onload();" class="titulo pointer" *ngIf="this.verEsfuerzo === 'true'" (click)="cambia('Esfuerzo',this.signoE)"><label for="checkbox-1">{{signoE}} Esfuerzo Continuo(s)</label></mat-label>
+          <table mat-table [dataSource]="esfuerzoIniciativas" matSort id="tableHorasEsfuerzo" *ngIf="this.verEsfuerzo === 'true'">        
+            <ng-container matColumnDef="codigosvt">
+              <th style="visibility: hidden;" mat-header-cell *matHeaderCellDef width ="11%"> ITEM </th>
+              <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}">
+                {{tipo.iniciativa.codigoSVT}}
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="titulo">
+              <th style="visibility: hidden;" mat-header-cell *matHeaderCellDef width ="18%"> TITULO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.titulo}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechainicio">
+              <th style="visibility: hidden;"  mat-header-cell *matHeaderCellDef width ="6%"> FECHA INICIO </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="fechafin">
+              <th style="visibility: hidden;" mat-header-cell *matHeaderCellDef width ="6%"> FECHA FIN </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+            <ng-container matColumnDef="avance">
+              <th style="visibility: hidden;" mat-header-cell *matHeaderCellDef width ="5%"> AVANCE </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
+            </ng-container>
+            <ng-container matColumnDef="prioridad">
+              <th style="visibility: hidden;" mat-header-cell *matHeaderCellDef width ="6%"> PRIORIDAD </th>
+              <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
+            </ng-container>
+            <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
+              <th style="visibility: hidden;" mat-header-cell *matHeaderCellDef width ="4%" align="center">{{this.validat(true,i,'tableHorasEsfuerzo')}}{{columnName}}</th>
+              <ng-container>
+                <td mat-cell *matCellDef="let element" align="center">
+                    <input #inputHoras type="number" step="1" min="1" max="14"
+                          onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
+                          (change)="this.valida(true,i,'tableHorasEsfuerzo');"
+                          oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
+                          style="text-align: center; width: 34px;" class="pointer"> </td>
+              </ng-container>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
+          </table>
+      </div>
     
-    <mat-label class="titulo">Esfuerzo Continuo(s)</mat-label>
-    <table mat-table [dataSource]="esfuerzoIniciativas" matSort id="tableHorasEsfuerzo">
-      <ng-container matColumnDef="codigosvt">
-        <th mat-header-cell *matHeaderCellDef width ="10%"> ITEM </th>
-        <td mat-cell *matCellDef="let tipo" id="{{tipo.iniciativa.idIniciativa}}"> {{tipo.iniciativa.codigoSVT}}
-        </td>
-      </ng-container>
-      <!-- Name Column -->
-      <ng-container matColumnDef="titulo">
-        <th mat-header-cell *matHeaderCellDef> TITULO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.titulo}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechainicio">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA INICIO </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaInicio | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="fechafin">
-        <th mat-header-cell *matHeaderCellDef width ="8%"> FECHA FIN </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.fechaFin | date: 'dd/MM/yyyy'}} </td>
-      </ng-container>
-      <ng-container matColumnDef="avance">
-        <th mat-header-cell *matHeaderCellDef width ="6%"> AVANCE </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.avance}} </td>
-      </ng-container>
-      <ng-container matColumnDef="prioridad">
-        <th mat-header-cell *matHeaderCellDef width ="7%"> PRIORIDAD </th>
-        <td mat-cell *matCellDef="let tipo"> {{tipo.iniciativa.prioridad.descripcion}} </td>
-      </ng-container>
-      <ng-container [matColumnDef]="columnName" *ngFor="let columnName of columnasFechTabla; let i = index">
-        <th mat-header-cell *matHeaderCellDef width ="5%">{{columnName}}</th>
-        <ng-container>
-          <td mat-cell *matCellDef="let element"><input #inputHoras type="number" step="1" min="1" max="14"
-              onPaste="return false" onKeyPress="if(this.value.length==2) return false;"
-              oninput="this.value = Math.trunc(this.value)" value="{{element.horasFecha[i]}}"
-              style="text-align: center; width: 50px;" class="pointer"> </td>
-        </ng-container>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="columnasTabla" class="encabezado"></tr>
-      <tr mat-row *matRowDef="let row; columns: columnasTabla;"></tr>
-    </table> 
-    <br>
-    
-  </div>
+      <!-- Pie Consolidado de las columnas  -->
+      <div style="padding: 2px 2px;">
+        <table width=100%>
+            <tr class="csspie">
+              <td *ngFor="let columnName of columnaPie; let i = index" width={{columnAnchoPie[i]}} ><strong>{{columnName}}</strong></td>
+            </tr>
+        </table>
+      </div>
+      
+     </td>
+  </tr>
+</table>
+
 </div>
+
+

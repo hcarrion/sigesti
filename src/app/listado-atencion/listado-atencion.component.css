@@ -1,8 +1,15 @@
 .mat-form-field {
-  font-size: 14px;
+  font-size: 08px;
   width: 95% !important;
   margin-top: 2%;
   margin-left: 2%;
+}
+.material-icons{
+  font-size: 10px !important;
+}
+
+.imgcss{
+  font-size: 24px !important; 
 }
 
 .highlight{
@@ -17,19 +24,21 @@
 .matDialog .mat-dialog-container{
   overflow-y: hidden !important;
 }
+
 .example-container {
   display: flex;
   flex-direction: column;
-  min-width: 300px;
+  min-width: 350px;
+  height: 350px;
 }
 
 .example-header {
-  min-height: 64px;
+  min-height: 24;
   padding: 8px 24px 0;
 }
 
 .mat-form-field {
-  font-size: 14px;
+  font-size: 08px;
   width: 100%;
 }
 
@@ -55,10 +64,10 @@ th.mat-sort-header-sorted {
   color: black;
 }
 tr.mat-footer-row, tr.mat-row {
-  height: 38px;
+  height: 08px;
 }
 tr.mat-header-row {
-  height: 46px;
+  height: 08px;
 }
 
 /* Absolute Center Spinner */
@@ -90,7 +99,8 @@ tr.mat-header-row {
 
 
 .example-container1 {
-  height: 320px;
+  height: 60vh;
+  width: auto;
   overflow: auto;
 }
 
@@ -150,17 +160,17 @@ tr.mat-header-row {
   border-radius: 10px;  
 }
 .mat-cell{
-  font-size: 12px;
-  max-height: 10px;
-  min-height: 20%;
+  font-size: 08px;
+  max-height: 14px;
+  min-height: 24%;
   border-bottom: none;
-  padding: 0px 0;
+  padding: 4px 10;
 } 
 .mat-header-cell{
-  font-size: 12px;
+  font-size: 09px;
   max-height: 10px;
   min-height: 10%;
   border-bottom: none;
-  padding: 0 0;
+  padding: 4px 4;
 }
 

@@ -2,22 +2,16 @@ import { Component, OnInit, ViewChild, Inject, OnDestroy, AbstractType } from '@
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { IniciativaMainFire } from 'src/app/shared/models/iniciativa-main-fire';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FirebaseParametroService } from 'src/app/shared/services/firebase-parametro.service';
 import { FirebaseColaboradorService } from 'src/app/shared/services/firebase-colaborador.service';
 import { FirebaseIniciativaMainService } from 'src/app/shared/services/firebase-iniciativa-main.service';
-import { FirestoreService } from 'src/app/services/firestore/firestore.service';
-import { ColaboradorFire } from 'src/app/shared/models/colaborador-fire';
 import { ColaboradorDetalleFire } from 'src/app/shared/models/colaborador-detalle-fire';
 import { ReplaySubject, Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
 import { MatSelect } from '@angular/material/select';
 import Swal from 'sweetalert2';
 import { NgStyle, DatePipe } from '@angular/common';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { IniciativaFire } from 'src/app/shared/models/iniciativa-fire';
-import { UsuarioPerfilFireService } from 'src/app/shared/models/usuario-perfil-fire.service';
 import { ContactoFire } from 'src/app/shared/models/contacto-fire';
-import { timingSafeEqual } from 'crypto';
 import { ActividadFireMonitor } from 'src/app/shared/models/actividad-fire-monitor';
 
 @Component({
@@ -45,6 +39,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
   total: number;
   colaboradores: ContactoFire = new ContactoFire();
   dia: number;
+  fechainicio: Date = new Date();
   columnas: string[] = ['codigo', 'nombres','horas'];
   public lista = [] as IniciativaMainFire[];
   public colaboradorCtrl: FormControl = new FormControl();
@@ -68,6 +63,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
       this.codigoSVT = datafire.codigo;
       this.dia = datafire.dia;
       this.codigoUsuario = datafire.codigousuario;
+      this.fechainicio = datafire.fechainicio;
       this.regRecursos = new FormGroup({
         tituloInputDialog: new FormControl(),
         codigoInputDialog: new FormControl(),
@@ -87,7 +83,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
   } 
 
   ngOnInit() {
-    let latest_date =new Date();
+    let latest_date =this.fechainicio;
     let f =this.datepipe.transform(latest_date, 'yyyy-MM-dd');
     this.ultimaDia = +this.ultimoDiaMes(f);
     if (this.tipo=="USUARIO"){
@@ -128,7 +124,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
               colaboradorobj.horasReg.forEach(horasreg=>{      
                 if (this.dia==99){
                   for(i=1; i<=this.ultimaDia; i++){                    
-                    if (this.pad(i,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
+                    if (this.pad(i,2)+'/'+this.datepipe.transform(this.fechainicio, 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
                       usuariosvc.horas = 0;
                       this.total+=horasreg.horas;
                     }                                             
@@ -136,7 +132,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
                   this.totalacu += horasreg.horas;
                 }else{
                   this.totalacu += horasreg.horas;
-                  if (this.pad(this.dia,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
+                  if (this.pad(this.dia,2)+'/'+this.datepipe.transform(this.fechainicio, 'MM') == this.datepipe.transform(horasreg.fecha, 'dd/MM')){
                     usuariosvc.horas += horasreg.horas;
                     this.total+=usuariosvc.horas;
                   } 
@@ -189,7 +185,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
                       colaborador.horasReg.forEach(horasingreso=>{
                         if (this.dia==99){
                           for(i=1; i<=this.ultimaDia; i++){
-                            if (this.pad(i,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasingreso.fecha, 'dd/MM')){
+                            if (this.pad(i,2)+'/'+this.datepipe.transform(this.fechainicio, 'MM') == this.datepipe.transform(horasingreso.fecha, 'dd/MM')){
                               usuariosvc.horas = 0;
                               total+=horasingreso.horas;
                                 }   
@@ -197,7 +193,7 @@ export class DialogMonitorRecursoComponent implements OnInit, OnDestroy {
                               totalacu += horasingreso.horas;
                         }else{
                               totalacu += horasingreso.horas;
-                              if (this.pad(this.dia,2)+'/'+this.datepipe.transform(Date(), 'MM') == this.datepipe.transform(horasingreso.fecha, 'dd/MM')){
+                              if (this.pad(this.dia,2)+'/'+this.datepipe.transform(this.fechainicio, 'MM') == this.datepipe.transform(horasingreso.fecha, 'dd/MM')){
                                 usuariosvc.horas += horasingreso.horas;                       
                                 total+=usuariosvc.horas;
                               }
